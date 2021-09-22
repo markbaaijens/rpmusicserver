@@ -10,20 +10,3 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
 * remote installation with install-rp script via ssh
 	* ssh root@remoteServer "bash -s" < install-rp
 * reboot
-
-## Questions and decisions
-* OS: raspian or ubuntu? => Raspian
-* is ssh present in a fresh install of raspian?
-* mount through fstab of rc.local? => fstab
-* fixed ip-adres? => no (samba-acces by hostname)
-* swap-file? => no
-* install by install-rp script when root password is not yet configured?
-* docker installation by standard repo? => yes
-* config rp via sudo raspi-config?
-	* http://www.gerrelt.nl/RaspberryPi/wordpress/tutorial-stand-alone-squeezebox-server-and-player-for-bbq/
-* backup? (automatic when backup is hooked up to the pi)
-* create our own image?
-* issue apt upgrade in crontab?
-* must public/Downloads be created manually or is this done by transmission?
-
-
