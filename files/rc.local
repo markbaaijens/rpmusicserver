@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+# Start docker containers:
+# - lms
+# -	samba
+# - transmission
+
+exit 0

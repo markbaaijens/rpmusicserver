@@ -1,0 +1,27 @@
+#!/bin/sh -e
+
+# update/upgrade
+# hostname (= 'rp')
+# users:
+# - delete obsolete users like ubuntu, pi, etc.
+# - create user 'user'(+ password)
+# - change root-wachtwoord
+# packages
+# - docker (by standard repo)
+# - transcoder
+# - dr14
+# - extra tools like htop, net-tools, nano
+# create folders (and rights)
+# - /media/usbdata
+# crontab
+# - apt upgrade?
+# - transcoder
+# - dr14tool
+# fstab
+#	  LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0
+# squeezelite
+# - config
+#	copy files
+#	- rc.local => /etc
+#	  - make rc.local executable
+#	- lms-config => /etc/docker/lms
