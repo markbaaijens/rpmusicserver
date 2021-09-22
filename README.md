@@ -17,7 +17,7 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
 * fixed ip-adres? => no (samba-acces by hostname)
 * swap-file? => no
 * install by install-rp script when root password is not yet configured?
-* docker installation by standaard repo? => yes
+* docker installation by standard repo? => yes
 * config rp via sudo raspi-config?
 	* http://www.gerrelt.nl/RaspberryPi/wordpress/tutorial-stand-alone-squeezebox-server-and-player-for-bbq/
 * backup? (automatic when backup is hooked up to the pi)

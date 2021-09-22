@@ -18,10 +18,10 @@
 # - transcoder
 # - dr14tool
 # fstab
-#	  LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0
+#  LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0
 # squeezelite
 # - config
-#	copy files
-#	- rc.local => /etc
-#	  - make rc.local executable
-#	- lms-config => /etc/docker/lms
+# copy files
+# - rc.local => /etc
+#   - make rc.local executable
+# - lms-config => /etc/docker/lms
