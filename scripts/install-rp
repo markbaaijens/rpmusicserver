@@ -5,7 +5,7 @@
 # users:
 # - delete obsolete users like ubuntu, pi, etc.
 # - create user 'user'(+ password)
-# - change root-wachtwoord
+# - change root-password
 # packages
 # - docker (by standard repo)
 # - transcoder
@@ -14,7 +14,6 @@
 # create folders (and rights)
 # - /media/usbdata
 # crontab
-# - apt upgrade?
 # - transcoder
 # - dr14tool
 # fstab

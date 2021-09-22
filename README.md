@@ -22,3 +22,5 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
 	* http://www.gerrelt.nl/RaspberryPi/wordpress/tutorial-stand-alone-squeezebox-server-and-player-for-bbq/
 * backup? (automatic when backup is hooked up to the pi)
 * create our own image?
+* issue apt upgrade in crontab?
+
