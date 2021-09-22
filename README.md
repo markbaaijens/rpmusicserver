@@ -23,4 +23,6 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
 * backup? (automatic when backup is hooked up to the pi)
 * create our own image?
 * issue apt upgrade in crontab?
+* must public/Downloads be created manually or is this done by transmission?
+
 
