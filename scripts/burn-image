@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+# Show SD-card info: lsblk | grep disk | grep mmcblk0
+# Ask user for permission; if not, bail-out
 # Download image (Raspian OS Lite)
 # Wipe the sd-card
 # Burn image
