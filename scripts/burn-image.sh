@@ -19,14 +19,33 @@ fi
 
 # === GENERAL SETTINGS ===
 
-# download link to the raspian image
+# set working directory
+workingdir=/tmp/raspbian
+
+# download link to the Raspbian image
 image=https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
 
 # name of the archive
-archive=raspian-os-lite.zip
+archive=raspbian-os-lite.zip
 
 # wget log filename
-wgetlog=wget-raspian.log
+wgetlog=wget-raspbian.log
+
+# minimal capacity required on SD-card
+mincap=0
+
+# mount point for boot partition
+mntboot=/media/boot
+
+
+
+# === FUNCTIONS ===
+
+lsstorage() {
+  echo "$(lsblk -e7 | grep -v NAME)" > $1
+  echo "$(sort $1)" > $1
+}
+
 
 
 
@@ -36,12 +55,12 @@ wgetlog=wget-raspian.log
 apt install curl wget -y
 
 # create a working directory in the /tmp folder to operate in
-cd /tmp
-[ ! -d /tmp/raspian ] && mkdir /tmp/raspian
-cd raspian
+workingdir=$(echo "${workingdir}" | sed -e "s/\/$//g")
+[ ! -d $workingdir ] && mkdir $workingdir
+#cd $workingdir
 
 # check whether image exists online
-imagesize=$(curl -I $image | grep content-length | grep -oE '[0-9]+')
+imagesize=$(curl -I $image | grep content-length | grep -oE "[0-9]+")
 if [ -z "$imagesize" ] || [ $imagesize = 0 ]
 then
   echo "Image $image not found."
@@ -49,42 +68,40 @@ then
   exit 4
 fi
 
-# get Raspian image online and its pid. download in the background so we can continue with other important stuff
-#wgetpid=$(wget -b -c -P /tmp/raspian -o $wgetlog -O $archive --no-check-certificate $image | grep 'pid' | grep -oE '[0-9]+' )
-wget -b -c -P /tmp/raspian -o $wgetlog -O $archive --no-check-certificate $image & wgetpid=`echo $!`
-echo "Raspian image download pid = $wgetpid"
+# get Raspbian image online and its pid. download in the background so we can continue with other important stuff
+#wgetpid=$(wget -b -c -P $workingdir -o $wgetlog -O $archive --no-check-certificate $image | grep 'pid' | grep -oE '[0-9]+' )
+wget -b -c -P $workingdir -o $wgetlog -O $archive --no-check-certificate $image & wgetpid=`echo $!`
+echo "Raspbian image download pid = $wgetpid"
 
 # user feedback: is required to prepare the process. user that placed the sd-card already has to remove it to gather a list of devices
 echo "Be sure to leave the SD-card out of the computer. Press [Enter] when ready..."
 read -n 1 -s -r
 
 # in the meantime we want to know how long the download takes
-duration=$(tail -n 2 $wgetlog | grep -oE '[^[:space:]]+$')
+duration=$(tail -n 2 $workingdir/$wgetlog | grep -oE "[^[:space:]]+$")
 if [ "$duration" = "do." ]
 then
   duration=""
-  echo "$(tac $wgetlog | head -n 2)"
+  echo "$(tac $workingdir/$wgetlog | head -n 2)"
 else
   echo "Duration: $(echo "$duration" | head -n 1)"
 fi
 
 # get list of initial storage devices
-echo "$(lsblk | grep  -oE '^[^[:space:]]+' | grep -Evw -e NAME -e '^loop[0-9]+')" > initialblk.txt
-echo "$(sort initialblk.txt)" > initialblk.txt
+lsstorage $workingdir/initialblk.txt
 
 # user feedback: is required to confirm that the SD-card has been added
-echo "Put the SD-card in the computer, wait for it to recognize he card. Press [Enter] when ready..."
+echo "Put the SD-card in the computer, wait for it to recognize and automount the card. Press [Enter] when ready..."
 read -n 1 -s -r
 
 # get a new list of storage devices
-echo "$(lsblk | grep  -oE '^[^[:space:]]+' | grep -Evw -e NAME -e '^loop[0-9]+')" > lsblk.txt
-echo "$(sort lsblk.txt)" > lsblk.txt
+lsstorage $workingdir/lsblk.txt
 
 # compare the lists and get the device that was added
-sdcard=$(comm -13 initialblk.txt lsblk.txt)
+sdcard=$(comm -13 $workingdir/initialblk.txt $workingdir/lsblk.txt)
 # cleanup: remove the lists that were written in files
-rm initialblk.txt
-rm lsblk.txt
+rm $workingdir/initialblk.txt
+rm $workingdir/lsblk.txt
 
 # if no difference between the two lists, exit
 if [ -z "$sdcard" ]
@@ -98,6 +115,15 @@ fi
 sdlabel=$(echo "$sdcard" | head -n 1)
 partitions=$(echo "$sdcard" | grep -vw "$sdlabel" | grep -oE "($sdlabel)p[0-9]+")
 
+# validate storage capacity on SD-card
+sdcapacity=$(df | grep "$sdlabel" | grep -oE "/dev/($sdlabel)p[0-9]+[[:space:]]+[0-9]+" | grep -oE "[^[:space:]]+" | grep -oE "^[0-9]+$" | paste -sd+ | bc)
+if [ "$sdcapacity" -lt "$mincap" ]
+then
+  echo "Not enough storage on $sdlabel."
+  echo "Script ended."
+  exit 2
+fi
+
 # unmount sd-card
 for partition in $partitions; do
   echo "partition /dev/$partition unmounted..."
@@ -107,7 +133,7 @@ done
 # it is time to extract the archive, when the download is finished
 if [ -n "$duration" ]
 then
-  duration=$(tail -n 2 $wgetlog | head -n 1 | grep -oE '[^[:space:]]+$')
+  duration=$(tail -n 2 $workingdir/$wgetlog | head -n 1 | grep -oE "[^[:space:]]+$")
   # did we capture a valid timestamp? yes? then wait till download is done, otherwise...start unzipping assuming the download has finished
   if [[ $duration =~ ^([0-9]+[ms])+$ ]]
   then
@@ -118,16 +144,14 @@ then
 fi
 
 # extract the downloaded image
-unzip $archive
+unzip $workingdir/$archive
 
 echo "Made up your mind? No problem, nothing is done yet with your SD-card."
-read -r -p "Do you want to ABORT installatation on $sdlabel? [y/N]" response
-if [[ "$response" =~ ^[yY]([eE][sS])?$ ]]
+read -r -p "Do you want to start installation on $sdlabel? [y/N]" startinstall
+if [ -z "$startinstall" ] || [[ "$startinstall" =~ ^[nN]([oO])?$ ]]
 then
   # cleanup: leave /tmp as it were
-  rm *
-  cd ..
-  rm -rf raspian
+  rm -rf $workingdir
 
   echo "Script ended."
   exit 5
@@ -139,15 +163,13 @@ echo "Start wiping $sdlabel..."
 echo "Done wiping $sdlabel."
 
 apt install gddrescue -y
-image=$(echo "${archive}" | sed -e 's/zip$/img/g')
+image=$(echo "${archive}" | sed -e "s/zip$/img/g")
 echo "Start burning $image to $sdlabel..."
 #ddrescue -d -D --force $image "/dev/$sdlabel"
 echo "Done burning $sdlabel."
 
 # cleanup: leave /tmp as it were
-rm *
-cd ..
-rm -rf raspian
+rm -rf $workingdir
 
 # make ssh default in install
 bootpart=$(echo "$partitions" | head -n 1)
@@ -159,12 +181,12 @@ then
 fi
 
 # mount SD-card
-[ ! -d /media/boot ] && mkdir /media/boot
-mount "/dev/$bootpart" /media/boot
+[ ! -d $mntboot ] && mkdir $mntboot
+mount "/dev/$bootpart" $mntboot
 echo "partition /dev/$bootpart mounted."
 umount "/dev/$bootpart"
-touch /media/boot/ssh
-[ -d /media/boot ] && rm -rf /media/boot
+touch $mntboot/ssh
+[ -d $mntboot ] && rm -rf $mntboot
 echo "Script ended."
 
 echo "SSH is active on $sdlabel."
