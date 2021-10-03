@@ -46,6 +46,10 @@ lsstorage() {
   echo "$(sort $1)" > $1
 }
 
+cleanup() {
+  rm -rf $1
+}
+
 
 
 
@@ -54,22 +58,20 @@ lsstorage() {
 # get the curl and wget app if not yet installed
 apt install curl wget -y
 
-# create a working directory in the /tmp folder to operate in
-workingdir=$(echo "${workingdir}" | sed -e "s/\/$//g")
-[ ! -d $workingdir ] && mkdir $workingdir
-#cd $workingdir
-
 # check whether image exists online
 imagesize=$(curl -I $image | grep content-length | grep -oE "[0-9]+")
-if [ -z "$imagesize" ] || [ $imagesize = 0 ]
+if [ -z "$imagesize" ] || [ $imagesize -eq 0 ]
 then
   echo "Image $image not found."
   echo "Script ended."
   exit 4
 fi
 
+# create a working directory in the /tmp folder to operate in
+workingdir=$(echo "${workingdir}" | sed -e "s/\/$//g")
+[ ! -d $workingdir ] && mkdir $workingdir
+
 # get Raspbian image online and its pid. download in the background so we can continue with other important stuff
-#wgetpid=$(wget -b -c -P $workingdir -o $wgetlog -O $archive --no-check-certificate $image | grep 'pid' | grep -oE '[0-9]+' )
 wget -b -c -P $workingdir -o $wgetlog -O $archive --no-check-certificate $image & wgetpid=`echo $!`
 echo "Raspbian image download pid = $wgetpid"
 
@@ -107,6 +109,7 @@ rm $workingdir/lsblk.txt
 if [ -z "$sdcard" ]
 then
   echo "No SD-card was added."
+  cleanup $workingdir
   echo "Script ended."
   exit 2
 fi
@@ -120,14 +123,23 @@ sdcapacity=$(df | grep "$sdlabel" | grep -oE "/dev/($sdlabel)p[0-9]+[[:space:]]+
 if [ "$sdcapacity" -lt "$mincap" ]
 then
   echo "Not enough storage on $sdlabel."
+  cleanup $workingdir
   echo "Script ended."
   exit 2
 fi
 
 # unmount sd-card
 for partition in $partitions; do
-  echo "partition /dev/$partition unmounted..."
   umount "/dev/$partition"
+  if [ -z "$(df | grep '/dev/$partition')" ]
+  then
+    echo "partition /dev/$partition successfully unmounted."
+  else
+    echo "failed to umount /dev/$partition."
+    cleanup $workingdir
+    echo "Script ended."
+    exit 5
+  fi
 done
 
 # it is time to extract the archive, when the download is finished
@@ -150,9 +162,7 @@ echo "Made up your mind? No problem, nothing is done yet with your SD-card."
 read -r -p "Do you want to start installation on $sdlabel? [y/N]" startinstall
 if [ -z "$startinstall" ] || [[ "$startinstall" =~ ^[nN]([oO])?$ ]]
 then
-  # cleanup: leave /tmp as it were
-  rm -rf $workingdir
-
+  cleanup $workingdir
   echo "Script ended."
   exit 5
 fi
@@ -168,8 +178,7 @@ echo "Start burning $image to $sdlabel..."
 #ddrescue -d -D --force $image "/dev/$sdlabel"
 echo "Done burning $sdlabel."
 
-# cleanup: leave /tmp as it were
-rm -rf $workingdir
+cleanup $workingdir
 
 # make ssh default in install
 bootpart=$(echo "$partitions" | head -n 1)
