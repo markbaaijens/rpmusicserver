@@ -2,7 +2,7 @@
 # This script will burn the Raspbian OS Lite Image from the raspberrypi.org server and burn the image to a SD-card.
 # The execution of the script is usually done by technical personnel with the...
 #
-# $ sudo chmod 770 ./burn.sh && sudo ./burn.sh
+# $ sudo chmod 770 ./burn-image.sh && sudo ./burn-image.sh
 #
 # ...on a computer with a SD-card reader.
 # You have to know what you are doing and we don’t take any responsibility for data loss.
@@ -31,7 +31,7 @@ archive=raspbian-os-lite.zip
 # wget log filename
 wgetlog=wget-raspbian.log
 
-# minimal capacity required on SD-card
+# minimal capacity required on SD-card (0 has no minimum)
 mincap=0
 
 # mount point for boot partition
