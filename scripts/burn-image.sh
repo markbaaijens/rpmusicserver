@@ -32,7 +32,7 @@ archive=raspbian-os-lite.zip
 wgetlog=wget-raspbian.log
 
 # minimal capacity required on SD-card (0 has no minimum)
-mincap=0
+mincap=2000000000
 
 # mount point for boot partition
 mntboot=/media/boot
@@ -72,6 +72,7 @@ workingdir=$(echo "${workingdir}" | sed -e "s/\/$//g")
 [ ! -d $workingdir ] && mkdir $workingdir
 
 # get Raspbian image online and its pid. download in the background so we can continue with other important stuff
+# dummy: $ wget -c -O raspbian-os-lite.zip --no-check-certificate https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
 wget -b -c -P $workingdir -o $wgetlog -O $archive --no-check-certificate $image & wgetpid=`echo $!`
 echo "Raspbian image download pid = $wgetpid"
 
@@ -155,12 +156,22 @@ then
   fi
 fi
 
+# check whether the extraced image would fit on the SD-card
+extractedimgsize=$(unzip -l $workingdir/$archive | tac | head -n 1 | grep -oE "^[0-9]+")
+if [ -z "$extractedimgsize" ] || [ $extractedimgsize -lt $sdcapacity ]
+then
+    echo "Not enough storage on $sdlabel."
+    cleanup $workingdir
+    echo "Script ended."
+    exit 2
+fi
+
 # extract the downloaded image
 unzip $workingdir/$archive
 
 echo "Made up your mind? No problem, nothing is done yet with your SD-card."
 read -r -p "Do you want to start installation on $sdlabel? [y/N]" startinstall
-if [ -z "$startinstall" ] || [[ "$startinstall" =~ ^[nN]([oO])?$ ]]
+if [ -z "$startinstall" ] || [[ "$startinstall" =~ ^[nN][oO]?$ ]]
 then
   cleanup $workingdir
   echo "Script ended."
