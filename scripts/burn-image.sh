@@ -17,6 +17,7 @@ fi
 
 
 
+
 # === GENERAL SETTINGS ===
 
 # set working directory
@@ -32,17 +33,32 @@ archive=raspbian-os-lite.zip
 wgetlog=wget-raspbian.log
 
 # minimal capacity required on SD-card (0 has no minimum)
-mincap=2000000000
+mincap=1900000000
 
 # mount point for boot partition
 mntboot=/media/boot
 
 
 
+
+# === REGULAR EXPRESSION PATTERNS ===
+
+# numbers
+numberpattern="[0-9]+"
+
+# non-space
+negmultiplespacepattern="[^[:space:]]+"
+
+# timeformat
+timeformatpattern="^([0-9]{,2}[hms])+$"
+
+
+
+
 # === FUNCTIONS ===
 
 lsstorage() {
-  echo "$(lsblk -e7 | grep -v NAME)" > $1
+  echo "$(lsblk -b -e7 -o name | grep -v NAME)" > $1
   echo "$(sort $1)" > $1
 }
 
@@ -59,7 +75,7 @@ cleanup() {
 apt install curl wget -y
 
 # check whether image exists online
-imagesize=$(curl -I $image | grep content-length | grep -oE "[0-9]+")
+imagesize=$(curl -I $image | grep content-length | grep -oE "$numberpattern")
 if [ -z "$imagesize" ] || [ $imagesize -eq 0 ]
 then
   echo "Image $image not found."
@@ -71,24 +87,9 @@ fi
 workingdir=$(echo "${workingdir}" | sed -e "s/\/$//g")
 [ ! -d $workingdir ] && mkdir $workingdir
 
-# get Raspbian image online and its pid. download in the background so we can continue with other important stuff
-# dummy: $ wget -c -O raspbian-os-lite.zip --no-check-certificate https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
-wget -b -c -P $workingdir -o $wgetlog -O $archive --no-check-certificate $image & wgetpid=`echo $!`
-echo "Raspbian image download pid = $wgetpid"
-
 # user feedback: is required to prepare the process. user that placed the sd-card already has to remove it to gather a list of devices
 echo "Be sure to leave the SD-card out of the computer. Press [Enter] when ready..."
 read -n 1 -s -r
-
-# in the meantime we want to know how long the download takes
-duration=$(tail -n 2 $workingdir/$wgetlog | grep -oE "[^[:space:]]+$")
-if [ "$duration" = "do." ]
-then
-  duration=""
-  echo "$(tac $workingdir/$wgetlog | head -n 2)"
-else
-  echo "Duration: $(echo "$duration" | head -n 1)"
-fi
 
 # get list of initial storage devices
 lsstorage $workingdir/initialblk.txt
@@ -117,13 +118,16 @@ fi
 
 # get the label and its partitions from the sd-card
 sdlabel=$(echo "$sdcard" | head -n 1)
-partitions=$(echo "$sdcard" | grep -vw "$sdlabel" | grep -oE "($sdlabel)p[0-9]+")
+partitions=$(echo "$sdcard" | grep -vw "$sdlabel" | grep -oE "($sdlabel)p$numberpattern")
 
 # validate storage capacity on SD-card
-sdcapacity=$(df | grep "$sdlabel" | grep -oE "/dev/($sdlabel)p[0-9]+[[:space:]]+[0-9]+" | grep -oE "[^[:space:]]+" | grep -oE "^[0-9]+$" | paste -sd+ | bc)
-if [ "$sdcapacity" -lt "$mincap" ]
+#sdcapacity=$(df -B1 | grep "$sdlabel" | grep -oE "/dev/($sdlabel)p$numberpattern[[:space:]]+$numberpattern" | grep -oE "$negmultiplespacepattern" | grep -oE "^$numberpattern$" | paste -sd+ | bc)
+sdcapacity=$(lsblk -b -e7 -o name,size | grep -w "^$sdlabel" | grep -oEw "$numberpattern")
+if [ $sdcapacity -lt $mincap ]
 then
   echo "Not enough storage on $sdlabel."
+  echo "$mincap Byte required;"
+  echo "$sdcapacity Byte found."
   cleanup $workingdir
   echo "Script ended."
   exit 2
@@ -132,7 +136,9 @@ fi
 # unmount sd-card
 for partition in $partitions; do
   umount "/dev/$partition"
-  if [ -z "$(df | grep '/dev/$partition')" ]
+  umntresult=$
+  echo "$umntresult"
+  if [ $umntresult -eq 0 ] [ -z "$(df | grep '/dev/$partition')" ]
   then
     echo "partition /dev/$partition successfully unmounted."
   else
@@ -143,31 +149,33 @@ for partition in $partitions; do
   fi
 done
 
-# it is time to extract the archive, when the download is finished
-if [ -n "$duration" ]
-then
-  duration=$(tail -n 2 $workingdir/$wgetlog | head -n 1 | grep -oE "[^[:space:]]+$")
-  # did we capture a valid timestamp? yes? then wait till download is done, otherwise...start unzipping assuming the download has finished
-  if [[ $duration =~ ^([0-9]+[ms])+$ ]]
-  then
-    echo "Waiting for the image ($duration time left)..."
-#    wait $wgetpid
-    sleep $duration
-  fi
-fi
+# get Raspbian image online and its pid. download in the background so we can continue with other important stuff
+# dummy: $ wget -c -O raspbian-os-lite.zip --no-check-certificate https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
+wget -c --show-progress -P $workingdir -o $workingdir/$wgetlog -O $workingdir/$archive --no-check-certificate $image
 
 # check whether the extraced image would fit on the SD-card
-extractedimgsize=$(unzip -l $workingdir/$archive | tac | head -n 1 | grep -oE "^[0-9]+")
-if [ -z "$extractedimgsize" ] || [ $extractedimgsize -lt $sdcapacity ]
+extractedimgsize=$(unzip -l $workingdir/$archive | tac | head -n 1 | grep -oE "^$numberpattern")
+if [ -z "$extractedimgsize" ] || [ $sdcapacity -lt $extractedimgsize ]
 then
-    echo "Not enough storage on $sdlabel."
-    cleanup $workingdir
-    echo "Script ended."
-    exit 2
+  echo "Not enough storage on $sdlabel."
+  echo "$extractedimgsize Byte required;"
+  echo "$sdcapacity Byte found."
+  cleanup $workingdir
+  echo "Script ended."
+  exit 2
 fi
 
 # extract the downloaded image
-unzip $workingdir/$archive
+echo "extracting $workingdir/$archive..."
+unzip -o $workingdir/$archive -d $workingdir
+extractedimg=$(ls $workingdir/*.img | head -n 1)
+if [ -z $extractedimg ]
+then
+  echo "No image found in $workingdir."
+  cleanup $workingdir
+  echo "Script ended."
+  exit 2
+fi
 
 echo "Made up your mind? No problem, nothing is done yet with your SD-card."
 read -r -p "Do you want to start installation on $sdlabel? [y/N]" startinstall
@@ -180,13 +188,17 @@ fi
 
 # wipe SD-card
 echo "Start wiping $sdlabel..."
-#wipefs -a "/dev/$sdlabel"
+wipefs -a "/dev/$sdlabel"
+#wipefsresult=$
+#echo "$wipefsresult"
 echo "Done wiping $sdlabel."
 
+# burn SD-card
 apt install gddrescue -y
-image=$(echo "${archive}" | sed -e "s/zip$/img/g")
-echo "Start burning $image to $sdlabel..."
-#ddrescue -d -D --force $image "/dev/$sdlabel"
+echo "Start burning $extractedimg to $sdlabel..."
+ddrescue -D --force $extractedimg "/dev/$sdlabel"
+#ddresult=$
+#echo "$ddresult"
 echo "Done burning $sdlabel."
 
 cleanup $workingdir
@@ -213,6 +225,6 @@ echo "SSH is active on $sdlabel."
 echo
 echo "Congrats! Process was successfully executed."
 echo "It is now save to take the SD-card out of your computer."
-echo "Insert SD-card in your Raspberry Pi and finish the installation."
+echo "Insert SD-card in your 64-bit (!) Raspberry Pi and finish the installation."
 
 exit 0
