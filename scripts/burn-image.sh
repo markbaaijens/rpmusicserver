@@ -23,6 +23,9 @@ fi
 # set working directory
 workingdir=/tmp/raspbian
 
+# set logfile to record progress (use tail -f <filename> in seperate terminal)
+log=/var/log/raspbian/burn-image.log
+
 # download link to the Raspbian image
 image=https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
 
@@ -36,7 +39,7 @@ wgetlog=wget-raspbian.log
 mincap=1900000000
 
 # mount point for boot partition
-mntboot=/media/boot
+mntboot=/mnt/boot
 
 
 
@@ -49,9 +52,6 @@ numberpattern="[0-9]+"
 # non-space
 negmultiplespacepattern="[^[:space:]]+"
 
-# timeformat
-timeformatpattern="^([0-9]{,2}[hms])+$"
-
 
 
 
@@ -63,6 +63,7 @@ lsstorage() {
 }
 
 cleanup() {
+  echo "Cleaning up $1..." | tee -a $log
   rm -rf $1
 }
 
@@ -71,6 +72,11 @@ cleanup() {
 
 # === PROGRAM ===
 
+# create logfile
+[ ! -d $(dirname $log) ] && mkdir $(dirname $log)
+[ ! -f $log ] && touch $log && echo " " >> $log
+echo "[$(date)] Start" >> $log
+
 # get the curl and wget app if not yet installed
 apt install curl wget -y
 
@@ -78,13 +84,13 @@ apt install curl wget -y
 imagesize=$(curl -I $image | grep content-length | grep -oE "$numberpattern")
 if [ -z "$imagesize" ] || [ $imagesize -eq 0 ]
 then
-  echo "Image $image not found."
-  echo "Script ended."
+  echo "Image $image not found." | tee -a $log
+  echo "Script ended." | tee -a $log
   exit 4
 fi
 
 # create a working directory in the /tmp folder to operate in
-workingdir=$(echo "${workingdir}" | sed -e "s/\/$//g")
+workingdir=$(echo "$workingdir" | sed -e "s/\/$//g")
 [ ! -d $workingdir ] && mkdir $workingdir
 
 # user feedback: is required to prepare the process. user that placed the sd-card already has to remove it to gather a list of devices
@@ -103,18 +109,17 @@ lsstorage $workingdir/lsblk.txt
 
 # compare the lists and get the device that was added
 sdcard=$(comm -13 $workingdir/initialblk.txt $workingdir/lsblk.txt)
-# cleanup: remove the lists that were written in files
-rm $workingdir/initialblk.txt
-rm $workingdir/lsblk.txt
 
 # if no difference between the two lists, exit
 if [ -z "$sdcard" ]
 then
-  echo "No SD-card was added."
+  echo "No SD-card was added." | tee -a $log
   cleanup $workingdir
-  echo "Script ended."
+  echo "Script ended." | tee -a $log
   exit 2
 fi
+echo "SD-card to burn has been detected..." | tee -a $log
+echo "$sdcard" >> $log
 
 # get the label and its partitions from the sd-card
 sdlabel=$(echo "$sdcard" | head -n 1)
@@ -125,55 +130,59 @@ partitions=$(echo "$sdcard" | grep -vw "$sdlabel" | grep -oE "($sdlabel)p$number
 sdcapacity=$(lsblk -b -e7 -o name,size | grep -w "^$sdlabel" | grep -oEw "$numberpattern")
 if [ $sdcapacity -lt $mincap ]
 then
-  echo "Not enough storage on $sdlabel."
-  echo "$mincap Byte required;"
-  echo "$sdcapacity Byte found."
+  echo "Not enough storage on $sdlabel." | tee -a $log
+  echo "$mincap Byte required;" | tee -a $log
+  echo "$sdcapacity Byte found." | tee -a $log
   cleanup $workingdir
-  echo "Script ended."
+  echo "Script ended." | tee -a $log
   exit 2
 fi
 
 # unmount sd-card
+echo "Unmounting /dev/$sdlabel partitions..." | tee -a $log
 for partition in $partitions; do
-  umount "/dev/$partition"
-  umntresult=$
-  echo "$umntresult"
-  if [ $umntresult -eq 0 ] [ -z "$(df | grep '/dev/$partition')" ]
+  sleep 5
+  umount -f "/dev/$partition"
+
+  if [ -z "$(df | grep '/dev/$partition')" ]
   then
-    echo "partition /dev/$partition successfully unmounted."
+    echo "[ $(date) ] Partition /dev/$partition successfully unmounted." | tee -a $log
   else
-    echo "failed to umount /dev/$partition."
+    echo "[ $(date) ] Failed to umount /dev/$partition." | tee -a $log
     cleanup $workingdir
-    echo "Script ended."
+    echo "Script ended." | tee -a $log
     exit 5
   fi
 done
 
+echo "[ $(date) ] Downloading image..." | tee -a $log
 # get Raspbian image online and its pid. download in the background so we can continue with other important stuff
 # dummy: $ wget -c -O raspbian-os-lite.zip --no-check-certificate https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
 wget -c --show-progress -P $workingdir -o $workingdir/$wgetlog -O $workingdir/$archive --no-check-certificate $image
+echo "[ $(date) ] Download complete" | tee -a $log
 
 # check whether the extraced image would fit on the SD-card
 extractedimgsize=$(unzip -l $workingdir/$archive | tac | head -n 1 | grep -oE "^$numberpattern")
 if [ -z "$extractedimgsize" ] || [ $sdcapacity -lt $extractedimgsize ]
 then
-  echo "Not enough storage on $sdlabel."
-  echo "$extractedimgsize Byte required;"
-  echo "$sdcapacity Byte found."
+  echo "Not enough storage on $sdlabel." | tee -a $log
+  echo "$extractedimgsize Byte required;" | tee -a $log
+  echo "$sdcapacity Byte found." | tee -a $log
   cleanup $workingdir
-  echo "Script ended."
+  echo "Script ended." | tee -a $log
   exit 2
 fi
 
 # extract the downloaded image
-echo "extracting $workingdir/$archive..."
+echo "[ $(date) ] Extracting $workingdir/$archive..." | tee -a $log
 unzip -o $workingdir/$archive -d $workingdir
-extractedimg=$(ls $workingdir/*.img | head -n 1)
+echo "[ $(date) ] Done extracting archive" | tee -a $log
+extractedimg=$(ls -t $workingdir/*.img | head -n 1)
 if [ -z $extractedimg ]
 then
-  echo "No image found in $workingdir."
+  echo "No image found in $workingdir." | tee -a $log
   cleanup $workingdir
-  echo "Script ended."
+  echo "Script ended." | tee -a $log
   exit 2
 fi
 
@@ -181,50 +190,58 @@ echo "Made up your mind? No problem, nothing is done yet with your SD-card."
 read -r -p "Do you want to start installation on $sdlabel? [y/N]" startinstall
 if [ -z "$startinstall" ] || [[ "$startinstall" =~ ^[nN][oO]?$ ]]
 then
+  echo "Script aborted by $(whoami)" | tee -a $log
   cleanup $workingdir
-  echo "Script ended."
+  echo "Script ended." | tee -a $log
   exit 5
 fi
 
 # wipe SD-card
-echo "Start wiping $sdlabel..."
+echo "[ $(date) ] Start wiping $sdlabel..." | tee -a $log
 wipefs -a "/dev/$sdlabel"
 #wipefsresult=$
-#echo "$wipefsresult"
-echo "Done wiping $sdlabel."
+#echo "$wipefsresult" | tee -a $log
+echo "[ $(date) ] Done wiping $sdlabel." | tee -a $log
 
 # burn SD-card
 apt install gddrescue -y
-echo "Start burning $extractedimg to $sdlabel..."
+echo "[ $(date) ] Start burning $extractedimg to $sdlabel..." | tee -a $log
 ddrescue -D --force $extractedimg "/dev/$sdlabel"
 #ddresult=$
-#echo "$ddresult"
-echo "Done burning $sdlabel."
+#echo "$ddresult" | tee -a $log
+echo "[ $(date) ] Done burning $sdlabel." | tee -a $log
 
 cleanup $workingdir
 
-# make ssh default in install
-bootpart=$(echo "$partitions" | head -n 1)
+# find the boot partition
+bootpart=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$sdlabel.*")
 if [ -z "$bootpart" ]
 then
-  echo "SSH is NOT active."
-  echo "Script ended."
+  echo "SSH is NOT active." | tee -a $log
+  echo "Script ended." | tee -a $log
   exit 0
 fi
 
-# mount SD-card
+# mount SD-card and
+# make ssh default in install
 [ ! -d $mntboot ] && mkdir $mntboot
 mount "/dev/$bootpart" $mntboot
-echo "partition /dev/$bootpart mounted."
-umount "/dev/$bootpart"
+echo "partition /dev/$bootpart mounted." | tee -a $log
+echo "Activate SSH..." | tee -a $log
 touch $mntboot/ssh
+if [ -f "$mntboot/ssh" ]
+then
+  echo "SSH is active on $sdlabel." | tee -a $log
+else
+  echo "SSH is NOT active." | tee -a $log
+fi
+umount "/dev/$bootpart"
 [ -d $mntboot ] && rm -rf $mntboot
-echo "Script ended."
+echo "Script ended." | tee -a $log
 
-echo "SSH is active on $sdlabel."
 echo
-echo "Congrats! Process was successfully executed."
+echo "Congrats! Process was successfully executed." | tee -a $log
 echo "It is now save to take the SD-card out of your computer."
-echo "Insert SD-card in your 64-bit (!) Raspberry Pi and finish the installation."
+echo "Insert SD-card in your 64-bit (!) Raspberry Pi and finish the installation." | tee -a $log
 
 exit 0
