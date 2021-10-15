@@ -1,6 +1,13 @@
 #!/bin/bash
 export LC_ALL=C
 
+if [ -z "$(whoami | grep root)" ]
+then
+  echo "Not running as root."
+  echo "Script ended."
+  exit 1    
+fi
+
 readarray -t disks < <(lsblk -b -e7 -o name,type | grep disk | awk '{print $1}')
 sd_disks=()
 for disk in "${disks[@]}"; do
