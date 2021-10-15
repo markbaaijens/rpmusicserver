@@ -5,7 +5,7 @@ if [ -z "$(whoami | grep root)" ]
 then
   echo "Not running as root."
   echo "Script ended."
-  exit 1    
+  exit
 fi
 
 readarray -t disks < <(lsblk -b -e7 -o name,type | grep disk | awk '{print $1}')
@@ -16,6 +16,12 @@ for disk in "${disks[@]}"; do
         sd_disks+=("$disk")
     fi
 done
+
+if [ "${sd_disks[0]}" == "" ]; then
+    echo "No disk available."
+    echo "Script ended." 
+    exit
+fi
 
 echo "Available disk(s):"
 counter=0
@@ -38,3 +44,5 @@ fi
 
 chosen_disk=${sd_disks[disk_choice]}
 echo "You have chosen: $chosen_disk"
+
+exit
