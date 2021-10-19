@@ -71,7 +71,7 @@ readarray -t disks < <(lsblk -b -e7 -o name,type | grep disk | awk '{print $1}')
 sd_disks=()
 for disk in "${disks[@]}"; do
     model=$(parted /dev/$disk print | grep Model | awk '{print $2}')
-    if [[ $model == *"SD"* ]]; then
+    if [[ $model == *"sd/mmc"* ]]; then
         sd_disks+=("$disk")
     fi
 done
@@ -85,7 +85,7 @@ fi
 echo "Available disk(s):"
 counter=0
 for disk in "${sd_disks[@]}"; do
-    model=$(parted /dev/$disk print | grep Model | awk '{print $2}')
+    model=$(parted /dev/$disk print | grep Model | cut -d " " -f2- )
     size=$(parted /dev/$disk print | grep Disk | awk '{print $3}')
     echo "$counter: $model/$disk ($size)"
     counter=$(($counter + 1))
