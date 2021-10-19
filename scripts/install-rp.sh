@@ -1,25 +1,25 @@
-#!/bin/sh -e
+#!/bin/bash
 
-# update/upgrade
-# hostname (= 'rp')
-# users:
+# (optional) update/upgrade
+# (optional) hostname (= 'rp')
+# (optional) users:
 # - delete obsolete users like ubuntu, pi, etc.
 # - create user 'user'(+ password)
 # - change root-password
 # packages
 # - docker (by standard repo)
-# - transcoder
-# - dr14
-# - extra tools like htop, net-tools, nano
+# - (later) transcoder
+# - (later) dr14
+# - (to be determined) extra tools like htop, net-tools, nano
 # create folders (and rights)
 # - /media/usbdata
 # crontab
 # - upgrade
-# - transcoder
-# - dr14tool
+# - (later) transcoder
+# - (later) dr14tool
 # fstab
 #  LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0
-# squeezelite
+# (optional) squeezelite
 # - config
 # copy files
 # - rc.local => /etc
