@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # (optional) update/upgrade
-# hostname (= 'rp')
+# (optional) hostname (= 'rp')
 # (optional) users:
 # - delete obsolete users like ubuntu, pi, etc.
 # - create user 'user'(+ password)
