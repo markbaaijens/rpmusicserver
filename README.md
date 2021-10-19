@@ -3,6 +3,7 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
 
 ## Steps to turn a Pi into a music server:
 * download all code (wget)
+* make scripts executable: chmod +x *.sh
 * burn sd-card by burn-image script
 * format usb-disk by format-usbdisk script (ext4, label = usbdisk)
 * hookup hardisk to the pi

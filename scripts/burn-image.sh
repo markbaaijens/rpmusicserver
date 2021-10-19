@@ -1,70 +1,35 @@
 #!/bin/bash
+#
 # This script will burn the Raspbian OS Lite Image from the raspberrypi.org server and burn the image to a SD-card.
-# The execution of the script is usually done by technical personnel with the...
 #
-# $ sudo chmod 770 ./burn-image.sh && sudo ./burn-image.sh
-#
-# ...on a computer with a SD-card reader.
-# You have to know what you are doing and we don’t take any responsibility for data loss.
+export LC_ALL=C
 
 # check whether script runs from a superuser (sudo)
 if [ -z "$(whoami | grep root)" ]
 then
-  echo "Not running as root."
-  echo "Script ended."
-  exit 1    
+    echo "Not running as root."
+    echo "Script ended with failure."
+    exit
 fi
 
-
-
-
-# === GENERAL SETTINGS ===
-workingdir=/tmp/raspbian
+working_dir=/tmp/raspbian
 image=https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
 archive=raspbian-os-lite.zip
-wgetlog=wget-raspbian.log
-mntboot=/mnt/boot
+mnt_boot=/mnt/boot
 
+number_pattern="[0-9]+"
 
-
-
-# === REGULAR EXPRESSION PATTERNS ===
-numberpattern="[0-9]+"
-negmultiplespacepattern="[^[:space:]]+"
-
-
-
-
-# === FUNCTIONS ===
-
-lsstorage() {
-  echo "$(lsblk -b -e7 -o name | grep -v NAME)" > $1
-  echo "$(sort $1)" > $1
+cleanup_environment() {
+    echo "Cleaning up $working_dir..."
+    rm -rf $working_dir
+    unset LC_ALL
 }
 
-cleanupworkingdir() {
-  echo "Cleaning up $workingdir..."
-  rm -rf $workingdir
-}
-
-
-
-
-# === PROGRAM ===
-
-# get the wget app if not yet installed
 apt install wget -y
 
-# create a working directory in the /tmp folder to operate in
-[ ! -d $workingdir ] && mkdir $workingdir
-
-export LC_ALL=C
-
-if [ -z "$(whoami | grep root)" ]
-then
-  echo "Not running as root."
-  echo "Script ended."
-  exit
+if [ ! -d $working_dir ]
+then 
+    mkdir $working_dir
 fi
 
 readarray -t disks < <(lsblk -b -e7 -o name,type | grep disk | awk '{print $1}')
@@ -78,7 +43,8 @@ done
 
 if [ "${sd_disks[0]}" == "" ]; then
     echo "No disk available."
-    echo "Script ended." 
+    cleanup_environment
+    echo "Script ended with failure." 
     exit
 fi
 
@@ -91,139 +57,130 @@ for disk in "${sd_disks[@]}"; do
     counter=$(($counter + 1))
 done
 
-unset LC_ALL
-
-read -p "Select a disk by number or press [Enter] to choose the first one " disk_choice
+read -p "Select a disk by number or press [Enter] to choose the first one or Q to quit " disk_choice
 
 if [ "${sd_disks[disk_choice]}" == "" ]; then
     echo "No disk selected."
-    echo "Script ended."    
+    cleanup_environment    
+    echo "Script ended with failure."
     exit
 fi
 
 chosen_disk=${sd_disks[disk_choice]}
 echo "You have chosen: ${disks[$chosen_disk]}"
 
+# todo
 sdcard=$chosen_disk
 
 # get the label and its partitions from the sd-card
 sdlabel=$(echo "$sdcard" | head -n 1)
-partitions=$(echo "$sdcard" | grep -vw "$sdlabel" | grep -oE "($sdlabel)p$numberpattern")
+partitions=$(echo "$sdcard" | grep -vw "$sdlabel" | grep -oE "($sdlabel)p$number_pattern")
+
+read -r -p "Do you want to start installation on $sdlabel? [yes/NO]" start_install
+if [  ! startinstall == yes ]  # todo
+#if [ -z "$start_install" ] || [[ "$start_install" =~ ^[nN][oO]?$ ]]
+then
+    echo "Script aborted."
+    cleanup_environment
+    echo "Script ended with failure."
+    exit
+fi
 
 # unmount sd-card
 echo "Unmounting /dev/$sdlabel partitions..."
 for partition in $partitions; do
-  sleep 3
-  umount -f "/dev/$partition"
-
-  if [ -z "$(df | grep /dev/$partition)" ]
-  then
+    # todo testen
+    sleep 3
+    if [ ! $(umount -f "/dev/$partition") ]
+    then
+        echo "Failed to umount /dev/$partition."
+        cleanup_environment
+        echo "Script ended with failure."
+        exit
+    fi
     echo " Partition /dev/$partition successfully unmounted."
-  else
-    echo "Failed to umount /dev/$partition."
-    cleanupworkingdir
-    echo "Script ended."
-    exit 5
-  fi
 done
 
 echo "Downloading image..."
-# get Raspbian image online
-# dummy: $ wget -c -O raspbian-os-lite.zip --no-check-certificate https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
-wget -c --show-progress -P $workingdir -o $workingdir/$wgetlog -O $workingdir/$archive --no-check-certificate $image
+if [ ! $(wget -c --show-progress -P $working_dir -O $working_dir/$archive $image) ]
+then
+    echo "Command wget unsuccesful."
+    cleanup_environment
+    echo "Script ended with failure."
+    exit
+fi
 echo "Download complete"
 
-# check downloaded image (hash)
-
-# check whether the extracted image would fit on the SD-card
-extractedimgsize=$(unzip -l $workingdir/$archive | tac | head -n 1 | grep -oE "^$numberpattern")
-if [ -z "$extractedimgsize" ] || [ $sdcapacity -lt $extractedimgsize ]
-then
-  echo "Not enough storage on $sdlabel."
-  echo "$extractedimgsize Byte required;"
-  echo "$sdcapacity Byte found."
-  cleanupworkingdir
-  echo "Script ended."
-  exit 2
-fi
+# todo check downloaded image (hash)
 
 # extract the downloaded image
-echo "Extracting $workingdir/$archive..."
-unzip -o $workingdir/$archive -d $workingdir
+echo "Extracting $working_dir/$archive..."
+unzip -o $working_dir/$archive -d $working_dir
 echo "Done extracting archive"
-extractedimg=$(ls -t $workingdir/*.img | head -n 1)
-if [ -z $extractedimg ]
+extracted_img=$(ls -t $working_dir/*.img | head -n 1)
+if [ -z $extracted_img ]
 then
-  echo "No image found in $workingdir."
-  cleanupworkingdir
-  echo "Script ended."
-  exit 2
-fi
-
-echo "Made up your mind? No problem, nothing is done yet with your SD-card."
-read -r -p "Do you want to start installation on $sdlabel? [y/N]" startinstall
-if [ -z "$startinstall" ] || [[ "$startinstall" =~ ^[nN][oO]?$ ]]
-then
-  echo "Script aborted by $(whoami)"
-  cleanupworkingdir
-  echo "Script ended."
-  exit 5
+    echo "No image found in $working_dir."
+    cleanup_environment
+    echo "Script ended with failure."
+    exit
 fi
 
 # wipe SD-card
 echo "Start wiping $sdlabel..."
-wipefs -a "/dev/$sdlabel"
-#wipefsresult=$
-#echo "$wipefsresult"
+if [ ! $(wipefs -a "/dev/$sdlabel") ]
+then
+    echo "Command wipefs unsuccesful."
+    cleanup_environment
+    echo "Script ended with failure."
+    exit
+fi
 echo "Done wiping $sdlabel."
 
 # burn SD-card
 apt install gddrescue -y
-echo "Start burning $extractedimg to $sdlabel..."
-ddrescue -D --force $extractedimg "/dev/$sdlabel"
-#ddresult=$
-#echo "$ddresult"
+echo "Start burning $extracted_img to $sdlabel..."
+if [ ! $(ddrescue -D --force $extracted_img "/dev/$sdlabel") ]
+then
+    echo "Command ddrescue unsuccesful."
+    cleanup_environment
+    echo "Script ended with failure."
+    exit
+fi
 echo "Done burning $sdlabel."
 
-cleanupworkingdir
-
 # find the boot partition
-bootpart=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$sdlabel.*")
-if [ -z "$bootpart" ]
+boot_part=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$sdlabel.*")
+
+# mount SD-card and make ssh default in install
+if [ ! -d $mnt_boot ] 
+then 
+    mkdir $mnt_boot
+fi
+if [ ! $(mount "/dev/$boot_part" $mnt_boot) ]
 then
-  echo "No boot partition found. SSH is not avaiilable."
-  echo "Script ended."
-  exit 0
+    echo "Command mount unsuccesful."
+    cleanup_environment
+    echo "Script ended with failure."
+    exit
 fi
 
-# mount SD-card and
-# make ssh default in install
-[ ! -d $mntboot ] && mkdir $mntboot
-mount "/dev/$bootpart" $mntboot
-echo "Partition /dev/$bootpart mounted."
+echo "Partition /dev/$boot_part mounted."
 echo "Activate SSH..."
-touch $mntboot/ssh
-if [ -f "$mntboot/ssh" ]
+if [ ! $(touch $mnt_boot/ssh) ] 
 then
-  echo "SSH is available on $sdlabel."
-else
-  echo "SSH is NOT available."
+    echo "Command touch unsuccesful."
+    echo "SSH cannot be made available on $sdlabel."
 fi
-umount "/dev/$bootpart"
-[ -d $mntboot ] && rm -rf $mntboot
-echo "Script ended."
+echo "SSH is available on $sdlabel."
 
-echo
-echo "Congrats! Process was successfully executed."
-echo "It is now save to take the SD-card out of your computer."
-echo "Insert SD-card in your 64-bit (!) Raspberry Pi and finish the installation."
+umount "/dev/$boot_part"
+if [ -d $mnt_boot ]
+then 
+    rm -rf $mnt_boot
+fi
 
-exit 0
+cleanup_environment
+echo "Script ended successfully."
 
-# Show SD-card info: lsblk | grep disk | grep mmcblk0
-# Let user choose the disk
-# Ask user again for permission; if not, bail-out
-# Download image (Raspian OS Lite)
-# Wipe the sd-card
-# Burn image
-# (not needed, is done by Raspbian on first boot) Free disk space on card 
+exit
