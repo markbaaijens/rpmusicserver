@@ -32,8 +32,3 @@
 	sudo hdparm -z /dev/sda
 	# Check label:  sudo e2label /dev/sdXY
 	
-# create folder public 
-# - put proper rights
-
-	# Create folders 
-	# todo
