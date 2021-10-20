@@ -1,2 +1,0 @@
-Place all Tranmission config files in this folder. 
-Files will be copied by the install script to /media/usbdata/config/docker/transmission.
