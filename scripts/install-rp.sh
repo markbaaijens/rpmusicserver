@@ -26,8 +26,8 @@
 
 # copy files
 # - rc.local => /etc
-# - config/lms => /etc/docker/lms
-# - config/transmission => /etc/docker/transmission
+# - config/lms => /media/usbdata/config/docker/lms
+# - config/transmission => /media/usbdata/config/docker/transmission
 
 # make rc.local executable
     sudo chmod +x /etc/rc.local

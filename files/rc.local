@@ -3,7 +3,7 @@
 # LMS (Logitech Media Server)
 # todo: check volume mappings
 docker run -d --rm --name lms \
-  -v /etc/docker/lms:"/config":rw \
+  -v /media/usbdata/config/docker/lms:"/config":rw \
   -v /media/usbdata/public:"/music":ro \ # Needed?
   -v "/etc/localtime":"/etc/localtime":ro \
   -v "/etc/timezone":"/etc/timezone":ro \
@@ -26,7 +26,7 @@ docker run -p 139:139 -p 445:445 -p 137:137/udp -p 138:138/udp \
 # Transmission
 # todo: check volume mappings
 docker run -d --rm --name transmission -p 9091:9091 -e PUID=1000 -e PGID=1000 \
-  -v /etc/docker/transmission/config:/config  \
+  -v /media/usbdata/config/docker/transmission/config:/config  \
   -v /media/usbdata/public/Downloads:/downloads  \
   linuxserver/transmission
 

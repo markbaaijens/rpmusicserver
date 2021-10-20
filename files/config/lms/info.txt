@@ -1,2 +1,2 @@
 Place all LMS config files in this folder. 
-Files will be copied by the install script to /etc/docker/lms.
+Files will be copied by the install script to /media/usbdata/config/docker/lms.
