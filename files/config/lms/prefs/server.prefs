@@ -700,7 +700,7 @@ _ts_composerInArtists: 1623954001
 _ts_conductorInArtists: 1623954001
 _ts_coverArt: 1623954001
 _ts_csrfProtectionLevel: 1623954001
-_ts_customArtSpecs: 1634762734
+_ts_customArtSpecs: 1634763924
 _ts_dbhighmem: 1623954001
 _ts_dbjournalsize: 1623954001
 _ts_dbpassword: 1623954001
@@ -720,16 +720,16 @@ _ts_groupdiscs: 1623954001
 _ts_guessFileFormats: 1623954001
 _ts_httpport: 1623954001
 _ts_ignoreDirRE: 1623954001
-_ts_ignoreInAudioScan: 1634763148
-_ts_ignoreInImageScan: 1634763148
-_ts_ignoreInVideoScan: 1634763148
+_ts_ignoreInAudioScan: 1634763965
+_ts_ignoreInImageScan: 1634763965
+_ts_ignoreInVideoScan: 1634763965
 _ts_ignoredarticles: 1623954001
 _ts_insecureHTTPS: 1623954001
 _ts_itemsPerPage: 1623954001
 _ts_jivealbumsort: 1623954001
 _ts_language: 1625156726
 _ts_librarycachedir: 1623954001
-_ts_libraryname: 1634763148
+_ts_libraryname: 1634763965
 _ts_longdateFormat: 1623954001
 _ts_maxPlaylistLength: 1623954001
 _ts_maxWMArate: 1623954001
@@ -789,7 +789,7 @@ _ts_useUnifiedArtistsList: 1625156304
 _ts_username: 1623954001
 _ts_variousArtistAutoIdentification: 1623954001
 _ts_variousArtistsString: 1625156304
-_ts_webproxy: 1634762734
+_ts_webproxy: 1634763924
 _ts_wizardDone: 1623954001
 _version: 9
 additionalPlaylistButtons: '0'
@@ -847,7 +847,7 @@ itemsPerPage: 50
 jivealbumsort: album
 language: NL
 librarycachedir: /config/cache
-libraryname: Squeezebox - Pi
+libraryname: 'Logitech Media Server :: Pi'
 longdateFormat: '%A, %B |%d, %Y'
 maxPlaylistLength: 2500
 maxWMArate: 9999
