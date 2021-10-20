@@ -1,0 +1,30 @@
+---
+_ts_allowDownload: 1634661475
+_ts_artistFirst: 1634661475
+_ts_bandgenres: 1634661475
+_ts_composergenres: 1634661475
+_ts_conductorgenres: 1634661475
+_ts_manifestDisplay: 1634661475
+_ts_password: 1634661475
+_ts_respectFixedVol: 1634661475
+_ts_showAllArtists: 1634661475
+_ts_showBand: 1634661475
+_ts_showComposer: 1634661475
+_ts_showConductor: 1634661475
+_version: 0
+allowDownload: '0'
+artistFirst: '1'
+bandgenres: N/A
+composergenres: Klassiek, Avant-Garde, Barok, Kamermuziek, Zang, Koor, Klassieke Crossover,
+  Oude muziek, Hoogklassiek, Impressionistisch, Jazz, Middeleeuws, Minimalisme, Moderne
+  compositie, Opera, Orkest, Renaissance, Romantisch, Symfonie, Bruiloftsmuziek
+conductorgenres: Klassiek, Avant-Garde, Barok, Kamermuziek, Zang, Koor, Klassieke
+  Crossover, Oude muziek, Hoogklassiek, Impressionistisch, Jazz, Middeleeuws, Minimalisme,
+  Moderne compositie, Opera, Orkest, Renaissance, Romantisch, Symfonie, Bruiloftsmuziek
+manifestDisplay: '0'
+password: ''
+respectFixedVol: '1'
+showAllArtists: '1'
+showBand: '0'
+showComposer: '1'
+showConductor: '0'
