@@ -19,6 +19,7 @@
     # Mappen aanmaken en rechten
     sudo mkdir /media/usbdata/public
     sudo mkdir /media/usbdata/public\Downloads # ?
+    sudo mkdir /media/usbdata/public\Muziek
     sudo chmod 777 /media/usbdata/public -R
 
 # crontab
