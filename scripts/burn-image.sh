@@ -77,7 +77,7 @@ sdlabel=$(echo "$sdcard" | head -n 1)
 partitions=$(echo "$sdcard" | grep -vw "$sdlabel" | grep -oE "($sdlabel)p$number_pattern")
 
 read -r -p "Do you want to start installation on $sdlabel? [yes/NO]" start_install
-if [  ! startinstall == yes ]  # todo pseudo-code
+if [  ! start_install == yes ]  # todo pseudo-code
 #if [ -z "$start_install" ] || [[ "$start_install" =~ ^[nN][oO]?$ ]]
 then
     echo "Script aborted."
@@ -98,10 +98,13 @@ for partition in $partitions; do
         echo "Script ended with failure."
         exit
     fi
-    echo " Partition /dev/$partition successfully unmounted."
+    echo "Partition /dev/$partition successfully unmounted."
 done
 
-apt install wget -y
+if [ ! $(dpkg --list | grep wget | awk '{print $1}' | grep ii) ]
+then 
+    apt install wget -y
+fi
 echo "Downloading image..."
 if [ ! $(wget -c --show-progress -P $working_dir -O $working_dir/$archive $image) ]
 then
@@ -139,7 +142,10 @@ fi
 echo "Done wiping $sdlabel."
 
 # burn SD-card
-apt install gddrescue -y
+if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]
+then 
+    apt install gddrescue -y
+fi
 echo "Start burning $extracted_img to $sdlabel..."
 if [ ! $(ddrescue -D --force $extracted_img "/dev/$sdlabel") ]
 then
@@ -151,13 +157,13 @@ fi
 echo "Done burning $sdlabel."
 
 # find the boot partition
-boot_part=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$sdlabel.*")
 
 # mount SD-card and make ssh default in install
 if [ ! -d $mnt_boot ] 
 then 
     mkdir $mnt_boot
 fi
+boot_part=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$sdlabel.*")
 if [ ! $(mount "/dev/$boot_part" $mnt_boot) ]
 then
     echo "Command mount unsuccesful."
@@ -173,7 +179,7 @@ then
     echo "Command touch unsuccesful."
     echo "SSH cannot be made available on $sdlabel."
 fi
-echo "SSH is available on $sdlabel."
+echo "SSH has been activated on $sdlabel."
 
 umount "/dev/$boot_part"
 if [ -d $mnt_boot ]
