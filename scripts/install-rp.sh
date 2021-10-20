@@ -26,3 +26,5 @@
 #   - enable rc.local system
 #   - make rc.local executable
 # - lms-config => /etc/docker/lms
+# - execute /etc/rc.local to monitor docker installation proces (can be tedious)
+# - reboot

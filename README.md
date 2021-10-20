@@ -11,5 +11,5 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
 * remote installation with install-rp script via ssh
 	* ssh pi@raspberrypi "bash -s" < install-rp.sh
 	* password: raspberry
-* (ssh) execute /etc/rc.local to monitor installation proces
-* (ssh) reboot
+* system be be rebooted automatically after installation
+
