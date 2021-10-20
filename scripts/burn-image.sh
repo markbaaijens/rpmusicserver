@@ -164,6 +164,7 @@ then
     mkdir $mnt_boot
 fi
 boot_part=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$sdlabel.*")
+echo "Mount partition /dev/$boot_part."
 if [ ! $(mount "/dev/$boot_part" $mnt_boot) ]
 then
     echo "Command mount unsuccesful."
@@ -171,13 +172,13 @@ then
     echo "Script ended with failure."
     exit
 fi
-
 echo "Partition /dev/$boot_part mounted."
+
 echo "Activate SSH..."
 if [ ! $(touch $mnt_boot/ssh) ] 
 then
     echo "Command touch unsuccesful."
-    echo "SSH cannot be made available on $sdlabel."
+    echo "SSH cannot be activated on $sdlabel."
 fi
 echo "SSH has been activated on $sdlabel."
 
