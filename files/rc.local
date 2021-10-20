@@ -1,5 +1,4 @@
-#!/bin/sh -e
-
+#!/bin/bash
 # Start docker containers:
 # - lms
 # -	samba
