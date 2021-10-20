@@ -2,9 +2,7 @@
 #
 # This script will burn the Raspbian OS Lite Image from the raspberrypi.org server and burn the image to a SD-card.
 #
-export LC_ALL=C
 
-# check whether script runs from a superuser (sudo)
 if [ -z "$(whoami | grep root)" ]
 then
     echo "Not running as root."
@@ -16,19 +14,24 @@ working_dir=/tmp/raspbian
 image=https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
 archive=raspbian-os-lite.zip
 mnt_boot=/mnt/boot
-
 number_pattern="[0-9]+"
 
 cleanup_environment() {
-    echo "Cleaning up $working_dir..."
+    echo "Cleaning up environment"
     rm -rf $working_dir
-    unset LC_ALL
+    unset LC_ALL  # Reset console output to default language
 }
 
-if [ ! -d $working_dir ]
-then 
-    mkdir $working_dir
-fi
+setup_environment() {
+    echo "Setup environment"    
+    if [ ! -d $working_dir ]
+    then 
+        mkdir $working_dir
+    fi
+    export LC_ALL=C  # Console output = English
+}
+
+setup_environment
 
 readarray -t disks < <(lsblk -b -e7 -o name,type | grep disk | awk '{print $1}')
 sd_disks=()
