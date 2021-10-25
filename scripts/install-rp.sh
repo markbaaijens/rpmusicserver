@@ -25,13 +25,13 @@
 # crontab
 # - upgrade
 
-# copy rc.local file
-# - rc.local => /etc
-
 # check if config folder already exist; if so, skip copying
 # else:
 # - config/lms => /media/usbdata/config/docker/lms
 # - config/transmission => /media/usbdata/config/docker/transmission
+
+# copy rc.local file
+# - rc.local => /etc
 
 # make rc.local executable
     sudo chmod +x /etc/rc.local
