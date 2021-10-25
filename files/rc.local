@@ -20,7 +20,7 @@ docker run -d --rm --name lms \
 # todo: check volume mappings
 docker run -p 139:139 -p 445:445 -p 137:137/udp -p 138:138/udp \
   -d --rm --name samba \
-  -v  /data:/mnt  \
+  -v /media/usbdata/public:/mnt  \
   dperson/samba -n -p  -s "public;/mnt;yes;no;yes;all;;;Publiek" -r
 
 # Transmission
