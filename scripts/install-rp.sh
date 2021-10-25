@@ -17,10 +17,10 @@
     sudo mount -a
     controleren met: reboot + mount
     # Mappen aanmaken en rechten
-    sudo mkdir /media/usbdata/public
-    sudo mkdir /media/usbdata/public\Downloads # ?
-    sudo mkdir /media/usbdata/public\Muziek
-    sudo chmod 777 /media/usbdata/public -R
+    sudo mkdir /media/usbdata/user/Publiek
+    sudo mkdir /media/usbdata/user/Publiek\Downloads # ?
+    sudo mkdir /media/usbdata/user/Publiek\Muziek
+    sudo chmod 777 /media/usbdata/user/Publiek -R
 
 # crontab
 # - upgrade
