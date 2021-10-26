@@ -160,8 +160,6 @@ then
 fi
 echo "Done burning $sdlabel."
 
-# find the boot partition
-
 # mount SD-card and make ssh default in install
 if [ ! -d $mnt_boot ] 
 then 
