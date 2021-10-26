@@ -55,15 +55,16 @@ counter=0
 for disk in "${sd_disks[@]}"; do
     model=$(parted /dev/$disk print | grep Model | cut -d " " -f2- )
     size=$(parted /dev/$disk print | grep Disk | awk '{print $3}')
-    echo "$counter: $model/$disk ($size) [default]" # todo only the first item
+    echo "$counter: $model /dev/$disk ($size) $([ $counter == 0 ] && echo "[default]")" # todo only the first item
     counter=$(($counter + 1))
 done
+echo "q: quit"
 
 # todo q is not working
 # todo menu item for quit
-read -p "Select a disk by number or press [Enter] to choose the first one or Q to quit " disk_choice
-
-if [ "${sd_disks[disk_choice]}" == "" ]; then
+read -p "Select a disk by number or press [Enter] to choose the first one " disk_choice
+echo "$disk_choice"
+if [ "$disk_choice" == "q" ]; then
     echo "No disk selected."
     cleanup_environment    
     echo "Script ended with failure."
@@ -71,15 +72,15 @@ if [ "${sd_disks[disk_choice]}" == "" ]; then
 fi
 
 chosen_disk=${sd_disks[disk_choice]}
-echo "You have chosen: ${disks[$chosen_disk]}"
-
-# todo variable not working
-sdcard=$chosen_disk
+echo "You have chosen: ${sd_disks[$chosen_disk]}"
+sdcard="$(lsblk | grep ${sd_disks[$chosen_disk]})"
 
 # get the label and its partitions from the sd-card
 sdlabel=$(echo "$sdcard" | head -n 1)
+echo "$sdlabel"
 partitions=$(echo "$sdcard" | grep -vw "$sdlabel" | grep -oE "($sdlabel)p$number_pattern")
-
+echo "$partitions"
+exit
 read -r -p "Do you want to start installation on $sdlabel? [yes/NO]" start_install
 if [  ! start_install == yes ]  # todo pseudo-code
 #if [ -z "$start_install" ] || [[ "$start_install" =~ ^[nN][oO]?$ ]]
