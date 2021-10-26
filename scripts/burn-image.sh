@@ -16,13 +16,6 @@ archive=raspbian-os-lite.zip
 mnt_boot=/mnt/boot
 number_pattern="[0-9]+"
 
-cleanup_environment() {
-    echo "Cleaning up environment"
-    rm -rf $working_dir
-    # todo (discussion) Do we really want to remove the downloaded image (will slow down subsequent installations)
-    unset LC_ALL  # Reset console output to default language
-}
-
 setup_environment() {
     echo "Setup environment"    
     if [ ! -d $working_dir ]
@@ -30,6 +23,13 @@ setup_environment() {
         mkdir $working_dir
     fi
     export LC_ALL=C  # Console output = English
+}
+
+cleanup_environment() {
+    echo "Cleaning up environment"
+    rm -rf $working_dir
+    # todo (discussion) Do we really want to remove the downloaded image (will slow down subsequent installations)
+    unset LC_ALL  # Reset console output to default language
 }
 
 setup_environment
