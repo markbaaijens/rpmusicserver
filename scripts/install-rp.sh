@@ -24,6 +24,8 @@
 
 # crontab
 # - upgrade
+    sudo /bin/sh -c 'echo "02 10 * * * apt dist-upgrade" >> /etc/crontab'
+
 
 # check if config folder already exist; if so, skip copying
 # else:
