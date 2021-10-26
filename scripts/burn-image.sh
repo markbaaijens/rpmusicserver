@@ -19,6 +19,7 @@ number_pattern="[0-9]+"
 cleanup_environment() {
     echo "Cleaning up environment"
     rm -rf $working_dir
+    # todo (discussion) Do we really want to remove the downloaded image (will slow down subsequent installations)
     unset LC_ALL  # Reset console output to default language
 }
 
