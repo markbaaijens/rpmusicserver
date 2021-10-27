@@ -44,7 +44,7 @@ for disk in "${sd_disks[@]}"; do
   	echo "$counter: $model/$disk ($size) $([ $counter == 0 ] && echo "[default]")"
 	counter=$(($counter + 1))
 done
-echo "q: quit"
+echo "Q: quit"
 
 read -p "Select a disk by number or press [Enter] to choose the first one " disk_choice
 
@@ -75,7 +75,7 @@ for partition in $partitions; do
     echo "Partition $partition successfully unmounted."
 done
 hdparm -z /dev/$chosen_disk
-echo "Done nmounting /dev/$chosen_disk partitions"
+echo "Done unmounting /dev/$chosen_disk partitions."
 
 echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
@@ -92,12 +92,12 @@ echo "Done wiping $chosen_disk."
 echo "Start creating partition on $chosen_disk..."
 echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/$chosen_disk
 hdparm -z /dev/$chosen_disk
-echo "Done creating partition on $chosen_disk"
+echo "Done creating partition on $chosen_disk."
 	
 echo "Start formatting partition on $chosen_disk..."	
 mkfs.ext4 -L 'usbdata' "/dev/$chosen_disk"1
 hdparm -z /dev/$chosen_disk
-echo "Done formatting partition on $chosen_disk"		
+echo "Done formatting partition on $chosen_disk."		
 
 cleanup_environment
 echo "Script ended successfully."
