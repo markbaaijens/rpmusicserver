@@ -56,17 +56,9 @@ if [  "$disk_choice" == "q" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
 fi
 
 chosen_disk=${sd_disks[disk_choice]}
-echo "You have chosen: ${disks[$chosen_disk]}"
+echo "You have chosen: $chosen_disk"
 
-# todo variable not working
-sdcard=$chosen_disk
-
-# get the label and its partitions from the sd-card
-sdlabel=$(echo "$sdcard" | head -n 1)
-partitions=$(echo "$sdcard" | grep -vw "$sdlabel" | grep -oE "($sdlabel)p$number_pattern")
-
-# Ask user confirmation before formatting (see burn-image.sh)
-read -r -p "Do you want continue formatting $sdlabel? [yes/NO] " start_install
+read -r -p "Do you want continue formatting $chosen_disk? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]  
 then
     cleanup_environment
@@ -74,47 +66,40 @@ then
     exit
 fi
 
-# unmount partitions of chosen disk
-echo "Unmounting /dev/$sdlabel partitions..."
-echo $partitions
+echo "Starting unmounting /dev/$chosen_disk partitions..."
+partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
 for partition in $partitions; do
-    # todo testen
-    sleep 3
-    if [ ! $(umount -f "/dev/$partition") ]
-    then
-        echo "Failed to umount /dev/$partition."
-        cleanup_environment
-        echo "Script ended with failure."
-        exit
-    fi
-    echo "Partition /dev/$partition successfully unmounted."
+	echo "Unmouting $partition"
+    umount -f "$partition"
+ 	sleep 3	
+    echo "Partition $partition successfully unmounted."
 done
+hdparm -z /dev/$chosen_disk
+echo "Done nmounting /dev/$chosen_disk partitions"
 
-# wipe disk
-echo "Start wiping $sdlabel..."
-wipefs -a "/dev/$sdlabel"
-echo "Done wiping $sdlabel."
+echo "Start wiping $chosen_disk..."
+wipefs -a "/dev/$chosen_disk"
+hdparm -z /dev/$chosen_disk
+echo "Done wiping $chosen_disk."
 
-#	sudo hdparm -z /dev/sda  # Alternative: sudo partprobe /dev/sda
-
-# Format with ext4
-# Attach label, fixed name = usbdisk
-	# Create new partition table
-	# Scripting fdisk  to create partition:
-	#   n = new partition
-	#   p = primary
-	#   1 = Enter = nuber
-	#   First sector: enter
-	#   Last sector: enter
-	#   w = write
-#	echo -e "o\nn\np\n1\n\n\nw" | sudo fdisk /dev/sda
-#	sudo hdparm -z /dev/sda
-#	lsblk  # Check
+# Scripting fdisk to create partition:
+#   n = new partition
+#   p = primary
+#   1 = Enter = nuber
+#   First sector: enter
+#   Last sector: enter
+#   w = write
+echo "Start creating partition on $chosen_disk..."
+echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/$chosen_disk
+hdparm -z /dev/$chosen_disk
+echo "Done creating partition on $chosen_disk"
 	
-	# Format partition as ext4
-#	sudo mkfs.ext4 -L 'usbdata' /dev/sda1
-#	sudo hdparm -z /dev/sda
-	# Check label:  sudo e2label /dev/sdXY
+echo "Start formatting partition on $chosen_disk..."	
+mkfs.ext4 -L 'usbdata' "/dev/$chosen_disk"1
+hdparm -z /dev/$chosen_disk
+echo "Done formatting partition on $chosen_disk"		
 
 cleanup_environment
-	
+echo "Script ended successfully."
+
+exit
