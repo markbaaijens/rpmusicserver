@@ -58,7 +58,7 @@ fi
 chosen_disk=${sd_disks[disk_choice]}
 echo "You have chosen: $chosen_disk"
 
-read -r -p "Do you want continue formatting $chosen_disk? [yes/NO] " start_install
+read -r -p "Do you want to continue formatting $chosen_disk? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]  
 then
     cleanup_environment
