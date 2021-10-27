@@ -26,6 +26,7 @@ setup_environment() {
 }
 
 cleanup_environment() {
+	echo
     echo "Cleaning up environment"
     rm -rf $working_dir
     # todo (discussion) Do we really want to remove the downloaded image (will slow down subsequent installations)
@@ -90,14 +91,15 @@ echo "Unmounting /dev/$sdlabel partitions..."
 for partition in $partitions; do
     # todo testen
     sleep 3
-    if [ ! $(umount -f "/dev/$partition") ]
+    umount -f "/dev/$partition"
+	if [ -n "$(df | grep /dev/$partition)" ]
     then
         echo "Failed to umount /dev/$partition."
         cleanup_environment
         echo "Script ended with failure."
         exit
     fi
-    echo "Partition /dev/$partition successfully unmounted."
+   	echo "Partition /dev/$partition successfully unmounted."
 done
 
 if [ ! $(dpkg --list | grep wget | awk '{print $1}' | grep ii) ]
@@ -105,16 +107,17 @@ then
     apt install wget -y
 fi
 echo "Downloading image..."
-if [ ! $(wget -c --show-progress -P $working_dir -O $working_dir/$archive $image) ]
+wget -c --show-progress -P $working_dir -O $working_dir/$archive $image
+echo "Download complete"
+
+# integrity check downloaded image
+if [ "$(sha256sum $working_dir/$archive | cut -d' ' -f1)" != "c5dad159a2775c687e9281b1a0e586f7471690ae28f2f2282c90e7d59f64273c" ]
 then
-    echo "Command wget unsuccesful."
+    echo "Checksum of the Raspbian image failed."
     cleanup_environment
     echo "Script ended with failure."
     exit
 fi
-echo "Download complete"
-
-# todo check downloaded image (hash)
 
 # extract the downloaded image
 echo "Extracting $working_dir/$archive..."
@@ -131,13 +134,7 @@ fi
 
 # wipe SD-card
 echo "Start wiping $sdlabel..."
-if [ ! $(wipefs -a "/dev/$sdlabel") ]
-then
-    echo "Command wipefs unsuccesful."
-    cleanup_environment
-    echo "Script ended with failure."
-    exit
-fi
+wipefs -a "/dev/$sdlabel"
 echo "Done wiping $sdlabel."
 
 # burn SD-card
@@ -146,13 +143,7 @@ then
     apt install gddrescue -y
 fi
 echo "Start burning $extracted_img to $sdlabel..."
-if [ ! $(ddrescue -D --force $extracted_img "/dev/$sdlabel") ]
-then
-    echo "Command ddrescue unsuccesful."
-    cleanup_environment
-    echo "Script ended with failure."
-    exit
-fi
+ddrescue -D --force $extracted_img "/dev/$sdlabel"
 echo "Done burning $sdlabel."
 
 # mount SD-card and make ssh default in install
@@ -160,15 +151,27 @@ if [ ! -d $mnt_boot ]
 then 
     mkdir $mnt_boot
 fi
-boot_part=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$sdlabel.*")
-echo "Mount partition /dev/$boot_part."
-if [ ! $(mount "/dev/$boot_part" $mnt_boot) ]
+
+sleep 3
+if [ ! -d /dev/disk/by-label ]
 then
-    echo "Command mount unsuccesful."
+	echo "/dev/disk/by-label doesn't exist"
     cleanup_environment
     echo "Script ended with failure."
     exit
 fi
+
+boot_part=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$sdlabel.*$")
+if [ -z $boot_part ]
+then
+    echo "Failed to capture boot partition."
+    cleanup_environment
+    echo "Script ended with failure."
+    exit
+fi
+
+echo "Mount partition /dev/$boot_part."
+mount "/dev/$boot_part" $mnt_boot
 echo "Partition /dev/$boot_part mounted."
 
 echo "Activate SSH..."
