@@ -42,7 +42,7 @@ for disk in "${sd_disks[@]}"; do
     model=$(parted /dev/$disk print | grep Model | cut -d " " -f2- )
     size=$(parted /dev/$disk print | grep "Disk /dev/" | awk '{print $3}')
   	echo "$counter: $model/$disk ($size) $([ $counter == 0 ] && echo "[default]")"
-	counter=$(($counter + 1))
+    counter=$(($counter + 1))
 done
 echo "Q: quit"
 
