@@ -74,12 +74,27 @@ then
     exit
 fi
 
-# Wipe USB-disk
-	# Wipe disk
-#	lsblk | grep disk
-#	sudo umount /dev/sda1
-#	sudo wipefs -a /dev/sda
-	# Or: sudo dd if=/dev/zero of=/dev/sda bs=512 count=1 conv=notrunc
+# unmount partitions of chosen disk
+echo "Unmounting /dev/$sdlabel partitions..."
+echo $partitions
+for partition in $partitions; do
+    # todo testen
+    sleep 3
+    if [ ! $(umount -f "/dev/$partition") ]
+    then
+        echo "Failed to umount /dev/$partition."
+        cleanup_environment
+        echo "Script ended with failure."
+        exit
+    fi
+    echo "Partition /dev/$partition successfully unmounted."
+done
+
+# wipe disk
+echo "Start wiping $sdlabel..."
+wipefs -a "/dev/$sdlabel"
+echo "Done wiping $sdlabel."
+
 #	sudo hdparm -z /dev/sda  # Alternative: sudo partprobe /dev/sda
 
 # Format with ext4
