@@ -55,6 +55,16 @@ if [  "$disk_choice" == "q" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
     exit
 fi
 
+chosen_disk=${sd_disks[disk_choice]}
+echo "You have chosen: ${disks[$chosen_disk]}"
+
+# todo variable not working
+sdcard=$chosen_disk
+
+# get the label and its partitions from the sd-card
+sdlabel=$(echo "$sdcard" | head -n 1)
+partitions=$(echo "$sdcard" | grep -vw "$sdlabel" | grep -oE "($sdlabel)p$number_pattern")
+
 # Ask user confirmation before formatting (see burn-image.sh)
 read -r -p "Do you want continue formatting $sdlabel? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]  
