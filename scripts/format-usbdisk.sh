@@ -1,7 +1,6 @@
 #!/bin/bash
 
-if [ -z "$(whoami | grep root)" ]
-then
+if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
     echo "Script ended with failure."
     exit
@@ -23,8 +22,7 @@ readarray -t disks < <(lsblk -b -e7 -o name,type | grep disk | awk '{print $1}')
 sd_disks=()
 for disk in "${disks[@]}"; do
     model=$(parted /dev/$disk print | grep Model)
-    if [[ ! $model == *"nvme"* ]]
-    then
+    if [[ ! $model == *"nvme"* ]]; then
         sd_disks+=("$disk")
     fi
 done
@@ -48,7 +46,7 @@ echo "Q: quit"
 
 read -p "Select a disk by number or press [Enter] to choose the first one " disk_choice
 
-if [  "$disk_choice" == "q" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
+if [ "$disk_choice" == "q" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
     echo "No disk selected."
     cleanup_environment    
     echo "Script ended."
@@ -59,8 +57,7 @@ chosen_disk=${sd_disks[disk_choice]}
 echo "You have chosen: $chosen_disk"
 
 read -r -p "Do you want to continue formatting $chosen_disk? [yes/NO] " start_install
-if [ "$start_install" != "yes" ]  
-then
+if [ "$start_install" != "yes" ]; then
     cleanup_environment
     echo "Script ended by user."
     exit
@@ -69,9 +66,15 @@ fi
 echo "Starting unmounting /dev/$chosen_disk partitions..."
 partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
 for partition in $partitions; do
+    sleep 3	
 	echo "Unmouting $partition"
     umount -f "$partition"
-    sleep 3	
+	if [ -n "$(df | grep /dev/$partition)" ]; then
+        echo "Failed to umount /dev/$partition."
+        cleanup_environment
+        echo "Script ended with failure."
+        exit
+    fi    
     echo "Partition $partition successfully unmounted."
 done
 hdparm -z /dev/$chosen_disk
