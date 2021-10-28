@@ -1,31 +1,45 @@
 #!/bin/bash
+#
+# This script will install RP Music Server onto a fresh copy of Rapsbian OS Lite
+#
 
-# packages
-# - docker (by standard repo)
-	sudo apt install docker.io
+if [ -z "$(whoami | grep root)" ]
+then
+    echo "Not running as root."
+    echo "Script ended with failure."
+    exit
+fi
 
-# connect disk
-    sudo mkdir /media/usbdata
-    sudo chmod 777 /media/usbdata -R
-    # Test
-    sudo mount -t ext4 /dev/sda1 /media/usbdata/  
-    mount | grep /dev/sd
-    sudo umount /dev/sda1
-    # fstab
-    sudo /bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
-        * geen ‘defaults’, maar ‘auto,nofail’: hiermee start de server door als de usb-schijf tijdens opstarten niet aanwezig is’
-    sudo mount -a
-    controleren met: reboot + mount
-    # Mappen aanmaken en rechten
-    sudo mkdir /media/usbdata/user/Publiek
-    sudo mkdir /media/usbdata/user/Publiek\Downloads # ?
-    sudo mkdir /media/usbdata/user/Publiek\Muziek
-    sudo chmod 777 /media/usbdata/user/Publiek -R
+echo "Installing docker.io packages."
+if [ ! $(dpkg --list | grep docker.io | awk '{print $1}' | grep ii) ]; then 
+	apt install docker.io -y
+fi
 
-# crontab
-# - upgrade
-    sudo /bin/sh -c 'echo "02 10 * * * apt dist-upgrade" >> /etc/crontab'
+echo "Creating mountpoint for harddisk."
+if [ ! -d /media/usbdata ]; then
+    mkdir /media/usbdata
+    chmod 777 /media/usbdata -R
+fi
 
+echo "Adding line to /etc/fstab."
+if [ ! $(grep "LABEL=usbdata" /etc/fstab) ]; then
+    # auto,nofail: server start even when harddisk is not present
+    #/bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
+    echo "Hello"
+fi    
+mount -a
+
+echo "Creating user directories."
+mkdir /media/usbdata/user/Publiek -p
+mkdir /media/usbdata/user/Publiek\Downloads -p
+mkdir /media/usbdata/user/Publiek\Muziek -p
+chmod 777 /media/usbdata/user/Publiek -R
+
+echo "Adding line to /etc/crontab."
+if [ $(grep "dist-upgrade" /etc/crontab) ]; then
+    #/bin/sh -c 'echo "02 10 * * * root apt dist-upgrade" >> /etc/crontab'
+    echo "Hello2"
+fi
 
 # check if config folder already exist; if so, skip copying
 # else:
@@ -37,9 +51,13 @@
 # - rc.local => /etc
 
 # make rc.local executable
-    sudo chmod +x /etc/rc.local
-    sudo systemctl status rc-local  # Check status
+chmod +x /etc/rc.local
+#    sudo systemctl status rc-local  # Check status
 
-# - execute /etc/rc.local to monitor docker installation proces (can be tedious)
+# Execute /etc/rc.local to monitor docker installation proces (can be tedious)
+echo "Start executing /etc/rc.local..."
+/etc/rc.local
+echo "Done executing /etc/rc.local."
 
-# - reboot
+echo "Installation complete, system will be rebooted."
+reboot now

@@ -13,8 +13,10 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
   * `sudo rpmusicserver-master/scripts/format-usbdisk.sh`
 * hookup harddisk to the Pi
 * reboot the clean system
+* check if running
+  * `ping raspberrypi`
 * remote installation with install-rp script via ssh
-	* `ssh pi@raspberrypi "bash -s" < rpmusicserver-master/scripts/install-rp.sh`
+	* `ssh pi@raspberrypi "sudo bash -s" < rpmusicserver-master/scripts/install-rp.sh`
 	* password: raspberry
 * system will be rebooted automatically after installation
 * test access:
