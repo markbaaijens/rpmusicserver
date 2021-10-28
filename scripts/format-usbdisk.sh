@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# This script will format a disk for use in the RP Music Server
+#
 
 if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
