@@ -3,8 +3,7 @@
 # This script will burn the Raspbian OS Lite Image from the raspberrypi.org server and burn the image to a SD-card.
 #
 
-if [ -z "$(whoami | grep root)" ]
-then
+if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
     echo "Script ended with failure."
     exit
@@ -18,18 +17,15 @@ number_pattern="[0-9]+"
 
 setup_environment() {
     echo "Setup environment"    
-    if [ ! -d $working_dir ]
-    then 
+    if [ ! -d $working_dir ]; then 
         mkdir $working_dir
     fi
     export LC_ALL=C  # Console output = English
 }
 
 cleanup_environment() {
-	echo
     echo "Cleaning up environment"
     rm -rf $working_dir
-    # todo (discussion) Do we really want to remove the downloaded image (will slow down subsequent installations)
     unset LC_ALL  # Reset console output to default language
 }
 
@@ -59,7 +55,7 @@ for disk in "${sd_disks[@]}"; do
     echo "$counter: $model /dev/$disk ($size) $([ $counter == 0 ] && echo "[default]")"
     counter=$(($counter + 1))
 done
-echo "q: quit"
+echo "Q: quit"
 
 read -p "Select a disk by number or press [Enter] to choose the first one " disk_choice
 
@@ -74,26 +70,22 @@ chosen_disk=${sd_disks[disk_choice]}
 echo "You have chosen: ${sd_disks[$chosen_disk]}"
 sdcard="$(lsblk -e7 | grep ${sd_disks[$chosen_disk]} | cut -d' ' -f1)"
 
-# get the label and its partitions from the sd-card
 sdlabel=$(echo "$sdcard" | head -n 1)
 partitions=$(echo "$sdcard" | grep -vw "$sdlabel" | grep -oE "($sdlabel)p$number_pattern")
 
 read -r -p "Do you want to start installation on $sdlabel? [yes/NO] " start_install
-if [ "$start_install" != "yes" ]
-then
+if [ "$start_install" != "yes" ]; then
     cleanup_environment
     echo "Script ended by user."
     exit
 fi
 
-# unmount sd-card
 echo "Unmounting /dev/$sdlabel partitions..."
 for partition in $partitions; do
     # todo testen
     sleep 3
     umount -f "/dev/$partition"
-	if [ -n "$(df | grep /dev/$partition)" ]
-    then
+	if [ -n "$(df | grep /dev/$partition)" ]; then
         echo "Failed to umount /dev/$partition."
         cleanup_environment
         echo "Script ended with failure."
@@ -101,60 +93,51 @@ for partition in $partitions; do
     fi
    	echo "Partition /dev/$partition successfully unmounted."
 done
+echo "Done unmounting /dev/$sdlabel partitions"
 
-if [ ! $(dpkg --list | grep wget | awk '{print $1}' | grep ii) ]
-then 
+if [ ! $(dpkg --list | grep wget | awk '{print $1}' | grep ii) ]; then 
     apt install wget -y
 fi
 echo "Downloading image..."
 wget -c --show-progress -P $working_dir -O $working_dir/$archive $image
 echo "Download complete"
 
-# integrity check downloaded image
-if [ "$(sha256sum $working_dir/$archive | cut -d' ' -f1)" != "c5dad159a2775c687e9281b1a0e586f7471690ae28f2f2282c90e7d59f64273c" ]
-then
+if [ "$(sha256sum $working_dir/$archive | cut -d' ' -f1)" != "c5dad159a2775c687e9281b1a0e586f7471690ae28f2f2282c90e7d59f64273c" ]; then
     echo "Checksum of the Raspbian image failed."
     cleanup_environment
     echo "Script ended with failure."
     exit
 fi
 
-# extract the downloaded image
 echo "Extracting $working_dir/$archive..."
 unzip -o $working_dir/$archive -d $working_dir
 echo "Done extracting archive"
 extracted_img=$(ls -t $working_dir/*.img | head -n 1)
-if [ -z $extracted_img ]
-then
+if [ -z $extracted_img ]; then
     echo "No image found in $working_dir."
     cleanup_environment
     echo "Script ended with failure."
     exit
 fi
+echo "Done extracting $working_dir/$archive"
 
-# wipe SD-card
 echo "Start wiping $sdlabel..."
 wipefs -a "/dev/$sdlabel"
 echo "Done wiping $sdlabel."
 
-# burn SD-card
-if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]
-then 
+if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]; then 
     apt install gddrescue -y
 fi
 echo "Start burning $extracted_img to $sdlabel..."
 ddrescue -D --force $extracted_img "/dev/$sdlabel"
 echo "Done burning $sdlabel."
 
-# mount SD-card and make ssh default in install
-if [ ! -d $mnt_boot ] 
-then 
+if [ ! -d $mnt_boot ]; then 
     mkdir $mnt_boot
 fi
-
 sleep 3
-if [ ! -d /dev/disk/by-label ]
-then
+
+if [ ! -d /dev/disk/by-label ]; then
 	echo "/dev/disk/by-label doesn't exist"
     cleanup_environment
     echo "Script ended with failure."
@@ -162,8 +145,7 @@ then
 fi
 
 boot_part=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$sdlabel.*$")
-if [ -z $boot_part ]
-then
+if [ -z $boot_part ]; then
     echo "Failed to capture boot partition."
     cleanup_environment
     echo "Script ended with failure."
@@ -175,16 +157,14 @@ mount "/dev/$boot_part" $mnt_boot
 echo "Partition /dev/$boot_part mounted."
 
 echo "Activate SSH..."
-if [ ! $(touch $mnt_boot/ssh) ] 
-then
+if [ ! $(touch $mnt_boot/ssh) ]; then
     echo "Command touch unsuccesful."
     echo "SSH cannot be activated on $sdlabel."
 fi
 echo "SSH has been activated on $sdlabel."
 
 umount "/dev/$boot_part"
-if [ -d $mnt_boot ]
-then 
+if [ -d $mnt_boot ]; then 
     rm -rf $mnt_boot
 fi
 
