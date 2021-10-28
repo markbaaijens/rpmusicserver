@@ -59,7 +59,7 @@ echo "Q: quit"
 
 read -p "Select a disk by number or press [Enter] to choose the first one " disk_choice
 
-if [ "$disk_choice" == "q" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
+if [ "${disk_choice,,}" == "q" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
     echo "No disk selected."
     cleanup_environment    
     echo "Script ended."
