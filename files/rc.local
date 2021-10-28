@@ -25,6 +25,7 @@ docker run -p 139:139 -p 445:445 -p 137:137/udp -p 138:138/udp \
 
 # Transmission
 # todo: check volume mappings
+# Check if location of config file(s) is present; otherwise do no start transmission container
 docker run -d --rm --name transmission -p 9091:9091 -e PUID=1000 -e PGID=1000 \
   -v /media/usbdata/config/docker/transmission/config:/config  \
   -v /media/usbdata/user/Publiek/Downloads:/downloads  \

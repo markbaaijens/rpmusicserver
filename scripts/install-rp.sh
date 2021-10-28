@@ -30,6 +30,7 @@
 # check if config folder already exist; if so, skip copying
 # else:
 # - config/lms => /media/usbdata/config/docker/lms
+# Ask if transmission should be installed (Transmission docker-container will not be started in rc.local in config files are not present)
 # - config/transmission => /media/usbdata/config/docker/transmission
 
 # copy rc.local file
