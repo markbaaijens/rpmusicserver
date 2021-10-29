@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # LMS (Logitech Media Server)
-# todo: check volume mappings
 docker run -d --rm --name lms \
-  -v /media/usbdata/config/docker/lms:"/config":rw \
-  -v /media/usbdata/user/Publiek/Muziek:"/music":ro \ 
+  -v "/media/usbdata/config/docker/lms":"/config":rw \
+  -v "/media/usbdata/user/Publiek/Muziek":"/music":ro \
   -v "/etc/localtime":"/etc/localtime":ro \
   -v "/etc/timezone":"/etc/timezone":ro \
   -p 9002:9002/tcp \
@@ -17,17 +16,14 @@ docker run -d --rm --name lms \
   lmscommunity/logitechmediaserver:stable
 
 # Samba
-# todo: check volume mappings
 docker run -p 139:139 -p 445:445 -p 137:137/udp -p 138:138/udp \
   -d --rm --name samba \
   -v /media/usbdata/user/Publiek:/mnt  \
-  dperson/samba -n -p  -s "public;/mnt;yes;no;yes;all;;;Publiek" -r
+  dperson/samba -n -p  -s "Publiek;/mnt;yes;no;yes;all;;;Publiek" -r
 
 # Transmission
-# todo: check volume mappings
-# Check if location of config file(s) is present; otherwise do no start transmission container
 docker run -d --rm --name transmission -p 9091:9091 -e PUID=1000 -e PGID=1000 \
-  -v /media/usbdata/config/docker/transmission/config:/config  \
+  -v /media/usbdata/config/docker/transmission:/config  \
   -v /media/usbdata/user/Publiek/Downloads:/downloads  \
   linuxserver/transmission
 

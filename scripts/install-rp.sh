@@ -39,8 +39,8 @@ mount -a
 
 echo "Creating user directories."
 mkdir /media/usbdata/user/Publiek -p
-mkdir /media/usbdata/user/Publiek\Downloads -p
-mkdir /media/usbdata/user/Publiek\Muziek -p
+mkdir /media/usbdata/user/Publiek/Downloads -p
+mkdir /media/usbdata/user/Publiek/Muziek -p
 chmod 777 /media/usbdata/user/Publiek -R
 
 echo "Adding line to /etc/crontab:"
@@ -52,17 +52,17 @@ else
 fi
 
 # check if config folder already exist; if so, skip copying
-# else:
-# - config/lms => /media/usbdata/config/docker/lms
-# Ask if transmission should be installed (Transmission docker-container will not be started in rc.local in config files are not present)
-# - config/transmission => /media/usbdata/config/docker/transmission
+echo "Copy config files"
+if [ ! -d /media/usbdata/config ]; then
+    mkdir -p /media/usbdata/config/docker
+    cp -r /tmp/rpmusicserver/files/config/* /media/usbdata/config/docker
+    echo " => config files copied."    
+else
+    echo " => config folder is already present, no config files copied."    
+fi
 
-# copy rc.local file
-# - rc.local => /etc
-
-# make rc.local executable
+cp /tmp/rpmusicserver/files/rc.local /etc
 chmod +x /etc/rc.local
-#    sudo systemctl status rc-local  # Check status
 
 # Execute /etc/rc.local to monitor docker installation proces (can be tedious)
 echo "Start executing /etc/rc.local..."
