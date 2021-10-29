@@ -1,0 +1,47 @@
+<title>[% IF pagetitle %][% pagetitle | html -%][% ELSE %][% "SQUEEZEBOX_SERVER" | string %][% END -%]</title>
+<link href="/material/icon.png" rel="icon shortcut" sizes="128x128">
+<link href="/material/icon.png" rel="apple-touch-icon" sizes="128x128">
+<meta http-equiv="Content-Type" content="text/html; charset=[% LOCALE %]"/>
+<link rel="stylesheet" type="text/css" href="[% webroot %]slimserver.css?r=[% revision %]"/>
+<link rel="stylesheet" type="text/css" href="[% webroot %]html/font/font.css?r=49"/>
+<link rel="stylesheet" type="text/css" href="[% webroot %]skin.css?r=2.7.2" />
+<link rel="stylesheet" type="text/css" href="[% webroot %]html/css/themes/dark.min.css?r=2.7.2"/>
+<link rel="stylesheet" type="text/css" href="[% webroot %]html/css/colors/blue.min.css?r=2.7.2"/>
+<link rel="stylesheet" type="text/css" href="[% webroot %]html/css/classic-skin/dark.min.css?r=2.7.2"/>
+<link rel="apple-touch-icon" href="[% webroot %]html/images/apple-touch-icon.png"/>
+[% IF mobileBrowser %]
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" type="text/css" href="[% webroot %]mobile.css"/>
+[% END %]
+<script src="[% webroot %]html/lib/mousetrap.min.js?r=a4098"></script>
+<script>
+ let theme = window.localStorage.getItem("lms-material::theme");
+ if (undefined==theme) {
+  theme='dark';
+ }
+ let t = theme.split('-');
+ let variant = t.length>1 && ('colored'==t[t.length-1] || 'standard'==t[t.length-1]) ? t.pop() : 'standard';
+ let themeName = t.join('-');
+
+ if (undefined!=theme && (theme.startsWith('light') || theme.indexOf("/light/")>=0)) {
+  document.querySelector("link[href='[% webroot %]html/css/themes/dark.min.css?r=2.7.2']").href = "[% webroot %]html/css/themes/light.min.css?r=2.7.2";
+  document.querySelector("link[href='[% webroot %]html/css/classic-skin/dark.min.css?r=2.7.2']").href = "[% webroot %]html/css/classic-skin/light.min.css?r=2.7.2";
+ } else if (undefined!=themeName && themeName!='dark') {
+   if (themeName.startsWith("user:")) {
+    document.querySelector("link[href='[% webroot %]html/css/themes/dark.min.css?r=2.7.2']").href = "/material/usertheme/" + themeName.substring(5) + "?r=2.7.2";
+   } else {
+    document.querySelector("link[href='[% webroot %]html/css/themes/dark.min.css?r=2.7.2']").href = "[% webroot %]html/css/themes/"+themeName+".min.css?r=2.7.2";
+   }
+ }
+
+ let col = window.localStorage.getItem("lms-material::color");
+ if ('blue'!=col && undefined!=col) {
+  if (col.startsWith("user:")) {
+    document.querySelector("link[href='[% webroot %]html/css/colors/blue.min.css?r=2.7.2']").href = "/material/usercolor/" + col.substring(5) + "?r=2.7.2";
+  } else {
+    document.querySelector("link[href='[% webroot %]html/css/colors/blue.min.css?r=2.7.2']").href = "[% webroot %]html/css/colors/"+col+".min.css?r=2.7.2";
+  }
+ }
+ Mousetrap.bind('esc', function() { document.bus.$emit('esc') });
+</script>
+

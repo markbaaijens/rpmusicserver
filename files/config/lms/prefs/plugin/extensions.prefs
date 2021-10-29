@@ -1,11 +1,12 @@
 ---
-_ts_auto: 1634762087
-_ts_plugin: 1634762306
+_ts_auto: 1635533409
+_ts_plugin: 1635534812
 _ts_repos: 1634762087
 _ts_useUnsupported: 1634762087
 _version: 3
-auto: 0
+auto: 1
 plugin:
+  AutoRescan: 1
   MaterialSkin: 1
 repos: []
 useUnsupported: 0

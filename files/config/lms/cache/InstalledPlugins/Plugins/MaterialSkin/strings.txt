@@ -1,0 +1,178 @@
+MATERIAL_SKIN
+	EN	Material Skin
+	NL	Material Skin
+
+PLUGIN_MATERIAL_SKIN
+	DE	Web Skin im Material Stil, für mobile Nutzung optimiert
+	EN	Material themed skin, suitable for mobile use.
+	FR	Thème 'Material Skin', adapté à une utilisation mobile.
+	NL	Material Skin, geschikt voor mobiel gebruik.
+
+PLUGIN_MATERIAL_SKIN_GENRES_LIST_NOTE
+	EN	NOTE: In the genre lists, below, to apply to all genres use a single asterisk (*). To apply to no genres use any string (e.g. 'N/A') that does not match any of your genres.
+	FR	REMARQUE : Dans les listes de genres ci-dessous, pour cibler tous les genres, utiliser le caractère générique astérisque (*). Pour ne cibler aucun genre, saisir une chaîne de caractères qui ne correspond à aucun de vos genres (par exemple, «N/A»).
+	NL	OPMERKING: Gebruik in de genrelijsten hieronder een enkele asterisk (*) om op alle genres van toepassing te zijn. Om op geen enkel genre toe te passen, gebruik een tekenreeks (bijv. 'N/A') die niet overeenkomt met een van de genres.
+
+PLUGIN_MATERIAL_SKIN_BAND_GENRES
+	EN	Band genres
+	FR	Genres concernés par le tag "band" (groupe/orchestre)
+	NL	Band genres
+
+PLUGIN_MATERIAL_SKIN_BAND_GENRES_DESC
+	EN	Comma-separated list of genres supporting band. When entering one of these genres, you will be asked if you wish to browse by band.
+	FR	Liste des genres concernés, séparés par des virgules. Lorsque vous choisirez l'un de ces genres, il vous sera demandé si vous souhaitez naviguer par groupe/orchestre.
+	NL	Komma gescheiden lijst van band genres. Indien deze genres worden geselecteerd, wordt er gevraagd of je wilt bladeren op band.
+
+PLUGIN_MATERIAL_SKIN_COMPOSER_GENRES
+	DE	Komponisten Stilrichtungen
+	EN	Composer genres
+	FR	Genres concernés par le tag "composer" (compositeur)
+	NL	Componist genres
+
+PLUGIN_MATERIAL_SKIN_COMPOSER_GENRES_DESC
+	DE	Komma-getrennte Liste von Stilrichtungen, die Komponisten unterstützen. Wenn du eine dieser Stilrichtungen wählst, wirst du gefragt, ob du nach Komponisten durchsuchen willst.
+	EN	Comma-separated list of genres supporting composers. When entering one of these genres, you will be asked if you wish to browse by composer.
+	FR	Liste des genres concernés, séparés par des virgules. Lorsque vous choisirez l'un de ces genres, il vous sera demandé si vous souhaitez naviguer par compositeur.
+	NL	Komma gescheiden lijst van componist genres. Indien deze genres worden geselecteerd, wordt er gevraagd of je wilt bladeren op componist.
+
+PLUGIN_MATERIAL_SKIN_CONDUCTOR_GENRES
+	DE	Dirigent Stilrichtungen
+	EN	Conductor genres
+	FR	Genres concernés par le tag "conductor" (chef d'orchestre)
+	NL	Dirigent genres
+
+PLUGIN_MATERIAL_SKIN_CONDUCTOR_GENRES_DESC
+	DE	Komma-getrennte Liste von Stilrichtungen, die Dirigenten unterstützen. Wenn du eine dieser Stilrichtungen wählst, wirst du gefragt, ob du nach Dirigenten durchsuchen willst.
+	EN	Comma-separated list of genres supporting conductors. When entering one of these genres, you will be asked if you wish to browse by conductor.
+	FR	Liste des genres concernés, séparés par des virgules. Lorsque vous choisirez l'un de ces genres, il vous sera demandé si vous souhaitez naviguer par chef d'orchestre.
+	NL	Komma gescheiden lijst van dirigent genres. Indien deze genres worden geselecteerd, wordt er gevraagd of je wilt bladeren op dirigent.
+
+PLUGIN_MATERIAL_SKIN_DEFAULT_COMPOSER_GENRES
+	DE	Klassik, Avantgarde, Barok, Kammermusik, Choral, Klassik-Crossover, Hochklassik, Impressionist, Jazz, Mittelalterlich, Medieval, Minimalismus, Moderne Komposition, Oper, Orchester, Renaissance, Romantik, Symphonie, Hochzeitsmusik
+	EN	Classical, Avant-Garde, Baroque, Chamber Music, Chant, Choral, Classical Crossover, Early Music, High Classical, Impressionist, Jazz, Medieval, Minimalism, Modern Composition, Opera, Orchestral, Renaissance, Romantic, Symphony, Wedding Music
+	FR	Jazz, Musique de film, Classique, Musique concertante, Musique de chambre, Musique symphonique, Musique vocale, Opéra, Opérette, Musique de l'Antiquité, Musique du Moyen-Age, Musique de la Renaissance, Musique baroque, Musique classique, Musique romantique, Musique moderne, Musique contemporaine, Musique électronique ou concrète
+	NL	Klassiek, Avant-Garde, Barok, Kamermuziek, Zang, Koor, Klassieke Crossover, Oude muziek, Hoogklassiek, Impressionistisch, Jazz, Middeleeuws, Minimalisme, Moderne compositie, Opera, Orkest, Renaissance, Romantisch, Symfonie, Bruiloftsmuziek
+
+PLUGIN_MATERIAL_SKIN_DEFAULT_CONDUCTOR_GENRES
+	DE	Klassik, Avantgarde, Barok, Kammermusik, Choral, Klassik-Crossover, Hochklassik, Impressionist, Mittelalterlich, Minimalismus, Moderne Komposition, Oper, Orchester, Renaissance, Romantik, Symphonie, Hochzeitsmusik
+	EN	Classical, Avant-Garde, Baroque, Chamber Music, Chant, Choral, Classical Crossover, Early Music, High Classical, Impressionist, Medieval, Minimalism, Modern Composition, Opera, Orchestral, Renaissance, Romantic, Symphony, Wedding Music
+	FR	Musique de film, Classique, Musique concertante, Musique de chambre, Musique symphonique, Musique vocale, Opéra, Opérette, Musique de l'Antiquité, Musique du Moyen-Age, Musique de la Renaissance, Musique baroque, Musique classique, Musique romantique, Musique moderne, Musique contemporaine, Musique électronique ou concrète
+	NL	Klassiek, Avant-Garde, Barok, Kamermuziek, Zang, Koor, Klassieke Crossover, Oude muziek, Hoogklassiek, Impressionistisch, Jazz, Middeleeuws, Minimalisme, Moderne compositie, Opera, Orkest, Renaissance, Romantisch, Symfonie, Bruiloftsmuziek
+
+PLUGIN_MATERIAL_SKIN_DEFAULT_BAND_GENRES
+	EN	N/A
+	FR	N/A
+	NL	N/A
+
+PLUGIN_MATERIAL_SKIN_SHOW_COMPOSER
+	EN	Show composer
+	FR	Afficher le compositeur
+	NL	Toon componist
+
+PLUGIN_MATERIAL_SKIN_SHOW_COMPOSER_DESC
+	EN	If a song's genre matches the list above and it has a composer tag, then show this in the queue and now-playing.
+	FR	Si le tag "genre" d'un morceau apartient à la liste ci-dessus et que le morceau a un tag "composer", afficher le compositeur dans la liste de lecture et la vue "lecture en cours".
+	NL	Als het genre van een nummer overeenkomt met de bovenstaande lijst en het nummer heeft een componist tag, toon dit bij het afspelen en in de afspeellijst.
+
+PLUGIN_MATERIAL_SKIN_SHOW_CONDUCTOR
+	EN	Show conductor
+	FR	Afficher le chef d'orchestre
+	NL	Toon dirigent
+
+PLUGIN_MATERIAL_SKIN_SHOW_CONDUCTOR_DESC
+	EN	If a song's genre matches the list above and it has a conductor tag, then show this in the queue and now-playing.
+	FR	Si le tag "genre" d'un morceau appartient à la liste ci-dessus et que le morceau a un tag "conductor", afficher le chef d'orchestre dans la liste de lecture et la vue "lecture en cours".
+	NL	Als het genre van een nummer overeenkomt met de bovenstaande lijst en het nummer heeft een dirigent tag, toon dit bij het afspelen en in de afspeellijst.
+
+PLUGIN_MATERIAL_SKIN_SHOW_BAND
+	EN	Show band
+	FR	Afficher le groupe/orchestre
+	NL	Toon band
+
+PLUGIN_MATERIAL_SKIN_SHOW_BAND_DESC
+	EN	If a song's genre matches the list above and it has a band tag, then show this in the queue and now-playing.
+	FR	Si le tag "genre" d'un morceau appartient à la liste ci-dessus et que le morceau a un tag "band", afficher le groupe/orchestre dans la liste de lecture et la vue "lecture en cours".
+	NL	Als het genre van een nummer overeenkomt met de bovenstaande lijst en het nummer heeft een band tag, toon dit bij het afspelen en in de afspeellijst.
+	
+PLUGIN_MATERIAL_SKIN_PASSWORD
+	EN	Password
+	FR	Mot de passe
+	NL	Wachtwoord
+
+PLUGIN_MATERIAL_SKIN_PASSWORD_DESC
+	EN	Set a password to control access to alarms and server settings.
+	FR	Définir un mot de passe pour contrôler l'accès aux alarmes et aux paramètres du serveur.
+	NL	Stel een wachtwoord in om de toegang tot wekkers en serverinstellingen te regelen.
+
+PLUGIN_MATERIAL_SKIN_FIXED_VOL
+	EN	Fixed volume players
+	FR	Platines à volume fixe
+	NL	Vast volume muziekspelers
+
+PLUGIN_MATERIAL_SKIN_FIXED_VOL_DESC
+	EN	How should player's with a fixed volume be controlled?
+	FR	Comment contrôler les platines à volume fixe ?
+	NL	Hoe moet een muziekspeler met een vast volume worden geregeld? 
+
+PLUGIN_MATERIAL_SKIN_FIXED_VOL_HIDE
+	EN	Hide volume control
+	FR	Masquer le contrôle du volume
+	NL	Verberg volumeregeling
+
+PLUGIN_MATERIAL_SKIN_FIXED_VOL_SPECIAL
+	EN	Disable volume slider, and hide volume level
+	FR	Désactiver le curseur du volume et masquer le niveau du volume
+	NL	Volumeregelaar uitschakelen en volumeniveau verbergen
+
+PLUGIN_MATERIAL_SKIN_FIXED_VOL_NORMAL
+	EN	Display standard volume control
+	FR	Afficher et permettre le contrôle du volume
+	NL	Toon standaard volumeregeling
+
+PLUGIN_MATERIAL_SKIN_ARTIST_FIRST
+	EN	Show artist first in now-playing and queue
+	FR	Afficher l'artiste en premier dans la vue 'lecture en cours' et la liste de lecture
+	NL	Toon artiest als eerste in 'Speelt nu' en afspeellijst
+
+PLUGIN_MATERIAL_SKIN_ARTIST_FIRST_DESC
+	EN	If a track has composer, conductor, or band, and these are configured to be shown, then show artist before these, otherwise show after.
+	FR	Si un morceau a un compositeur, un chef d'orchestre ou un groupe/orchestre et que ceux-ci sont configurés pour être affichés, choisir de montrer l'artiste en premier ou pas.
+	NL	Als een nummer een componist, dirigent of band tag heeft, en deze zijn geconfigureerd om te worden getoond, toon dan eerst de artiest, anders erna.
+
+PLUGIN_MATERIAL_SKIN_SHOW_ALL_ARTISTS
+	EN	Show all artists
+	DA	Vis alle kunstnere
+	FR	Afficher tous les artistes
+	NL	Toon alle artiesten
+	RU	Показать всех исполнителей
+
+PLUGIN_MATERIAL_SKIN_SHOW_ALL_ARTISTS_DESC
+	EN	If a track has multiple artists, album-artists, composers, etc. then show all when browsing albums, in now-playing and the queue. Otherwise just show the first of each.
+	DA	Hvis et nummer har flere kunstnere, albumkunstnere, komponister m.v., så vis dem alle mens der kigges på albums, hvad der afspilles nu og i køen. I modsat fald vis kun den første af hver slags.
+	FR	Si un morceau a plusieurs artistes ou artistes d'album, compositeurs, etc., choisir de les afficher tous (lors de la navigation dans les albums, dans la vue 'lecture en cours' et dans la liste de lecture) ou de n'afficher que le premier de chaque type.
+	NL	Als een nummer meerdere artiesten, albumartiesten, componisten, etc. heeft, laat ze dan allemaal zien bij het bladeren door albums, bij het afspelen en in de afspeellijst. Laat anders gewoon de eerste van elk zien.
+	RU	Если в треке есть несколько исполнителей, музыкантов, композиторов и т. д., Тогда показывать все при просмотре альбомов, в «Сейчас играет» и в очереди. В противном случае просто позать первое из каждого
+
+PLUGIN_MATERIAL_SKIN_ALLOW_DOWNLOAD
+	EN	Allow downloading
+	FR	Autoriser le téléchargement
+
+PLUGIN_MATERIAL_SKIN_ALLOW_DOWNLOAD_DESC
+	EN	Add download actions to tracks, albums, and playlists to allow users to download tracks.
+	FR	Ajouter des commandes de téléchargement aux morceaux, albums et listes de lecture pour permettre aux utilisateurs de télécharger des morceaux.
+
+PLUGIN_MATERIAL_SKIN_MANIFEST_DISPLAY
+	EN	WebApp display
+	FR	Affichage de l'application Web
+
+PLUGIN_MATERIAL_SKIN_MANIFEST_DISPLAY_DESC
+	EN	When saved as a WebApp (e.g. 'Add to homescreen') the app can be shown 'fullscreen' (appears like a normal app, but android's status and navigation bars are hidden) or 'standalone' (appears as a normal app, with status and navigation bars visible). NOTE: If you make any changes then you will need to reload the skin in your browser as browser's read this setting when the page is loaded.
+	FR	Lorsque l'application est enregistrée en tant qu'application Web (via l'option « Ajouter à l'écran d'accueil » d'un navigateur) pour être utilisée comme une application Android classique, elle peut être affichée en « plein écran » (barres de statut et de navigation masquées) ou « autonome » (barres de statut et de navigation visibles). REMARQUE : Si vous modifiez ce paramètre, vous devrez recharger le skin dans votre navigateur car le navigateur lit ce paramètre lorsque la page est chargée.
+
+PLUGIN_MATERIAL_SKIN_MANIFEST_DISPLAY_STANDALONE
+	EN	Standalone
+	FR	Autonome
+
+PLUGIN_MATERIAL_SKIN_MANIFEST_DISPLAY_FULLSCREEN
+	EN	Fullscreen
+	FR	Plein écran

@@ -1,0 +1,17 @@
+<?xml version='1.0' standalone='yes'?>
+<extensions>
+  <id>478c0d2a-a83b-41e8-88c0-f04f8c9cff85</id>
+  <module>Plugins::MaterialSkin::Plugin</module>
+  <description>PLUGIN_MATERIAL_SKIN</description>
+  <creator>Craig Drummond</creator>
+  <version>2.7.2</version>
+  <defaultState>enabled</defaultState>
+  <type>2</type>
+  <homepageURL>https://github.com/CDrummond/lms-material</homepageURL>
+  <targetApplication>
+    <minVersion>7.9.0</minVersion>
+    <maxVersion>*</maxVersion>
+    <id>SlimServer</id>
+  </targetApplication>
+  <name>MATERIAL_SKIN</name>
+</extensions>

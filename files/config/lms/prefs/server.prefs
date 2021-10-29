@@ -534,7 +534,7 @@ _client:40:5b:d8:16:cb:53:
   _ts_lameQuality: 1623965302
   _ts_libraryId: 1634759182
   _ts_maintainSync: 1623965302
-  _ts_maxBitrate: 1634667260
+  _ts_maxBitrate: 1635351913
   _ts_menuItem: 1623965302
   _ts_minSyncAdjust: 1623965302
   _ts_mp3SilencePrelude: 1623965302
@@ -681,7 +681,7 @@ _ts_Squeezebox-expanded-MY_MUSIC: 1625158916
 _ts_Squeezebox-expanded-PLUGINS: 1634665179
 _ts_Squeezebox-expanded-PLUGIN_MY_APPS_MODULE_NAME: 1625159500
 _ts_Squeezebox-expanded-RADIO: 1625159348
-_ts_additionalPlaylistButtons: 1634762289
+_ts_additionalPlaylistButtons: 1635534829
 _ts_allowedHosts: 1623954001
 _ts_artfolder: 1623954001
 _ts_authorize: 1623954001
@@ -700,7 +700,7 @@ _ts_composerInArtists: 1623954001
 _ts_conductorInArtists: 1623954001
 _ts_coverArt: 1623954001
 _ts_csrfProtectionLevel: 1623954001
-_ts_customArtSpecs: 1634763924
+_ts_customArtSpecs: 1635533347
 _ts_dbhighmem: 1623954001
 _ts_dbjournalsize: 1623954001
 _ts_dbpassword: 1623954001
@@ -720,16 +720,16 @@ _ts_groupdiscs: 1623954001
 _ts_guessFileFormats: 1623954001
 _ts_httpport: 1623954001
 _ts_ignoreDirRE: 1623954001
-_ts_ignoreInAudioScan: 1634763965
-_ts_ignoreInImageScan: 1634763965
-_ts_ignoreInVideoScan: 1634763965
+_ts_ignoreInAudioScan: 1634767044
+_ts_ignoreInImageScan: 1634767044
+_ts_ignoreInVideoScan: 1634767044
 _ts_ignoredarticles: 1623954001
 _ts_insecureHTTPS: 1623954001
 _ts_itemsPerPage: 1623954001
 _ts_jivealbumsort: 1623954001
 _ts_language: 1625156726
 _ts_librarycachedir: 1623954001
-_ts_libraryname: 1634763965
+_ts_libraryname: 1634767044
 _ts_longdateFormat: 1623954001
 _ts_maxPlaylistLength: 1623954001
 _ts_maxWMArate: 1623954001
@@ -773,7 +773,7 @@ _ts_server_uuid: 1623954001
 _ts_shortdateFormat: 1625156376
 _ts_showArtist: 1625156795
 _ts_showYear: 1625156376
-_ts_skin: 1634762336
+_ts_skin: 1635534829
 _ts_skipsentinel: 1625156304
 _ts_sn_disable_stats: 1634762086
 _ts_sn_sync: 1634748347
@@ -781,7 +781,7 @@ _ts_splitList: 1623954001
 _ts_tcpConnectMaximum: 1623954001
 _ts_thumbSize: 1623954001
 _ts_timeFormat: 1623954001
-_ts_titleFormat: 1634762336
+_ts_titleFormat: 1635534829
 _ts_titleFormatWeb: 1623954001
 _ts_udpChunkSize: 1623954001
 _ts_useTPE2AsAlbumArtist: 1623954001
@@ -789,7 +789,7 @@ _ts_useUnifiedArtistsList: 1625156304
 _ts_username: 1623954001
 _ts_variousArtistAutoIdentification: 1623954001
 _ts_variousArtistsString: 1625156304
-_ts_webproxy: 1634763924
+_ts_webproxy: 1635533346
 _ts_wizardDone: 1623954001
 _version: 9
 additionalPlaylistButtons: '0'

@@ -1,0 +1,80 @@
+[% PROCESS settings/header.html %]
+
+    [% WRAPPER setting title="PLUGIN_MATERIAL_SKIN_PASSWORD" desc="PLUGIN_MATERIAL_SKIN_PASSWORD_DESC" %]
+        <input type="text"  class="stdedit" name="pref_password" id="password" size="20" value="[% prefs.password %]"></input>
+    [% END %]
+
+    [% WRAPPER setting title="PLUGIN_MATERIAL_SKIN_ALLOW_DOWNLOAD" desc="PLUGIN_MATERIAL_SKIN_ALLOW_DOWNLOAD_DESC" %]
+        <select class="stdedit" name="pref_allowDownload" id="allowDownload">
+            <option [% IF NOT prefs.allowDownload %]selected [% END %]value="0">[% 'NO' | getstring %]</option>
+            <option [% IF prefs.allowDownload %]selected [% END %]value="1">[% 'YES' | getstring %]</option>
+        </select>
+    [% END %]
+
+    [% WRAPPER settingGroup  title="PLUGIN_MATERIAL_SKIN_FIXED_VOL" desc="PLUGIN_MATERIAL_SKIN_FIXED_VOL_DESC" %]
+        <input type="radio" name="pref_respectFixedVol" value="0" [% IF prefs.pref_respectFixedVol == 0 %]checked[% END %]>[% 'PLUGIN_MATERIAL_SKIN_FIXED_VOL_NORMAL'  | getstring %]<br/>
+        <input type="radio" name="pref_respectFixedVol" value="1" [% IF prefs.pref_respectFixedVol == 1 %]checked[% END %]>[% 'PLUGIN_MATERIAL_SKIN_FIXED_VOL_SPECIAL' | getstring %]<br/>
+        <input type="radio" name="pref_respectFixedVol" value="2" [% IF prefs.pref_respectFixedVol == 2 %]checked[% END %]>[% 'PLUGIN_MATERIAL_SKIN_FIXED_VOL_HIDE'    | getstring %]<br/>
+    [% END %]
+
+    [% WRAPPER setting title="PLUGIN_MATERIAL_SKIN_MANIFEST_DISPLAY" desc="PLUGIN_MATERIAL_SKIN_MANIFEST_DISPLAY_DESC" %]
+        <select class="stdedit" name="pref_manifestDisplay" id="allowDownload">
+            <option [% IF NOT prefs.manifestDisplay %]selected [% END %]value="0">[% 'PLUGIN_MATERIAL_SKIN_MANIFEST_DISPLAY_STANDALONE' | getstring %]</option>
+            <option [% IF prefs.manifestDisplay %]selected [% END %]value="1">[% 'PLUGIN_MATERIAL_SKIN_MANIFEST_DISPLAY_FULLSCREEN' | getstring %]</option>
+        </select>
+    [% END %]
+
+    <br/><hr class="main-sep"/><br/>
+    [% WRAPPER setting title="" desc="" %]
+    <div><i>[% "PLUGIN_MATERIAL_SKIN_GENRES_LIST_NOTE" | string %]</i></div>
+    [% END %]
+    <hr style="opacity:0.4" class="sub-sep"/><br/>
+
+    [% WRAPPER setting title="PLUGIN_MATERIAL_SKIN_COMPOSER_GENRES" desc="PLUGIN_MATERIAL_SKIN_COMPOSER_GENRES_DESC" %]
+        <textarea class="stdedit" name="pref_composergenres" id="composergenres" cols="45" rows="5">[% prefs.composergenres %]</textarea>
+    [% END %]
+    [% WRAPPER setting title="PLUGIN_MATERIAL_SKIN_SHOW_COMPOSER" desc="PLUGIN_MATERIAL_SKIN_SHOW_COMPOSER_DESC" %]
+        <select class="stdedit" name="pref_showComposer" id="showComposer">
+            <option [% IF NOT prefs.showComposer %]selected [% END %]value="0">[% 'NO' | getstring %]</option>
+            <option [% IF prefs.showComposer %]selected [% END %]value="1">[% 'YES' | getstring %]</option>
+        </select>
+    [% END %]
+    <hr style="opacity:0.4" class="sub-sep"/><br/>
+
+
+    [% WRAPPER setting title="PLUGIN_MATERIAL_SKIN_CONDUCTOR_GENRES" desc="PLUGIN_MATERIAL_SKIN_CONDUCTOR_GENRES_DESC" %]
+        <textarea class="stdedit" name="pref_conductorgenres" id="conductorgenres" cols="45" rows="5">[% prefs.conductorgenres %]</textarea>
+    [% END %]
+    [% WRAPPER setting title="PLUGIN_MATERIAL_SKIN_SHOW_CONDUCTOR" desc="PLUGIN_MATERIAL_SKIN_SHOW_CONDUCTOR_DESC" %]
+        <select class="stdedit" name="pref_showConductor" id="showConductor">
+            <option [% IF NOT prefs.showConductor %]selected [% END %]value="0">[% 'NO' | getstring %]</option>
+            <option [% IF prefs.showConductor %]selected [% END %]value="1">[% 'YES' | getstring %]</option>
+        </select>
+    [% END %]
+    <hr style="opacity:0.4" class="sub-sep"/><br/>
+
+    [% WRAPPER setting title="PLUGIN_MATERIAL_SKIN_BAND_GENRES" desc="PLUGIN_MATERIAL_SKIN_BAND_GENRES_DESC" %]
+        <textarea class="stdedit" name="pref_bandgenres" id="bandgenres" cols="45" rows="5">[% prefs.bandgenres %]</textarea>
+    [% END %]
+    [% WRAPPER setting title="PLUGIN_MATERIAL_SKIN_SHOW_BAND" desc="PLUGIN_MATERIAL_SKIN_SHOW_BAND_DESC" %]
+        <select class="stdedit" name="pref_showBand" id="showBand">
+            <option [% IF NOT prefs.showBand %]selected [% END %]value="0">[% 'NO' | getstring %]</option>
+            <option [% IF prefs.showBand %]selected [% END %]value="1">[% 'YES' | getstring %]</option>
+        </select>
+    [% END %]
+
+    <hr style="opacity:0.4" class="sub-sep"/><br/>
+    [% WRAPPER setting title="PLUGIN_MATERIAL_SKIN_SHOW_ALL_ARTISTS" desc="PLUGIN_MATERIAL_SKIN_SHOW_ALL_ARTISTS_DESC" %]
+        <select class="stdedit" name="pref_showAllArtists" id="showAllArtists">
+            <option [% IF NOT prefs.showAllArtists %]selected [% END %]value="0">[% 'NO' | getstring %]</option>
+            <option [% IF prefs.showAllArtists %]selected [% END %]value="1">[% 'YES' | getstring %]</option>
+        </select>
+    [% END %]
+    [% WRAPPER setting title="PLUGIN_MATERIAL_SKIN_ARTIST_FIRST" desc="PLUGIN_MATERIAL_SKIN_ARTIST_FIRST_DESC" %]
+        <select class="stdedit" name="pref_artistFirst" id="artistFirst">
+            <option [% IF NOT prefs.artistFirst %]selected [% END %]value="0">[% 'NO' | getstring %]</option>
+            <option [% IF prefs.artistFirst %]selected [% END %]value="1">[% 'YES' | getstring %]</option>
+        </select>
+    [% END %]
+
+[% PROCESS settings/footer.html %]

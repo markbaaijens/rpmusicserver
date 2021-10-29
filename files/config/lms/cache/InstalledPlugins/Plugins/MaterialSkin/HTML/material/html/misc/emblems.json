@@ -1,0 +1,28 @@
+{
+  "spotify":{
+    "name":"spotify",
+    "bgnd":"#1dd35e",
+    "color":"#fff"
+  },
+  "qobuz":{
+    "name":"qobuz",
+    "bgnd":"#fff",
+    "color":"#000"
+  },
+  "wimp":{
+    "name":"tidal",
+    "bgnd":"#000",
+    "color":"#fff"
+  },
+  "deezer":{
+    "name":"deezer",
+    "bgnd":"#fb8715",
+    "color":"#fff"
+  },
+  "bandcamp":{
+    "name":"bandcamp",
+    "bgnd":"#61929c",
+    "color":"#fff"
+  }
+}
+
