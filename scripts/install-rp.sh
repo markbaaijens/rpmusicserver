@@ -51,7 +51,6 @@ else
     echo " => line is already present."    
 fi
 
-# check if config folder already exist; if so, skip copying
 echo "Copy config files"
 if [ ! -d /media/usbdata/config ]; then
     mkdir -p /media/usbdata/config/docker
