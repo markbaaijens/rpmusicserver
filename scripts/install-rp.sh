@@ -12,7 +12,7 @@ fi
 
 echo "Installing docker.io packages:"
 if [ ! $(dpkg --list | grep docker.io | awk '{print $1}' | grep ii) ]; then 
-	apt install docker.io -y
+	apt-get install docker.io -y
     echo " => package docker.io is installed"
 else
     echo " => package docker.io is already installed."
