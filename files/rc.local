@@ -11,8 +11,8 @@ docker run -d --rm --name lms \
   -p 3483:3483/tcp \
   -p 3483:3483/udp \
   -e HTTP_PORT=9002 \
-  -e PUID=1000 \
-  -e PGID=1000 \
+  -e PUID=0 \
+  -e PGID=0 \
   lmscommunity/logitechmediaserver:stable
 
 # Samba
