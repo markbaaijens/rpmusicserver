@@ -22,9 +22,11 @@ docker run -p 139:139 -p 445:445 -p 137:137/udp -p 138:138/udp \
   dperson/samba -n -p  -s "Publiek;/mnt;yes;no;yes;all;;;Publiek" -r
 
 # Transmission
+: '
 docker run -d --rm --name transmission -p 9091:9091 -e PUID=1000 -e PGID=1000 \
   -v /media/usbdata/config/docker/transmission:/config  \
   -v /media/usbdata/user/Publiek/Downloads:/downloads  \
   linuxserver/transmission
+'
 
 exit 0
