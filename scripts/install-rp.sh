@@ -10,7 +10,7 @@ then
     exit
 fi
 
-echo "Installing docker.io packages."
+echo "Installing docker.io packages:"
 if [ ! $(dpkg --list | grep docker.io | awk '{print $1}' | grep ii) ]; then 
 	apt install docker.io -y
     echo " => package docker.io is installed"
@@ -18,7 +18,7 @@ else
     echo " => package docker.io is already installed."
 fi
 
-echo "Creating mountpoint for harddisk."
+echo "Creating mountpoint for harddisk:"
 if [ ! -d /media/usbdata ]; then
     mkdir /media/usbdata
     chmod 777 /media/usbdata -R
@@ -27,7 +27,7 @@ else
     echo " => mountpoint is already present."    
 fi
 
-echo "Adding line to /etc/fstab."
+echo "Adding line to /etc/fstab:"
 if [ ! "$(grep "LABEL=usbdata" /etc/fstab)" ]; then
     # auto,nofail: server start even when harddisk is not present
     /bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
@@ -43,7 +43,7 @@ mkdir /media/usbdata/user/Publiek\Downloads -p
 mkdir /media/usbdata/user/Publiek\Muziek -p
 chmod 777 /media/usbdata/user/Publiek -R
 
-echo "Adding line to /etc/crontab."
+echo "Adding line to /etc/crontab:"
 if [ ! "$(grep "dist-upgrade" /etc/crontab)" ]; then
     /bin/sh -c 'echo "02 10 * * * root apt dist-upgrade" >> /etc/crontab'
     echo " => line added."    
