@@ -56,7 +56,7 @@ else
     echo " => LMS config folder is already present, no config files copied."    
 fi
 
-echo "Copy rc.local file"
+echo "Copy rc.local file:"
 cp /tmp/rpmusicserver/files/rc.local /etc
 chmod +x /etc/rc.local
 echo " => rc.local file copied."    
