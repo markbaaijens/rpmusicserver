@@ -23,7 +23,7 @@ else
     echo " => mountpoint is already present."    
 fi
 
-echo "Adding line to /etc/fstab:"
+echo "Adding line for usbdata-disk to /etc/fstab:"
 if [ ! "$(grep "LABEL=usbdata" /etc/fstab)" ]; then
     # auto,nofail: server start even when harddisk is not present
     /bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
@@ -39,7 +39,7 @@ mkdir /media/usbdata/user/Publiek/Downloads -p
 mkdir /media/usbdata/user/Publiek/Muziek -p
 chmod 777 /media/usbdata/user/Publiek -R
 
-echo "Adding line to /etc/crontab for upgrade:"
+echo "Adding line for upgrade to /etc/crontab:"
 if [ ! "$(grep "apt-get upgrade" /etc/crontab)" ]; then
     /bin/sh -c 'echo "02 10 * * * root apt-get upgrade -y" >> /etc/crontab'
     echo " => line added."    
