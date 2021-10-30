@@ -1,34 +1,111 @@
 #!/bin/bash
+#
+# This script will format a disk for use in the RP Music Server
+#
 
-# Ask user for disk to be formatted (see burn-image.sh)
-# - filtered by USB?
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    echo "Script ended with failure."
+    exit
+fi
 
-# Ask user confirmation before formatting (see burn-image.sh)
+setup_environment() {
+    echo "Setup environment."    
+    export LC_ALL=C  # Console output = English
+}
 
-# Wipe USB-disk
-	# Wipe disk
-	lsblk | grep disk
-	sudo umount /dev/sda1
-	sudo wipefs -a /dev/sda
-	# Or: sudo dd if=/dev/zero of=/dev/sda bs=512 count=1 conv=notrunc
-	sudo hdparm -z /dev/sda  # Alternative: sudo partprobe /dev/sda
+cleanup_environment() {
+    echo "Cleaning up environment."
+    unset LC_ALL  # Reset console output to default language
+}
 
-# Format with ext4
-# Attach label, fixed name = usbdisk
-	# Create new partition table
-	# Scripting fdisk  to create partition:
-	#   n = new partition
-	#   p = primary
-	#   1 = Enter = nuber
-	#   First sector: enter
-	#   Last sector: enter
-	#   w = write
-	echo -e "o\nn\np\n1\n\n\nw" | sudo fdisk /dev/sda
-	sudo hdparm -z /dev/sda
-	lsblk  # Check
+setup_environment
+
+readarray -t disks < <(lsblk -b -e7 -o name,type | grep disk | awk '{print $1}')
+sd_disks=()
+for disk in "${disks[@]}"; do
+    model=$(parted /dev/$disk print | grep Model)
+    if [[ ! $model == *"nvme"* ]]; then
+        sd_disks+=("$disk")
+    fi
+done
+
+if [ "${sd_disks[0]}" == "" ]; then
+    echo "No disk available."
+    cleanup_environment	
+    echo "Script ended with failure." 
+    exit
+fi
+
+echo "Available disk(s):"
+counter=0
+for disk in "${sd_disks[@]}"; do
+    model=$(parted /dev/$disk print | grep Model | cut -d " " -f2- )
+    size=$(parted /dev/$disk print | grep "Disk /dev/" | awk '{print $3}')
+  	echo "$counter: $model/$disk ($size) $([ $counter == 0 ] && echo "[default]")"
+    counter=$(($counter + 1))
+done
+echo "Q: quit"
+
+read -p "Select a disk by number or press [Enter] to choose the first one " disk_choice
+
+if [ "${disk_choice,,}" == "q" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
+    echo "No disk selected."
+    cleanup_environment    
+    echo "Script ended."
+    exit
+fi
+
+chosen_disk=${sd_disks[disk_choice]}
+echo "You have chosen: $chosen_disk"
+
+read -r -p "Do you want to continue formatting $chosen_disk? [yes/NO] " start_install
+if [ "$start_install" != "yes" ]; then
+    cleanup_environment
+    echo "Script ended by user."
+    exit
+fi
+
+echo "Starting unmounting /dev/$chosen_disk partitions..."
+partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
+for partition in $partitions; do
+    sleep 3	
+	echo "Unmouting $partition"
+    umount -f "$partition"
+	if [ -n "$(df | grep /dev/$partition)" ]; then
+        echo "Failed to umount /dev/$partition."
+        cleanup_environment
+        echo "Script ended with failure."
+        exit
+    fi    
+    echo "Partition $partition successfully unmounted."
+done
+hdparm -z /dev/$chosen_disk
+echo "Done unmounting /dev/$chosen_disk partitions."
+
+echo "Start wiping $chosen_disk..."
+wipefs -a "/dev/$chosen_disk"
+hdparm -z /dev/$chosen_disk
+echo "Done wiping $chosen_disk."
+
+# Scripting fdisk to create partition:
+#   n = new partition
+#   p = primary
+#   1 = Enter = nuber
+#   First sector: enter
+#   Last sector: enter
+#   w = write
+echo "Start creating partition on $chosen_disk..."
+echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/$chosen_disk
+hdparm -z /dev/$chosen_disk
+echo "Done creating partition on $chosen_disk."
 	
-	# Format partition as ext4
-	sudo mkfs.ext4 -L 'usbdata' /dev/sda1
-	sudo hdparm -z /dev/sda
-	# Check label:  sudo e2label /dev/sdXY
-	
+echo "Start formatting partition on $chosen_disk..."	
+mkfs.ext4 -L 'usbdata' "/dev/$chosen_disk"1
+hdparm -z /dev/$chosen_disk
+echo "Done formatting partition on $chosen_disk."		
+
+cleanup_environment
+echo "Script ended successfully."
+
+exit
