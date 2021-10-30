@@ -43,21 +43,21 @@ mkdir /media/usbdata/user/Publiek/Downloads -p
 mkdir /media/usbdata/user/Publiek/Muziek -p
 chmod 777 /media/usbdata/user/Publiek -R
 
-echo "Adding line to /etc/crontab:"
-if [ ! "$(grep "dist-upgrade" /etc/crontab)" ]; then
+echo "Adding line to /etc/crontab for upgrade:"
+if [ ! "$(grep "apt-get upgrade" /etc/crontab)" ]; then
     /bin/sh -c 'echo "02 10 * * * root apt-get upgrade -y" >> /etc/crontab'
     echo " => line added."    
 else
     echo " => line is already present."    
 fi
 
-echo "Copy config files"
-if [ ! -d /media/usbdata/config ]; then
-    mkdir -p /media/usbdata/config/docker
-    cp -r /tmp/rpmusicserver/files/config/* /media/usbdata/config/docker
-    echo " => config files copied."    
+echo "Copy LMS config files"
+if [ ! -d /media/usbdata/config/docker/lms ]; then
+    mkdir -p /media/usbdata/config/docker/lms
+    cp -r /tmp/rpmusicserver/files/config/lms/* /media/usbdata/config/docker/lms
+    echo " => LMS config files copied."    
 else
-    echo " => config folder is already present, no config files copied."    
+    echo " => LMS config folder is already present, no config files copied."    
 fi
 
 echo "Copy rc.local file"
