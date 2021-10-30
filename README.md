@@ -7,7 +7,7 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
   * `unzip rpmusicserver.zip`
 * Burn sd-card:
   * `sudo rpmusicserver-master/scripts/burn-image.sh`
-* Format usb-disk (ext4, label = usbdisk)
+* Format usb-disk for data (ext4, label = usbdata)
   * `sudo rpmusicserver-master/scripts/format-usbdisk.sh`
 * Hookup harddisk to the Pi
 * Reboot the clean system
