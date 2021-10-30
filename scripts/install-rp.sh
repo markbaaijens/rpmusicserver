@@ -1,45 +1,70 @@
 #!/bin/bash
+#
+# This script will install RP Music Server onto a fresh copy of Rapsbian OS Lite
+#
 
-# packages
-# - docker (by standard repo)
-	sudo apt install docker.io
+if [ -z "$(whoami | grep root)" ]
+then
+    echo "Not running as root."
+    echo "Script ended with failure."
+    exit
+fi
 
-# connect disk
-    sudo mkdir /media/usbdata
-    sudo chmod 777 /media/usbdata -R
-    # Test
-    sudo mount -t ext4 /dev/sda1 /media/usbdata/  
-    mount | grep /dev/sd
-    sudo umount /dev/sda1
-    # fstab
-    sudo /bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
-        * geen ‘defaults’, maar ‘auto,nofail’: hiermee start de server door als de usb-schijf tijdens opstarten niet aanwezig is’
-    sudo mount -a
-    controleren met: reboot + mount
-    # Mappen aanmaken en rechten
-    sudo mkdir /media/usbdata/user/Publiek
-    sudo mkdir /media/usbdata/user/Publiek\Downloads # ?
-    sudo mkdir /media/usbdata/user/Publiek\Muziek
-    sudo chmod 777 /media/usbdata/user/Publiek -R
+echo "Start installing packages..."
+apt-get install docker.io tree -y
+echo "Done installing packages."
 
-# crontab
-# - upgrade
-    sudo /bin/sh -c 'echo "02 10 * * * apt dist-upgrade" >> /etc/crontab'
+echo "Creating mountpoint for harddisk:"
+if [ ! -d /media/usbdata ]; then
+    mkdir /media/usbdata
+    chmod 777 /media/usbdata -R
+    echo " => mountpoint created."    
+else
+    echo " => mountpoint is already present."    
+fi
 
+echo "Adding line for usbdata-disk to /etc/fstab:"
+if [ ! "$(grep "LABEL=usbdata" /etc/fstab)" ]; then
+    # auto,nofail: server start even when harddisk is not present
+    /bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
+    echo " => line added."
+else
+    echo " => line is already present."    
+fi    
+mount -a
 
-# check if config folder already exist; if so, skip copying
-# else:
-# - config/lms => /media/usbdata/config/docker/lms
-# Ask if transmission should be installed (Transmission docker-container will not be started in rc.local in config files are not present)
-# - config/transmission => /media/usbdata/config/docker/transmission
+echo "Creating user directories."
+mkdir /media/usbdata/user/Publiek -p
+mkdir /media/usbdata/user/Publiek/Downloads -p
+mkdir /media/usbdata/user/Publiek/Muziek -p
+chmod 777 /media/usbdata/user/Publiek -R
 
-# copy rc.local file
-# - rc.local => /etc
+echo "Adding line for upgrade to /etc/crontab:"
+if [ ! "$(grep "apt-get upgrade" /etc/crontab)" ]; then
+    /bin/sh -c 'echo "02 10 * * * root apt-get upgrade -y" >> /etc/crontab'
+    echo " => line added."    
+else
+    echo " => line is already present."    
+fi
 
-# make rc.local executable
-    sudo chmod +x /etc/rc.local
-    sudo systemctl status rc-local  # Check status
+echo "Copy LMS config files"
+if [ ! -d /media/usbdata/config/docker/lms ]; then
+    mkdir -p /media/usbdata/config/docker/lms
+    cp -r /tmp/rpmusicserver/files/config/lms/* /media/usbdata/config/docker/lms
+    echo " => LMS config files copied."    
+else
+    echo " => LMS config folder is already present, no config files copied."    
+fi
 
-# - execute /etc/rc.local to monitor docker installation proces (can be tedious)
+echo "Copy rc.local file:"
+cp /tmp/rpmusicserver/files/rc.local /etc
+chmod +x /etc/rc.local
+echo " => rc.local file copied."    
 
-# - reboot
+# Execute /etc/rc.local for preloading docker containers
+echo "Start executing /etc/rc.local..."
+/etc/rc.local
+echo "Done executing /etc/rc.local."
+
+echo "Installation complete, system will be rebooted."
+reboot now

@@ -2,23 +2,28 @@
 Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transcoder, etc.
 
 ## Steps to turn a Pi into a music server:
-* download all code 
+* Download all code 
   * `wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O rpmusicserver.zip`
   * `unzip rpmusicserver.zip`
-* make scripts executable: 
-  * `chmod +x rpmusicserver-master/scripts/*.sh`
-* burn sd-card:
+* Burn sd-card:
   * `sudo rpmusicserver-master/scripts/burn-image.sh`
-* format usb-disk (ext4, label = usbdisk)
+* Format usb-disk (ext4, label = usbdisk)
   * `sudo rpmusicserver-master/scripts/format-usbdisk.sh`
-* hookup harddisk to the Pi
-* reboot the clean system
-* remote installation with install-rp script via ssh
-	* `ssh pi@raspberrypi "bash -s" < rpmusicserver-master/scripts/install-rp.sh`
-	* password: raspberry
-* system will be rebooted automatically after installation
-* test access:
+* Hookup harddisk to the Pi
+* Reboot the clean system
+* Check if Pi is running
+  * `ping raspberrypi`
+* Installation and configuration with install-rp script via ssh
+  * `rsync -r rpmusicserver-master/* pi@raspberrypi:/tmp/rpmusicserver`
+  * `ssh pi@raspberrypi "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`
+	* password = raspberry
+* System will be rebooted automatically after installation
+* Test access:
+  * `watch nmap raspberrypi`
   * Samba: (file explorer) `smb://raspberrypi`
   * LMS: (browser) http://raspberrypi:9002
-  * Transmission: (browser) http://raspberrypi:9091
-
+  * (Transmission: (browser) http://raspberrypi:9091)
+* Engage
+  * copy music files to smb://raspberrypi/Publiek/Muziek
+  * hookup a Squeezebox player to your network
+  * enjoy!

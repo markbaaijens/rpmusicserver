@@ -1,0 +1,127 @@
+<!--
+ * LMS-Material
+ *
+ * Copyright (c) 2018-2021 Craig Drummond <craig.p.drummond@gmail.com>
+ * MIT license.
+-->
+ 
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link href="html/font/font.css?r=49" rel="stylesheet">
+  <link href="html/css/lib.min.css?r=2.7.2" rel="stylesheet">
+  [% PERL %]
+  my $version=Plugins::MaterialSkin::Plugin->pluginVersion();
+  my $windowTitle=Plugins::MaterialSkin::Plugin->windowTitle();
+  my $ua=$stash->get("userAgent");
+  my $theme='dark';
+  my $themeColor='#212121';
+  # Keep in sync with store.js (defaultTheme)
+  if (index($ua, 'Android') != -1) {
+    $theme='darker';
+  } elsif (index($ua, 'iPad') != -1 || index($ua, 'iPhone') != -1 || index($ua, 'MobileSafari') != -1) { # || (index($ua, 'Macintosh') != -1 && index($ua, '(KHTML, like Gecko) Version') != -1)) {
+    $theme='light';
+    $themeColor='#f5f5f5';
+  } elsif (index($ua, 'Linux') != -1) {
+    $theme='linux/dark/Adwaita-Dark';
+    $themeColor='#2d2d2d';
+  } elsif (index($ua, 'Win') != -1) {
+    $theme='windows/dark/Windows-10-Dark';
+    $themeColor='#000000';
+  } elsif (index($ua, 'Mac') != -1) {
+    $theme='mac/dark/Mojave-Dark';
+    $themeColor='#353537';
+  }
+  print("  <link href=\"html/css/themes/${theme}.min.css?r=$version\" rel=\"stylesheet\" id=\"themecss\" rel=\"stylesheet\" onerror=\"setTheme('dark')\">\n");
+  print("  <link href=\"html/css/variant/standard.min.css?r=$version\" rel=\"stylesheet\" id=\"variantcss\">\n");
+  print("  <link href=\"html/css/colors/blue.min.css?r=$version\" rel=\"stylesheet\" id=\"colorcss\">\n");
+  print("  <link href=\"html/css/style.min.css?r=$version\" rel=\"stylesheet\">\n");
+  print("  <link href=\"html/css/mobile.min.css?r=$version\" rel=\"stylesheet\" id=\"layoutcss\">\n");
+  print("  <title>${windowTitle}</title>\n");
+  print("  <meta name=\"apple-mobile-web-app-title\" content=\"${windowTitle}\">\n");
+  print("  <meta name=\"application-name\" content=\"${windowTitle}\">\n");
+  print("  <meta name=\"theme-color\" content=\"${themeColor}\">");
+  [% END %]
+  <link href="/material/customcss/mobile" rel="stylesheet" id="customcss">
+  <link href="/material/material.webmanifest" rel="manifest">
+  <link href="/material/icon.png" rel="icon shortcut" sizes="128x128">
+  <link href="/material/icon.png" rel="apple-touch-icon" sizes="128x128">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+ </head>
+ <body>
+  <div id="app" v-cloak>
+   <v-app class="lms-app" :dark="darkUi" v-touch:swipe.left="swipe" v-touch:swipe.right="swipe" v-touch:start="touchStart" v-touch:end="touchEnd">
+    <lms-currentcover></lms-currentcover>
+    <lms-server></lms-server>
+    <lms-toolbar></lms-toolbar>
+    <div v-if="desktopLayout" class="lms-desktop-toolbar-pad"></div>
+    <lms-splitter :margin="(desktopLayout && showQueue) ? 20 : 0" class="hide-for-mini">
+     <div slot="left-pane"><lms-browse v-show="desktopLayout || page=='browse'"></lms-browse></div>
+     <div slot="right-pane"><lms-queue v-show="(desktopLayout && showQueue) || page=='queue'"></lms-queue></div>
+    </lms-splitter>
+    <lms-now-playing v-show="desktopLayout || page=='now-playing'"></lms-now-playing>
+    <lms-bottomnav v-if="!desktopLayout"></lms-bottomnav>
+    <lms-ui-settings v-if="dialogs.uisettings"></lms-ui-settings>
+    <lms-player-settings v-if="dialogs.playersettings"></lms-player-settings>
+    <lms-information-dialog v-if="dialogs.info"></lms-information-dialog>
+    <lms-sync-dialog v-if="dialogs.sync"></lms-sync-dialog>
+    <lms-groupplayers-dialog v-if="dialogs.group"></lms-groupplayers-dialog>
+    <lms-volume v-if="dialogs.volume"></lms-volume>
+    <lms-groupvolume v-if="dialogs.groupvolume"></lms-groupvolume>
+    <lms-manage-players v-if="dialogs.manage"></lms-manage-players>
+    <lms-randommix v-if="dialogs.rndmix"></lms-randommix>
+    <lms-favorite v-if="dialogs.favorite"></lms-favorite>
+    <lms-rating-dialog v-if="dialogs.rating"></lms-rating-dialog>
+    <lms-sleep-dialog v-if="dialogs.sleep"></lms-sleep-dialog>
+    <lms-search-dialog v-if="dialogs.search"></lms-search-dialog>
+    <lms-movequeue-dialog v-if="dialogs.movequeue"></lms-movequeue-dialog>
+    <lms-info-dialog v-if="dialogs.iteminfo"></lms-info-dialog>
+    <lms-iframe-dialog v-if="dialogs.iframe"></lms-iframe-dialog>
+    <lms-dstm-dialog v-if="dialogs.dstm"></lms-dstm-dialog>
+    <lms-savequeue v-if="dialogs.savequeue"></lms-savequeue>
+    <lms-icon-dialog v-if="dialogs.icon"></lms-icon-dialog>
+    <lms-prompt-dialog v-if="dialogs.prompt"></lms-prompt-dialog>
+    <lms-addtoplaylist-dialog v-if="dialogs.addtoplaylist"></lms-addtoplaylist-dialog>
+    <lms-file-dialog v-if="dialogs.file"></lms-file-dialog>
+    <lms-advancedsearch-dialog v-if="dialogs.advancedsearch"></lms-advancedsearch-dialog>
+    <lms-downloadstatus v-if="dialogs.downloadstatus"></lms-downloadstatus>
+    <lms-notifications v-if="dialogs.notifications"></lms-notifications>
+    <lms-gallery v-if="dialogs.gallery"></lms-gallery>
+    <lms-screensaver></lms-screensaver>
+    <lms-volumeoverlay></lms-volumeoverlay>
+    <lms-mediasession></lms-mediasession>
+   </v-app>
+  </div>
+  [% PERL %]
+  my $version=Plugins::MaterialSkin::Plugin->pluginVersion();
+  my $windowTitle=Plugins::MaterialSkin::Plugin->windowTitle();
+  my $hideSettings=Plugins::MaterialSkin::Plugin->hideSettings();
+  print("<script>const LMS_MATERIAL_REVISION=\"$version\"; const LMS_WINDOW_TITLE=\"$windowTitle\"; const LMS_SETTINGS_HIDE=\"$hideSettings\";</script>\n");
+  [% END %]
+  <script src="html/js/material.min.js?r=2.7.2"></script>
+  <script src="material/custom.js"></script>
+  <script type="text/javascript">
+   function loadOtherFiles() {
+     var script = document.createElement("script");
+     script.src = "html/js/material-deferred.min.js?r=2.7.2";
+     document.body.appendChild(script);
+     var link = document.createElement("link");
+     link.href = "html/css/lib-deferred.min.css?r=2.7.2";
+     link.rel = "stylesheet";
+     document.body.appendChild(link);
+   }
+   if (window.addEventListener) {
+     window.addEventListener("load", loadOtherFiles, false);
+   } else if (window.attachEvent) {
+     window.attachEvent("onload", loadOtherFiles);
+   } else {
+     window.onload = loadOtherFiles;
+   }
+  </script>
+ </body>
+</html>
+

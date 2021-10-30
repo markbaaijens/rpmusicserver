@@ -3,6 +3,7 @@ ACLFiletest: disabled
 Amazon: disabled
 AppGallery: enabled
 AudioScrobbler: disabled
+AutoRescan: needs-install
 CLI: enabled
 Classical: disabled
 DateTime: disabled
@@ -27,7 +28,7 @@ MP3tunes: disabled
 MaterialSkin: enabled
 MusicMagic: disabled
 MyApps: enabled
-NetTest: enabled
+NetTest: needs-disable
 OPMLGeneric: enabled
 OnlineLibrary: disabled
 Orange: disabled
@@ -55,6 +56,7 @@ _ts_ACLFiletest: 1623954001
 _ts_Amazon: 1625156649
 _ts_AppGallery: 1623954001
 _ts_AudioScrobbler: 1625156649
+_ts_AutoRescan: 1635534813
 _ts_CLI: 1623954001
 _ts_Classical: 1625156649
 _ts_DateTime: 1625156649
@@ -73,13 +75,13 @@ _ts_JiveExtras: 1625156649
 _ts_LMA: 1625156649
 _ts_LibraryDemo: 1623954001
 _ts_LineIn: 1625156649
-_ts_LineOut: 1623954001
+_ts_LineOut: 1623954001auto
 _ts_MOG: 1624051130
 _ts_MP3tunes: 1625156649
-_ts_MaterialSkin: 1634762314
+_ts_MaterialSkin: 1635533346
 _ts_MusicMagic: 1623954001
 _ts_MyApps: 1623954001
-_ts_NetTest: 1623954001
+_ts_NetTest: 1635534812
 _ts_OPMLGeneric: 1623954001
 _ts_OnlineLibrary: 1625156649
 _ts_Orange: 1625156649
