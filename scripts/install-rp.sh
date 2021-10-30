@@ -60,10 +60,12 @@ else
     echo " => config folder is already present, no config files copied."    
 fi
 
+echo "Copy rc.local file"
 cp /tmp/rpmusicserver/files/rc.local /etc
 chmod +x /etc/rc.local
+echo " => rc.local file copied."    
 
-# Execute /etc/rc.local to monitor docker installation proces (can be tedious)
+# Execute /etc/rc.local for preloading docker containers
 echo "Start executing /etc/rc.local..."
 /etc/rc.local
 echo "Done executing /etc/rc.local."
