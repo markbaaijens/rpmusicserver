@@ -45,7 +45,7 @@ chmod 777 /media/usbdata/user/Publiek -R
 
 echo "Adding line to /etc/crontab:"
 if [ ! "$(grep "dist-upgrade" /etc/crontab)" ]; then
-    /bin/sh -c 'echo "02 10 * * * root apt dist-upgrade" >> /etc/crontab'
+    /bin/sh -c 'echo "02 10 * * * root apt-get dist-upgrade" >> /etc/crontab'
     echo " => line added."    
 else
     echo " => line is already present."    
