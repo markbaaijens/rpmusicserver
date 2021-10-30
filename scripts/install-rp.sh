@@ -10,13 +10,9 @@ then
     exit
 fi
 
-echo "Installing docker.io packages:"
-if [ ! $(dpkg --list | grep docker.io | awk '{print $1}' | grep ii) ]; then 
-	apt-get install docker.io -y
-    echo " => package docker.io is installed"
-else
-    echo " => package docker.io is already installed."
-fi
+echo "Start installing packages..."
+apt-get install docker.io tree -y
+echo "Done installing packages."
 
 echo "Creating mountpoint for harddisk:"
 if [ ! -d /media/usbdata ]; then
