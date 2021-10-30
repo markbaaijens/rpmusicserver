@@ -22,4 +22,4 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
   * `watch nmap raspberrypi`
   * Samba: (file explorer) `smb://raspberrypi`
   * LMS: (browser) http://raspberrypi:9002
-  * Transmission: (browser) http://raspberrypi:9091
+  * (Transmission: (browser) http://raspberrypi:9091)
