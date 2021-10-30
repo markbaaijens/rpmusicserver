@@ -1,32 +1,38 @@
 #!/bin/bash
 
 # LMS (Logitech Media Server)
-docker run -d --rm --name lms \
-  -v "/media/usbdata/config/docker/lms":"/config":rw \
-  -v "/media/usbdata/user/Publiek/Muziek":"/music":ro \
-  -v "/etc/localtime":"/etc/localtime":ro \
-  -v "/etc/timezone":"/etc/timezone":ro \
-  -p 9002:9002/tcp \
-  -p 9090:9090/tcp \
-  -p 3483:3483/tcp \
-  -p 3483:3483/udp \
-  -e HTTP_PORT=9002 \
-  -e PUID=0 \
-  -e PGID=0 \
-  lmscommunity/logitechmediaserver:stable
+if [ ! "$(docker ps -f name=lms -q)" ]; then 
+  docker run -d --rm --name lms \
+    -v "/media/usbdata/config/docker/lms":"/config":rw \
+    -v "/media/usbdata/user/Publiek/Muziek":"/music":ro \
+    -v "/etc/localtime":"/etc/localtime":ro \
+    -v "/etc/timezone":"/etc/timezone":ro \
+    -p 9002:9002/tcp \
+    -p 9090:9090/tcp \
+    -p 3483:3483/tcp \
+    -p 3483:3483/udp \
+    -e HTTP_PORT=9002 \
+    -e PUID=0 \
+    -e PGID=0 \
+    lmscommunity/logitechmediaserver:stable
+  fi
 
 # Samba
-docker run -p 139:139 -p 445:445 -p 137:137/udp -p 138:138/udp \
-  -d --rm --name samba \
-  -v /media/usbdata/user/Publiek:/mnt  \
-  dperson/samba -n -p  -s "Publiek;/mnt;yes;no;yes;all;;;Publiek" -r
+if [ ! "$(docker ps -f name=samba -q)" ]; then 
+  docker run -p 139:139 -p 445:445 -p 137:137/udp -p 138:138/udp \
+    -d --rm --name samba \
+    -v /media/usbdata/user/Publiek:/mnt  \
+    dperson/samba -n -p  -s "Publiek;/mnt;yes;no;yes;all;;;Publiek" -r
+fi
 
 # Transmission
 : '
-docker run -d --rm --name transmission -p 9091:9091 -e PUID=1000 -e PGID=1000 \
-  -v /media/usbdata/config/docker/transmission:/config  \
-  -v /media/usbdata/user/Publiek/Downloads:/downloads  \
-  linuxserver/transmission
+if [ ! "$(docker ps -f name=transmission -q)" ]; then 
+  docker run -d --rm --name transmission -p 9091:9091 -e PUID=1000 -e PGID=1000 \
+    -v /media/usbdata/config/docker/transmission:/config  \
+    -v /media/usbdata/user/Publiek/Downloads:/downloads  \
+    linuxserver/transmission
+fi
 '
 
 exit 0
