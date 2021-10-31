@@ -73,9 +73,9 @@ def GetMachineInfo():
     return BuildResponse(HTTP_OK, jsonify(machineInfo), request.url)
 
 if __name__ == '__main__':
-#    logger.debug('App Started')
+    logger.debug('API started')
     app.run(port=5000, debug=True)  # auto-reload, only localhoast
 #    app.run(host='0.0.0.0', port=5000)  # public server, reachable from remote
-#    logger.debug('App Stopped')
+    logger.debug('API stopped')
 
 
