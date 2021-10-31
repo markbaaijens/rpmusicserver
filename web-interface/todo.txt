@@ -1,0 +1,5 @@
+- find out how to install and start
+- default to /var/log (must have root privileges)
+  - start API-controller as sudo => pip3 must install globally!
+- flexible way of using debug or production-command
+  - by config.py?
