@@ -28,7 +28,7 @@ run_test() {
 
 # GET /
 title="GET /api"
-test_cmd="curl -i http://localhost:5000/api"
+test_cmd="curl http://localhost:5000/api"
 test_value="rpmusicserver-api"
 run_test "$title" "$test_cmd" "$test_value"
 
