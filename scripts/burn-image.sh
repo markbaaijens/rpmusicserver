@@ -67,33 +67,30 @@ if [ "${disk_choice,,}" == "q" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
 fi
 
 chosen_disk=${sd_disks[disk_choice]}
-echo "You have chosen: ${sd_disks[$chosen_disk]}"
-sdcard="$(lsblk -e7 | grep ${sd_disks[$chosen_disk]} | cut -d' ' -f1)"
+echo "You have chosen: $chosen_disk"
 
-sdlabel=$(echo "$sdcard" | head -n 1)
-partitions=$(echo "$sdcard" | grep -vw "$sdlabel" | grep -oE "($sdlabel)p$number_pattern")
-
-read -r -p "Do you want to start installation on $sdlabel? [yes/NO] " start_install
+read -r -p "Do you want to start installation on $chosen_disk? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
     cleanup_environment
     echo "Script ended by user."
     exit
 fi
 
-echo "Unmounting /dev/$sdlabel partitions..."
+echo "Unmounting /dev/$chosen_disk partitions..."
+partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
 for partition in $partitions; do
     # todo testen
     sleep 3
-    umount -f "/dev/$partition"
-	if [ -n "$(df | grep /dev/$partition)" ]; then
-        echo "Failed to umount /dev/$partition."
+    umount -f "$partition"
+	if [ -n "$(df | grep $partition)" ]; then
+        echo "Failed to umount $partition."
         cleanup_environment
         echo "Script ended with failure."
         exit
     fi
    	echo "Partition /dev/$partition successfully unmounted."
 done
-echo "Done unmounting /dev/$sdlabel partitions"
+echo "Done unmounting /dev/$chosen_disk partitions"
 
 if [ ! $(dpkg --list | grep wget | awk '{print $1}' | grep ii) ]; then 
     apt install wget -y
@@ -121,16 +118,16 @@ if [ -z $extracted_img ]; then
 fi
 echo "Done extracting $working_dir/$archive"
 
-echo "Start wiping $sdlabel..."
-wipefs -a "/dev/$sdlabel"
-echo "Done wiping $sdlabel."
+echo "Start wiping $chosen_disk..."
+wipefs -a "/dev/$chosen_disk"
+echo "Done wiping $chosen_disk."
 
 if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]; then 
     apt install gddrescue -y
 fi
-echo "Start burning $extracted_img to $sdlabel..."
-ddrescue -D --force $extracted_img "/dev/$sdlabel"
-echo "Done burning $sdlabel."
+echo "Start burning $extracted_img to $chosen_disk..."
+ddrescue -D --force $extracted_img "/dev/$chosen_disk"
+echo "Done burning $chosen_disk."
 
 if [ ! -d $mnt_boot ]; then 
     mkdir $mnt_boot
@@ -144,7 +141,7 @@ if [ ! -d /dev/disk/by-label ]; then
     exit
 fi
 
-boot_part=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$sdlabel.*$")
+boot_part=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$chosen_disk.*$")
 if [ -z $boot_part ]; then
     echo "Failed to capture boot partition."
     cleanup_environment
@@ -157,11 +154,8 @@ mount "/dev/$boot_part" $mnt_boot
 echo "Partition /dev/$boot_part mounted."
 
 echo "Activate SSH..."
-if [ ! $(touch $mnt_boot/ssh) ]; then
-    echo "Command touch unsuccesful."
-    echo "SSH cannot be activated on $sdlabel."
-fi
-echo "SSH has been activated on $sdlabel."
+touch $mnt_boot/ssh
+echo "SSH has been activated on $chosen_disk."
 
 umount "/dev/$boot_part"
 if [ -d $mnt_boot ]; then 
