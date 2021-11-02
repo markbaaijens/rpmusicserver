@@ -15,7 +15,8 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
   * make sure your Pi is powered off
   * insert SD-card into your Pi
   * connect USB-drive to the Pi
-  * start the clean system
+  * connect the Pi to your network with a network cable 
+  * power up the Pi
   * check if Pi is running: `ping raspberrypi`
 * Installation and configuration with install-rp script via ssh:
   * `rsync -r rpmusicserver-master/* pi@raspberrypi:/tmp/rpmusicserver`
