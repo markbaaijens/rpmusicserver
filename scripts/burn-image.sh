@@ -25,7 +25,6 @@ setup_environment() {
 
 cleanup_environment() {
     echo "Cleaning up environment"
-    rm -rf $working_dir
     unset LC_ALL  # Reset console output to default language
 }
 
@@ -90,6 +89,7 @@ for partition in $partitions; do
     fi
    	echo "Partition /dev/$partition successfully unmounted."
 done
+hdparm -z /dev/$chosen_disk
 echo "Done unmounting /dev/$chosen_disk partitions"
 
 if [ ! $(dpkg --list | grep wget | awk '{print $1}' | grep ii) ]; then 
@@ -120,6 +120,7 @@ echo "Done extracting $working_dir/$archive"
 
 echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
+hdparm -z /dev/$chosen_disk
 echo "Done wiping $chosen_disk."
 
 if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]; then 
@@ -127,6 +128,7 @@ if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]; then
 fi
 echo "Start burning $extracted_img to $chosen_disk..."
 ddrescue -D --force $extracted_img "/dev/$chosen_disk"
+hdparm -z /dev/$chosen_disk
 echo "Done burning $chosen_disk."
 
 if [ ! -d $mnt_boot ]; then 
@@ -151,6 +153,7 @@ fi
 
 echo "Mount partition /dev/$boot_part."
 mount "/dev/$boot_part" $mnt_boot
+hdparm -z /dev/$chosen_disk
 echo "Partition /dev/$boot_part mounted."
 
 echo "Activate SSH..."
@@ -158,6 +161,7 @@ touch $mnt_boot/ssh
 echo "SSH has been activated on $chosen_disk."
 
 umount "/dev/$boot_part"
+hdparm -z /dev/$chosen_disk
 if [ -d $mnt_boot ]; then 
     rm -rf $mnt_boot
 fi
