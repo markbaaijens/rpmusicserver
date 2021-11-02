@@ -1,1 +1,2 @@
-api_name = 'rpmusicserver-api'
+apiName = 'rpmusicserver-api'
+configDir = ''

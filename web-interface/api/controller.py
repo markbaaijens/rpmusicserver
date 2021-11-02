@@ -16,7 +16,6 @@ HTTP_METHOD_NOT_ALLOWED = 405
 
 app = Flask(__name__)
 CORS(app)  # To enable http over different domains
-
 app.config.from_object(Config)
 
 logger = logging.getLogger()
@@ -57,7 +56,7 @@ def BuildResponse(statusCode, body, location):
 # curl -i http://localhost:5000/api
 @app.route('/api', methods=['GET'])
 def root():
-    return BuildResponse(HTTP_OK, jsonify({'name': globals.api_name}), request.url)
+    return BuildResponse(HTTP_OK, jsonify({'name': globals.apiName}), request.url)
 
 # GET /api/MachineInfo
 # curl -i http://localhost:5000/MachineInfo
@@ -73,6 +72,17 @@ def GetMachineInfo():
     return BuildResponse(HTTP_OK, jsonify(machineInfo), request.url)
 
 if __name__ == '__main__':
+    import argparse
+    global configDir
+    parser = argparse.ArgumentParser(description='Controller for RP Music Server API')
+    parser.add_argument('--config', type=str,  help="folder where settings = api-settings.json are stored",  nargs=1) 
+    args = parser.parse_args()
+
+    if (args.config != None) and (args.config[0] != ''):
+        configDir = args.config[0]
+    else:
+        configDir = '../../files/config'
+
     logger.debug('API started')
     app.run(port=5000, debug=True)  # auto-reload, only localhoast
 #    app.run(host='0.0.0.0', port=5000)  # public server, reachable from remote
