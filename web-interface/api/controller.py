@@ -16,14 +16,13 @@ HTTP_METHOD_NOT_ALLOWED = 405
 
 app = Flask(__name__)
 CORS(app)  # To enable http over different domains
-app.config.from_object(Config)
 
 logger = logging.getLogger()
 if not logger.handlers:
     logger.setLevel(logging.DEBUG)
 
     fileHandler = logging.handlers.RotatingFileHandler(
-        app.config['LOG_FILE_NAME'], 'a', app.config['LOG_MAX_SIZE'], app.config['LOG_BACKUP_COUNT'])
+        Config.LogFileName, 'a', Config.LogMaxSize, Config.LogBackupCount)
     fileHandler.setLevel(logging.DEBUG)
     fileHandler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
     logger.addHandler(fileHandler)

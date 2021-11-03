@@ -1,6 +1,6 @@
 import os
 
 class Config(object):
-    LOG_FILE_NAME = 'logs/rpmusicserver-api.log'
-    LOG_MAX_SIZE = 10240000
-    LOG_BACKUP_COUNT = 10
+    LogFileName = 'logs/rpmusicserver-api.log'
+    LogMaxSize = 10240000
+    LogBackupCount = 10
