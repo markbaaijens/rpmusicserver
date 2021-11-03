@@ -1,6 +1,11 @@
-import os
+class Config:
+    def __init__(self):
+        self.LogFileName = 'logs/rpmusicserver-api.log'
+        self.LogMaxSize = 10240000
+        self.LogBackupCount = 10
 
-class Config(object):
-    LogFileName = 'logs/rpmusicserver-api.log'
-    LogMaxSize = 10240000
-    LogBackupCount = 10
+    def ReadSettingsFromFile(self):
+        self.LogFileName = 'xxx'
+        self.LogMaxSize = 10
+        self.LogBackupCount = 1
+        return

@@ -6,7 +6,7 @@ from flask_cors import CORS
 
 import logic 
 from config import Config
-import globals
+from globals import configDir, apiName, configObject
 
 HTTP_OK = 200
 HTTP_CREATED = 201
@@ -22,7 +22,10 @@ if not logger.handlers:
     logger.setLevel(logging.DEBUG)
 
     fileHandler = logging.handlers.RotatingFileHandler(
-        Config.LogFileName, 'a', Config.LogMaxSize, Config.LogBackupCount)
+        configObject.LogFileName, 
+        'a', 
+        configObject.LogMaxSize, 
+        configObject.LogBackupCount)
     fileHandler.setLevel(logging.DEBUG)
     fileHandler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
     logger.addHandler(fileHandler)
@@ -72,7 +75,7 @@ def GetMachineInfo():
 
 if __name__ == '__main__':
     import argparse
-    global configDir
+#    global configDir
     parser = argparse.ArgumentParser(description='Controller for RP Music Server API')
     parser.add_argument('--config', type=str,  help="folder where settings = api-settings.json are stored",  nargs=1) 
     args = parser.parse_args()
@@ -81,6 +84,8 @@ if __name__ == '__main__':
         configDir = args.config[0]
     else:
         configDir = '../../files/config'
+
+    configObject.ReadSettingsFromFile()
 
     logger.debug('API started')
     app.run(port=5000, debug=True)  # auto-reload, only localhoast
