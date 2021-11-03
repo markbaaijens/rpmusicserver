@@ -85,7 +85,7 @@ if __name__ == '__main__':
     else:
         configDir = '../../files/config'
 
-    configObject.ReadSettingsFromFile()
+    configObject.ReadSettingsFromFile(configDir)
 
     logger.debug('API started')
     app.run(port=5000, debug=True)  # auto-reload, only localhoast
