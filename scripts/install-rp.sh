@@ -56,10 +56,24 @@ else
     echo " => LMS config folder is already present, no config files copied."    
 fi
 
+echo "Copy settings.json file:"
+# TODO test
+cp /tmp/rpmusicserver/files/settings.json /media/usbdata/config
+echo " => settings.json file copied." 
+
+# TODO Install pip for api (system-wide)
+# TODO 
+# modify settings in /media/usbdata/config/settings.json
+#    ApiDebug = False
+#    ApiLogFileName = /media/usbdata/config/api.log
+#
+# copy web-interface/api => /usr/local/bin/rpmusicserver/web-interface
+
+
 echo "Copy rc.local file:"
 cp /tmp/rpmusicserver/files/rc.local /etc
 chmod +x /etc/rc.local
-echo " => rc.local file copied."    
+echo " => rc.local file copied."     
 
 # Execute /etc/rc.local for preloading docker containers
 echo "Start executing /etc/rc.local..."
