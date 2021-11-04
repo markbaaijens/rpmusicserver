@@ -92,7 +92,7 @@ if __name__ == '__main__':
 
     if configObject.ApiDebug:
         logger.info('API started - debug')
-        app.run(port=5000, debug=True)  # auto-reload, only localhoast
+        app.run(port=5000, debug=True)  # auto-reload on file change, only localhost
     else:
         logger.info('API started')
         app.run(host='0.0.0.0', port=5000)  # public server, reachable from remote
