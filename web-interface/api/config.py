@@ -8,11 +8,12 @@ class Config:
 
     def ReadSettingsFromFile(self, configDir):
         with open(configDir + '/' + 'api-settings.json') as file:
-            data = json.load(file)
+            dataAsDict = json.load(file)
 
-        self.LogFileName = 'xxx'
-        self.LogMaxSize = 10
-        self.LogBackupCount = 1
+        dataAsJson = json.loads(json.dumps(dataAsDict))
+        self.LogFileName = dataAsJson["LogFileName"]
+        self.LogMaxSize = dataAsJson["LogMaxSize"]
+        self.LogBackupCount = dataAsJson["LogBackupCount"]
         return
 
 
