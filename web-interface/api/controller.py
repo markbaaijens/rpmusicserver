@@ -56,9 +56,9 @@ def BuildResponse(statusCode, body, location):
     response.headers['Location'] = location
     return response
 
-# GET /api
-# curl -i http://localhost:5000/api
-@app.route('/api', methods=['GET'])
+# GET /
+# curl -i http://localhost:5000
+@app.route('/', methods=['GET'])
 def root():
     return BuildResponse(HTTP_OK, jsonify({'name': 'rpmusicserver-api'}), request.url)
 
