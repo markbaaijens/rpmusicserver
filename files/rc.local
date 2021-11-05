@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Start API
-python3 /usr/local/bin/rpmusicserver/web-interface/api/controller.py --config /media/usbdata/config
+# Start API in detached mode
+nohup python3 /usr/local/bin/rpmusicserver/web-interface/api/controller.py --config /media/usbdata/config &
 
 # LMS (Logitech Media Server)
 if [ ! "$(docker ps -f name=lms -q)" ]; then 
