@@ -6,7 +6,7 @@ from flask_cors import CORS
 
 import logic 
 from config import Config
-from globals import configDir, apiName, configObject
+from globals import configDir, configObject
 
 HTTP_OK = 200
 HTTP_CREATED = 201
@@ -60,7 +60,7 @@ def BuildResponse(statusCode, body, location):
 # curl -i http://localhost:5000/api
 @app.route('/api', methods=['GET'])
 def root():
-    return BuildResponse(HTTP_OK, jsonify({'name': globals.apiName}), request.url)
+    return BuildResponse(HTTP_OK, jsonify({'name': 'rpmusicserver-api'}), request.url)
 
 # GET /api/MachineInfo
 # curl -i http://localhost:5000/MachineInfo

@@ -11,7 +11,7 @@ then
 fi
 
 echo "Start installing packages..."
-apt-get install docker.io tree -y
+apt-get install docker.io python3-pip tree -y
 echo "Done installing packages."
 
 echo "Creating mountpoint for harddisk:"
@@ -57,18 +57,22 @@ else
 fi
 
 echo "Copy settings.json file:"
-# TODO test
-cp /tmp/rpmusicserver/files/settings.json /media/usbdata/config
+cp /tmp/rpmusicserver/files/config/settings.json /media/usbdata/config
 echo " => settings.json file copied." 
 
-# TODO Install pip for api (system-wide)
+echo "Install python packages for RP Music Server:"
+pip3 install -r /tmp/rpmusicserver/web-interface/requirements.txt 
+echo " => python packages installed." 
+
 # TODO 
 # modify settings in /media/usbdata/config/settings.json
-#    ApiDebug = False
-#    ApiLogFileName = /media/usbdata/config/api.log
-#
-# copy web-interface/api => /usr/local/bin/rpmusicserver/web-interface
+#    "ApiLogFileName": "/media/usbdata/config/api.log",
+#    "ApiDebug": false
 
+echo "Install program files for API for RP Music Server:"
+mkdir -p /usr/local/bin/rpmusicserver/web-interface
+cp -r /tmp/rpmusicserver/web-interface/* /usr/local/bin/rpmusicserver/web-interface
+echo " => program files installed." 
 
 echo "Copy rc.local file:"
 cp /tmp/rpmusicserver/files/rc.local /etc

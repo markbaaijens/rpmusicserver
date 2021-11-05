@@ -35,4 +35,7 @@ if [ ! "$(docker ps -f name=transmission -q)" ]; then
 fi
 '
 
+# Start API
+python3 /usr/local/bin/rpmusicserver/web-interface/api/controller.py --config /media/usbdata/config
+
 exit 0
