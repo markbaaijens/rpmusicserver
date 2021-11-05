@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Start API
+python3 /usr/local/bin/rpmusicserver/web-interface/api/controller.py --config /media/usbdata/config
+
 # LMS (Logitech Media Server)
 if [ ! "$(docker ps -f name=lms -q)" ]; then 
   docker run -d --rm --name lms \
@@ -34,8 +37,5 @@ if [ ! "$(docker ps -f name=transmission -q)" ]; then
     linuxserver/transmission
 fi
 '
-
-# Start API
-python3 /usr/local/bin/rpmusicserver/web-interface/api/controller.py --config /media/usbdata/config
 
 exit 0
