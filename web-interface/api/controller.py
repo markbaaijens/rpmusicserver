@@ -6,7 +6,7 @@ from flask_cors import CORS
 
 import logic 
 from config import Config
-from globals import configDir, configObject
+from globals import configObject
 
 HTTP_OK = 200
 HTTP_CREATED = 201
@@ -78,22 +78,23 @@ def GetMachineInfo():
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='Controller for RP Music Server API')
-    parser.add_argument('--config', type=str,  help="folder where settings = api-settings.json are stored",  nargs=1) 
+    parser.add_argument('--logfile', type=str,  help="file where log is stored", nargs=1) 
+    parser.add_argument('-p', '--production', help="start a production server", action="store_true")        
+
     args = parser.parse_args()
 
-    if (args.config != None) and (args.config[0] != ''):
-        configDir = args.config[0]
-    else:
-        configDir = '../../files/config'
-    configObject.ReadSettingsFromFile(configDir)
+    configObject.ApiDebug = not args.production
+
+    if (args.logfile != None) and (args.logfile[0] != ''):
+        configObject.ApiLogFileName = args.logfile[0]
+
     SetupLogger()       
-    logger.info('Config file: ' + configDir + '/settings.json')
     logger.info('Log to: ' + configObject.ApiLogFileName)
 
     if configObject.ApiDebug:
         logger.info('API started - debug')
         app.run(port=5000, debug=True)  # auto-reload on file change, only localhost
     else:
-        logger.info('API started')
+        logger.info('API started - production')
         app.run(host='0.0.0.0', port=5000)  # public server, reachable from remote
     logger.info('API stopped')

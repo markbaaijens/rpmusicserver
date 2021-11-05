@@ -1,6 +1,0 @@
-{
-    "ApiLogFileName": "api.log",
-    "ApiLogMaxSize": 10240000,
-    "ApiLogBackupCount": 2,
-    "ApiDebug": true
-}

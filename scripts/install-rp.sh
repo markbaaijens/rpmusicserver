@@ -56,18 +56,9 @@ else
     echo " => LMS config folder is already present, no config files copied."    
 fi
 
-echo "Copy settings.json file:"
-cp /tmp/rpmusicserver/files/config/settings.json /media/usbdata/config
-echo " => settings.json file copied." 
-
 echo "Install python packages for RP Music Server:"
 pip3 install -r /tmp/rpmusicserver/web-interface/requirements.txt 
 echo " => python packages installed." 
-
-# TODO 
-# modify settings in /media/usbdata/config/settings.json
-#    "ApiLogFileName": "/media/usbdata/config/api.log",
-#    "ApiDebug": false
 
 echo "Install program files for API for RP Music Server:"
 mkdir -p /usr/local/bin/rpmusicserver/web-interface
