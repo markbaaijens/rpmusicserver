@@ -3,7 +3,7 @@ import os.path
 
 class Config:
     def __init__(self):
-        self.ApiLogFileName = 'api.log'
-        self.ApiLogMaxSize = 10240000
-        self.ApiLogBackupCount = 1
-        self.ApiDebug = True
+        self.LogFileName = 'api.log'
+        self.LogMaxSize = 10240000
+        self.LogBackupCount = 1
+        self.Debug = True

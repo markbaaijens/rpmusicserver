@@ -23,10 +23,10 @@ def SetupLogger():
         logger.setLevel(logging.DEBUG)
 
         fileHandler = logging.handlers.RotatingFileHandler(
-            configObject.ApiLogFileName, 
+            configObject.LogFileName, 
             'a', 
-            configObject.ApiLogMaxSize, 
-            configObject.ApiLogBackupCount)
+            configObject.LogMaxSize, 
+            configObject.LogBackupCount)
         fileHandler.setLevel(logging.DEBUG)
         fileHandler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
         logger.addHandler(fileHandler)
@@ -83,15 +83,15 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    configObject.ApiDebug = not args.production
+    configObject.Debug = not args.production
 
     if (args.logfile != None) and (args.logfile[0] != ''):
-        configObject.ApiLogFileName = args.logfile[0]
+        configObject.LogFileName = args.logfile[0]
 
     SetupLogger()       
-    logger.info('Log to: ' + configObject.ApiLogFileName)
+    logger.info('Log to: ' + configObject.LogFileName)
 
-    if configObject.ApiDebug:
+    if configObject.Debug:
         logger.info('API started - debug')
         app.run(port=5000, debug=True)  # auto-reload on file change, only localhost
     else:
