@@ -1,0 +1,97 @@
+{
+    "method": "slim.request",
+    "result": {
+        "info total artists": 255,
+        "info total albums": 921,
+        "players_loop": [
+            {
+                "canpoweroff": 1,
+                "power": 1,
+                "uuid": "ac1f6571dfe6610bb6c8a537cdce0e8e",
+                "ip": "192.168.2.95:43774",
+                "seq_no": 0,
+                "isplaying": 0,
+                "model": "boom",
+                "isplayer": 1,
+                "modelname": "Squeezebox Boom",
+                "displaytype": "graphic-160x32",
+                "playerindex": "0",
+                "name": "Squeezebox Boom",
+                "connected": 1,
+                "firmware": 57,
+                "playerid": "00:04:20:1e:24:12"
+            },
+            {
+                "seq_no": 0,
+                "canpoweroff": 1,
+                "power": 1,
+                "uuid": null,
+                "ip": "192.168.2.98:42508",
+                "isplaying": 1,
+                "model": "squeezelite",
+                "playerindex": 1,
+                "isplayer": 1,
+                "modelname": "SqueezeLite",
+                "displaytype": "none",
+                "firmware": "v1.9.9-1386-pCP",
+                "playerid": "b8:27:eb:79:f5:47",
+                "connected": 1,
+                "name": "piCorePlayer"
+            },
+            {
+                "seq_no": 0,
+                "ip": "192.168.2.2:41022",
+                "power": 1,
+                "canpoweroff": 1,
+                "uuid": null,
+                "model": "squeezelite",
+                "isplaying": 0,
+                "playerindex": 2,
+                "displaytype": "none",
+                "modelname": "SqueezeLite",
+                "isplayer": 1,
+                "firmware": "v1.8",
+                "playerid": "40:5b:d8:16:cb:53",
+                "connected": 1,
+                "name": "mark-hp-laptop"
+            },
+            {
+                "name": "Squeezebox Radio",
+                "connected": 1,
+                "firmware": "7.7.3-r16676",
+                "playerid": "00:04:20:29:13:4b",
+                "isplayer": 1,
+                "modelname": "Squeezebox Radio",
+                "displaytype": "none",
+                "playerindex": 3,
+                "isplaying": 0,
+                "model": "baby",
+                "uuid": "71c536ce48d3e24d7aaf81545f4542bb",
+                "canpoweroff": 1,
+                "power": 1,
+                "ip": "192.168.2.96:34727",
+                "seq_no": "164"
+            }
+        ],
+        "other player count": 0,
+        "mac": "00:24:21:63:07:72",
+        "uuid": "4c79403d-f7eb-4294-aaa2-fda898346a54",
+        "ip": "192.168.2.10",
+        "info total duration": 3214163.807,
+        "info total songs": 9907,
+        "sn player count": 0,
+        "lastscan": "1636254616",
+        "version": "8.0.0",
+        "httpport": "9000",
+        "player count": 4,
+        "info total genres": 91
+    },
+    "params": [
+        "b8:27:eb:79:f5:47",
+        [
+            "serverstatus",
+            "0",
+            "100"
+        ]
+    ]
+}

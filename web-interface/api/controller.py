@@ -3,6 +3,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import traceback
 from flask_cors import CORS
+from werkzeug.wrappers import response
 
 import logic 
 from config import Config
@@ -67,13 +68,26 @@ def root():
 @app.route('/api/MachineInfo', methods=['GET'])
 def GetMachineInfo():
     try:
-        machineInfo = logic.GetMachineInfo()
+        info = logic.GetMachineInfo()
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
-    return BuildResponse(HTTP_OK, jsonify(machineInfo), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+# GET /api/ServerInfo
+# curl -i http://localhost:5000/ServerInfo
+@app.route('/api/ServerInfo', methods=['GET'])
+def GetServerInfo():
+    try:
+        info = logic.GetServerInfo()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    print(info)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
 if __name__ == '__main__':
     import argparse
