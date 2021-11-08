@@ -56,7 +56,10 @@ def GetServerInfo():  # Sample function from generated code in Postman; may not 
     payload = "{\"method\": \"slim.request\", \"params\": [\"-\", [\"serverstatus\",\"0\",\"100\"]]}\n"
     headers = {'Content-Type': 'application/json'}
 
+    # TODO This call does npt seem to return the result (body)
     response = requests.request("POST", url, headers=headers, data=payload)
+
+    # TODO This call should return the resukt
 #    response = json.loads(requests.get(app.config['API_ROOT_URL'] + '/books').content)
 
     print(response)

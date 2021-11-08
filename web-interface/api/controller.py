@@ -75,7 +75,9 @@ def GetMachineInfo():
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
 '''
+# TODO Method logic.GetServerInfo() is not working 
 # GET /api/ServerInfo
 # curl -i http://localhost:5000/ServerInfo
 @app.route('/api/ServerInfo', methods=['GET'])
