@@ -1,10 +1,12 @@
 {
     "CurrentVersion":"1.0",
     "History": [
-        [{"1.0":"First production version"},
-         {"Changes": [
-             "[feature] Basic install scripts"
-         ]}
-        ]
+        {
+            "Version":"1.0",
+            "Description":"First production version",        
+            "Changes": [
+                "[feature] Basic install scripts"
+            ]
+        }        
     ]
 }
