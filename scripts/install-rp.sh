@@ -11,6 +11,7 @@ then
 fi
 
 echo "Start installing packages..."
+apt-get update
 apt-get install docker.io python3-pip tree -y
 echo "Done installing packages."
 
