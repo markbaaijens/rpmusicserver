@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This script will burn the Raspbian OS Lite Image from the raspberrypi.org server and burn the image to a SD-card.
+# This script will download a Raspbian OS Lite image and burn the image to a SD-card.
 #
 
 if [ -z "$(whoami | grep root)" ]; then
@@ -10,7 +10,8 @@ if [ -z "$(whoami | grep root)" ]; then
 fi
 
 working_dir=/tmp/raspbian
-image=https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
+image=https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-11-08/2021-10-30-raspios-bullseye-armhf-lite.zip
+image_hash="008d7377b8c8b853a6663448a3f7688ba98e2805949127a1d9e8859ff96ee1a9"
 archive=raspbian-os-lite.zip
 mnt_boot=/mnt/boot
 number_pattern="[0-9]+"
@@ -75,6 +76,33 @@ if [ "$start_install" != "yes" ]; then
     exit
 fi
 
+if [ ! $(dpkg --list | grep wget | awk '{print $1}' | grep ii) ]; then 
+    apt install wget -y
+fi
+echo "Downloading image..."
+wget -c --show-progress -P $working_dir -O $working_dir/$archive $image
+echo "Download complete"
+
+if [ "$(sha256sum $working_dir/$archive | cut -d' ' -f1)" != "$image_hash" ]; then
+    echo "Checksum of the downloaded image $archive failed."
+    cleanup_environment
+    echo "Script ended with failure."
+    exit
+fi
+echo "Checksum of the downloaded image $archive is OK."
+
+echo "Extracting $working_dir/$archive..."
+unzip -o $working_dir/$archive -d $working_dir
+echo "Done extracting archive"
+extracted_img=$(ls -t $working_dir/*.img | head -n 1)
+if [ -z $extracted_img ]; then
+    echo "No image found in $working_dir."
+    cleanup_environment
+    echo "Script ended with failure."
+    exit
+fi
+echo "Done extracting $working_dir/$archive"
+
 echo "Unmounting /dev/$chosen_disk partitions..."
 partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
 for partition in $partitions; do
@@ -91,32 +119,6 @@ for partition in $partitions; do
 done
 hdparm -z /dev/$chosen_disk
 echo "Done unmounting /dev/$chosen_disk partitions"
-
-if [ ! $(dpkg --list | grep wget | awk '{print $1}' | grep ii) ]; then 
-    apt install wget -y
-fi
-echo "Downloading image..."
-wget -c --show-progress -P $working_dir -O $working_dir/$archive $image
-echo "Download complete"
-
-if [ "$(sha256sum $working_dir/$archive | cut -d' ' -f1)" != "c5dad159a2775c687e9281b1a0e586f7471690ae28f2f2282c90e7d59f64273c" ]; then
-    echo "Checksum of the Raspbian image failed."
-    cleanup_environment
-    echo "Script ended with failure."
-    exit
-fi
-
-echo "Extracting $working_dir/$archive..."
-unzip -o $working_dir/$archive -d $working_dir
-echo "Done extracting archive"
-extracted_img=$(ls -t $working_dir/*.img | head -n 1)
-if [ -z $extracted_img ]; then
-    echo "No image found in $working_dir."
-    cleanup_environment
-    echo "Script ended with failure."
-    exit
-fi
-echo "Done extracting $working_dir/$archive"
 
 echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
