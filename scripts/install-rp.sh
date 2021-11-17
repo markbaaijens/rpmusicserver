@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This script will install RP Music Server onto a fresh copy of Rapsbian OS Lite
+# This script will install RP Music Server onto a copy of Rapsbian OS Lite
 #
 
 if [ -z "$(whoami | grep root)" ]
@@ -26,7 +26,7 @@ fi
 
 echo "Adding line for usbdata-disk to /etc/fstab:"
 if [ ! "$(grep "LABEL=usbdata" /etc/fstab)" ]; then
-    # auto,nofail: server start even when harddisk is not present
+    # auto,nofail: server starts even when harddisk is not present
     /bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
     echo " => line added."
 else
@@ -58,6 +58,7 @@ else
 fi
 
 echo "Install python packages for RP Music Server:"
+# Note that b/c this script is executed under sudo, pip3 packages are system-wide installed
 pip3 install -r /tmp/rpmusicserver/web-interface/requirements.txt 
 echo " => python packages installed." 
 
@@ -78,13 +79,10 @@ echo "Done executing /etc/rc.local."
 
 echo "Change password of user 'pi'..."
 sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
+# Note that changing password in su-mode (which is different than sudo-mode)
+# does NOT require to enter the old password
 echo -e "rpms\nrpms" | passwd pi
 echo "Done changing password of user 'pi'."
-
-echo "Change hostname..."
-sed -i -e 's/raspberrypi/rpms/g' /etc/hostname
-sed -i -e 's/raspberrypi/rpms/g' /etc/hosts
-echo "Done changing hostname."
 
 echo "Installation complete, system will be rebooted."
 reboot now
