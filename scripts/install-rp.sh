@@ -76,5 +76,10 @@ echo "Start executing /etc/rc.local..."
 /etc/rc.local
 echo "Done executing /etc/rc.local."
 
+echo "Change hostname..."
+sed -i -e 's/raspberrypi/rpms/g' /etc/hostname
+sed -i -e 's/raspberrypi/rpms/g' /etc/hosts
+echo "Done changing hostname."
+
 echo "Installation complete, system will be rebooted."
 reboot now
