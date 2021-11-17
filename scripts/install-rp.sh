@@ -83,10 +83,5 @@ sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 echo -e "rpms\nrpms" | passwd pi
 echo "Done changing password of user 'pi'."
 
-echo "Change hostname..."
-sed -i -e 's/raspberrypi/rpms/g' /etc/hostname
-sed -i -e 's/raspberrypi/rpms/g' /etc/hosts
-echo "Done changing hostname."
-
 echo "Installation complete, system will be rebooted."
 reboot now
