@@ -78,6 +78,8 @@ echo "Done executing /etc/rc.local."
 
 echo "Change password of user 'pi'..."
 sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
+# Note that changing password in su-mode (which is different than sudo-mode)
+# does NOT require to enter the old password
 echo -e "rpms\nrpms" | passwd pi
 echo "Done changing password of user 'pi'."
 
