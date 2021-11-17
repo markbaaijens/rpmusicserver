@@ -12,9 +12,8 @@ fi
 
 wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip
 unzip -d /tmp -o /tmp/rpmusicserver.zip
-
-chmod +x /tmp/rpmusicserver-master/scripts/* 
-
+mv /tmp/rpmusicserver-master /tmp/rpmusicserver
+chmod +x /tmp/rpmusicserver/scripts/* 
 # TODO Check versions, only update when newer version is available
-/tmp/rpmusicserver-master/scripts/install-rp.sh
+/tmp/rpmusicserver/scripts/install-rp.sh
 
