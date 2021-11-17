@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# This script will update a  RP Music Server to the latest software
+#
+
+if [ -z "$(whoami | grep root)" ]
+then
+    echo "Not running as root."
+    echo "Script ended with failure."
+    exit
+fi
+
+wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip
+unzip -d /tmp -o /tmp/rpmusicserver.zip
+
+chmod +x /tmp/rpmusicserver-master/scripts/* 
+
+# TODO Check versions, only update when newer version is available
+/tmp/rpmusicserver-master/scripts/install-rp.sh
+
