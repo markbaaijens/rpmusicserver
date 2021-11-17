@@ -10,7 +10,8 @@
             "Version":"1.1",
             "Changes": [
                 "Upgraded Raspbian to Bullseye",
-                "Changed hostname to 'rpms'"
+                "Changed hostname to 'rpms'",
+                "Changed password of user 'pi' to 'rpms'"                
             ]
         }
     ]

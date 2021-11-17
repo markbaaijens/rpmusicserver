@@ -76,6 +76,11 @@ echo "Start executing /etc/rc.local..."
 /etc/rc.local
 echo "Done executing /etc/rc.local."
 
+echo "Change password of user 'pi'..."
+sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
+echo -e "raspberry\nrpms\nrpms" | passwd pi
+echo "Done changing password of user 'pi'."
+
 echo "Change hostname..."
 sed -i -e 's/raspberrypi/rpms/g' /etc/hostname
 sed -i -e 's/raspberrypi/rpms/g' /etc/hosts
