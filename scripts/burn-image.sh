@@ -14,6 +14,7 @@ image=https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_a
 image_hash="008d7377b8c8b853a6663448a3f7688ba98e2805949127a1d9e8859ff96ee1a9"
 archive=raspbian-os-lite.zip
 number_pattern="[0-9]+"
+mount_point=/mnt/temp
 
 setup_environment() {
     echo "Setup environment"    
@@ -26,6 +27,34 @@ setup_environment() {
 cleanup_environment() {
     echo "Cleaning up environment"
     unset LC_ALL  # Reset console output to default language
+}
+
+mount_partition () {
+    echo "Mounting partition /dev/$partition."
+    if [ ! -d $mount_point ]; then 
+        mkdir $mount_point
+    fi
+
+    if [ -z $partition ]; then
+        echo "Failed to capture $partition."
+        cleanup_environment
+        echo "Script ended with failure."
+        exit
+    fi
+
+    mount "/dev/$partition" $mount_point
+    hdparm -z /dev/$chosen_disk
+    echo "Partition /dev/$partition mounted."
+}
+
+unmount_partition () {
+    umount "/dev/$partition"
+    hdparm -z /dev/$chosen_disk
+    if [ -d $mount_point ]; then 
+        rm -rf $mount_point
+    fi
+    sleep 3 # Give the OS time to reread
+    echo "Partition /dev/$partition unmounted."
 }
 
 setup_environment
@@ -140,38 +169,20 @@ if [ ! -d /dev/disk/by-label ]; then
     exit
 fi
 
-mount_point=/mnt/temp
-if [ ! -d $mount_point ]; then 
-    mkdir $mount_point
-fi
-
-partition=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$chosen_disk.*$")
-if [ -z $partition ]; then
-    echo "Failed to capture $partition."
-    cleanup_environment
-    echo "Script ended with failure."
-    exit
-fi
-
-echo "Mount partition /dev/$partition."
-mount "/dev/$partition" $mount_point
-hdparm -z /dev/$chosen_disk
-echo "Partition /dev/$partition mounted."
-
 echo "Activate SSH..."
+partition=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$chosen_disk.*$")
+mount_partition
 touch $mount_point/ssh
+unmount_partition
 echo "SSH has been activated on $chosen_disk."
 
-umount "/dev/$partition"
-hdparm -z /dev/$chosen_disk
-if [ -d $mount_point ]; then 
-    rm -rf $mount_point
-fi
-
-#echo "Change hostname..."
-#sed -i -e 's/raspberrypi/rpms/g' /etc/hostname
-#sed -i -e 's/raspberrypi/rpms/g' /etc/hosts
-#echo "Done changing hostname."
+echo "Change hostname..."
+partition=$(ls -l /dev/disk/by-label | grep "rootfs" | grep -oE "$chosen_disk.*$")
+mount_partition
+sed -i -e 's/raspberrypi/rpms/g' $mount_point/etc/hostname
+sed -i -e 's/raspberrypi/rpms/g' $mount_point/etc/hosts
+unmount_partition
+echo "Done changing hostname."
 
 cleanup_environment
 echo "Script ended successfully."

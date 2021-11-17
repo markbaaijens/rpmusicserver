@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This script will install RP Music Server onto a fresh copy of Rapsbian OS Lite
+# This script will install RP Music Server onto a copy of Rapsbian OS Lite
 #
 
 if [ -z "$(whoami | grep root)" ]
@@ -26,7 +26,7 @@ fi
 
 echo "Adding line for usbdata-disk to /etc/fstab:"
 if [ ! "$(grep "LABEL=usbdata" /etc/fstab)" ]; then
-    # auto,nofail: server start even when harddisk is not present
+    # auto,nofail: server starts even when harddisk is not present
     /bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
     echo " => line added."
 else
@@ -58,6 +58,7 @@ else
 fi
 
 echo "Install python packages for RP Music Server:"
+# Note that b/c this script is executed under sudo, pip3 packages are system-wide installed
 pip3 install -r /tmp/rpmusicserver/web-interface/requirements.txt 
 echo " => python packages installed." 
 
