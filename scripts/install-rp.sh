@@ -11,6 +11,7 @@ then
 fi
 
 echo "Start installing packages..."
+apt-get update
 apt-get install docker.io python3-pip tree -y
 echo "Done installing packages."
 
@@ -74,6 +75,11 @@ echo " => rc.local file copied."
 echo "Start executing /etc/rc.local..."
 /etc/rc.local
 echo "Done executing /etc/rc.local."
+
+echo "Change hostname..."
+sed -i -e 's/raspberrypi/rpms/g' /etc/hostname
+sed -i -e 's/raspberrypi/rpms/g' /etc/hosts
+echo "Done changing hostname."
 
 echo "Installation complete, system will be rebooted."
 reboot now

@@ -1,12 +1,17 @@
 {
-    "CurrentVersion":"1.0",
     "History": [
         {
             "Version":"1.0",
-            "Description":"First production version",        
             "Changes": [
-                "[feature] Basic install scripts"
+                "Basic install scripts for first production version"
             ]
-        }        
+        },
+        {
+            "Version":"1.1",
+            "Changes": [
+                "Upgraded Raspbian to Bullseye",
+                "Changed hostname to 'rpms'"
+            ]
+        }
     ]
 }
