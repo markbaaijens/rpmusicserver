@@ -24,7 +24,9 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
 	  * password = raspberry  
   * `ssh pi@raspberrypi "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`
 	  * password = raspberry
-  * system will be rebooted automatically after installation
+  * notes:
+    * system will be rebooted automatically after installation
+    * after reboot, hostname is changed to `rpms` & password of user `pi` is changed to `rpms`
 * Test access:
   * `watch nmap rpms`
     * wait until port 9002 appears; exit with Ctrl-C
