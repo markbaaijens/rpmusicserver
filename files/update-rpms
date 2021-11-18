@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# This script will update a RP Music Server to the latest software
+#
+
+if [ -z "$(whoami | grep root)" ]
+then
+    echo "Not running as root."
+    echo "Script ended with failure."
+    exit
+fi
+
+wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip
+unzip -d /tmp -o /tmp/rpmusicserver.zip
+rm -rf /tmp/rpmusicserver
+mv /tmp/rpmusicserver-master /tmp/rpmusicserver
+
+if [ ! -f /etc/rpms/revision.json ]; then
+    echo "File /etc/rpms/revision.json not found!"
+    exit -1
+fi
+version_actual=$(jq '.CurrentVersion' /etc/rpms/revision.json)
+major_actual=$(echo $version_actual | cut -c2)
+minor_actual=$(echo $version_actual | cut -c4)
+
+if [ ! -f /tmp/rpmusicserver/revision.json ]; then
+    echo "File /tmp/rpmusicserver/revision.json not found!"
+    exit -1
+fi
+version_new=$(jq '.CurrentVersion' /tmp/rpmusicserver/revision.json)
+major_new=$(echo $version_new | cut -c2)
+minor_new=$(echo $version_new | cut -c4)
+
+update=0
+if [ $major_new -gt $major_actual ]; then
+    update=1
+else
+    if [ $major_new -eq $major_actual ]; then
+        if [ $minor_new -gt $minor_actual ]; then
+            update=1
+        fi
+    fi
+fi
+
+if [ $update -eq 1 ]; then
+    chmod +x /tmp/rpmusicserver/scripts/* 
+    /tmp/rpmusicserver/scripts/install-rp.sh
+    exit 1
+else
+    echo "No newer version found; update skipped."
+    exit 0
+fi
+
