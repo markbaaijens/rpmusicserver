@@ -1,8 +1,8 @@
 {
-    "CurrentVersion": "1.0",
+    "CurrentVersion": "0.2",
     "History": [
         {
-            "Version":"1.0",
+            "Version":"0.2",
             "Changes": [
                 "Upgraded Raspbian to Bullseye",
                 "Changed hostname to 'rpms'",
