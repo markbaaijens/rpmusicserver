@@ -47,7 +47,7 @@ if [ $update -eq 1 ]; then
     /tmp/rpmusicserver/scripts/install-rp.sh
     exit 1
 else
-    echo "No newer version found; skip update"
+    echo "No newer version found; update skipped."
     exit 0
 fi
 
