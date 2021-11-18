@@ -15,5 +15,6 @@ unzip -d /tmp -o /tmp/rpmusicserver.zip
 mv /tmp/rpmusicserver-master /tmp/rpmusicserver
 chmod +x /tmp/rpmusicserver/scripts/* 
 # TODO Check versions, only update when newer version is available
+# jq '.CurrentVersion' revision.json
 /tmp/rpmusicserver/scripts/install-rp.sh
 
