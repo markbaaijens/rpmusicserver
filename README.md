@@ -32,6 +32,7 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
     * wait until port 9002 appears; exit with Ctrl-C
   * LMS (browser): http://rpms:9002
   * Samba (file explorer): `smb://rpms`
+  * API (cli): `curl rpms:5000`
 * Engage:
   * copy music files to `smb://rpms/Publiek/Muziek`
   * hookup a Squeezebox player to your network
