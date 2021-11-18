@@ -17,7 +17,7 @@ mv /tmp/rpmusicserver-master /tmp/rpmusicserver
 
 if [ ! -f /etc/rmps/revision.json ]; then
     echo "File /etc/rmps/revision.json not found!"
-    exit
+    exit -1
 fi
 version_actual=$(jq '.CurrentVersion' /etc/rmps/revision.json)
 major_actual=$(echo $version_actual | cut -c2)
@@ -25,7 +25,7 @@ minor_actual=$(echo $version_actual | cut -c4)
 
 if [ ! -f /tmp/rpmusicserver/revision.json ]; then
     echo "File /tmp/rpmusicserver/revision.json not found!"
-    exit
+    exit -1
 fi
 version_new=$(jq '.CurrentVersion' /tmp/rpmusicserver/revision.json)
 major_new=$(echo $version_new | cut -c2)
@@ -45,5 +45,9 @@ fi
 if [ $update -eq 1 ]; then
     chmod +x /tmp/rpmusicserver/scripts/* 
     /tmp/rpmusicserver/scripts/install-rp.sh
+    exit 1
+else
+    echo "No newer version found; skip update"
+    exit 0
 fi
 
