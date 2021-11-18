@@ -77,6 +77,11 @@ mkdir -p /etc/rpms
 cp /tmp/rpmusicserver/revision.json /etc/rpms
 echo " => file revision.json copied." 
 
+echo "Copy update-rpms file:"
+cp /tmp/rpmusicserver/files/update-rpms /usr/local/bin
+chmod +x /usr/local/bin/update-rpms
+echo " => file update-rpms copied." 
+
 # Execute /etc/rc.local for preloading docker containers
 echo "Start executing /etc/rc.local..."
 /etc/rc.local
