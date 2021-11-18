@@ -62,7 +62,7 @@ echo "Install python packages for RP Music Server:"
 pip3 install -r /tmp/rpmusicserver/web-interface/requirements.txt 
 echo " => python packages installed." 
 
-echo "Install program files for API for RP Music Server:"
+echo "Install program files for API:"
 mkdir -p /usr/local/bin/rpmusicserver/web-interface
 cp -r /tmp/rpmusicserver/web-interface/* /usr/local/bin/rpmusicserver/web-interface
 echo " => program files installed." 
@@ -70,7 +70,12 @@ echo " => program files installed."
 echo "Copy rc.local file:"
 cp /tmp/rpmusicserver/files/rc.local /etc
 chmod +x /etc/rc.local
-echo " => rc.local file copied."     
+echo " => file rc.local copied."     
+
+echo "Copy revision.json file:"
+mkdir -p /etc/rpms
+cp /tmp/rpmusicserver/revision.json /etc/rpms
+echo " => file revision.json copied." 
 
 # Execute /etc/rc.local for preloading docker containers
 echo "Start executing /etc/rc.local..."
