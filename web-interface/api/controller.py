@@ -61,7 +61,7 @@ def BuildResponse(statusCode, body, location):
 # curl -i http://localhost:5000
 @app.route('/', methods=['GET'])
 def root():
-    return BuildResponse(HTTP_OK, jsonify({'name': 'rpmusicserver-api'}), request.url)
+    return BuildResponse(HTTP_OK, jsonify({'name': 'rpms-api'}), request.url)
 
 # GET /api/MachineInfo
 # curl -i http://localhost:5000/MachineInfo
