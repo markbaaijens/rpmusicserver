@@ -44,4 +44,4 @@ Update your RPMS by SSH:
 * `ssh pi@rpms "sudo update-rpms"`
 
 For development: to update RMPS from a another branch than `master`, e.g. `development`: 
-* `ssh pi@rpms "sudo bash -c 'echo \"development\" > /media/usbdata/config/update-branch.txt'"`
+* `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/config/update-branch.txt'"`
