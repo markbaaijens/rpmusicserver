@@ -12,7 +12,7 @@ if [ -z "$(whoami | grep root)" ]
 then
     log "Not running as root."
     log "Update ended."    
-    exit -1
+    exit 2
 fi
 log "Update started."
 
@@ -25,7 +25,7 @@ mv /tmp/rpmusicserver-master /tmp/rpmusicserver
 if [ ! -f /etc/rpms/revision.json ]; then
     log "File /etc/rpms/revision.json not found."
     log "Update ended."
-    exit -1
+    exit 3
 fi
 version_actual=$(jq '.CurrentVersion' /etc/rpms/revision.json)
 major_actual=$(echo $version_actual | cut -c2)
@@ -34,7 +34,7 @@ minor_actual=$(echo $version_actual | cut -c4)
 if [ ! -f /tmp/rpmusicserver/revision.json ]; then
     log "File /tmp/rpmusicserver/revision.json not found."
     log "Update ended."
-    exit -1
+    exit 4
 fi
 version_new=$(jq '.CurrentVersion' /tmp/rpmusicserver/revision.json)
 major_new=$(echo $version_new | cut -c2)
@@ -56,11 +56,11 @@ if [ $update -eq 1 ]; then
     chmod +x /tmp/rpmusicserver/scripts/* 
     /tmp/rpmusicserver/scripts/install-rp.sh
     log "Update ended."
-    exit 1
+    exit 0
 else
     log "No newer version available; update skipped."
     log "Update ended."
-    exit 0
+    exit 1
 fi
 
 log "Update ended."
