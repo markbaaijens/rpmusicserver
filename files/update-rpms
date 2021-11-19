@@ -4,8 +4,13 @@
 #
 
 log () {
+    if [ -d "/media/usbdata/config" ]; then
+        log_dir="/media/usbdata/config"
+    else
+        log_dir="."    
+    fi
     echo "$1"
-    echo "$(date "+%Y-%m-%d") $(date -u +%H:%M:%S) $1" >> ./update.log
+    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1" >> $log_dir/update.log
 }
 
 if [ -z "$(whoami | grep root)" ]
