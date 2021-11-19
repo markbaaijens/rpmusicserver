@@ -20,10 +20,14 @@ then
 fi
 log "Update started."
 
-log "Downloading (new) software."
 branch_name="master"
-wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/$branch_name.zip -O /tmp/rpmusicserver.zip
-unzip -o -d /tmp -o /tmp/rpmusicserver.zip
+if [ -f /media/usbdata/config/update-branch.txt ]; then
+    branch_name=$(cat /media/usbdata/config/update-branch.txt)
+fi
+log "Downloading (new) software from github - branch $branch_name."
+wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/$branch_name.zip -nv -O /tmp/rpmusicserver.zip
+echo "Unzipping /tmp/rpmusicserver.zip"
+unzip -o -q -d /tmp -o /tmp/rpmusicserver.zip
 rm -rf /tmp/rpmusicserver
 mv /tmp/rpmusicserver-$branch_name /tmp/rpmusicserver
 
@@ -35,6 +39,7 @@ fi
 version_actual=$(jq '.CurrentVersion' /etc/rpms/revision.json)
 major_actual=$(echo $version_actual | cut -c2)
 minor_actual=$(echo $version_actual | cut -c4)
+log "Current version is $major_actual.$minor_actual"
 
 if [ ! -f /tmp/rpmusicserver/revision.json ]; then
     log "File /tmp/rpmusicserver/revision.json not found."
@@ -44,6 +49,7 @@ fi
 version_new=$(jq '.CurrentVersion' /tmp/rpmusicserver/revision.json)
 major_new=$(echo $version_new | cut -c2)
 minor_new=$(echo $version_new | cut -c4)
+log "Available version is $major_new.$minor_new"
 
 update=0
 if [ $major_new -gt $major_actual ]; then
