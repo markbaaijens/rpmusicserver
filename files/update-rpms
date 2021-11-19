@@ -15,13 +15,12 @@ log () {
 
 if [ -z "$(whoami | grep root)" ]
 then
-    log "Not running as root."
-    log "Update ended."    
+    echo "Not running as root."
     exit 2
 fi
 log "Update started."
 
-log "Retrieving (new) software."
+log "Downloading (new) software."
 wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip
 unzip -o -d /tmp -o /tmp/rpmusicserver.zip
 rm -rf /tmp/rpmusicserver
@@ -57,10 +56,13 @@ else
 fi
 
 if [ $update -eq 1 ]; then
-    log "Updating from "
+    log "Updating from $major_actual.$minor_actual to $major_new.$minor_new"
     chmod +x /tmp/rpmusicserver/scripts/* 
-    /tmp/rpmusicserver/scripts/install-rp.sh
+    # B/c install-rp.sh ends with a reboot, nothing *after* executing install-rp.sh
+    # will be reached. To have a nice log file, we just pretend the update has ended
+    # so we print it *before* the actual update (install).
     log "Update ended."
+    /tmp/rpmusicserver/scripts/install-rp.sh
     exit 0
 else
     log "No newer version available; update skipped."
