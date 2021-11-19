@@ -13,4 +13,4 @@ given_an_api_when_called_root_then_correct_output_returned () {
     if [ "$(cat /tmp/curl-output.txt | jq .name | grep 'rpms')" ]; then echo "OK"; else echo "Fail"; fi
 }
 
-given_a_api_when_called_root_then_correct_output_returned
+given_an_api_when_called_root_then_correct_output_returned
