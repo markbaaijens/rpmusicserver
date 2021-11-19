@@ -21,10 +21,11 @@ fi
 log "Update started."
 
 log "Downloading (new) software."
-wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip
+branch_name="master"
+wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/$branch_name.zip -O /tmp/rpmusicserver.zip
 unzip -o -d /tmp -o /tmp/rpmusicserver.zip
 rm -rf /tmp/rpmusicserver
-mv /tmp/rpmusicserver-master /tmp/rpmusicserver
+mv /tmp/rpmusicserver-$branch_name /tmp/rpmusicserver
 
 if [ ! -f /etc/rpms/revision.json ]; then
     log "File /etc/rpms/revision.json not found."
