@@ -3,29 +3,42 @@
 # This script will update a RP Music Server to the latest software
 #
 
+log () {
+    if [ -d "/media/usbdata/config" ]; then
+        log_dir="/media/usbdata/config"
+    else
+        log_dir="."    
+    fi
+    echo "$1"
+    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1" >> $log_dir/update.log
+}
+
 if [ -z "$(whoami | grep root)" ]
 then
     echo "Not running as root."
-    echo "Script ended with failure."
-    exit
+    exit 2
 fi
+log "Update started."
 
+log "Downloading (new) software."
 wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip
-unzip -d /tmp -o /tmp/rpmusicserver.zip
+unzip -o -d /tmp -o /tmp/rpmusicserver.zip
 rm -rf /tmp/rpmusicserver
 mv /tmp/rpmusicserver-master /tmp/rpmusicserver
 
 if [ ! -f /etc/rpms/revision.json ]; then
-    echo "File /etc/rpms/revision.json not found!"
-    exit -1
+    log "File /etc/rpms/revision.json not found."
+    log "Update ended."
+    exit 3
 fi
 version_actual=$(jq '.CurrentVersion' /etc/rpms/revision.json)
 major_actual=$(echo $version_actual | cut -c2)
 minor_actual=$(echo $version_actual | cut -c4)
 
 if [ ! -f /tmp/rpmusicserver/revision.json ]; then
-    echo "File /tmp/rpmusicserver/revision.json not found!"
-    exit -1
+    log "File /tmp/rpmusicserver/revision.json not found."
+    log "Update ended."
+    exit 4
 fi
 version_new=$(jq '.CurrentVersion' /tmp/rpmusicserver/revision.json)
 major_new=$(echo $version_new | cut -c2)
@@ -43,11 +56,18 @@ else
 fi
 
 if [ $update -eq 1 ]; then
+    log "Updating from $major_actual.$minor_actual to $major_new.$minor_new"
     chmod +x /tmp/rpmusicserver/scripts/* 
+    # B/c install-rp.sh ends with a reboot, nothing *after* executing install-rp.sh
+    # will be reached. To have a nice log file, we just pretend the update has ended
+    # so we print it *before* the actual update (install).
+    log "Update ended."
     /tmp/rpmusicserver/scripts/install-rp.sh
-    exit 1
-else
-    echo "No newer version found; update skipped."
     exit 0
+else
+    log "No newer version available; update skipped."
+    log "Update ended."
+    exit 1
 fi
 
+log "Update ended."
