@@ -10,8 +10,8 @@ def ExecuteBashCommand(bashCommand):
 def GetMachineInfo():
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
-    return {'HostName': hostName, 'IpAddress': ipAddress}
-
+    osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
+    return {'HostName': hostName, 'IpAddress': ipAddress, "OsCodeName": osCodeName}
 
 '''
 LMS API-reference: http://msi:9000/html/docs/cli-api.html
