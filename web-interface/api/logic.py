@@ -42,9 +42,10 @@ def GetVersionInfo():
     return {'CurrentVersion': currentVersion, "LastUpdateTimeStamp": lastUpdateTimeStampAsString}
 
 def GetUpdateLog():
-    line1 = 'Line 1'
-    line2 = 'Line 2'    
-    return { "UpdateLog": [ line1, line2] }
+    logLines = []
+    logLines.append("Line 1") 
+    logLines.append("Line 2")     
+    return { "UpdateLog": logLines }
 
 '''
 LMS API-reference: http://msi:9000/html/docs/cli-api.html
