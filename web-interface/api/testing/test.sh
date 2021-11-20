@@ -46,9 +46,15 @@ given_an_api_when_called_version_info_then_update_timestamp_returned () {
     if [ "$(cat /tmp/curl-output.txt | jq .LastUpdateTimeStamp)" ]; then echo "$func_name => OK"; else echo "$func_name => Fail"; fi
 }
 
-given_an_api_when_called_update_log_then_update_log_returned() {
+given_an_api_when_called_update_log_then_update_log_returned () {
     func_name="* ${FUNCNAME[0]}"
     call_api "localhost:5000/api/GetUpdateLog/10"
+    if [ "$(cat /tmp/curl-output.txt | jq .LogLines)" ]; then echo "$func_name => OK"; else echo "$func_name => Fail"; fi
+}
+
+given_an_api_when_called_api_log_then_api_log_returned () {
+    func_name="* ${FUNCNAME[0]}"
+    call_api "localhost:5000/api/GetApiLog/10"
     if [ "$(cat /tmp/curl-output.txt | jq .LogLines)" ]; then echo "$func_name => OK"; else echo "$func_name => Fail"; fi
 }
 
@@ -62,4 +68,5 @@ given_an_api_when_called_version_info_then_current_version_returned
 given_an_api_when_called_version_info_then_update_timestamp_returned
 echo 
 given_an_api_when_called_update_log_then_update_log_returned
+given_an_api_when_called_api_log_then_api_log_returned
 
