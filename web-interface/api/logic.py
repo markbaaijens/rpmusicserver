@@ -48,14 +48,13 @@ def GetVersionInfo():
 
     return {'CurrentVersion': currentVersion, "LastUpdateTimeStamp": lastUpdateTimeStampAsString}
 
-def GetUpdateLog(nrOfLines):
+def GetLog(logFile, nrOfLines):
     logLines = []
-    logFile = '/home/mark/source/rpmusicserver/web-interface/api/api.log'
     if os.path.isfile(logFile):
         logLinesFromFile = TailFromFile(logFile, nrOfLines)
         for logLine in logLinesFromFile:
             logLines.append(logLine.decode("utf-8").strip('\n'))
-    return { "UpdateLog": logLines }
+    return { "logLines": logLines }
 
 '''
 LMS API-reference: http://msi:9000/html/docs/cli-api.html

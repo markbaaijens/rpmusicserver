@@ -86,7 +86,7 @@ def GetVersionInfo():
 @app.route('/api/GetUpdateLog/<int:nrOfLines>', methods=['GET'])
 def GetUpdateLog(nrOfLines):
     try:
-        info = logic.GetUpdateLog(nrOfLines)
+        info = logic.GetLog('/media/usbdata/config/update.log', nrOfLines)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
