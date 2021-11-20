@@ -7,6 +7,12 @@ call_api () {
     $(curl -s $1 > $curl_output_file 2>&1)
 }
 
+given_an_api_when_called_api_list_then_root_returned () {
+    func_name="* ${FUNCNAME[0]}"
+    call_api "localhost:5000/api/GetApiList"
+    if [ "$(cat /tmp/curl-output.txt | jq . | grep 'Shows the API-name')" ]; then echo "$func_name => OK"; else echo "$func_name => Fail"; fi
+}
+
 given_an_api_when_called_root_then_correct_output_returned () {
     func_name="* ${FUNCNAME[0]}"
     call_api "localhost:5000"
@@ -60,6 +66,8 @@ given_an_api_when_called_api_log_then_api_log_returned () {
 
 given_an_api_when_called_root_then_correct_output_returned
 echo 
+given_an_api_when_called_api_list_then_root_returned
+echo
 given_an_api_when_called_machine_info_then_ipadress_returned
 given_an_api_when_called_machine_info_then_hostname_returned
 given_an_api_when_called_machine_info_then_os_codename_returned

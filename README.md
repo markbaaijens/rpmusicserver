@@ -43,5 +43,7 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
 Update your RPMS by SSH: 
 * `ssh pi@rpms "sudo update-rpms"`
 
-For development: to update RMPS from a another branch than `master`, e.g. `development`: 
-* `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/config/update-branch.txt'"`
+## Development: 
+* To update RMPS from `development` branch instead of `master`: 
+  * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/config/update-branch.txt'"`
+* API-documentation: `curl rpms:5000/api/getApiList`

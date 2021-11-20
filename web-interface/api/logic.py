@@ -48,6 +48,15 @@ def GetVersionInfo():
 
     return {'CurrentVersion': currentVersion, "LastUpdateTimeStamp": lastUpdateTimeStampAsString}
 
+def GetApiList():
+    dataAsJson = {}
+    apiInfoFile = 'api-info.json'    
+    if os.path.isfile(apiInfoFile):
+        with open(apiInfoFile) as file:
+            dataAsDict = json.load(file)
+        dataAsJson = json.loads(json.dumps(dataAsDict))
+    return dataAsJson
+
 def GetLog(logFile, nrOfLines):
     logLines = []
     if os.path.isfile(logFile):
