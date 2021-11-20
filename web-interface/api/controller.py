@@ -63,8 +63,8 @@ def BuildResponse(statusCode, body, location):
 def root():
     return BuildResponse(HTTP_OK, jsonify({'ApiName': 'rpms-api'}), request.url)
 
-# GET /api/MachineInfo
-# curl -i http://localhost:5000/MachineInfo
+# GET /api/GetMachineInfo
+# curl -i http://localhost:5000/GetMachineInfo
 @app.route('/api/GetMachineInfo', methods=['GET'])
 def GetMachineInfo():
     try:
@@ -76,8 +76,8 @@ def GetMachineInfo():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-# GET /api/VersionInfo
-# curl -i http://localhost:5000/VersionInfo
+# GET /api/GetVersionInfo
+# curl -i http://localhost:5000/GetVersionInfo
 @app.route('/api/GetVersionInfo', methods=['GET'])
 def GetVersionInfo():
     try:
@@ -88,6 +88,20 @@ def GetVersionInfo():
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+# GET /api/GetUpdateLog
+# curl -i http://localhost:5000/GetUpdateLog
+@app.route('/api/GetUpdateLog', methods=['GET'])
+def GetUpdateLog():
+    try:
+        info = logic.GetUpdateLog()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
 
 '''
 # TODO Method logic.GetServerInfo() is not working 
