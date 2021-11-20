@@ -42,6 +42,14 @@ def GetVersionInfo():
     return {'CurrentVersion': currentVersion, "LastUpdateTimeStamp": lastUpdateTimeStampAsString}
 
 def GetUpdateLog():
+    '''
+    import subprocess
+    def tail(file, n, offset=0):
+        proc = subprocess.Popen(['tail', '-n', n + offset, file], stdout=subprocess.PIPE)
+        lines = proc.stdout.readlines()
+        return lines[:, -offset]
+    '''
+
     logLines = []
     logLines.append("Line 1") 
     logLines.append("Line 2")     
