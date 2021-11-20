@@ -48,11 +48,11 @@ def GetVersionInfo():
 
     return {'CurrentVersion': currentVersion, "LastUpdateTimeStamp": lastUpdateTimeStampAsString}
 
-def GetUpdateLog():
+def GetUpdateLog(nrOfLines):
     logLines = []
     logFile = '/home/mark/source/rpmusicserver/web-interface/api/api.log'
     if os.path.isfile(logFile):
-        logLinesFromFile = TailFromFile(logFile, 5)
+        logLinesFromFile = TailFromFile(logFile, nrOfLines)
         for logLine in logLinesFromFile:
             logLines.append(logLine.decode("utf-8").strip('\n'))
     return { "UpdateLog": logLines }

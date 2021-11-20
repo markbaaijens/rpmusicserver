@@ -57,14 +57,10 @@ def BuildResponse(statusCode, body, location):
     response.headers['Location'] = location
     return response
 
-# GET /
-# curl -i http://localhost:5000
 @app.route('/', methods=['GET'])
 def root():
     return BuildResponse(HTTP_OK, jsonify({'ApiName': 'rpms-api'}), request.url)
 
-# GET /api/GetMachineInfo
-# curl -i http://localhost:5000/GetMachineInfo
 @app.route('/api/GetMachineInfo', methods=['GET'])
 def GetMachineInfo():
     try:
@@ -76,8 +72,6 @@ def GetMachineInfo():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-# GET /api/GetVersionInfo
-# curl -i http://localhost:5000/GetVersionInfo
 @app.route('/api/GetVersionInfo', methods=['GET'])
 def GetVersionInfo():
     try:
@@ -89,12 +83,10 @@ def GetVersionInfo():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-# GET /api/GetUpdateLog
-# curl -i http://localhost:5000/GetUpdateLog
-@app.route('/api/GetUpdateLog', methods=['GET'])
-def GetUpdateLog():
+@app.route('/api/GetUpdateLog/<int:nrOfLines>', methods=['GET'])
+def GetUpdateLog(nrOfLines):
     try:
-        info = logic.GetUpdateLog()
+        info = logic.GetUpdateLog(nrOfLines)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
