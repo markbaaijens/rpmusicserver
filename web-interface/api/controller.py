@@ -76,6 +76,19 @@ def GetMachineInfo():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
+# GET /api/VersionInfo
+# curl -i http://localhost:5000/VersionInfo
+@app.route('/api/GetVersionInfo', methods=['GET'])
+def GetVersionInfo():
+    try:
+        info = logic.GetVersionInfo()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
 '''
 # TODO Method logic.GetServerInfo() is not working 
 # GET /api/ServerInfo

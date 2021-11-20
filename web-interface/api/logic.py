@@ -1,6 +1,9 @@
 import subprocess
 import requests
 import json
+import os
+from globals import configObject
+from datetime import datetime
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -12,6 +15,31 @@ def GetMachineInfo():
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
     return {'HostName': hostName, 'IpAddress': ipAddress, "OsCodeName": osCodeName}
+
+def GetVersionInfo():
+    currentVersion = ''
+    lastUpdateTimeStampAsString = ''
+    if configObject.Debug:
+        revisionFile = '../../revision.json'    
+    else: 
+        revisionFile = '/etc/rmps/revision.json'    
+    if os.path.isfile(revisionFile):
+        with open(revisionFile) as file:
+            dataAsDict = json.load(file)
+        dataAsJson = json.loads(json.dumps(dataAsDict))
+        try:
+            if dataAsJson["CurrentVersion"]:
+                currentVersion = dataAsJson["CurrentVersion"]
+        except:
+            pass
+
+        try:
+            lastUpdateTimeStamp = os.path.getmtime(revisionFile)
+        except:
+            pass
+        lastUpdateTimeStampAsString = datetime.utcfromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
+
+    return {'CurrentVersion': currentVersion, "LastUpdateTimeStamp": lastUpdateTimeStampAsString}
 
 '''
 LMS API-reference: http://msi:9000/html/docs/cli-api.html
@@ -49,7 +77,7 @@ curl --location --request POST 'http://msi:9000/jsonrpc.js' \
 --data-raw '{"method": "slim.request", "params": ["-", ["serverstatus","0","100"]]}
 '''
 
-def GetServerInfo():  # Sample function from generated code in Postman; may not function
+def GetLmsInfo():  # Sample function from generated code in Postman; may not function
     # Todo 'msi' => 'localhost'
     # Todo '9000' => '9002'    
     url = "http://msi:9000/jsonrpc.js"
