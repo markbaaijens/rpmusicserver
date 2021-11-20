@@ -12,7 +12,7 @@ def ExecuteBashCommand(bashCommand):
 
 
 #def TailFile(file, n, offset=0):
-def TailFile(file, n):
+def TailFromFile(file, n):
     process = subprocess.Popen(['tail', '-n', f'{n}', file], stdout=subprocess.PIPE)    
     lines = process.stdout.readlines()
     return lines
@@ -50,9 +50,11 @@ def GetVersionInfo():
 
 def GetUpdateLog():
     logLines = []
-    logLinesFromFile = TailFile('/home/mark/source/rpmusicserver/web-interface/api/test.log', 10)    
-    for logLine in logLinesFromFile:
-        logLines.append(logLine.decode("utf-8").strip('\n'))
+    logFile = '/home/mark/source/rpmusicserver/web-interface/api/api.log'
+    if os.path.isfile(logFile):
+        logLinesFromFile = TailFromFile(logFile, 5)
+        for logLine in logLinesFromFile:
+            logLines.append(logLine.decode("utf-8").strip('\n'))
     return { "UpdateLog": logLines }
 
 '''
