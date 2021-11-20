@@ -10,6 +10,13 @@ def ExecuteBashCommand(bashCommand):
     output, error = process.communicate()
     return output.decode("utf-8").strip('\n')
 
+
+#def TailFile(file, n, offset=0):
+def TailFile(file, n):
+    process = subprocess.Popen(['tail', '-n', f'{n}', file], stdout=subprocess.PIPE)    
+    lines = process.stdout.readlines()
+    return lines
+
 def GetMachineInfo():
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
@@ -42,17 +49,10 @@ def GetVersionInfo():
     return {'CurrentVersion': currentVersion, "LastUpdateTimeStamp": lastUpdateTimeStampAsString}
 
 def GetUpdateLog():
-    '''
-    import subprocess
-    def tail(file, n, offset=0):
-        proc = subprocess.Popen(['tail', '-n', n + offset, file], stdout=subprocess.PIPE)
-        lines = proc.stdout.readlines()
-        return lines[:, -offset]
-    '''
-
     logLines = []
-    logLines.append("Line 1") 
-    logLines.append("Line 2")     
+    logLinesFromFile = TailFile('/home/mark/source/rpmusicserver/web-interface/api/test.log', 10)    
+    for logLine in logLinesFromFile:
+        logLines.append(logLine.decode("utf-8").strip('\n'))
     return { "UpdateLog": logLines }
 
 '''
