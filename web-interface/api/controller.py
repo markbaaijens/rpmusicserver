@@ -117,7 +117,16 @@ def GetApiLog(nrOfLines):
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-
+@app.route('/api/GetResourceInfo', methods=['GET'])
+def GetResourceInfo():
+    try:
+        info = logic.GetResourceInfo()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
 '''
 # TODO Method logic.GetServerInfo() is not working 

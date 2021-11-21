@@ -5,7 +5,7 @@
     "api/GetVersionInfo": "Shows the current version of RPMS & the last update-timestamp",
     "api/GetUpdateLog/x": "Get the last x lines of the update-log",
     "api/GetApiLog/x": "Get the last x lines of the API-log",
-    "*api/GetResourceInfo": "Show system-resources",
+    "api/GetResourceInfo": "Show system-resources",
     "*api/GetLmsServerInfo": "Show LMS server-info", 
     "*api/GetPlayerList": "Show list of all Squeezebox-players",
     "*api/GetDiskInfo": "Show status of disks, usage + health", 

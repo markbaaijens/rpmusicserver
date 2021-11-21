@@ -6,12 +6,9 @@ from globals import configObject
 from datetime import datetime
 
 def ExecuteBashCommand(bashCommand):
-    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    output, error = process.communicate()
-    return output.decode("utf-8").strip('\n')
+    process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    return process.stdout.decode("utf-8").strip('\n')
 
-
-#def TailFile(file, n, offset=0):
 def TailFromFile(file, n):
     process = subprocess.Popen(['tail', '-n', f'{n}', file], stdout=subprocess.PIPE)    
     lines = process.stdout.readlines()
@@ -22,6 +19,69 @@ def GetMachineInfo():
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
     return {'HostName': hostName, 'IpAddress': ipAddress, "OsCodeName": osCodeName}
+
+def GetResourceInfo():
+    # memTotal => free | grep 'Mem:' | awk '{print $2}'
+    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    memTotal = process.stdout.decode("utf-8").strip('\n')
+
+    # memUsed => free | grep 'Mem:' | awk '{print $3}'
+    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    memUsed = process.stdout.decode("utf-8").strip('\n')
+
+    # swapTotal => free | grep 'Swap:' | awk '{print $2}'
+    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    swapTotal = process.stdout.decode("utf-8").strip('\n')
+
+    # swapUsed => free | grep 'Swap:' | awk '{print $3}'
+    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    swapUsed = process.stdout.decode("utf-8").strip('\n')
+
+    # upTimeInDays => uptime | awk '{print $3}'
+    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    upTimeInDays = process.stdout.decode("utf-8").strip('\n')
+
+    # averageLoad1 => uptime | awk '{print $10}' | cut -c 1-4
+    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $10}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    averageLoad1 = process.stdout.decode("utf-8").strip('\n')
+
+    # averageLoad5 => uptime | awk '{print $11}' | cut -c 1-4
+    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $11}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    averageLoad5 = process.stdout.decode("utf-8").strip('\n')
+
+    # averageLoad15 => uptime | awk '{print $12}' | cut -c 1-4
+    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $12}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    averageLoad15 = process.stdout.decode("utf-8").strip('\n')
+
+
+    # topProcessesByCpu => ps -eo command --sort -%cpu | head -10
+    # topProcessesByMemory => ps -eo command --sort -%mem | head -10
+
+    return {'MemTotal': memTotal, 
+            "MemUsed": memUsed,
+            "SwapTotal": swapTotal,
+            "SwapUsed": swapUsed,
+            "UpTimeInDays": upTimeInDays,
+            "OverageLoad1": averageLoad1,
+            "OverageLoad5": averageLoad5,
+            "OverageLoad15": averageLoad15,
+            "TopProcessesByCpu": ["a", "b"], 
+            "TopProcessesByMemory": ["c", "d" ]}             
 
 def GetVersionInfo():
     currentVersion = ''
