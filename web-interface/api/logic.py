@@ -148,6 +148,18 @@ def GetDockerContainerList():
         dockerContainerList.append(line)
     return { "DockerContainers": dockerContainerList }
 
+def DoRebootServer():
+    subprocess.run(["reboot now"], stdout=subprocess.PIPE, shell=True)
+    return { "Message": "Server is rebooting" }
+
+def DoHaltServer():
+    subprocess.run(["halt"], stdout=subprocess.PIPE, shell=True)
+    return { "Message": "Server is halting" }
+
+def DoUpdateServer():
+    subprocess.run(["update-rpms"], stdout=subprocess.PIPE, shell=True)
+    return { "Message": "Server is updating" }
+
 '''
 LMS API-reference: http://msi:9000/html/docs/cli-api.html
 

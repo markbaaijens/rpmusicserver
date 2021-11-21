@@ -10,7 +10,7 @@
     "*api/GetPlayerList": "Show list of all Squeezebox-players",
     "*api/GetDiskList": "Show list of disks, status, usage + health", 
     "api/GetDockerContainerList": "Show all running docker containers",
-    "*api/DoUpdateServer": "Update RPMS to the latest version",
-    "*api/DoShutdownServer": "Power-off server",
-    "*api/DoRebootServer": "Reboot server"
+    "api/DoUpdateServer": "Update RPMS to the latest version",
+    "api/DoHaltServer": "Power-off server",
+    "api/DoRebootServer": "Reboot server"
 }

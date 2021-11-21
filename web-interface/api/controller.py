@@ -138,6 +138,39 @@ def GetResourceInfo():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
+@app.route('/api/DoRebootServer', methods=['POST'])
+def DoRebootServer():
+    try:
+        info = logic.DoRebootServer()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/DoHaltServer', methods=['POST'])
+def DoHaltServer():
+    try:
+        info = logic.DoHaltServer()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/DoUpdateServer', methods=['POST'])
+def DoUpdateServer():
+    try:
+        info = logic.DoUpdateServer()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
 '''
 # TODO Method logic.GetServerInfo() is not working 
 # GET /api/ServerInfo
