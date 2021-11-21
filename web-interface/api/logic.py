@@ -139,6 +139,15 @@ def GetLog(logFile, nrOfLines):
             logLines.append(logLine.decode("utf-8").strip('\n'))
     return { "logLines": logLines }
 
+def GetDockerContainerList():
+    dockerContainerList = []
+    process = subprocess.run(["docker ps --format '{{.Image}}'"], stdout=subprocess.PIPE, shell=True)
+    lines = process.stdout.decode("utf-8").strip('\n')
+    lines = lines.splitlines()
+    for line in lines:
+        dockerContainerList.append(line)
+    return { "DockerContainers": dockerContainerList }
+
 '''
 LMS API-reference: http://msi:9000/html/docs/cli-api.html
 

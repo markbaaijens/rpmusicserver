@@ -70,6 +70,12 @@ given_an_api_when_called_resource_info_then_memtotal_returned () {
     if [ "$(cat /tmp/curl-output.txt | jq .MemTotal)" ]; then echo "$func_name => OK"; else echo "$func_name => Fail"; fi
 }
 
+given_an_api_when_called_docker_container_list_then_dockercontainers_returned () {
+    func_name="* ${FUNCNAME[0]}"
+    call_api "localhost:5000/api/GetDockerContainerList"
+    if [ "$(cat /tmp/curl-output.txt | jq .DockerConatiners)" ]; then echo "$func_name => OK"; else echo "$func_name => Fail"; fi
+}
+
 given_an_api_when_called_root_then_correct_output_returned
 echo 
 given_an_api_when_called_api_list_then_root_returned
@@ -85,6 +91,5 @@ given_an_api_when_called_update_log_then_update_log_returned
 given_an_api_when_called_api_log_then_api_log_returned
 echo 
 given_an_api_when_called_resource_info_then_memtotal_returned
-
-
-
+echo 
+given_an_api_when_called_docker_container_list_then_dockercontainers_returned
