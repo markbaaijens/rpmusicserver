@@ -68,11 +68,25 @@ def GetResourceInfo():
     process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     averageLoad15 = process.stdout.decode("utf-8").strip('\n')
 
+    # topProcessesByCpu => ps --no-headers -eo command --sort -%cpu | head -5
+    topProcessesByCpu = []
+    process = subprocess.run(["ps --no-headers -eo command --sort -%cpu"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["head -5"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    lines = process.stdout.decode("utf-8").strip('\n')
+    lines = lines.splitlines()
+    for line in lines:
+        topProcessesByCpu.append(line)
 
-    # topProcessesByCpu => ps -eo command --sort -%cpu | head -10
-    # topProcessesByMemory => ps -eo command --sort -%mem | head -10
+    # topProcessesByMemory => ps --no-headers -eo command --sort -%mem | head -10
+    topProcessesByMemory = []
+    process = subprocess.run(["ps --no-headers -eo command --sort -%mem"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["head -5"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    lines = process.stdout.decode("utf-8").strip('\n')
+    lines = lines.splitlines()
+    for line in lines:
+        topProcessesByMemory.append(line)
 
-    return {'MemTotal': memTotal, 
+    return {'MemTotal': memTotal,
             "MemUsed": memUsed,
             "SwapTotal": swapTotal,
             "SwapUsed": swapUsed,
@@ -80,8 +94,8 @@ def GetResourceInfo():
             "OverageLoad1": averageLoad1,
             "OverageLoad5": averageLoad5,
             "OverageLoad15": averageLoad15,
-            "TopProcessesByCpu": ["a", "b"], 
-            "TopProcessesByMemory": ["c", "d" ]}             
+            "TopProcessesByCpu": topProcessesByCpu,
+            "TopProcessesByMemory":topProcessesByMemory}
 
 def GetVersionInfo():
     currentVersion = ''
