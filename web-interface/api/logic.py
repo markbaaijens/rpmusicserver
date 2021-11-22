@@ -49,7 +49,7 @@ def GetDiskList():
                     "Used": systemUsed,
                     'UsedPercentage': systemUsedPercentage
                  })
-
+    # TODO Check if online => status = 'offline' (other properties stay empty)
     usbDataDiskName = 'usbdata'
     usbDataStatus = 'online'
     usbDataSize = '2TB'
@@ -62,7 +62,7 @@ def GetDiskList():
                     "Used": usbDataUsed,
                     'UsedPercentage': usbDataUsedPercentage
                  })
-    # TODO Check if online
+    # TODO Check if online => status = 'offline' (other properties stay empty)
     usbBackupDiskName = 'usbbackup'
     usbBackupStatus = 'online'
     usbBackupSize = '2TB'
