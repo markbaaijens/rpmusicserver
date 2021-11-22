@@ -182,20 +182,15 @@ def DoUpdateServer():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-'''
-# TODO Method logic.GetServerInfo() is not working 
-# GET /api/ServerInfo
-# curl -i http://localhost:5000/ServerInfo
-@app.route('/api/ServerInfo', methods=['GET'])
-def GetServerInfo():
+@app.route('/api/GetLmsServerInfo', methods=['GET'])
+def GetLmsServerInfo():
     try:
-        info = logic.GetServerInfo()
+        info = logic.GetLmsServerInfo()
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
-'''
 
 if __name__ == '__main__':
     import argparse
