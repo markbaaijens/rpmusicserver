@@ -12,7 +12,7 @@ fi
 
 echo "Start installing packages..."
 apt-get update
-apt-get install docker.io python3-pip tree jq -y
+apt-get install docker.io python3-pip tree jq smartmontools -y
 echo "Done installing packages."
 
 echo "Creating mountpoint for harddisk:"

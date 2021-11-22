@@ -8,7 +8,7 @@
     "api/GetResourceInfo": "Show system-resources like memory- and CPU-usage, system-load",
     "*api/GetLmsServerInfo": "Show LMS server-info", 
     "*api/GetPlayerList": "Show list of all Squeezebox-players",
-    "*api/GetDiskList": "Show list of disks, status, usage + health", 
+    "api/GetDiskList": "Show list of disks, status, usage + health", 
     "api/GetDockerContainerList": "Show all running docker containers",
     "api/DoUpdateServer": "Update RPMS to the latest version",
     "api/DoHaltServer": "Power-off server",

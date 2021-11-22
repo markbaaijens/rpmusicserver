@@ -20,76 +20,70 @@ def GetMachineInfo():
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
     return {'HostName': hostName, 'IpAddress': ipAddress, "OsCodeName": osCodeName}
 
+disks = []
+
+def AppendDiskInfo(diskMountPoint):
+    # diskDeviceName => mount | grep -w / | awk '{print $1}'
+    process = subprocess.run(["mount"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep -w " + diskMountPoint], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    diskDeviceName = process.stdout.decode("utf-8").strip('\n')
+
+    diskName = diskMountPoint.replace('/media/', '')
+
+    diskSize = ''
+    diskUsed = ''
+    diskUsedPercentage = ''
+    isHealthy = None
+    if diskDeviceName:
+
+        # diskSize => df -h | grep -w / | awk '{print $2}'
+        process = subprocess.run(["df -h"], stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run(["grep -w " + diskMountPoint], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+        diskSize = process.stdout.decode("utf-8").strip('\n')
+
+        # diskUsed => df -h | grep -w / | awk '{print $3}'
+        process = subprocess.run(["df -h"], stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run(["grep -w " + diskMountPoint], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+        diskUsed = process.stdout.decode("utf-8").strip('\n')
+
+        # diskUsedPercentage => df -h | grep -w / | awk '{print $5}'
+        process = subprocess.run(["df -h"], stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run(["grep -w " + diskMountPoint], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run(["awk '{print $5}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+        diskUsedPercentage = process.stdout.decode("utf-8").strip('\n')
+
+        # healthy => smartctl <deviceName> -H | grep -w PASSED
+        process = subprocess.run(["smartctl " + diskDeviceName], stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run(["grep -w PASSED"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+        healthy = process.stdout.decode("utf-8").strip('\n')
+        if healthy:
+            isHealthy = True
+        else:
+            isHealthy = False
+                 
+        diskStatus = 'online'
+    else:
+        diskStatus = 'offline'
+
+    disks.append({
+                    "DiskName": diskName,
+                    "MountPoint": diskMountPoint,
+                    "DeviceName": diskDeviceName,
+                    "Status": diskStatus,
+                    "Size": diskSize,
+                    "Used": diskUsed,
+                    'UsedPercentage': diskUsedPercentage,
+                    "Healthy": isHealthy
+                 })
+    pass
+
 def GetDiskList():
-# List labels of all devices: sudo blkid -o list
-
-    disks = []
-
-# systemSize => df -h | grep -w / | awk '{print $2}'
-# systemUsed => df -h | grep -w / | awk '{print $3}'
-# systemUsedPercentage => df -h | grep -w / | awk '{print $5}'
-
-    diskName = 'system'
-    diskMountPoint = '/'
-    diskDeviceName = '/dev/sda'
-    diskStatus = 'online'
-    diskSize = '16G'
-    diskUsed = '4G'
-    diskUsedPercentage = '25%'
-    disks.append({
-                    "DiskName": diskName,
-                    "MountPoint": diskMountPoint,
-                    "DeviceName": diskDeviceName,
-                    "Status": diskStatus,
-                    "Size": diskSize,
-                    "Used": diskUsed,
-                    'UsedPercentage': diskUsedPercentage
-                 })
-
-# usbDataSize => df -h | grep -w /media/usbdata | awk '{print $2}'
-# usbDataUsed => df -h | grep -w /media/usbdata | awk '{print $3}'
-# usbDataUsedPercentage => df -h | grep -w /media/usbdata | awk '{print $5}'
-
-    # TODO Check if online => status = 'offline' (other properties stay empty)
-    diskName = 'usbdata'
-    diskMountPoint = '/media/usbdata'    
-    diskDeviceName = '/dev/sdb'    
-    diskStatus = 'online'
-    diskSize = '2TB'
-    diskUsed = '1.5TB'
-    diskUsedPercentage = '75%'
-    disks.append({
-                    "DiskName": diskName,
-                    "MountPoint": diskMountPoint,
-                    "DeviceName": diskDeviceName,
-                    "Status": diskStatus,
-                    "Size": diskSize,
-                    "Used": diskUsed,
-                    'UsedPercentage': diskUsedPercentage
-                 })
-
-# usbBackupSize => df -h | grep -w /media/usbbackup | awk '{print $2}'
-# usbBackupUsed => df -h | grep -w /media/usbbackup | awk '{print $3}'
-# usbBackupUsedPercentage => df -h | grep -w /media/usbbackup | awk '{print $5}'
-
-    # TODO Check if online => status = 'offline' (other properties stay empty)
-    diskName = 'usbbackup'
-    diskMountPoint = '/media/usbbackup'    
-    diskDeviceName = '/dev/sdc'    
-    diskStatus = 'online'
-    diskSize = '4TB'
-    diskUsed = '1.8TB'
-    diskUsedPercentage = '45%'
-    disks.append({
-                    "DiskName": diskName,
-                    "MountPoint": diskMountPoint,
-                    "DeviceName": diskDeviceName,
-                    "Status": diskStatus,
-                    "Size": diskSize,
-                    "Used": diskUsed,
-                    'UsedPercentage': diskUsedPercentage
-                 })
-
+    AppendDiskInfo('/')
+    AppendDiskInfo('/media/usbdata')
+    AppendDiskInfo('/media/usbbackup')
     return {'Disks': disks}
 
 def GetResourceInfo():
