@@ -20,6 +20,26 @@ def GetMachineInfo():
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
     return {'HostName': hostName, 'IpAddress': ipAddress, "OsCodeName": osCodeName}
 
+def GetDiskList():
+# List labels of all devices: sudo blkid -o list
+# usbDataSize => df -h | grep /media/usbdata | awk '{print $2}'
+# usbDataUsed => df -h | grep /media/usbdata | awk '{print $3}'
+# usbDataUsedPercentage => df -h | grep /media/usbdata | awk '{print $5}'
+    usbDataStatus = 'online'
+    usbDataSize = '2TB'
+    usbDataUsed = '1.5TB'
+    usbDataUsedPercentage = '75%'
+    disks = []
+    disks.append({
+                    "DiskName": "usbdata",
+                    "Status": usbDataStatus,
+                    "Size": usbDataSize,
+                    "Used": usbDataUsed,
+                    'UsedPercentage': usbDataUsedPercentage
+                 })
+
+    return {'Disks': disks}
+
 def GetResourceInfo():
     # memTotal => free | grep 'Mem:' | awk '{print $2}'
     process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
