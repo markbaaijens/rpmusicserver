@@ -203,7 +203,7 @@ def GetLog(logFile, nrOfLines):
         logLinesFromFile = TailFromFile(logFile, nrOfLines)
         for logLine in logLinesFromFile:
             logLines.append(logLine.decode("utf-8").strip('\n'))
-    return { "logLines": logLines }
+    return { "LogLines": logLines }
 
 def GetDockerContainerList():
     dockerContainerList = []
