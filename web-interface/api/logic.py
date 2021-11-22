@@ -23,58 +23,60 @@ def GetMachineInfo():
 def GetDiskList():
 # List labels of all devices: sudo blkid -o list
 
+    disks = []
+
 # systemSize => df -h | grep -w / | awk '{print $2}'
 # systemUsed => df -h | grep -w / | awk '{print $3}'
 # systemUsedPercentage => df -h | grep -w / | awk '{print $5}'
+
+    diskName = 'system'
+    diskStatus = 'online'
+    diskSize = '16G'
+    diskUsed = '4G'
+    diskUsedPercentage = '25%'
+    disks.append({
+                    "DiskName": diskName,
+                    "Status": diskStatus,
+                    "Size": diskSize,
+                    "Used": diskUsed,
+                    'UsedPercentage': diskUsedPercentage
+                 })
 
 # usbDataSize => df -h | grep -w /media/usbdata | awk '{print $2}'
 # usbDataUsed => df -h | grep -w /media/usbdata | awk '{print $3}'
 # usbDataUsedPercentage => df -h | grep -w /media/usbdata | awk '{print $5}'
 
+    # TODO Check if online => status = 'offline' (other properties stay empty)
+    diskName = 'usbdata'
+    diskStatus = 'online'
+    diskSize = '2TB'
+    diskUsed = '1.5TB'
+    diskUsedPercentage = '75%'
+    disks.append({
+                    "DiskName": diskName,
+                    "Status": diskStatus,
+                    "Size": diskSize,
+                    "Used": diskUsed,
+                    'UsedPercentage': diskUsedPercentage
+                 })
+
 # usbBackupSize => df -h | grep -w /media/usbbackup | awk '{print $2}'
 # usbBackupUsed => df -h | grep -w /media/usbbackup | awk '{print $3}'
 # usbBackupUsedPercentage => df -h | grep -w /media/usbbackup | awk '{print $5}'
 
-    disks = []
-
-    systemDiskName = 'system'
-    systemStatus = 'online'
-    systemSize = '16G'
-    systemUsed = '4TB'
-    systemUsedPercentage = '25%'
-    disks.append({
-                    "DiskName": systemDiskName,
-                    "Status": systemStatus,
-                    "Size": systemSize,
-                    "Used": systemUsed,
-                    'UsedPercentage': systemUsedPercentage
-                 })
     # TODO Check if online => status = 'offline' (other properties stay empty)
-    usbDataDiskName = 'usbdata'
-    usbDataStatus = 'online'
-    usbDataSize = '2TB'
-    usbDataUsed = '1.5TB'
-    usbDataUsedPercentage = '75%'
+    diskName = 'usbbackup'
+    diskStatus = 'online'
+    diskSize = '4TB'
+    diskUsed = '1.8TB'
+    diskUsedPercentage = '45%'
     disks.append({
-                    "DiskName": usbDataDiskName,
-                    "Status": usbDataStatus,
-                    "Size": usbDataSize,
-                    "Used": usbDataUsed,
-                    'UsedPercentage': usbDataUsedPercentage
+                    "DiskName": diskName,
+                    "Status": diskStatus,
+                    "Size": diskSize,
+                    "Used": diskUsed,
+                    'UsedPercentage': diskUsedPercentage
                  })
-    # TODO Check if online => status = 'offline' (other properties stay empty)
-    usbBackupDiskName = 'usbbackup'
-    usbBackupStatus = 'online'
-    usbBackupSize = '2TB'
-    usbBackupUsed = '1.5TB'
-    usbBackupUsedPercentage = '75%'
-    disks.append({
-                    "DiskName": usbBackupDiskName,
-                    "Status": usbBackupStatus,
-                    "Size": usbBackupSize,
-                    "Used": usbBackupUsed,
-                    'UsedPercentage': usbBackupUsedPercentage
-                 })                 
 
     return {'Disks': disks}
 
