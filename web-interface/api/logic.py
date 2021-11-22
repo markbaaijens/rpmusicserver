@@ -30,12 +30,16 @@ def GetDiskList():
 # systemUsedPercentage => df -h | grep -w / | awk '{print $5}'
 
     diskName = 'system'
+    diskMountPoint = '/'
+    diskDeviceName = '/dev/sda'
     diskStatus = 'online'
     diskSize = '16G'
     diskUsed = '4G'
     diskUsedPercentage = '25%'
     disks.append({
                     "DiskName": diskName,
+                    "MountPoint": diskMountPoint,
+                    "DeviceName": diskDeviceName,
                     "Status": diskStatus,
                     "Size": diskSize,
                     "Used": diskUsed,
@@ -48,12 +52,16 @@ def GetDiskList():
 
     # TODO Check if online => status = 'offline' (other properties stay empty)
     diskName = 'usbdata'
+    diskMountPoint = '/media/usbdata'    
+    diskDeviceName = '/dev/sdb'    
     diskStatus = 'online'
     diskSize = '2TB'
     diskUsed = '1.5TB'
     diskUsedPercentage = '75%'
     disks.append({
                     "DiskName": diskName,
+                    "MountPoint": diskMountPoint,
+                    "DeviceName": diskDeviceName,
                     "Status": diskStatus,
                     "Size": diskSize,
                     "Used": diskUsed,
@@ -66,12 +74,16 @@ def GetDiskList():
 
     # TODO Check if online => status = 'offline' (other properties stay empty)
     diskName = 'usbbackup'
+    diskMountPoint = '/media/usbbackup'    
+    diskDeviceName = '/dev/sdc'    
     diskStatus = 'online'
     diskSize = '4TB'
     diskUsed = '1.8TB'
     diskUsedPercentage = '45%'
     disks.append({
                     "DiskName": diskName,
+                    "MountPoint": diskMountPoint,
+                    "DeviceName": diskDeviceName,
                     "Status": diskStatus,
                     "Size": diskSize,
                     "Used": diskUsed,
