@@ -22,21 +22,59 @@ def GetMachineInfo():
 
 def GetDiskList():
 # List labels of all devices: sudo blkid -o list
-# usbDataSize => df -h | grep /media/usbdata | awk '{print $2}'
-# usbDataUsed => df -h | grep /media/usbdata | awk '{print $3}'
-# usbDataUsedPercentage => df -h | grep /media/usbdata | awk '{print $5}'
+
+# systemSize => df -h | grep -w / | awk '{print $2}'
+# systemUsed => df -h | grep -w / | awk '{print $3}'
+# systemUsedPercentage => df -h | grep -w / | awk '{print $5}'
+
+# usbDataSize => df -h | grep -w /media/usbdata | awk '{print $2}'
+# usbDataUsed => df -h | grep -w /media/usbdata | awk '{print $3}'
+# usbDataUsedPercentage => df -h | grep -w /media/usbdata | awk '{print $5}'
+
+# usbBackupSize => df -h | grep -w /media/usbbackup | awk '{print $2}'
+# usbBackupUsed => df -h | grep -w /media/usbbackup | awk '{print $3}'
+# usbBackupUsedPercentage => df -h | grep -w /media/usbbackup | awk '{print $5}'
+
+    disks = []
+
+    systemDiskName = 'system'
+    systemStatus = 'online'
+    systemSize = '16G'
+    systemUsed = '4TB'
+    systemUsedPercentage = '25%'
+    disks.append({
+                    "DiskName": systemDiskName,
+                    "Status": systemStatus,
+                    "Size": systemSize,
+                    "Used": systemUsed,
+                    'UsedPercentage': systemUsedPercentage
+                 })
+
+    usbDataDiskName = 'usbdata'
     usbDataStatus = 'online'
     usbDataSize = '2TB'
     usbDataUsed = '1.5TB'
     usbDataUsedPercentage = '75%'
-    disks = []
     disks.append({
-                    "DiskName": "usbdata",
+                    "DiskName": usbDataDiskName,
                     "Status": usbDataStatus,
                     "Size": usbDataSize,
                     "Used": usbDataUsed,
                     'UsedPercentage': usbDataUsedPercentage
                  })
+    # TODO Check if online
+    usbBackupDiskName = 'usbbackup'
+    usbBackupStatus = 'online'
+    usbBackupSize = '2TB'
+    usbBackupUsed = '1.5TB'
+    usbBackupUsedPercentage = '75%'
+    disks.append({
+                    "DiskName": usbBackupDiskName,
+                    "Status": usbBackupStatus,
+                    "Size": usbBackupSize,
+                    "Used": usbBackupUsed,
+                    'UsedPercentage': usbBackupUsedPercentage
+                 })                 
 
     return {'Disks': disks}
 
