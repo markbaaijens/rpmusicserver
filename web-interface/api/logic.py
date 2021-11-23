@@ -71,6 +71,7 @@ def AppendDiskInfo(diskMountPoint):
     pass
 
 def GetDiskList():
+    disks.clear()
     AppendDiskInfo('/')
     AppendDiskInfo('/media/usbdata')
     AppendDiskInfo('/media/usbbackup')
