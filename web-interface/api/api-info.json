@@ -7,7 +7,7 @@
     "api/GetApiLog/x": "Get the last x lines of the API-log",
     "api/GetResourceInfo": "Show system-resources like memory- and CPU-usage, system-load",
     "api/GetLmsServerInfo": "Show LMS server-info", 
-    "api/GetDiskList": "Show list of disks, status, usage + health", 
+    "api/GetDiskList": "Show list of disks: status, usage", 
     "api/GetDockerContainerList": "Show all running docker containers",
     "api/DoUpdateServer": "Update RPMS to the latest version",
     "api/DoHaltServer": "Power-off server",
