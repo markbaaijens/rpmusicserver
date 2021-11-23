@@ -159,7 +159,7 @@ def GetResourceInfo():
 def GetVersionInfo():
     revisionFile = '/etc/rpms/revision.json'
     if not os.path.isfile(revisionFile):
-        revisionFile = os.path.dirname(__file__) + '/../../revision.json'    
+        revisionFile = os.path.dirname(__file__) + '/../../revision.json'
 
     currentVersion = ''
     lastUpdateTimeStampAsString = ''
@@ -185,7 +185,7 @@ def GetVersionInfo():
 
 def GetApiList():
     dataAsJson = {}
-    apiInfoFile = 'api-info.json'    
+    apiInfoFile = os.path.dirname(__file__) + '/api-info.json'    
     if os.path.isfile(apiInfoFile):
         with open(apiInfoFile) as file:
             dataAsDict = json.load(file)
