@@ -57,15 +57,33 @@ def BuildResponse(statusCode, body, location):
     response.headers['Location'] = location
     return response
 
-# GET /
-# curl -i http://localhost:5000
 @app.route('/', methods=['GET'])
 def root():
-    return BuildResponse(HTTP_OK, jsonify({'name': 'rpms-api'}), request.url)
+    return BuildResponse(HTTP_OK, jsonify({'ApiName': 'rpms-api'}), request.url)
 
-# GET /api/MachineInfo
-# curl -i http://localhost:5000/MachineInfo
-@app.route('/api/MachineInfo', methods=['GET'])
+@app.route('/api/GetApiList', methods=['GET'])
+def GetApiList():
+    try:
+        info = logic.GetApiList()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetDockerContainerList', methods=['GET'])
+def GetDockerContainerList():
+    try:
+        info = logic.GetDockerContainerList()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetMachineInfo', methods=['GET'])
 def GetMachineInfo():
     try:
         info = logic.GetMachineInfo()
@@ -76,20 +94,103 @@ def GetMachineInfo():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-'''
-# TODO Method logic.GetServerInfo() is not working 
-# GET /api/ServerInfo
-# curl -i http://localhost:5000/ServerInfo
-@app.route('/api/ServerInfo', methods=['GET'])
-def GetServerInfo():
+@app.route('/api/GetVersionInfo', methods=['GET'])
+def GetVersionInfo():
     try:
-        info = logic.GetServerInfo()
+        info = logic.GetVersionInfo()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetUpdateLog/<int:nrOfLines>', methods=['GET'])
+def GetUpdateLog(nrOfLines):
+    try:
+        info = logic.GetLog('/media/usbdata/config/update.log', nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetApiLog/<int:nrOfLines>', methods=['GET'])
+def GetApiLog(nrOfLines):
+    try:
+        info = logic.GetLog('/media/usbdata/config/api.log', nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetResourceInfo', methods=['GET'])
+def GetResourceInfo():
+    try:
+        info = logic.GetResourceInfo()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetDiskList', methods=['GET'])
+def GetDiskList():
+    try:
+        info = logic.GetDiskList()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/DoRebootServer', methods=['POST'])
+def DoRebootServer():
+    try:
+        info = logic.DoRebootServer()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/DoHaltServer', methods=['POST'])
+def DoHaltServer():
+    try:
+        info = logic.DoHaltServer()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/DoUpdateServer', methods=['POST'])
+def DoUpdateServer():
+    try:
+        info = logic.DoUpdateServer()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsServerInfo', methods=['GET'])
+def GetLmsServerInfo():
+    try:
+        info = logic.GetLmsServerInfo()
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
-'''
 
 if __name__ == '__main__':
     import argparse

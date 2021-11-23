@@ -75,6 +75,7 @@ echo " => file rc.local copied."
 echo "Copy revision.json file:"
 mkdir -p /etc/rpms
 cp /tmp/rpmusicserver/revision.json /etc/rpms
+touch /etc/rpms/revision.json  # For retrieving last update timestamp
 echo " => file revision.json copied." 
 
 echo "Copy update-rpms file:"
