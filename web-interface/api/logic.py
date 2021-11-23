@@ -127,6 +127,7 @@ def GetResourceInfo():
 
     # topProcessesByCpu => ps --no-headers -eo command --sort -%cpu | head -5
     topProcessesByCpu = []
+    topProcessesByCpu.clear()
     process = subprocess.run(["ps --no-headers -eo command --sort -%cpu"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["head -5"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     lines = process.stdout.decode("utf-8").strip('\n')
@@ -136,6 +137,7 @@ def GetResourceInfo():
 
     # topProcessesByMemory => ps --no-headers -eo command --sort -%mem | head -10
     topProcessesByMemory = []
+    topProcessesByMemory.clear()
     process = subprocess.run(["ps --no-headers -eo command --sort -%mem"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["head -5"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     lines = process.stdout.decode("utf-8").strip('\n')
