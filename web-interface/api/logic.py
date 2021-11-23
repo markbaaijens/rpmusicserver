@@ -157,12 +157,12 @@ def GetResourceInfo():
             "TopProcessesByMemory":topProcessesByMemory}
 
 def GetVersionInfo():
+    revisionFile = '/etc/rpms/revision.json'
+    if not os.path.isfile(revisionFile):
+        revisionFile = os.path.dirname(__file__) + '/../../revision.json'    
+
     currentVersion = ''
     lastUpdateTimeStampAsString = ''
-    if configObject.Debug:
-        revisionFile = '../../revision.json'    
-    else: 
-        revisionFile = '/etc/rmps/revision.json'    
     if os.path.isfile(revisionFile):
         with open(revisionFile) as file:
             dataAsDict = json.load(file)
@@ -179,7 +179,9 @@ def GetVersionInfo():
             pass
         lastUpdateTimeStampAsString = datetime.utcfromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
 
-    return {'CurrentVersion': currentVersion, "LastUpdateTimeStamp": lastUpdateTimeStampAsString}
+    return {"VersionFile": revisionFile,
+            "CurrentVersion": currentVersion, 
+            "LastUpdateTimeStamp": lastUpdateTimeStampAsString}
 
 def GetApiList():
     dataAsJson = {}
