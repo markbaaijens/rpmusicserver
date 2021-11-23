@@ -55,15 +55,6 @@ def AppendDiskInfo(diskMountPoint):
         process = subprocess.run(["awk '{print $5}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
         diskUsedPercentage = process.stdout.decode("utf-8").strip('\n')
 
-        # healthy => smartctl <deviceName> -H | grep -w PASSED
-        process = subprocess.run(["smartctl " + diskDeviceName], stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["grep -w PASSED"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-        healthy = process.stdout.decode("utf-8").strip('\n')
-        if healthy:
-            isHealthy = True
-        else:
-            isHealthy = False
-                 
         diskStatus = 'online'
     else:
         diskStatus = 'offline'
@@ -75,8 +66,7 @@ def AppendDiskInfo(diskMountPoint):
                     "Status": diskStatus,
                     "Size": diskSize,
                     "Used": diskUsed,
-                    'UsedPercentage': diskUsedPercentage,
-                    "Healthy": isHealthy
+                    'UsedPercentage': diskUsedPercentage
                  })
     pass
 
