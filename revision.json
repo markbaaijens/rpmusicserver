@@ -7,7 +7,8 @@
                 "Upgraded Raspbian to Bullseye",
                 "Changed hostname to 'rpms'",
                 "Changed password of user 'pi' to 'rpms'",
-                "Added update-command"               
+                "Added update-command",
+                "Added API"
             ]
         },
         {
