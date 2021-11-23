@@ -107,22 +107,24 @@ def GetResourceInfo():
     process = subprocess.run(["cut -c 4-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     upTime = process.stdout.decode("utf-8").strip('\n')
 
-    # averageLoad1 => uptime | awk '{print $10}' | cut -c 1-4
+    # averageLoad1 => uptime | tail -c 17 | awk '{print $1}' | cut -c 1-4
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $10}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     averageLoad1 = process.stdout.decode("utf-8").strip('\n')
 
-    # averageLoad5 => uptime | awk '{print $11}' | cut -c 1-4
+    # averageLoad5 => uptime | tail -c 17 | awk '{print $2}' | cut -c 1-4
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $11}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
+    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     averageLoad5 = process.stdout.decode("utf-8").strip('\n')
 
-    # averageLoad15 => uptime | awk '{print $12}' | cut -c 1-4
+    # averageLoad15 => uptime | tail -c 17 | awk '{print $3}'
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $12}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
+    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     averageLoad15 = process.stdout.decode("utf-8").strip('\n')
 
     # topProcessesByCpu => ps --no-headers -eo command --sort -%cpu | head -5
