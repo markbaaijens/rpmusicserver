@@ -102,10 +102,10 @@ def GetResourceInfo():
     process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     swapUsed = process.stdout.decode("utf-8").strip('\n')
 
-    # upTimeInDays => uptime | awk '{print $3}'
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    upTimeInDays = process.stdout.decode("utf-8").strip('\n')
+    # upTime => uptime -p | cut -c 4-
+    process = subprocess.run(["uptime -p"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["cut -c 4-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    upTime = process.stdout.decode("utf-8").strip('\n')
 
     # averageLoad1 => uptime | awk '{print $10}' | cut -c 1-4
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
@@ -147,7 +147,7 @@ def GetResourceInfo():
             "MemUsed": memUsed,
             "SwapTotal": swapTotal,
             "SwapUsed": swapUsed,
-            "UpTimeInDays": upTimeInDays,
+            "UpTime": upTime,
             "OverageLoad1": averageLoad1,
             "OverageLoad5": averageLoad5,
             "OverageLoad15": averageLoad15,
