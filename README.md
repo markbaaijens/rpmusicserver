@@ -33,7 +33,9 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
   * LMS (browser): [rpms:9002](http://rpms:9002)
   * Samba (file explorer): `smb://rpms`
   * Transmission (browser): [rpms:9091](http://rpms:9091)
-  * API (cli): `curl rpms:5000`
+  * API: 
+    * `curl rpms:5000`
+    * [rpms:5000](http://rpms:5000)
 * Engage:
   * copy music files to `smb://rpms/Publiek/Muziek`
   * hookup a Squeezebox player to your network
@@ -47,4 +49,6 @@ Update your RPMS by SSH:
 ## Development: 
 * To update RMPS from `development` branch instead of `master`: 
   * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/config/update-branch.txt'"`
-* API-documentation: `curl rpms:5000/api/getApiList`
+* API-documentation: 
+  * `curl rpms:5000/api/GetApiList`
+  * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList)
