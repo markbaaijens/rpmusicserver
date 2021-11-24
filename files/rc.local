@@ -31,13 +31,11 @@ if [ ! "$(docker ps -f name=samba -q)" ]; then
 fi
 
 # Transmission
-: '
 if [ ! "$(docker ps -f name=transmission -q)" ]; then
   docker run -d --rm --name transmission -p 9091:9091 -e PUID=1000 -e PGID=1000 \
     -v /media/usbdata/config/docker/transmission:/config  \
     -v /media/usbdata/user/Publiek/Downloads:/downloads  \
     linuxserver/transmission
 fi
-'
 
 exit 0
