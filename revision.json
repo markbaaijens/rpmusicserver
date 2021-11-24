@@ -9,7 +9,8 @@
                 "Changed password of user 'pi' to 'rpms'",
                 "Added update-command",
                 "Added API",
-                "Added Transmission"
+                "Added Transmission",
+                "Transcoder-integration"
             ]
         },
         {
