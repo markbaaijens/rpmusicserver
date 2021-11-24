@@ -57,10 +57,10 @@ else
     echo " => LMS config folder is already present, no config files copied."    
 fi
 
-echo "Install python packages for RP Music Server:"
+echo "Install (python) pip-packages:"
 # Note that b/c this script is executed under sudo, pip3 packages are system-wide installed
 pip3 install -r /tmp/rpmusicserver/web-interface/requirements.txt 
-echo " => python packages installed." 
+echo " => pip-packages installed." 
 
 echo "Install program files for API:"
 mkdir -p /usr/local/bin/rpmusicserver/web-interface
