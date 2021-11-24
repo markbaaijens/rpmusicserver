@@ -4,6 +4,7 @@ import json
 import os
 from globals import configObject
 from datetime import datetime
+import math
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -82,25 +83,29 @@ def GetResourceInfo():
     process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    memTotal = process.stdout.decode("utf-8").strip('\n')
+    memTotal = int(process.stdout.decode("utf-8").strip('\n'))
 
     # memUsed => free | grep 'Mem:' | awk '{print $3}'
     process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    memUsed = process.stdout.decode("utf-8").strip('\n')
+    memUsed = int(process.stdout.decode("utf-8").strip('\n'))
+
+    memUsedPercentage = math.floor(memUsed/memTotal * 100)
 
     # swapTotal => free | grep 'Swap:' | awk '{print $2}'
     process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    swapTotal = process.stdout.decode("utf-8").strip('\n')
+    swapTotal = int(process.stdout.decode("utf-8").strip('\n'))
 
     # swapUsed => free | grep 'Swap:' | awk '{print $3}'
     process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    swapUsed = process.stdout.decode("utf-8").strip('\n')
+    swapUsed = int(process.stdout.decode("utf-8").strip('\n'))
+
+    swapUsedPercentage = math.floor(swapUsed/swapTotal * 100)
 
     # upTime => uptime -p | cut -c 4-
     process = subprocess.run(["uptime -p"], stdout=subprocess.PIPE, shell=True)
@@ -112,20 +117,20 @@ def GetResourceInfo():
     process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    averageLoad1 = process.stdout.decode("utf-8").strip('\n')
+    averageLoad1 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
 
     # averageLoad5 => uptime | tail -c 17 | awk '{print $2}' | cut -c 1-4
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
     process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    averageLoad5 = process.stdout.decode("utf-8").strip('\n')
+    averageLoad5 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
 
     # averageLoad15 => uptime | tail -c 17 | awk '{print $3}'
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
     process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    averageLoad15 = process.stdout.decode("utf-8").strip('\n')
+    averageLoad15 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
 
     # topProcessesByCpu => ps --no-headers -eo command --sort -%cpu | head -5
     topProcessesByCpu = []
@@ -149,8 +154,10 @@ def GetResourceInfo():
 
     return {'MemTotal': memTotal,
             "MemUsed": memUsed,
+            "MemUsedPercentage": memUsedPercentage,
             "SwapTotal": swapTotal,
             "SwapUsed": swapUsed,
+            "SwapUsedPercentage": swapUsedPercentage,            
             "UpTime": upTime,
             "OverageLoad1": averageLoad1,
             "OverageLoad5": averageLoad5,
