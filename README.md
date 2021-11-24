@@ -47,7 +47,7 @@ Update your RPMS by SSH:
 * `ssh pi@rpms "sudo update-rpms"`
 
 ## Development: 
-* To update RMPS from `development` branch instead of `master`: 
+* To update RMPS from `develop` branch instead of `master`: 
   * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/config/update-branch.txt'"`
 * API-documentation: 
   * `curl rpms:5000/api/GetApiList`
