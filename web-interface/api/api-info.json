@@ -5,10 +5,12 @@
     "api/GetVersionInfo": "Shows the current version of RPMS & the last update-timestamp",
     "api/GetUpdateLog/x": "Get the last x lines of the update-log",
     "api/GetApiLog/x": "Get the last x lines of the API-log",
+    "api/GetTranscoderLog/x": "Get the last x lines of the transcoder-log",    
     "api/GetResourceInfo": "Show system-resources like memory- and CPU-usage, system-load",
     "api/GetLmsServerInfo": "Show LMS server-info", 
     "api/GetDiskList": "Show list of disks: status, usage", 
     "api/GetDockerContainerList": "Show all running docker containers",
+    "api/GetTranscoderSettings": "Show settings of transcoder",    
     "api/DoUpdateServer": "Update RPMS to the latest version",
     "api/DoHaltServer": "Power-off server",
     "api/DoRebootServer": "Reboot server"

@@ -73,6 +73,17 @@ def GetApiList():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
+@app.route('/api/GetTranscoderSettings', methods=['GET'])
+def GetTranscoderSettings():
+    try:
+        info = logic.GetTranscoderSettings()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetDockerContainerList', methods=['GET'])
 def GetDockerContainerList():
     try:
@@ -127,6 +138,17 @@ def GetApiLog(nrOfLines):
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetTranscoderLog/<int:nrOfLines>', methods=['GET'])
+def GetTranscoderLog(nrOfLines):
+    try:
+        info = logic.GetLog('/media/usbdata/config/transcoder.log', nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
 @app.route('/api/GetResourceInfo', methods=['GET'])
 def GetResourceInfo():
