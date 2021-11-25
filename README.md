@@ -1,7 +1,7 @@
 # rpmusicserver
 Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transcoder, etc.
 
-## Steps to turn a Pi into a music server:
+## Steps to turn a Pi into a music server
 * Download code:
   * `wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip`
   * `unzip -d /tmp -o /tmp/rpmusicserver.zip`
@@ -46,7 +46,7 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
 Update your RPMS by SSH: 
 * `ssh pi@rpms "sudo update-rpms"`
 
-### Development: 
+### Development
 * To update RMPS from `develop` branch instead of `master`: 
   * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/config/update-branch.txt'"`
 * API-documentation: 
