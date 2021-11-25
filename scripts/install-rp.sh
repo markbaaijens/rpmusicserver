@@ -98,6 +98,14 @@ cp /tmp/rpmusicserver/files/transcode /usr/local/bin
 chmod +x /usr/local/bin/transcode
 echo " => transcoder installed"
 
+echo "Adding line executing transcoder to /etc/crontab:"
+if [ ! "$(grep "transcode" /etc/crontab)" ]; then
+    /bin/sh -c 'echo "20 * * * * root transcode" >> /etc/crontab'
+    echo " => line added."    
+else
+    echo " => line is already present."    
+fi
+
 # Execute /etc/rc.local for preloading docker containers
 echo "Start executing /etc/rc.local..."
 /etc/rc.local
