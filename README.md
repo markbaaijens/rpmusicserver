@@ -58,10 +58,10 @@ For transcodring your lossless files (flac) into lossy ones (ogg or mp3), take t
 * move your flac-files into a separate folder: `smb://rpms/Publiek/Muziek/flac`
 * create a folder for lossy files: `smb://rpms/Publiek/Muziek/ogg`
 * modify `/media/usbdata/config/transcoder-settings.json`
-  * modify `sourcefolder` to `/media/usbdata/user/Publiek/Muziek/flac`
-  * modify `oggfolder` to `/media/usbdata/user/Publiek/Muziek/ogg`
-  * modify `oggquality` to a value 1-5; default = 1
-* everything is setup now => every hour at 20 minutes, file transcoding will take place and ogg-files will automagically appear in the given ogg-folder!
+  * change `sourcefolder` to `/media/usbdata/user/Publiek/Muziek/flac`
+  * change `oggfolder` to `/media/usbdata/user/Publiek/Muziek/ogg`
+  * (optional) change `oggquality` to a value 1-5; default = 1 (by setting `oggquality` to 0, transcoder will take this default)
+* from now on, every hour at 20 minutes, file transcoding will take place and ogg-files will automagically appear in the given ogg-folder!
 
 ### Note(s)
 * steps are described for transcoding to ogg; for mp3, follow the same steps, but:
