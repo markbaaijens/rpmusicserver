@@ -150,10 +150,15 @@ def GetTranscoderLog(nrOfLines):
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
-@app.route('/api/ChangeTranscoderSettingSourceFolder/<string:sourceFolder>', methods=['POST'])
-def ChangeTranscoderSettingSourceFolder(sourceFolder):
+@app.route('/api/ChangeTranscoderSettingSourceFolder', methods=['POST'])
+def ChangeTranscoderSettingSourceFolder():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+
+    requestData = request.get_json()
+
     try:
-        info = logic.ChangeTranscoderSettingSourceFolder(sourceFolder)
+        info = logic.ChangeTranscoderSettingSourceFolder(requestData)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

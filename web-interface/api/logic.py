@@ -227,10 +227,14 @@ def GetDockerContainerList():
         dockerContainerList.append(line)
     return { "DockerContainers": dockerContainerList }
 
-def ChangeTranscoderSettingSourceFolder(sourceFolder):
+def ChangeTranscoderSettingSourceFolder(requestData):
     # TODO Modiy sourcefolder in /media/usbdata/config/transcoder-settings.json
-    # TODO Find a way for transferring space and slashes / as a value
-    return { "Message": "Transcoder-setting [sourcefolder] is modified to " + sourceFolder }
+    message = {}
+    if 'sourcefolder' in requestData:
+        sourceFolder = requestData['sourcefolder']
+        message = { "Message": "Transcoder-setting [sourcefolder] is modified to [" + sourceFolder + "]"}
+
+    return message
 
 def DoRebootServer():
     subprocess.run(["reboot now"], stdout=subprocess.PIPE, shell=True)
