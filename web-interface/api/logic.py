@@ -227,23 +227,22 @@ def GetDockerContainerList():
         dockerContainerList.append(line)
     return { "DockerContainers": dockerContainerList }
 
-def SetTranscoderSettingSourceFolder(requestData):
-    if not 'sourcefolder' in requestData:
+def SetTranscoderSetting(requestData, settingName):
+    if not settingName in requestData:
         return { "Message": "Invalid request-data"}
-    sourceFolder = requestData['sourcefolder']
+    sourceFolder = requestData[settingName]
     
-#    transcoderSettingsFileName = '/media/usbdata/config/transcoder-settings.json'
-    transcoderSettingsFileName = '/home/mark/transcoder-settings.json'
+    transcoderSettingsFileName = '/media/usbdata/config/transcoder-settings.json'
     if not os.path.isfile(transcoderSettingsFileName):
         return { "Message": "File " + transcoderSettingsFileName + " does not exist"}
 
     with open(transcoderSettingsFileName, 'r') as jsonFile:
         data = json.load(jsonFile)
-    data["sourcefolder"] = sourceFolder
+    data[settingName] = sourceFolder
     with open(transcoderSettingsFileName, 'w') as jsonFile:
         json.dump(data, jsonFile)
 
-    return { "Message": "Transcoder-setting [sourcefolder] is modified to [" + sourceFolder + "]"}
+    return { "Message": "Transcoder-setting ["+ settingName + "] is modified to [" + sourceFolder + "]"}
 
 def DoRebootServer():
     subprocess.run(["reboot now"], stdout=subprocess.PIPE, shell=True)

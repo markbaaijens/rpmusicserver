@@ -158,7 +158,39 @@ def SetTranscoderSettingSourceFolder():
     requestData = request.get_json()
 
     try:
-        info = logic.SetTranscoderSettingSourceFolder(requestData)
+        info = logic.SetTranscoderSetting(requestData, 'sourcefolder')
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+@app.route('/api/SetTranscoderSettingOggFolder', methods=['POST'])
+def SetTranscoderSettingOggFolder():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+
+    requestData = request.get_json()
+
+    try:
+        info = logic.SetTranscoderSetting(requestData, 'oggfolder')
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+@app.route('/api/SetTranscoderSettingMp3Folder', methods=['POST'])
+def SetTranscoderSettingMp3Folder():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+
+    requestData = request.get_json()
+
+    try:
+        info = logic.SetTranscoderSetting(requestData, 'mp3folder')
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

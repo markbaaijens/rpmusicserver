@@ -60,7 +60,15 @@
         "Example":"curl rmps:5000/api/DoHaltServer -X post"
     },
     "api/SetTranscoderSettingSourceFolder": {
-        "Description": "Set transcoder-setiing [sourcefolder]",
-        "Example":"curl rmps:5000/api/SetTranscoderSettingSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"sourcefolder\":\"NewFolder\"}'"
-    }
+        "Description": "Set transcoder-setting [sourcefolder]",
+        "Example":"curl rmps:5000/api/SetTranscoderSettingSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"sourcefolder\":\"NewSourceFolder\"}'"
+    },
+    "api/SetTranscoderSettingOggFolder": {
+        "Description": "Set transcoder-setting [oggfolder]",
+        "Example":"curl rmps:5000/api/SetTranscoderSettingOggFolder -X post -H \"Content-Type: application/json\" -d '{\"oggfolder\":\"NewOggFolder\"}'"
+    },
+    "api/SetTranscoderSettingMp3Folder": {
+        "Description": "Set transcoder-setting [mp3folder]",
+        "Example":"curl rmps:5000/api/SetTranscoderSettingMp3Folder -X post -H \"Content-Type: application/json\" -d '{\"mp3folder\":\"NewMp3Folder\"}'"
+    }    
 }
