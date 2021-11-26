@@ -72,11 +72,11 @@
         "Example":"curl rmps:5000/api/SetTranscoderSettingMp3Folder -X post -H \"Content-Type: application/json\" -d '{\"mp3folder\":\"NewMp3Folder\"}'"
     },
     "api/SetTranscoderSettingOggQuality": {
-        "Description": "Set transcoder-setting [oggquality]; range 1-5",
+        "Description": "Set transcoder-setting [oggquality]; 1, 2, 3,4, or 5; default = 1",
         "Example":"curl rmps:5000/api/SetTranscoderSettingOggQuality -X post -H \"Content-Type: application/json\" -d '{\"oggquality\": 2}'"
     },
     "api/SetTranscoderSettingMp3BitRate": {
-        "Description": "Set transcoder-setting [mp3bitrate]; 128, 256 or 384",
-        "Example":"curl rmps:5000/api/SetTranscoderSettingMp3BitRate -X post -H \"Content-Type: application/json\" -d '{\"mp3bitrate\": 128}'"
+        "Description": "Set transcoder-setting [mp3bitrate]; 128, 256 or 384; default = 128",
+        "Example":"curl rmps:5000/api/SetTranscoderSettingMp3BitRate -X post -H \"Content-Type: application/json\" -d '{\"mp3bitrate\": 256}'"
     }
 }
