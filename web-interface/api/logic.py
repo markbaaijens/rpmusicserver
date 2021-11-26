@@ -240,7 +240,7 @@ def SetTranscoderSetting(requestData, settingName):
     with open(transcoderSettingsFileName, 'w') as jsonFile:
         json.dump(data, jsonFile)
 
-    return { "Message": "Transcoder-setting ["+ settingName + "] is modified to [" + newValue + "]"}
+    return { "Message": "Transcoder-setting ["+ settingName + "] is modified to [" + str(newValue) + "]"}
 
 def DoRebootServer():
     subprocess.run(["reboot now"], stdout=subprocess.PIPE, shell=True)

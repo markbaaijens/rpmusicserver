@@ -207,6 +207,44 @@ def SetTranscoderSettingMp3Folder():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/SetTranscoderSettingOggQuality', methods=['POST'])
+def SetTranscoderSettingOggQuality():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    settingName = 'oggquality'
+    if not settingName in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    try:
+        info = logic.SetTranscoderSetting(requestData, settingName)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/SetTranscoderSettingMp3BitRate', methods=['POST'])
+def SetTranscoderSettingMp3BitRate():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    settingName = 'mp3bitrate'
+    if not settingName in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    try:
+        info = logic.SetTranscoderSetting(requestData, settingName)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetResourceInfo', methods=['GET'])
 def GetResourceInfo():
     try:
