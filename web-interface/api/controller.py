@@ -14,7 +14,6 @@ HTTP_CREATED = 201
 HTTP_BAD_REQUEST = 400
 HTTP_NOT_FOUND = 404
 HTTP_METHOD_NOT_ALLOWED = 405
-HTTP_UNPROCESSABLE_ENTITY = 422
 
 app = Flask(__name__)
 CORS(app)  # To enable http over different domains
