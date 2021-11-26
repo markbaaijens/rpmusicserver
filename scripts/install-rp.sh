@@ -12,7 +12,8 @@ fi
 
 echo "Start installing packages..."
 apt-get update
-apt-get install docker.io python3-pip tree jq -y
+apt-get install docker.io python3-pip tree jq bwm-ng -y  # Generic
+apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
 echo "Done installing packages."
 
 echo "Creating mountpoint for harddisk:"
@@ -57,10 +58,10 @@ else
     echo " => LMS config folder is already present, no config files copied."    
 fi
 
-echo "Install python packages for RP Music Server:"
+echo "Install (python) pip-packages:"
 # Note that b/c this script is executed under sudo, pip3 packages are system-wide installed
 pip3 install -r /tmp/rpmusicserver/web-interface/requirements.txt 
-echo " => python packages installed." 
+echo " => pip-packages installed." 
 
 echo "Install program files for API:"
 mkdir -p /usr/local/bin/rpmusicserver/web-interface
@@ -83,17 +84,40 @@ cp /tmp/rpmusicserver/files/update-rpms /usr/local/bin
 chmod +x /usr/local/bin/update-rpms
 echo " => file update-rpms copied." 
 
+echo "Installing transcoder..."
+rm -rf /tmp/transcoder*
+wget https://github.com/markbaaijens/transcoder/archive/refs/tags/v1.0.zip -nv -O /tmp/transcoder.zip
+unzip -o -q -d /tmp -o /tmp/transcoder.zip
+mv /tmp/transcoder-1.0 /tmp/transcoder
+mkdir -p /usr/local/bin/transcoder
+cp /tmp/transcoder/transcoder.py /usr/local/bin/transcoder/transcoder.py
+chmod +x /usr/local/bin/transcoder/transcoder.py
+if [ ! -f /media/usbdata/config/transcoder-settings.json ]; then
+    cp /tmp/transcoder/transcoder-settings.json /media/usbdata/config/transcoder-settings.json
+fi 
+cp /tmp/rpmusicserver/files/transcode /usr/local/bin
+chmod +x /usr/local/bin/transcode
+echo " => transcoder installed"
+
+echo "Adding line for transcoder to /etc/crontab:"
+if [ ! "$(grep "transcode" /etc/crontab)" ]; then
+    /bin/sh -c 'echo "20 * * * * root transcode" >> /etc/crontab'
+    echo " => line added."    
+else
+    echo " => line is already present."    
+fi
+
 # Execute /etc/rc.local for preloading docker containers
 echo "Start executing /etc/rc.local..."
 /etc/rc.local
-echo "Done executing /etc/rc.local."
+echo " => done executing /etc/rc.local."
 
 echo "Change password of user 'pi'..."
 sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 # Note that changing password in su-mode (which is different than sudo-mode)
 # does NOT require to enter the old password
 echo -e "rpms\nrpms" | passwd pi
-echo "Done changing password of user 'pi'."
+echo " => done changing password of user 'pi'."
 
 echo "Installation complete, system will be rebooted."
 reboot now

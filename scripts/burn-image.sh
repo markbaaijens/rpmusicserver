@@ -134,7 +134,6 @@ echo "Done extracting $working_dir/$archive"
 echo "Unmounting /dev/$chosen_disk partitions..."
 partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
 for partition in $partitions; do
-    # todo testen
     sleep 3
     umount -f "$partition"
 	if [ -n "$(df | grep $partition)" ]; then
