@@ -1,24 +1,66 @@
 {
-    "/": [
-        {"Description": "Shows the API-name"},
-        {"Example":"curl rmps:5000/api"}
-    ],
-    "api/GetApiList": [
-        {"Description": "Shows a list of all API-calls, hence the API-documentation"},
-        {"Example":"curl rmps:5000/api"}
-    ],
-    "api/GetMachineInfo": "Shows hostname, IP-address and OS-codename",
-    "api/GetVersionInfo": "Shows the current version of RPMS & the last update-timestamp",
-    "api/GetUpdateLog/x": "Get the last x lines of the update-log",
-    "api/GetApiLog/x": "Get the last x lines of the API-log",
-    "api/GetTranscoderLog/x": "Get the last x lines of the transcoder-log",    
-    "api/GetResourceInfo": "Show system-resources like memory- and CPU-usage, system-load",
-    "api/GetLmsServerInfo": "Show LMS server-info", 
-    "api/GetDiskList": "Show list of disks: status, usage", 
-    "api/GetDockerContainerList": "Show all running docker containers",
-    "api/GetTranscoderSettings": "Show settings of transcoder",    
-    "api/DoUpdateServer": "Update RPMS to the latest version",
-    "api/DoHaltServer": "Power-off server",
-    "api/DoRebootServer": "Reboot server",
-    "api/SetTranscoderSettingSourceFolder": "Set transcoder-setiing [sourcefolder]"
+    "/": {
+        "Description": "Shows the API-name",
+        "Example":"curl rmps:5000/api"
+    },
+    "api/GetApiList": {
+        "Description": "Shows a list of all API-calls, hence the API-documentation",
+        "Example":"curl rmps:5000/api/GetApiList"
+    },
+    "api/GetMachineInfo": {
+        "Description":"Shows hostname, IP-address and OS-codename",
+        "Example":"curl rmps:5000/api/GetMachineInfo"
+    },
+    "api/GetVersionInfo": {
+        "Description": "Shows the current version of RPMS & timestamp of the last update",
+        "Example":"curl rmps:5000/api/GetVersionInfo"
+    },
+    "api/GetUpdateLog/<int>": {
+        "Description": "Get the last x lines of the update-log",
+        "Example":"curl rmps:5000/api/GetUpdateLog/10"
+    }, 
+    "api/GetApiLog/<int>": {
+        "Description": "Get the last x lines of the API-log",
+        "Example":"curl rmps:5000/api/GetApiLog/10"
+    },
+    "api/GetTranscoderLog/<int>": {
+        "Description": "Get the last x lines of the transcoder-log",
+        "Example":"curl rmps:5000/api/GetTranscoderLog/10"
+    },
+    "api/GetResourceInfo": {
+        "Description": "Show system-resources like memory- and CPU-usage, system-load",
+        "Example":"curl rmps:5000/api/GetResourceInfo"
+    },
+    "api/GetLmsServerInfo": {
+        "Description": "Show LMS server-info",
+        "Example":"curl rmps:5000/api/GetLmsServerInfo"
+    },
+    "api/GetDiskList": {
+        "Description": "Show list of disks: status, usage",
+        "Example":"curl rmps:5000/api/GetDiskList"
+    },
+    "api/GetDockerContainerList": {
+        "Description": "Show all running docker containers",
+        "Example":"curl rmps:5000/api/GetDockerContainerList"
+    },
+    "api/GetTranscoderSettings": {
+        "Description": "Show settings of transcoder",
+        "Example":"curl rmps:5000/api/GetTranscoderSettings"
+    },
+    "api/DoUpdateServer": {
+        "Description": "Update RPMS to the latest version",
+        "Example":"curl rmps:5000/api/DoUpdateServer -X post"
+    },
+    "api/DoHaltServer": {
+        "Description": "Power-off server",
+        "Example":"curl rmps:5000/api/DoHaltServer -X post"
+    },
+    "api/DoRebootServer": {
+        "Description": "Reboot server",
+        "Example":"curl rmps:5000/api/DoHaltServer -X post"
+    },
+    "api/SetTranscoderSettingSourceFolder": {
+        "Description": "Set transcoder-setiing [sourcefolder]",
+        "Example":"curl rmps:5000/api/SetTranscoderSettingSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"sourcefolder\":\"NewFolder\"}'"
+    }
 }

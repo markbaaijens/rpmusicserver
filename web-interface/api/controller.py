@@ -151,7 +151,6 @@ def GetTranscoderLog(nrOfLines):
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
 @app.route('/api/SetTranscoderSettingSourceFolder', methods=['POST'])
-# curl localhost:5000/api/SetTranscoderSettingSourceFolder -X post -H "Content-Type: application/json" -d '{"sourcefolder":"NewFolder"}'
 def ChangeTranscoderSettingSourceFolder():
     if not request.json:
         abort(HTTP_BAD_REQUEST)
