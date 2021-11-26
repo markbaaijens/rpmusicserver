@@ -150,8 +150,8 @@ def GetTranscoderLog(nrOfLines):
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
-@app.route('/api/ChangeTranscoderSettingSourceFolder', methods=['POST'])
-# curl: curl localhost:5000/api/ChangeTranscoderSettingSourceFolder -X post -H "Content-Type: application/json" -d '{"sourcefolder":"NewFolder"}'
+@app.route('/api/SetTranscoderSettingSourceFolder', methods=['POST'])
+# curl localhost:5000/api/SetTranscoderSettingSourceFolder -X post -H "Content-Type: application/json" -d '{"sourcefolder":"NewFolder"}'
 def ChangeTranscoderSettingSourceFolder():
     if not request.json:
         abort(HTTP_BAD_REQUEST)
@@ -159,7 +159,7 @@ def ChangeTranscoderSettingSourceFolder():
     requestData = request.get_json()
 
     try:
-        info = logic.ChangeTranscoderSettingSourceFolder(requestData)
+        info = logic.SetTranscoderSettingSourceFolder(requestData)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

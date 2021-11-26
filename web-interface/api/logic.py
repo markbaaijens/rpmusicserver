@@ -227,7 +227,7 @@ def GetDockerContainerList():
         dockerContainerList.append(line)
     return { "DockerContainers": dockerContainerList }
 
-def ChangeTranscoderSettingSourceFolder(requestData):
+def SetTranscoderSettingSourceFolder(requestData):
     # TODO Modiy sourcefolder in /media/usbdata/config/transcoder-settings.json
     message = {}
     if 'sourcefolder' in requestData:

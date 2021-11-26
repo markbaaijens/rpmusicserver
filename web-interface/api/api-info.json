@@ -19,5 +19,6 @@
     "api/GetTranscoderSettings": "Show settings of transcoder",    
     "api/DoUpdateServer": "Update RPMS to the latest version",
     "api/DoHaltServer": "Power-off server",
-    "api/DoRebootServer": "Reboot server"
+    "api/DoRebootServer": "Reboot server",
+    "api/SetTranscoderSettingSourceFolder": "Set transcoder-setiing [sourcefolder]"
 }
