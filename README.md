@@ -54,13 +54,13 @@ Update your RPMS by SSH:
   * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList)
 
 ## Transcoder
-For transcodring your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
+For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
 * move your flac-files into a separate folder: `smb://rpms/Publiek/Muziek/flac`
 * create a folder for lossy files: `smb://rpms/Publiek/Muziek/ogg`
 * modify `/media/usbdata/config/transcoder-settings.json`
-  * change `sourcefolder` to `/media/usbdata/user/Publiek/Muziek/flac`
-  * change `oggfolder` to `/media/usbdata/user/Publiek/Muziek/ogg`
-  * (optional) change `oggquality` to a value 1-5; default = 1 (by setting `oggquality` to 0, transcoder will take this default)
+  * change `sourcefolder` to `/media/usbdata/user/Publiek/Muziek/flac`;use API-call `api/SetTranscoderSettingSourceFolder`
+  * change `oggfolder` to `/media/usbdata/user/Publiek/Muziek/ogg`; use API-call `api/SetTranscoderSettingOggFolder`
+  * (optional) change `oggquality` to a value 1-5; default = 1 (by setting `oggquality` to 0, transcoder will take this default); use API-call `api/SetTranscoderSettingOggQuality`
 * from now on, every hour at 20 minutes, file transcoding will take place and ogg-files will automagically appear in the given ogg-folder!
 
 ### Note(s)

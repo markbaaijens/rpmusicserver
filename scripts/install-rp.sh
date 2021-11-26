@@ -12,7 +12,7 @@ fi
 
 echo "Start installing packages..."
 apt-get update
-apt-get install docker.io python3-pip tree jq -y  # Generic
+apt-get install docker.io python3-pip tree jq bwm-ng -y  # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
 echo "Done installing packages."
 
