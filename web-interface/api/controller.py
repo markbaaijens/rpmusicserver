@@ -151,7 +151,7 @@ def GetTranscoderLog(nrOfLines):
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
 @app.route('/api/SetTranscoderSettingSourceFolder', methods=['POST'])
-def ChangeTranscoderSettingSourceFolder():
+def SetTranscoderSettingSourceFolder():
     if not request.json:
         abort(HTTP_BAD_REQUEST)
 
