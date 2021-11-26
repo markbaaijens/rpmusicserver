@@ -99,7 +99,7 @@ cp /tmp/rpmusicserver/files/transcode /usr/local/bin
 chmod +x /usr/local/bin/transcode
 echo " => transcoder installed"
 
-echo "Adding line executing transcoder to /etc/crontab:"
+echo "Adding line for transcoder to /etc/crontab:"
 if [ ! "$(grep "transcode" /etc/crontab)" ]; then
     /bin/sh -c 'echo "20 * * * * root transcode" >> /etc/crontab'
     echo " => line added."    
