@@ -14,6 +14,7 @@ HTTP_CREATED = 201
 HTTP_BAD_REQUEST = 400
 HTTP_NOT_FOUND = 404
 HTTP_METHOD_NOT_ALLOWED = 405
+HTTP_UNPROCESSABLE_ENTITY = 422
 
 app = Flask(__name__)
 CORS(app)  # To enable http over different domains
@@ -217,6 +218,9 @@ def SetTranscoderSettingOggQuality():
     if not settingName in requestData:
         abort(HTTP_BAD_REQUEST)
 
+    if not (1 <= requestData[settingName] <= 5):
+        abort(HTTP_BAD_REQUEST) 
+
     try:
         info = logic.SetTranscoderSetting(requestData, settingName)
     except Exception as e:
@@ -235,6 +239,9 @@ def SetTranscoderSettingMp3BitRate():
     settingName = 'mp3bitrate'
     if not settingName in requestData:
         abort(HTTP_BAD_REQUEST)
+
+    if not (requestData[settingName] in [128, 256, 384]):
+        abort(HTTP_BAD_REQUEST) 
 
     try:
         info = logic.SetTranscoderSetting(requestData, settingName)
