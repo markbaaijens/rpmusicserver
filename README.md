@@ -1,7 +1,7 @@
 # rpmusicserver
 Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transcoder, etc.
 
-## Steps to turn a Pi into a music server:
+## Steps to turn a Pi into a music server
 * Download code:
   * `wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip`
   * `unzip -d /tmp -o /tmp/rpmusicserver.zip`
@@ -42,13 +42,28 @@ Transform a Raspberry Pi in a music server with LMS (Squeezebox), Samba, transco
   * install a Android App like [Squeezer](https://play.google.com/store/apps/details?id=uk.org.ngo.squeezer)
   * enjoy!
 
-## Update
+### Update
 Update your RPMS by SSH: 
 * `ssh pi@rpms "sudo update-rpms"`
 
-## Development: 
-* To update RMPS from `development` branch instead of `master`: 
+### Development
+* To update RMPS from `develop` branch instead of `master`: 
   * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/config/update-branch.txt'"`
 * API-documentation: 
   * `curl rpms:5000/api/GetApiList`
   * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList)
+
+## Transcoder
+For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
+* move your flac-files into a separate folder: `smb://rpms/Publiek/Muziek/flac`
+* create a folder for lossy files: `smb://rpms/Publiek/Muziek/ogg`
+* modify `/media/usbdata/config/transcoder-settings.json`
+  * change `sourcefolder` to `/media/usbdata/user/Publiek/Muziek/flac`;use API-call `api/SetTranscoderSettingSourceFolder`
+  * change `oggfolder` to `/media/usbdata/user/Publiek/Muziek/ogg`; use API-call `api/SetTranscoderSettingOggFolder`
+  * (optional) change `oggquality` to a value 1-5; default = 1 (by setting `oggquality` to 0, transcoder will take this default); use API-call `api/SetTranscoderSettingOggQuality`
+* from now on, every hour at 20 minutes, file transcoding will take place and ogg-files will automagically appear in the given ogg-folder!
+
+### Note(s)
+* steps are described for transcoding to ogg; for mp3, follow the same steps, but:
+  * replace `oggfolder` with `mp3folder` 
+  * replace `oggquality`by `mp3bitrate`; value = 128, 256, 384, default = 128

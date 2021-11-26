@@ -194,9 +194,18 @@ def GetVersionInfo():
 
 def GetApiList():
     dataAsJson = {}
-    apiInfoFile = os.path.dirname(__file__) + '/api-info.json'    
+    apiInfoFile = os.path.dirname(__file__) + '/api-info.json'
     if os.path.isfile(apiInfoFile):
         with open(apiInfoFile) as file:
+            dataAsDict = json.load(file)
+        dataAsJson = json.loads(json.dumps(dataAsDict))
+    return dataAsJson
+
+def GetTranscoderSettings():
+    dataAsJson = {}
+    transcoderSettingsFile = '/media/usbdata/config/transcoder-settings.json'
+    if os.path.isfile(transcoderSettingsFile):
+        with open(transcoderSettingsFile) as file:
             dataAsDict = json.load(file)
         dataAsJson = json.loads(json.dumps(dataAsDict))
     return dataAsJson
@@ -217,6 +226,21 @@ def GetDockerContainerList():
     for line in lines:
         dockerContainerList.append(line)
     return { "DockerContainers": dockerContainerList }
+
+def SetTranscoderSetting(requestData, settingName):
+    newValue = requestData[settingName]
+    
+    transcoderSettingsFileName = '/media/usbdata/config/transcoder-settings.json'
+    if not os.path.isfile(transcoderSettingsFileName):
+        return { "Message": "File " + transcoderSettingsFileName + " does not exist"}
+
+    with open(transcoderSettingsFileName, 'r') as jsonFile:
+        data = json.load(jsonFile)
+    data[settingName] = newValue
+    with open(transcoderSettingsFileName, 'w') as jsonFile:
+        json.dump(data, jsonFile)
+
+    return { "Message": "Transcoder-setting ["+ settingName + "] is modified to [" + str(newValue) + "]"}
 
 def DoRebootServer():
     subprocess.run(["reboot now"], stdout=subprocess.PIPE, shell=True)
