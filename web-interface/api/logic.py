@@ -228,9 +228,7 @@ def GetDockerContainerList():
     return { "DockerContainers": dockerContainerList }
 
 def SetTranscoderSetting(requestData, settingName):
-    if not settingName in requestData:
-        return { "Message": "Invalid request-data"}
-    sourceFolder = requestData[settingName]
+    newValue = requestData[settingName]
     
     transcoderSettingsFileName = '/media/usbdata/config/transcoder-settings.json'
     if not os.path.isfile(transcoderSettingsFileName):
@@ -238,11 +236,11 @@ def SetTranscoderSetting(requestData, settingName):
 
     with open(transcoderSettingsFileName, 'r') as jsonFile:
         data = json.load(jsonFile)
-    data[settingName] = sourceFolder
+    data[settingName] = newValue
     with open(transcoderSettingsFileName, 'w') as jsonFile:
         json.dump(data, jsonFile)
 
-    return { "Message": "Transcoder-setting ["+ settingName + "] is modified to [" + sourceFolder + "]"}
+    return { "Message": "Transcoder-setting ["+ settingName + "] is modified to [" + newValue + "]"}
 
 def DoRebootServer():
     subprocess.run(["reboot now"], stdout=subprocess.PIPE, shell=True)

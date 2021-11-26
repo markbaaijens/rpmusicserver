@@ -154,11 +154,14 @@ def GetTranscoderLog(nrOfLines):
 def SetTranscoderSettingSourceFolder():
     if not request.json:
         abort(HTTP_BAD_REQUEST)
-
     requestData = request.get_json()
 
+    settingName = 'sourcefolder'
+    if not settingName in requestData:
+        abort(HTTP_BAD_REQUEST)
+
     try:
-        info = logic.SetTranscoderSetting(requestData, 'sourcefolder')
+        info = logic.SetTranscoderSetting(requestData, settingName)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -170,11 +173,14 @@ def SetTranscoderSettingSourceFolder():
 def SetTranscoderSettingOggFolder():
     if not request.json:
         abort(HTTP_BAD_REQUEST)
-
     requestData = request.get_json()
 
+    settingName = 'oggfolder'
+    if not settingName in requestData:
+        abort(HTTP_BAD_REQUEST)
+
     try:
-        info = logic.SetTranscoderSetting(requestData, 'oggfolder')
+        info = logic.SetTranscoderSetting(requestData, settingName)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -186,11 +192,14 @@ def SetTranscoderSettingOggFolder():
 def SetTranscoderSettingMp3Folder():
     if not request.json:
         abort(HTTP_BAD_REQUEST)
-
     requestData = request.get_json()
 
+    settingName = 'mp3folder'
+    if not settingName in requestData:
+        abort(HTTP_BAD_REQUEST)
+
     try:
-        info = logic.SetTranscoderSetting(requestData, 'mp3folder')
+        info = logic.SetTranscoderSetting(requestData, settingName)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
