@@ -56,7 +56,7 @@ Update your RPMS by SSH:
 ## Transcoder
 For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
 * move your flac-files into a separate folder: `smb://rpms/Publiek/Muziek/flac`
-  * point LMS to this folder
+  * in LMS Server Settings, point music-folder to this location
 * create a folder for lossy files: `smb://rpms/Publiek/Muziek/ogg`
 * modify `/media/usbdata/rpms/config/transcoder-settings.json`
   * change `sourcefolder` to `/media/usbdata/user/Publiek/Muziek/flac`;use API-call `api/SetTranscoderSettingSourceFolder`
