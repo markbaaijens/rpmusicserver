@@ -9,7 +9,6 @@ fi
 sourcefolder=$(jq '.sourcefolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
 oggfolder=$(jq '.oggfolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
 mp3folder=$(jq '.mp3folder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
-
 if [ -z $sourcefolder ]; then
     exit
 fi
