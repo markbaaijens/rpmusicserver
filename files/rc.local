@@ -2,13 +2,13 @@
 
 # Start API in detached mode
 if [ ! "$(ps -aux | grep [w]eb-interface/api/controller.py)" ]; then
-  nohup python3 /usr/local/bin/rpmusicserver/web-interface/api/controller.py --logfile /media/usbdata/config/api.log --production &
+  nohup python3 /usr/local/bin/rpmusicserver/web-interface/api/controller.py --logfile /media/usbdata/rpms/logs/api.log --production &
 fi
 
 # LMS (Logitech Media Server)
 if [ ! "$(docker ps -f name=lms -q)" ]; then
   docker run -d --rm --name lms \
-    -v "/media/usbdata/config/docker/lms":"/config":rw \
+    -v "/media/usbdata/rpms/config/docker/lms":"/config":rw \
     -v "/media/usbdata/user/Publiek/Muziek":"/music":ro \
     -v "/etc/localtime":"/etc/localtime":ro \
     -v "/etc/timezone":"/etc/timezone":ro \
@@ -33,7 +33,7 @@ fi
 # Transmission
 if [ ! "$(docker ps -f name=transmission -q)" ]; then
   docker run -d --rm --name transmission -p 9091:9091 -e PUID=1000 -e PGID=1000 \
-    -v /media/usbdata/config/docker/transmission:/config  \
+    -v /media/usbdata/rpms/config/docker/transmission:/config  \
     -v /media/usbdata/user/Publiek/Downloads:/downloads  \
     linuxserver/transmission
 fi

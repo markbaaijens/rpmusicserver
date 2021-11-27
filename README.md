@@ -48,7 +48,7 @@ Update your RPMS by SSH:
 
 ### Development
 * To update RMPS from `develop` branch instead of `master`: 
-  * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/config/update-branch.txt'"`
+  * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
 * API-documentation: 
   * `curl rpms:5000/api/GetApiList`
   * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList)
@@ -56,8 +56,9 @@ Update your RPMS by SSH:
 ## Transcoder
 For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
 * move your flac-files into a separate folder: `smb://rpms/Publiek/Muziek/flac`
+  * point LMS to this folder
 * create a folder for lossy files: `smb://rpms/Publiek/Muziek/ogg`
-* modify `/media/usbdata/config/transcoder-settings.json`
+* modify `/media/usbdata/rpms/config/transcoder-settings.json`
   * change `sourcefolder` to `/media/usbdata/user/Publiek/Muziek/flac`;use API-call `api/SetTranscoderSettingSourceFolder`
   * change `oggfolder` to `/media/usbdata/user/Publiek/Muziek/ogg`; use API-call `api/SetTranscoderSettingOggFolder`
   * (optional) change `oggquality` to a value 1-5; default = 1 (by setting `oggquality` to 0, transcoder will take this default); use API-call `api/SetTranscoderSettingOggQuality`
