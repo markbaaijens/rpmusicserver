@@ -4,8 +4,8 @@
 #
 
 log () {
-    if [ -d "/media/usbdata/config" ]; then
-        log_dir="/media/usbdata/config"
+    if [ -d "/media/usbdata/rpms/config" ]; then
+        log_dir="/media/usbdata/rpms/logs"
     else
         log_dir="."    
     fi
@@ -21,8 +21,8 @@ fi
 log "Update started."
 
 branch_name="master"
-if [ -f /media/usbdata/config/update-branch.txt ]; then
-    branch_name=$(cat /media/usbdata/config/update-branch.txt)
+if [ -f /media/usbdata/rpms/config/update-branch.txt ]; then
+    branch_name=$(cat /media/usbdata/rpms/config/update-branch.txt)
 fi
 log "Downloading (new) software from github - branch $branch_name."
 rm -rf /tmp/rpmusicserver*
@@ -60,6 +60,10 @@ else
             update=1
         fi
     fi
+fi
+
+if [ "$branch_name" = "develop" ]; then
+    update=1
 fi
 
 if [ $update -eq 1 ]; then

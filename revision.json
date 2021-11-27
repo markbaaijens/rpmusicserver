@@ -7,10 +7,12 @@
                 "Upgraded Raspbian to Bullseye",
                 "Changed hostname to 'rpms'",
                 "Changed password of user 'pi' to 'rpms'",
-                "Added update-command",
+                "Added update-command; always update from develop-branch",
                 "Added API",
                 "Transmission-integration",
-                "Transcoder-integration"
+                "Transcoder-integration",
+                "LMS-name changed to 'RP Music Server'",
+                "Splitted config-folder /rpms/config for config and /rmps/logs for logs"
             ]
         },
         {

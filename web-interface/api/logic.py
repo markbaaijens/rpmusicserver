@@ -203,7 +203,7 @@ def GetApiList():
 
 def GetTranscoderSettings():
     dataAsJson = {}
-    transcoderSettingsFile = '/media/usbdata/config/transcoder-settings.json'
+    transcoderSettingsFile = '/media/usbdata/rpms/config/transcoder-settings.json'
     if os.path.isfile(transcoderSettingsFile):
         with open(transcoderSettingsFile) as file:
             dataAsDict = json.load(file)
@@ -230,7 +230,7 @@ def GetDockerContainerList():
 def SetTranscoderSetting(requestData, settingName):
     newValue = requestData[settingName]
     
-    transcoderSettingsFileName = '/media/usbdata/config/transcoder-settings.json'
+    transcoderSettingsFileName = '/media/usbdata/rpms/config/transcoder-settings.json'
     if not os.path.isfile(transcoderSettingsFileName):
         return { "Message": "File " + transcoderSettingsFileName + " does not exist"}
 

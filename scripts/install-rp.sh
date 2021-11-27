@@ -35,7 +35,8 @@ else
 fi    
 mount -a
 
-echo "Creating user directories."
+echo "Creating directories."
+mkdir /media/usbdata/rpms/logs -p
 mkdir /media/usbdata/user/Publiek -p
 mkdir /media/usbdata/user/Publiek/Downloads -p
 mkdir /media/usbdata/user/Publiek/Muziek -p
@@ -50,9 +51,9 @@ else
 fi
 
 echo "Copy LMS config files"
-if [ ! -d /media/usbdata/config/docker/lms ]; then
-    mkdir -p /media/usbdata/config/docker/lms
-    cp -r /tmp/rpmusicserver/files/config/lms/* /media/usbdata/config/docker/lms
+if [ ! -d /media/usbdata/rpms/config/docker/lms ]; then
+    mkdir -p /media/usbdata/rpms/config/docker/lms
+    cp -r /tmp/rpmusicserver/files/config/lms/* /media/usbdata/rpms/config/docker/lms
     echo " => LMS config files copied."    
 else
     echo " => LMS config folder is already present, no config files copied."    
@@ -92,8 +93,8 @@ mv /tmp/transcoder-1.0 /tmp/transcoder
 mkdir -p /usr/local/bin/transcoder
 cp /tmp/transcoder/transcoder.py /usr/local/bin/transcoder/transcoder.py
 chmod +x /usr/local/bin/transcoder/transcoder.py
-if [ ! -f /media/usbdata/config/transcoder-settings.json ]; then
-    cp /tmp/transcoder/transcoder-settings.json /media/usbdata/config/transcoder-settings.json
+if [ ! -f /media/usbdata/rpms/config/transcoder-settings.json ]; then
+    cp /tmp/transcoder/transcoder-settings.json /media/usbdata/rpms/config/transcoder-settings.json
 fi 
 cp /tmp/rpmusicserver/files/transcode /usr/local/bin
 chmod +x /usr/local/bin/transcode

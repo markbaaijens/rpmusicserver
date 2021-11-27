@@ -6,15 +6,14 @@ then
     exit
 fi
 
-sourcefolder=$(jq '.sourcefolder' /media/usbdata/config/transcoder-settings.json | tr -d '"')
-oggfolder=$(jq '.oggfolder' /media/usbdata/config/transcoder-settings.json | tr -d '"')
-mp3folder=$(jq '.mp3folder' /media/usbdata/config/transcoder-settings.json | tr -d '"')
-
+sourcefolder=$(jq '.sourcefolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
+oggfolder=$(jq '.oggfolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
+mp3folder=$(jq '.mp3folder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
 if [ -z $sourcefolder ]; then
     exit
 fi
 
-python3 /usr/local/bin/transcoder/transcoder.py --settingsfile /media/usbdata/config/transcoder-settings.json --verbose --logfolder "/media/usbdata/config"
+python3 /usr/local/bin/transcoder/transcoder.py --settingsfile /media/usbdata/rpms/config/transcoder-settings.json --verbose --logfolder "/media/usbdata/rpms/logs"
 
 if [ ! -z $mp3folder ]; then
     chmod 777 $mp3folder/* -R -f
