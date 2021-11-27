@@ -120,7 +120,7 @@ def GetVersionInfo():
 @app.route('/api/GetUpdateLog/<int:nrOfLines>', methods=['GET'])
 def GetUpdateLog(nrOfLines):
     try:
-        info = logic.GetLog('/media/usbdata/config/update.log', nrOfLines)
+        info = logic.GetLog('/media/usbdata/rpms/logs/update.log', nrOfLines)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -131,7 +131,7 @@ def GetUpdateLog(nrOfLines):
 @app.route('/api/GetApiLog/<int:nrOfLines>', methods=['GET'])
 def GetApiLog(nrOfLines):
     try:
-        info = logic.GetLog('/media/usbdata/config/api.log', nrOfLines)
+        info = logic.GetLog('/media/usbdata/rpms/logs/api.log', nrOfLines)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -142,7 +142,7 @@ def GetApiLog(nrOfLines):
 @app.route('/api/GetTranscoderLog/<int:nrOfLines>', methods=['GET'])
 def GetTranscoderLog(nrOfLines):
     try:
-        info = logic.GetLog('/media/usbdata/config/transcoder.log', nrOfLines)
+        info = logic.GetLog('/media/usbdata/rpms/logs/transcoder.log', nrOfLines)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
