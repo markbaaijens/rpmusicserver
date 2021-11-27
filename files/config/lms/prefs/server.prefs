@@ -847,7 +847,7 @@ itemsPerPage: 50
 jivealbumsort: album
 language: NL
 librarycachedir: /config/cache
-libraryname: 'Logitech Media Server :: Pi'
+libraryname: 'RP Music Server'
 longdateFormat: '%A, %B |%d, %Y'
 maxPlaylistLength: 2500
 maxWMArate: 9999
