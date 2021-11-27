@@ -62,6 +62,10 @@ else
     fi
 fi
 
+if [ "$branch_name" = "develop" ]; then
+    update=1
+fi
+
 if [ $update -eq 1 ]; then
     log "Updating from $major_actual.$minor_actual to $major_new.$minor_new"
     chmod +x /tmp/rpmusicserver/scripts/* 
