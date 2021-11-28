@@ -16,6 +16,11 @@ apt-get install docker.io python3-pip tree jq bwm-ng -y  # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
 echo "Done installing packages."
 
+echo "Setting timezone to Europe/Amsterdam..."
+rm -rf /etc/localtime
+ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
+echo "Done setting timezone."
+
 echo "Creating mountpoint for harddisk:"
 if [ ! -d /media/usbdata ]; then
     mkdir /media/usbdata
