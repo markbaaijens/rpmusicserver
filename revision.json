@@ -1,6 +1,12 @@
 {
-    "CurrentVersion": "0.2",
+    "CurrentVersion": "0.3",
     "History": [
+        {
+            "Version":"0.3",
+            "Changes": [
+                "Set timezone to Europe/Amsterdam"
+            ]
+        },
         {
             "Version":"0.2",
             "Changes": [
