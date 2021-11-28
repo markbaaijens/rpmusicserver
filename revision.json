@@ -4,7 +4,8 @@
         {
             "Version":"0.3",
             "Changes": [
-                "Set timezone to Europe/Amsterdam"
+                "Set timezone to Europe/Amsterdam",
+                "Using logrotate to prevent infinite large log-files"
             ]
         },
         {
