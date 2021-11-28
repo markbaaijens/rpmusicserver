@@ -75,9 +75,13 @@ cp -r /tmp/rpmusicserver/web-interface/* /usr/local/bin/rpmusicserver/web-interf
 echo " => program files installed." 
 
 echo "Copy rc.local file:"
-cp /tmp/rpmusicserver/files/rc.local /etc
+cp /tmp/rpmusicserver/files/etc/rc.local /etc
 chmod +x /etc/rc.local
-echo " => file rc.local copied."     
+echo " => file rc.local copied."   
+
+echo "Copy logrotate.conf file:"
+cp /tmp/rpmusicserver/files/etc/logrotate.conf /etc
+echo " => file logrotate.conf copied." 
 
 echo "Copy revision.json file:"
 mkdir -p /etc/rpms
@@ -86,7 +90,7 @@ touch /etc/rpms/revision.json  # For retrieving last update timestamp
 echo " => file revision.json copied." 
 
 echo "Copy update-rpms file:"
-cp /tmp/rpmusicserver/files/update-rpms /usr/local/bin
+cp /tmp/rpmusicserver/files/usr/local/bin/update-rpms /usr/local/bin
 chmod +x /usr/local/bin/update-rpms
 echo " => file update-rpms copied." 
 
@@ -101,7 +105,7 @@ chmod +x /usr/local/bin/transcoder/transcoder.py
 if [ ! -f /media/usbdata/rpms/config/transcoder-settings.json ]; then
     cp /tmp/transcoder/transcoder-settings.json /media/usbdata/rpms/config/transcoder-settings.json
 fi 
-cp /tmp/rpmusicserver/files/transcode /usr/local/bin
+cp /tmp/rpmusicserver/files/usr/local/bin/transcode /usr/local/bin
 chmod +x /usr/local/bin/transcode
 echo " => transcoder installed"
 
@@ -126,4 +130,14 @@ echo -e "rpms\nrpms" | passwd pi
 echo " => done changing password of user 'pi'."
 
 echo "Installation complete, system will be rebooted."
+# For faster rebooting, we kill all docker containers
+if [ "$(docker ps -f name=lms -q)" ]; then
+    docker kill lms
+fi
+if [ "$(docker ps -f name=transmission -q)" ]; then
+    docker kill transmission
+fi
+if [ "$(docker ps -f name=samba -q)" ]; then
+    docker kill samba
+fi
 reboot now
