@@ -5,7 +5,10 @@
             "Version":"0.3",
             "Changes": [
                 "Set timezone to Europe/Amsterdam",
-                "Using logrotate to prevent infinite large log-files"
+                "Using logrotate to prevent infinite large log-files",
+                "Documented system requirements",
+                "Faster reboot after install/update by killing docker-containers",
+                "Extended API-call GetMachineInfo with CpuTemp and RpModel"
             ]
         },
         {

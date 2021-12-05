@@ -19,7 +19,20 @@ def GetMachineInfo():
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
-    return {'HostName': hostName, 'IpAddress': ipAddress, "OsCodeName": osCodeName}
+    rpModel = ''
+    if os.path.isfile('/proc/device-tree/model'):    
+        rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
+    cpuTemp = ''
+    if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
+        process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+        cpuTemp = process.stdout.decode("utf-8").strip('\n')
+
+    return {"HostName": hostName,
+            "IpAddress": ipAddress,
+            "OsCodeName": osCodeName,
+            "RpModel": rpModel,
+            "CpuTemp": cpuTemp}
 
 disks = []
 
