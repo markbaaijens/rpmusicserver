@@ -14,12 +14,12 @@ echo "Start installing packages..."
 apt-get update
 apt-get install docker.io python3-pip tree jq bwm-ng -y  # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
-echo "Done installing packages."
+echo " => done installing packages."
 
 echo "Setting timezone to Europe/Amsterdam..."
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
-echo "Done setting timezone."
+echo " => done setting timezone."
 
 echo "Creating mountpoint for harddisk:"
 if [ ! -d /media/usbdata ]; then
@@ -129,8 +129,7 @@ sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 echo -e "rpms\nrpms" | passwd pi
 echo " => done changing password of user 'pi'."
 
-echo "Installation complete, system will be rebooted."
-# For faster rebooting, we kill all docker containers
+echo "Kill all docker-containers for faster rebooting"
 if [ "$(docker ps -f name=lms -q)" ]; then
     docker kill lms
 fi
@@ -140,4 +139,7 @@ fi
 if [ "$(docker ps -f name=samba -q)" ]; then
     docker kill samba
 fi
+echo " => done killing docker containers"
+
+echo "Installation complete, system will be rebooted."
 reboot now
