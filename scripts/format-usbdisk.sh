@@ -5,17 +5,14 @@
 
 if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
-    echo "Script ended with failure."
     exit
 fi
 
 setup_environment() {
-    echo "Setup environment."    
     export LC_ALL=C  # Console output = English
 }
 
 cleanup_environment() {
-    echo "Cleaning up environment."
     unset LC_ALL  # Reset console output to default language
 }
 
@@ -40,7 +37,7 @@ fi
 echo "Available disk(s):"
 counter=0
 for disk in "${sd_disks[@]}"; do
-    model=$(parted /dev/$disk print | grep Model | cut -d " " -f2- )
+    model=$(parted /dev/$disk print | grep Model | cut -d " " -f3- )
     size=$(parted /dev/$disk print | grep "Disk /dev/" | awk '{print $3}')
   	echo "$counter: $model/$disk ($size) $([ $counter == 0 ] && echo "[default]")"
     counter=$(($counter + 1))
@@ -49,7 +46,13 @@ echo "Q: quit"
 
 read -p "Select a disk by number or press [Enter] to choose the first one " disk_choice
 
-if [ "${disk_choice,,}" == "q" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
+if [ "${disk_choice,,}" == "q" ]; then
+    cleanup_environment    
+    echo "Script ended by user."
+    exit
+fi
+
+if [ "${sd_disks[disk_choice]}" == "" ]; then
     echo "No disk selected."
     cleanup_environment    
     echo "Script ended."
@@ -59,7 +62,32 @@ fi
 chosen_disk=${sd_disks[disk_choice]}
 echo "You have chosen: $chosen_disk"
 
-read -r -p "Do you want to continue formatting $chosen_disk? [yes/NO] " start_install
+echo "Format as:"
+echo "1: data-disk [default]"
+echo "2: backup-disk"
+echo "Q: quit"
+
+read -p "Select a format-type by number or press [Enter] to choose the first one " type_choice
+
+if [ "$type_choice" == "" ]; then
+    type_choice=1
+fi
+
+if [ "${type_choice,,}" == "q" ]; then
+    cleanup_environment    
+    echo "Script ended by user."
+    exit
+fi
+
+if [ $type_choice != "1" ] && [ $type_choice != "2" ]; then
+    echo "No type selected."
+    cleanup_environment    
+    echo "Script ended."
+    exit
+fi
+echo "You have chosen: $type_choice"
+
+read -r -p "Do you want to continue formatting '$chosen_disk'? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
     cleanup_environment
     echo "Script ended by user."
