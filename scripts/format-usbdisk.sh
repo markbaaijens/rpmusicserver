@@ -109,12 +109,12 @@ for partition in $partitions; do
     echo "Partition $partition successfully unmounted."
 done
 hdparm -z /dev/$chosen_disk
-echo "Done unmounting /dev/$chosen_disk partitions."
+echo " => done unmounting /dev/$chosen_disk partitions."
 
 echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
 hdparm -z /dev/$chosen_disk
-echo "Done wiping $chosen_disk."
+echo " => done wiping $chosen_disk."
 
 # Scripting fdisk to create partition:
 #   n = new partition
@@ -126,12 +126,19 @@ echo "Done wiping $chosen_disk."
 echo "Start creating partition on $chosen_disk..."
 echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/$chosen_disk
 hdparm -z /dev/$chosen_disk
-echo "Done creating partition on $chosen_disk."
-	
-echo "Start formatting partition on $chosen_disk..."	
-mkfs.ext4 -L 'usbdata' "/dev/$chosen_disk"1
-hdparm -z /dev/$chosen_disk
-echo "Done formatting partition on $chosen_disk."		
+echo " => done creating partition on $chosen_disk."
+
+if [ $type_choice == "1" ]; then	
+    echo "Start formatting partition on $chosen_disk as 'usbdata'..."	
+    mkfs.ext4 -L 'usbdata' "/dev/$chosen_disk"
+    hdparm -z /dev/$chosen_disk
+    echo " => done formatting partition on $chosen_disk."		
+else
+    echo "Start formatting partition on $chosen_disk as 'usbbackup'..."	
+    mkfs.ext2 -L 'usbbackup' "/dev/$chosen_disk"
+    hdparm -z /dev/$chosen_disk
+    echo " => done formatting partition on $chosen_disk."		
+fi
 
 cleanup_environment
 echo "Script ended successfully."
