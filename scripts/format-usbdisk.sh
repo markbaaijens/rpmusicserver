@@ -39,12 +39,12 @@ counter=0
 for disk in "${sd_disks[@]}"; do
     model=$(parted /dev/$disk print | grep Model | cut -d " " -f3- )
     size=$(parted /dev/$disk print | grep "Disk /dev/" | awk '{print $3}')
-  	echo "$counter: $model/$disk ($size) $([ $counter == 0 ] && echo "[default]")"
+  	echo "$counter: $model/$disk ($size)"
     counter=$(($counter + 1))
 done
 echo "Q: quit"
 
-read -p "Select a disk by number or press [Enter] to choose the first one " disk_choice
+read -p "Select a disk by a number: " disk_choice
 
 if [ "${disk_choice,,}" == "q" ]; then
     cleanup_environment    
@@ -52,7 +52,7 @@ if [ "${disk_choice,,}" == "q" ]; then
     exit
 fi
 
-if [ "${sd_disks[disk_choice]}" == "" ]; then
+if [ "$disk_choice" == "" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
     echo "No disk selected."
     cleanup_environment    
     echo "Script ended."
@@ -63,14 +63,14 @@ chosen_disk=${sd_disks[disk_choice]}
 echo "You have chosen: $chosen_disk"
 
 echo "Format as:"
-echo "1: data-disk [default]"
-echo "2: backup-disk"
+echo "1: data-disk (ext4, label = usbdata)"
+echo "2: backup-disk (ext2, label = usbbackup)"
 echo "Q: quit"
 
-read -p "Select a format-type by number or press [Enter] to choose the first one " type_choice
+read -p "Select a format-type by a number: " type_choice
 
 if [ "$type_choice" == "" ]; then
-    type_choice=1
+    type_choice=0
 fi
 
 if [ "${type_choice,,}" == "q" ]; then
@@ -85,9 +85,9 @@ if [ $type_choice != "1" ] && [ $type_choice != "2" ]; then
     echo "Script ended."
     exit
 fi
-echo "You have chosen: $type_choice"
+echo "You have chosen: $type_choice $([ $type_choice == 1 ] && echo "=> usbdata" || echo "=> usbbackup")"
 
-read -r -p "Do you want to continue formatting '$chosen_disk'? [yes/NO] " start_install
+read -r -p "Do you want to continue formatting '$chosen_disk' as $([ $type_choice == 1 ] && echo "'usbdata'" || echo "'usbbackup'")? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
     cleanup_environment
     echo "Script ended by user."
@@ -135,7 +135,7 @@ if [ $type_choice == "1" ]; then
     echo " => done formatting partition on $chosen_disk."		
 else
     echo "Start formatting partition on $chosen_disk as 'usbbackup'..."	
-    mkfs.ext2 -L 'usbbackup' "/dev/$chosen_disk"
+    mkfs.ext2 -E nodiscard -L 'usbbackup' "/dev/$chosen_disk"
     hdparm -z /dev/$chosen_disk
     echo " => done formatting partition on $chosen_disk."		
 fi
