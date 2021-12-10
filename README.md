@@ -23,7 +23,7 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
   * power up the Pi
   * check if Pi is running: `watch nmap rpms`
     * wait until port 22 appears; exit with Ctrl-C
-* Installation and configuration with install-rp script via ssh:
+* Installation and configuration:
   * `rsync -r /tmp/rpmusicserver-master/* pi@rpms:/tmp/rpmusicserver`
 	  * password = raspberry  
   * `ssh pi@rpms "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`
