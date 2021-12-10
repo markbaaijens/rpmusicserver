@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+mount -a
+
+if [ ! "$(mount | grep /media/usbbackup)" ]; then
+    echo "Backup-disk not found."
+    exit
+fi
+
+rsync --progress --delete -rt /media/usbdata/* /media/usbbackup --exclude Downloads --exclude lost+found
+chmod 777 /media/usbbackup -R
+sync
+
+exit

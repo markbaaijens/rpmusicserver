@@ -1,82 +1,82 @@
 {
     "GET /": {
         "Description": "Shows the API-name",
-        "Example":"curl rmps:5000/api"
+        "Example":"curl rpms:5000/api"
     },
     "GET api/GetApiList": {
         "Description": "Shows a list of all API-calls, hence the API-documentation",
-        "Example":"curl rmps:5000/api/GetApiList"
+        "Example":"curl rpms:5000/api/GetApiList"
     },
     "GET api/GetMachineInfo": {
         "Description":"Shows hostname, IP-address and OS-codename",
-        "Example":"curl rmps:5000/api/GetMachineInfo"
+        "Example":"curl rpms:5000/api/GetMachineInfo"
     },
     "GET api/GetVersionInfo": {
         "Description": "Shows the current version of RPMS & timestamp of the last update",
-        "Example":"curl rmps:5000/api/GetVersionInfo"
+        "Example":"curl rpms:5000/api/GetVersionInfo"
     },
     "GET api/GetUpdateLog/<int>": {
         "Description": "Get the last x lines of the update-log",
-        "Example":"curl rmps:5000/api/GetUpdateLog/10"
+        "Example":"curl rpms:5000/api/GetUpdateLog/10"
     }, 
     "GET api/GetApiLog/<int>": {
         "Description": "Get the last x lines of the API-log",
-        "Example":"curl rmps:5000/api/GetApiLog/10"
+        "Example":"curl rpms:5000/api/GetApiLog/10"
     },
     "GET api/GetTranscoderLog/<int>": {
         "Description": "Get the last x lines of the transcoder-log",
-        "Example":"curl rmps:5000/api/GetTranscoderLog/10"
+        "Example":"curl rpms:5000/api/GetTranscoderLog/10"
     },
     "GET api/GetResourceInfo": {
         "Description": "Show system-resources like memory- and CPU-usage, system-load",
-        "Example":"curl rmps:5000/api/GetResourceInfo"
+        "Example":"curl rpms:5000/api/GetResourceInfo"
     },
     "GET api/GetLmsServerInfo": {
         "Description": "Show LMS server-info",
-        "Example":"curl rmps:5000/api/GetLmsServerInfo"
+        "Example":"curl rpms:5000/api/GetLmsServerInfo"
     },
     "GET api/GetDiskList": {
         "Description": "Show list of disks: status, usage",
-        "Example":"curl rmps:5000/api/GetDiskList"
+        "Example":"curl rpms:5000/api/GetDiskList"
     },
     "GET api/GetDockerContainerList": {
         "Description": "Show all running docker containers",
-        "Example":"curl rmps:5000/api/GetDockerContainerList"
+        "Example":"curl rpms:5000/api/GetDockerContainerList"
     },
     "GET api/GetTranscoderSettings": {
         "Description": "Show settings of transcoder",
-        "Example":"curl rmps:5000/api/GetTranscoderSettings"
+        "Example":"curl rpms:5000/api/GetTranscoderSettings"
     },
     "POST api/DoUpdateServer": {
         "Description": "Update RPMS to the latest version",
-        "Example":"curl rmps:5000/api/DoUpdateServer -X post"
+        "Example":"curl rpms:5000/api/DoUpdateServer -X post"
     },
     "POST api/DoHaltServer": {
         "Description": "Power-off server",
-        "Example":"curl rmps:5000/api/DoHaltServer -X post"
+        "Example":"curl rpms:5000/api/DoHaltServer -X post"
     },
     "POST api/DoRebootServer": {
         "Description": "Reboot server",
-        "Example":"curl rmps:5000/api/DoHaltServer -X post"
+        "Example":"curl rpms:5000/api/DoHaltServer -X post"
     },
     "POST api/SetTranscoderSettingSourceFolder": {
         "Description": "Set transcoder-setting [sourcefolder]",
-        "Example":"curl rmps:5000/api/SetTranscoderSettingSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"sourcefolder\":\"NewSourceFolder\"}'"
+        "Example":"curl rpms:5000/api/SetTranscoderSettingSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"sourcefolder\":\"NewSourceFolder\"}'"
     },
     "POST api/SetTranscoderSettingOggFolder": {
         "Description": "Set transcoder-setting [oggfolder]",
-        "Example":"curl rmps:5000/api/SetTranscoderSettingOggFolder -X post -H \"Content-Type: application/json\" -d '{\"oggfolder\":\"NewOggFolder\"}'"
+        "Example":"curl rpms:5000/api/SetTranscoderSettingOggFolder -X post -H \"Content-Type: application/json\" -d '{\"oggfolder\":\"NewOggFolder\"}'"
     },
     "POST api/SetTranscoderSettingMp3Folder": {
         "Description": "Set transcoder-setting [mp3folder]",
-        "Example":"curl rmps:5000/api/SetTranscoderSettingMp3Folder -X post -H \"Content-Type: application/json\" -d '{\"mp3folder\":\"NewMp3Folder\"}'"
+        "Example":"curl rpms:5000/api/SetTranscoderSettingMp3Folder -X post -H \"Content-Type: application/json\" -d '{\"mp3folder\":\"NewMp3Folder\"}'"
     },
     "POST api/SetTranscoderSettingOggQuality": {
         "Description": "Set transcoder-setting [oggquality]; 1, 2, 3,4, or 5; default = 1",
-        "Example":"curl rmps:5000/api/SetTranscoderSettingOggQuality -X post -H \"Content-Type: application/json\" -d '{\"oggquality\": 2}'"
+        "Example":"curl rpms:5000/api/SetTranscoderSettingOggQuality -X post -H \"Content-Type: application/json\" -d '{\"oggquality\": 2}'"
     },
     "POST api/SetTranscoderSettingMp3BitRate": {
         "Description": "Set transcoder-setting [mp3bitrate]; 128, 256 or 384; default = 128",
-        "Example":"curl rmps:5000/api/SetTranscoderSettingMp3BitRate -X post -H \"Content-Type: application/json\" -d '{\"mp3bitrate\": 256}'"
+        "Example":"curl rpms:5000/api/SetTranscoderSettingMp3BitRate -X post -H \"Content-Type: application/json\" -d '{\"mp3bitrate\": 256}'"
     }
 }

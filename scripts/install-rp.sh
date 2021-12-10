@@ -3,8 +3,7 @@
 # This script will install RP Music Server onto a copy of Rapsbian OS Lite
 #
 
-if [ -z "$(whoami | grep root)" ]
-then
+if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
     echo "Script ended with failure."
     exit
@@ -114,6 +113,11 @@ cp /tmp/rpmusicserver/files/usr/local/bin/update-rpms /usr/local/bin
 chmod +x /usr/local/bin/update-rpms
 echo " => file update-rpms copied." 
 
+echo "Copy backup-server file:"
+cp /tmp/rpmusicserver/files/usr/local/bin/backup-server /usr/local/bin
+chmod +x /usr/local/bin/backup-server
+echo " => file backup-server copied." 
+
 echo "Installing transcoder..."
 rm -rf /tmp/transcoder*
 wget https://github.com/markbaaijens/transcoder/archive/refs/tags/v1.0.zip -nv -O /tmp/transcoder.zip
@@ -149,7 +153,7 @@ sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 echo -e "rpms\nrpms" | passwd pi
 echo " => done changing password of user 'pi'."
 
-echo "Kill all docker-containers for faster rebooting"
+echo "Kill all docker-containers for faster rebooting..."
 if [ "$(docker ps -f name=lms -q)" ]; then
     docker kill lms
 fi
