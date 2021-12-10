@@ -2,8 +2,8 @@
 Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Squeezebox), Samba, Tranmission, transcoder, etc.
 
 ## System requirements
-* [minimum] Raspberry Pi 3 B+ (1 GB)
-* [recommended] Raspberry Pi 4 B (4 GB)
+* [minimum] Raspberry Pi 2 (B or B+), 1 GB
+* [recommended] Raspberry Pi 4 B, 4 GB
 
 ## Steps to turn a Pi into a music server
 * Download code:
