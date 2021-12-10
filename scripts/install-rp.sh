@@ -46,7 +46,17 @@ if [ ! "$(grep "LABEL=usbdata" /etc/fstab)" ]; then
     echo " => line added."
 else
     echo " => line is already present."    
+fi
+
+echo "Adding line for usbbackup-disk to /etc/fstab:"
+if [ ! "$(grep "LABEL=usbbackup" /etc/fstab)" ]; then
+    # auto,nofail: server starts even when harddisk is not present
+    /bin/sh -c 'echo "LABEL=usbbackup /media/usbbackup ext2 auto,nofail 0 0" >> /etc/fstab'
+    echo " => line added."
+else
+    echo " => line is already present."    
 fi    
+
 mount -a
 
 echo "Creating directories."
@@ -55,6 +65,7 @@ mkdir /media/usbdata/user/Publiek -p
 mkdir /media/usbdata/user/Publiek/Downloads -p
 mkdir /media/usbdata/user/Publiek/Muziek -p
 chmod 777 /media/usbdata/user/Publiek -R
+chmod 777 /media/usbbackup -R
 
 echo "Adding line for upgrade to /etc/crontab:"
 if [ ! "$(grep "apt-get upgrade" /etc/crontab)" ]; then
