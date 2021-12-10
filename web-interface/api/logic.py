@@ -11,7 +11,10 @@ def ExecuteBashCommand(bashCommand):
     return process.stdout.decode("utf-8").strip('\n')
 
 def TailFromFile(file, n):
-    process = subprocess.Popen(['tail', '-n', f'{n}', file], stdout=subprocess.PIPE)    
+    if n != 0:
+        process = subprocess.Popen(['tail', '-n', f'{n}', file], stdout=subprocess.PIPE)
+    else:
+        process = subprocess.Popen(['cat', file], stdout=subprocess.PIPE)
     lines = process.stdout.readlines()
     return lines
 
@@ -229,7 +232,7 @@ def GetLog(logFile, nrOfLines):
         logLinesFromFile = TailFromFile(logFile, nrOfLines)
         for logLine in logLinesFromFile:
             logLines.append(logLine.decode("utf-8").strip('\n'))
-    return { "LogLines": logLines }
+    return logLines
 
 def GetDockerContainerList():
     dockerContainerList = []
