@@ -21,13 +21,22 @@ rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
 echo " => done setting timezone."
 
-echo "Creating mountpoint for harddisk:"
+echo "Creating mountpoint for usbdata-disk:"
 if [ ! -d /media/usbdata ]; then
     mkdir /media/usbdata
     chmod 777 /media/usbdata -R
-    echo " => mountpoint created."    
+    echo " => mountpoint for usbdata created."    
 else
-    echo " => mountpoint is already present."    
+    echo " => mountpoint for usbdata is already present."    
+fi
+
+echo "Creating mountpoint for usbackup-disk:"
+if [ ! -d /media/usbackup ]; then
+    mkdir /media/usbackup
+    chmod 777 /media/usbackup -R
+    echo " => mountpoint for usbackup created."    
+else
+    echo " => mountpoint for usbackup is already present."    
 fi
 
 echo "Adding line for usbdata-disk to /etc/fstab:"
