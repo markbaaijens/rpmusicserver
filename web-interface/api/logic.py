@@ -262,6 +262,10 @@ def DoRebootServer():
     subprocess.run(["reboot now"], stdout=subprocess.PIPE, shell=True)
     return { "Message": "Server is rebooting" }
 
+def DoBackupServer():
+    subprocess.run(["backup-server"], stdout=subprocess.PIPE, shell=True)
+    return { "Message": "Backup has been started" }
+
 def DoHaltServer():
     subprocess.run(["halt"], stdout=subprocess.PIPE, shell=True)
     return { "Message": "Server is halting" }

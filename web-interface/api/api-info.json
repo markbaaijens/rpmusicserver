@@ -67,6 +67,10 @@
         "Description": "Reboot server",
         "Example":"curl rpms:5000/api/DoHaltServer -X post"
     },
+    "POST api/DoBackupServer": {
+        "Description": "Backup server",
+        "Example":"curl rpms:5000/api/DoBackupServer -X post"
+    },    
     "POST api/SetTranscoderSettingSourceFolder": {
         "Description": "Set transcoder-setting [sourcefolder]",
         "Example":"curl rpms:5000/api/SetTranscoderSettingSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"sourcefolder\":\"NewSourceFolder\"}'"
