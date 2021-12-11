@@ -272,7 +272,7 @@ async def DoHaltServer():
     pass
 
 async def DoUpdateServer():
-    await asyncio.create_subprocess_shell("update-rpms")
+    await asyncio.create_subprocess_shell("update-server")
     pass
 
 def GetLmsServerInfo():

@@ -48,7 +48,7 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
 
 ### Update
 Update your RPMS by SSH: 
-* `ssh pi@rpms "sudo update-rpms"`
+* `ssh pi@rpms "sudo update-server"`
 
 ### Development
 * To update RMPS from `develop` branch instead of `master`: 

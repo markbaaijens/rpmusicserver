@@ -108,10 +108,10 @@ cp /tmp/rpmusicserver/revision.json /etc/rpms
 touch /etc/rpms/revision.json  # For retrieving last update timestamp
 echo " => file revision.json copied." 
 
-echo "Copy update-rpms file:"
-cp /tmp/rpmusicserver/files/usr/local/bin/update-rpms /usr/local/bin
-chmod +x /usr/local/bin/update-rpms
-echo " => file update-rpms copied." 
+echo "Copy update-server file:"
+cp /tmp/rpmusicserver/files/usr/local/bin/update-server /usr/local/bin
+chmod +x /usr/local/bin/update-server
+echo " => file update-server copied." 
 
 echo "Copy backup-server file:"
 cp /tmp/rpmusicserver/files/usr/local/bin/backup-server /usr/local/bin
