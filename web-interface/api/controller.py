@@ -4,6 +4,7 @@ from logging.handlers import RotatingFileHandler
 import traceback
 from flask_cors import CORS
 from werkzeug.wrappers import response
+import asyncio
 
 import logic 
 from config import Config
@@ -298,7 +299,8 @@ def GetDiskList():
 @app.route('/api/DoRebootServer', methods=['POST'])
 def DoRebootServer():
     try:
-        info = logic.DoRebootServer()
+        asyncio.run(logic.DoRebootServer())
+        info = { "Message": "Server is rebooting" }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -309,7 +311,8 @@ def DoRebootServer():
 @app.route('/api/DoBackupServer', methods=['POST'])
 def DoBackupServer():
     try:
-        info = logic.DoBackupServer()
+        asyncio.run(logic.DoBackupServer())
+        info = { "Message": "Backup has been started" }        
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -320,7 +323,8 @@ def DoBackupServer():
 @app.route('/api/DoHaltServer', methods=['POST'])
 def DoHaltServer():
     try:
-        info = logic.DoHaltServer()
+        asyncio.run(logic.DoHaltServer())
+        info = { "Message": "Server is halting" }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -331,7 +335,8 @@ def DoHaltServer():
 @app.route('/api/DoUpdateServer', methods=['POST'])
 def DoUpdateServer():
     try:
-        info = logic.DoUpdateServer()
+        asyncio.run(logic.DoUpdateServer())
+        info = { "Message": "Server is updating" }        
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

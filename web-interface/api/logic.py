@@ -5,6 +5,7 @@ import os
 from globals import configObject
 from datetime import datetime
 import math
+import asyncio
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -258,21 +259,21 @@ def SetTranscoderSetting(requestData, settingName):
 
     return { "Message": "Transcoder-setting ["+ settingName + "] is modified to [" + str(newValue) + "]"}
 
-def DoRebootServer():
-    subprocess.run(["reboot now"], stdout=subprocess.PIPE, shell=True)
-    return { "Message": "Server is rebooting" }
+async def DoRebootServer():
+    await asyncio.create_subprocess_shell("reboot")
+    pass
 
-def DoBackupServer():
-    subprocess.run(["backup-server"], stdout=subprocess.PIPE, shell=True)
-    return { "Message": "Backup has been started" }
+async def DoBackupServer():
+    await asyncio.create_subprocess_shell("backup-server")
+    pass
 
-def DoHaltServer():
-    subprocess.run(["halt"], stdout=subprocess.PIPE, shell=True)
-    return { "Message": "Server is halting" }
+async def DoHaltServer():
+    await asyncio.create_subprocess_shell("halt")
+    pass
 
-def DoUpdateServer():
-    subprocess.run(["update-rpms"], stdout=subprocess.PIPE, shell=True)
-    return { "Message": "Server is updating" }
+async def DoUpdateServer():
+    await asyncio.create_subprocess_shell("update-rpms")
+    pass
 
 def GetLmsServerInfo():
     # LMS API-reference: http://msi:9000/html/docs/cli-api.html 
