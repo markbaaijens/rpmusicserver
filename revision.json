@@ -9,7 +9,8 @@
                 "Documented system requirements",
                 "Faster reboot after install/update by killing docker-containers",
                 "Extended API-call GetMachineInfo with CpuTemp and RpModel",
-                "Backup, server-based"
+                "Backup, server-based",
+                "[bug] Enhanced burn-script: removed filter for sd, removed default in disk-choice"
             ]
         },
         {
