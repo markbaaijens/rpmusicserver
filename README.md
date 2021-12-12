@@ -72,3 +72,23 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
 * steps are described for transcoding to ogg; for mp3, follow the same steps, but:
   * replace `oggfolder` with `mp3folder` 
   * replace `oggquality`by `mp3bitrate`; value = 128, 256, 384, default = 128
+
+## Backup
+You can make a backup of all the data contained in your RPMS-server. This backup will be done to a dedicated backup-disk, connected to the Pi it self, a so called server-based backup.
+
+* format a disk dedicated for RPMS-backups (one-time only):
+  * connect your (empty) backup-disk to the Pi
+  * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/burn-image.sh -O /tmp/burn-image.sh && chmod +x /tmp/burn-image.sh && sudo /tmp/burn-image.sh`
+  * enter your (personal) password of the client-machine
+  * follow the instructions to format as a backup-disk
+* engage the backup:
+  * connect your backup-disk to the Pi
+  * start the backup
+    * `curl rpms:5000/api/DoBackupServer -X post`
+  * watch progress
+    * `watch curl rpms:5000/api/GetBackupLog/1`
+    * wait until log states: 'Backup ended'
+  * disconnect your disk
+
+### Off-line viewing backup-data
+Backup-disk is formatted as ext2; for off-line viewing on your client-machine, this format is natively supported on Linux. Windows requires additional drivers. MacOS however does NOT support ext2 (despite ext2 being open-source/-standard).
