@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, abort, make_response, request
 import logging
-from logging.handlers import RotatingFileHandler
+from logging import FileHandler
 import traceback
 from flask_cors import CORS
 from werkzeug.wrappers import response
@@ -24,11 +24,7 @@ def SetupLogger():
     if not logger.handlers:
         logger.setLevel(logging.DEBUG)
 
-        fileHandler = logging.handlers.RotatingFileHandler(
-            configObject.LogFileName, 
-            'a', 
-            configObject.LogMaxSize, 
-            configObject.LogBackupCount)
+        fileHandler = logging.FileHandler(configObject.LogFileName, 'a')
         fileHandler.setLevel(logging.DEBUG)
         fileHandler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
         logger.addHandler(fileHandler)
