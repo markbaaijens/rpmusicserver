@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# This script will make a backup
+#
+
+log () {
+    if [ -d "/media/usbdata/rpms/config" ]; then
+        log_dir="/media/usbdata/rpms/logs"
+    else
+        log_dir="."    
+    fi
+    echo "$1"
+    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1" >> $log_dir/backup.log
+}
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+log "Backup started."
+
+mount -a
+if [ ! "$(mount | grep /media/usbbackup)" ]; then
+    log "- backup-disk not found."
+else
+    log_details_file=$log_dir/backup-details.log
+    log "- executing backup; see details in $log_details_file"
+    rsync -v --delete -rt /media/usbdata/* /media/usbbackup --exclude Downloads --exclude lost+found --exclude rpms/config/docker/lms/cache > $log_details_file
+    log "- setting full rights on backup-files"
+    chmod 777 /media/usbbackup -R
+    sync
+fi
+
+log "Backup ended."
+exit

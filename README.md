@@ -2,8 +2,8 @@
 Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Squeezebox), Samba, Tranmission, transcoder, etc.
 
 ## System requirements
-* [minimum] Raspberry Pi 3 B+ (1 GB)
-* [recommended] Raspberry Pi 4 B (4 GB)
+* [minimum] Raspberry Pi 2 (B or B+), 1 GB
+* [recommended] Raspberry Pi 4 B, 4 GB
 
 ## Steps to turn a Pi into a music server
 * Download code:
@@ -23,7 +23,7 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
   * power up the Pi
   * check if Pi is running: `watch nmap rpms`
     * wait until port 22 appears; exit with Ctrl-C
-* Installation and configuration with install-rp script via ssh:
+* Installation and configuration:
   * `rsync -r /tmp/rpmusicserver-master/* pi@rpms:/tmp/rpmusicserver`
 	  * password = raspberry  
   * `ssh pi@rpms "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`
@@ -48,7 +48,7 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
 
 ### Update
 Update your RPMS by SSH: 
-* `ssh pi@rpms "sudo update-rpms"`
+* `ssh pi@rpms "sudo update-server"`
 
 ### Development
 * To update RMPS from `develop` branch instead of `master`: 
@@ -72,3 +72,23 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
 * steps are described for transcoding to ogg; for mp3, follow the same steps, but:
   * replace `oggfolder` with `mp3folder` 
   * replace `oggquality`by `mp3bitrate`; value = 128, 256, 384, default = 128
+
+## Backup
+You can make a backup of all the data contained in your RPMS-server. This backup will be done to a dedicated backup-disk, connected to the Pi it self, a so called server-based backup.
+
+* format a disk dedicated for RPMS-backups (one-time only):
+  * connect your (empty) backup-disk to the Pi
+  * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/burn-image.sh -O /tmp/burn-image.sh && chmod +x /tmp/burn-image.sh && sudo /tmp/burn-image.sh`
+  * enter your (personal) password of the client-machine
+  * follow the instructions to format as a backup-disk
+* engage the backup:
+  * connect your backup-disk to the Pi
+  * start the backup
+    * `curl rpms:5000/api/DoBackupServer -X post`
+  * watch progress
+    * `watch curl rpms:5000/api/GetBackupLog/1`
+    * wait until log states: 'Backup ended'
+  * disconnect your disk
+
+### Off-line viewing backup-data
+Backup-disk is formatted as ext2; for off-line viewing on your client-machine, this format is natively supported on Linux. Windows requires additional drivers. MacOS however does NOT support ext2 (despite ext2 being open-source/-standard).

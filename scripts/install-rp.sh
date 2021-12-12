@@ -3,8 +3,7 @@
 # This script will install RP Music Server onto a copy of Rapsbian OS Lite
 #
 
-if [ -z "$(whoami | grep root)" ]
-then
+if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
     echo "Script ended with failure."
     exit
@@ -14,20 +13,29 @@ echo "Start installing packages..."
 apt-get update
 apt-get install docker.io python3-pip tree jq bwm-ng -y  # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
-echo "Done installing packages."
+echo " => done installing packages."
 
 echo "Setting timezone to Europe/Amsterdam..."
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
-echo "Done setting timezone."
+echo " => done setting timezone."
 
-echo "Creating mountpoint for harddisk:"
+echo "Creating mountpoint for usbdata-disk:"
 if [ ! -d /media/usbdata ]; then
     mkdir /media/usbdata
     chmod 777 /media/usbdata -R
-    echo " => mountpoint created."    
+    echo " => mountpoint for usbdata created."    
 else
-    echo " => mountpoint is already present."    
+    echo " => mountpoint for usbdata is already present."    
+fi
+
+echo "Creating mountpoint for usbackup-disk:"
+if [ ! -d /media/usbackup ]; then
+    mkdir /media/usbackup
+    chmod 777 /media/usbackup -R
+    echo " => mountpoint for usbackup created."    
+else
+    echo " => mountpoint for usbackup is already present."    
 fi
 
 echo "Adding line for usbdata-disk to /etc/fstab:"
@@ -37,7 +45,17 @@ if [ ! "$(grep "LABEL=usbdata" /etc/fstab)" ]; then
     echo " => line added."
 else
     echo " => line is already present."    
+fi
+
+echo "Adding line for usbbackup-disk to /etc/fstab:"
+if [ ! "$(grep "LABEL=usbbackup" /etc/fstab)" ]; then
+    # auto,nofail: server starts even when harddisk is not present
+    /bin/sh -c 'echo "LABEL=usbbackup /media/usbbackup ext2 auto,nofail 0 0" >> /etc/fstab'
+    echo " => line added."
+else
+    echo " => line is already present."    
 fi    
+
 mount -a
 
 echo "Creating directories."
@@ -46,6 +64,7 @@ mkdir /media/usbdata/user/Publiek -p
 mkdir /media/usbdata/user/Publiek/Downloads -p
 mkdir /media/usbdata/user/Publiek/Muziek -p
 chmod 777 /media/usbdata/user/Publiek -R
+chmod 777 /media/usbbackup -R
 
 echo "Adding line for upgrade to /etc/crontab:"
 if [ ! "$(grep "apt-get upgrade" /etc/crontab)" ]; then
@@ -89,10 +108,15 @@ cp /tmp/rpmusicserver/revision.json /etc/rpms
 touch /etc/rpms/revision.json  # For retrieving last update timestamp
 echo " => file revision.json copied." 
 
-echo "Copy update-rpms file:"
-cp /tmp/rpmusicserver/files/usr/local/bin/update-rpms /usr/local/bin
-chmod +x /usr/local/bin/update-rpms
-echo " => file update-rpms copied." 
+echo "Copy update-server file:"
+cp /tmp/rpmusicserver/files/usr/local/bin/update-server /usr/local/bin
+chmod +x /usr/local/bin/update-server
+echo " => file update-server copied." 
+
+echo "Copy backup-server file:"
+cp /tmp/rpmusicserver/files/usr/local/bin/backup-server /usr/local/bin
+chmod +x /usr/local/bin/backup-server
+echo " => file backup-server copied." 
 
 echo "Installing transcoder..."
 rm -rf /tmp/transcoder*
@@ -129,8 +153,7 @@ sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 echo -e "rpms\nrpms" | passwd pi
 echo " => done changing password of user 'pi'."
 
-echo "Installation complete, system will be rebooted."
-# For faster rebooting, we kill all docker containers
+echo "Kill all docker-containers for faster rebooting..."
 if [ "$(docker ps -f name=lms -q)" ]; then
     docker kill lms
 fi
@@ -140,4 +163,7 @@ fi
 if [ "$(docker ps -f name=samba -q)" ]; then
     docker kill samba
 fi
+echo " => done killing docker containers"
+
+echo "Installation complete, system will be rebooted."
 reboot now
