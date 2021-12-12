@@ -61,9 +61,7 @@ readarray -t disks < <(lsblk -b -e7 -o name,type | grep disk | awk '{print $1}')
 sd_disks=()
 for disk in "${disks[@]}"; do
     model=$(parted /dev/$disk print | grep Model)
-    if [[ $model == *"sd/mmc"* ]]; then
-        sd_disks+=("$disk")
-    fi
+    sd_disks+=("$disk")
 done
 
 if [ "${sd_disks[0]}" == "" ]; then
@@ -101,7 +99,7 @@ fi
 chosen_disk=${sd_disks[disk_choice]}
 echo "You have chosen: $chosen_disk"
 
-read -r -p "Do you want to start installation on $chosen_disk? [yes/NO] " start_install
+read -r -p "Do you want to continue burning on $chosen_disk? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
     cleanup_environment
     echo "Script ended by user."
@@ -125,7 +123,6 @@ echo "Checksum of the downloaded image $archive is OK."
 
 echo "Extracting $working_dir/$archive..."
 unzip -o $working_dir/$archive -d $working_dir
-echo " => done extracting archive"
 extracted_img=$(ls -t $working_dir/*.img | head -n 1)
 if [ -z $extracted_img ]; then
     echo "No image found in $working_dir."
