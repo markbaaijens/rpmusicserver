@@ -17,7 +17,6 @@ number_pattern="[0-9]+"
 mount_point=/mnt/temp
 
 setup_environment() {
-    echo "Setup environment"    
     if [ ! -d $working_dir ]; then 
         mkdir $working_dir
     fi
@@ -25,7 +24,6 @@ setup_environment() {
 }
 
 cleanup_environment() {
-    echo "Cleaning up environment"
     unset LC_ALL  # Reset console output to default language
 }
 
@@ -80,14 +78,20 @@ counter=0
 for disk in "${sd_disks[@]}"; do
     model=$(parted /dev/$disk print | grep "Model" | cut -d " " -f2- )
     size=$(parted /dev/$disk print | grep "Disk /dev/" | awk '{print $3}')
-    echo "$counter: $model /dev/$disk ($size) $([ $counter == 0 ] && echo "[default]")"
+    echo "$counter: $model /dev/$disk ($size)"
     counter=$(($counter + 1))
 done
 echo "Q: quit"
 
-read -p "Select a disk by number or press [Enter] to choose the first one " disk_choice
+read -p "Select a disk by number: " disk_choice
 
-if [ "${disk_choice,,}" == "q" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
+if [ "${disk_choice,,}" == "q" ]; then
+    cleanup_environment    
+    echo "Script ended by user."
+    exit
+fi
+
+if [ "$disk_choice" == "" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
     echo "No disk selected."
     cleanup_environment    
     echo "Script ended."
@@ -109,7 +113,7 @@ if [ ! $(dpkg --list | grep wget | awk '{print $1}' | grep ii) ]; then
 fi
 echo "Downloading image..."
 wget -c --show-progress -P $working_dir -O $working_dir/$archive $image
-echo "Download complete"
+echo " => download complete"
 
 if [ "$(sha256sum $working_dir/$archive | cut -d' ' -f1)" != "$image_hash" ]; then
     echo "Checksum of the downloaded image $archive failed."
@@ -121,7 +125,7 @@ echo "Checksum of the downloaded image $archive is OK."
 
 echo "Extracting $working_dir/$archive..."
 unzip -o $working_dir/$archive -d $working_dir
-echo "Done extracting archive"
+echo " => done extracting archive"
 extracted_img=$(ls -t $working_dir/*.img | head -n 1)
 if [ -z $extracted_img ]; then
     echo "No image found in $working_dir."
@@ -129,7 +133,7 @@ if [ -z $extracted_img ]; then
     echo "Script ended with failure."
     exit
 fi
-echo "Done extracting $working_dir/$archive"
+echo " => done extracting $working_dir/$archive"
 
 echo "Unmounting /dev/$chosen_disk partitions..."
 partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
@@ -145,12 +149,12 @@ for partition in $partitions; do
    	echo "Partition $partition successfully unmounted."
 done
 hdparm -z /dev/$chosen_disk
-echo "Done unmounting /dev/$chosen_disk partitions"
+echo " => done unmounting /dev/$chosen_disk partitions"
 
 echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
 hdparm -z /dev/$chosen_disk
-echo "Done wiping $chosen_disk."
+echo " => done wiping $chosen_disk."
 
 if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]; then 
     apt install gddrescue -y
@@ -159,7 +163,7 @@ echo "Start burning $extracted_img to $chosen_disk..."
 ddrescue -D --force $extracted_img "/dev/$chosen_disk"
 hdparm -z /dev/$chosen_disk
 sleep 3  # Give the OS some time to reread
-echo "Done burning $chosen_disk."
+echo " => done burning $chosen_disk."
 
 if [ ! -d /dev/disk/by-label ]; then
 	echo "/dev/disk/by-label doesn't exist"
@@ -173,7 +177,7 @@ partition=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$chosen_disk.*$")
 mount_partition
 touch $mount_point/ssh
 unmount_partition
-echo "SSH has been activated on $chosen_disk."
+echo " => SSH has been activated on $chosen_disk."
 
 echo "Change hostname..."
 partition=$(ls -l /dev/disk/by-label | grep "rootfs" | grep -oE "$chosen_disk.*$")
@@ -181,7 +185,7 @@ mount_partition
 sed -i -e 's/raspberrypi/rpms/g' $mount_point/etc/hostname
 sed -i -e 's/raspberrypi/rpms/g' $mount_point/etc/hosts
 unmount_partition
-echo "Done changing hostname."
+echo " => done changing hostname."
 
 cleanup_environment
 echo "Script ended successfully."
