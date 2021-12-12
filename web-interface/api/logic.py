@@ -209,6 +209,13 @@ def GetVersionInfo():
             "CurrentVersion": currentVersion, 
             "LastUpdateTimeStamp": lastUpdateTimeStampAsString}
 
+def GetBackupInfo():
+    isBackupInProgress = False
+    if os.path.isfile('/media/usbdata/rpms/logs/backup-details.log'):
+        if ExecuteBashCommand("grep 'speedup is ' /media/usbdata/rpms/logs/backup-details.log").strip() == '':
+            isBackupInProgress = True
+    return {"IsBackupInProgress": isBackupInProgress}
+
 def GetApiList():
     dataAsJson = {}
     apiInfoFile = os.path.dirname(__file__) + '/api-info.json'

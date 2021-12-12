@@ -55,6 +55,10 @@
         "Description": "Show settings of transcoder",
         "Example":"curl rpms:5000/api/GetTranscoderSettings"
     },
+    "GET api/GetBackupInfo": {
+        "Description": "Show info about backup",
+        "Example":"curl rpms:5000/api/GetBackupInfo"
+    },    
     "POST api/DoUpdateServer": {
         "Description": "Update RPMS to the latest version",
         "Example":"curl rpms:5000/api/DoUpdateServer -X post"
