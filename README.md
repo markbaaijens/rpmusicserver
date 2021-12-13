@@ -12,9 +12,11 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
 * Burn SD-card:
   * insert SD-card into your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/burn-image.sh`
+    * enter your (personal) password of your PC
 * Format USB-drive for data (ext4, label = usbdata):
   * connect USB-drive to your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/format-usbdisk.sh`
+    * enter your (personal) password of your PC
 * First boot:
   * make sure your Pi is powered off
   * insert SD-card into your Pi
