@@ -2,6 +2,12 @@
     "CurrentVersion": "0.3",
     "History": [
         {
+            "Version":"0.4",
+            "Changes": [
+                "[bug] In readme, instructions for formatting backup-disk pointed to burn-image script"
+            ]
+        },        
+        {
             "Version":"0.3",
             "Changes": [
                 "[bug] Set timezone to Europe/Amsterdam",
