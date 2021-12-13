@@ -52,7 +52,6 @@ def AppendDiskInfo(diskMountPoint):
     diskSize = ''
     diskUsed = ''
     diskUsedPercentage = ''
-    isHealthy = None
     if diskDeviceName:
 
         # diskSize => df -h | grep -w / | awk '{print $2}'
@@ -73,15 +72,15 @@ def AppendDiskInfo(diskMountPoint):
         process = subprocess.run(["awk '{print $5}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
         diskUsedPercentage = process.stdout.decode("utf-8").strip('\n')
 
-        diskStatus = 'online'
+        onlineStatus = True
     else:
-        diskStatus = 'offline'
+        onlineStatus = False
 
     disks.append({
                     "DiskName": diskName,
                     "MountPoint": diskMountPoint,
                     "DeviceName": diskDeviceName,
-                    "Status": diskStatus,
+                    "IsOnline": onlineStatus,
                     "Size": diskSize,
                     "Used": diskUsed,
                     'UsedPercentage': diskUsedPercentage
