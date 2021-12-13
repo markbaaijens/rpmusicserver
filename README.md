@@ -91,8 +91,10 @@ You can make a backup of all the data contained in your RPMS-server. This backup
   * start the backup
     * `curl rpms:5000/api/DoBackupServer -X post`
   * watch progress
-    * `watch curl rpms:5000/api/GetBackupLog/1`
-    * wait until log states: 'Backup ended'
+    * [rpms:5000/api/GetBackupLog/4](http://rpms:5000/api/GetBackupLog/4)
+    * refresh until log states: 'Backup ended'
+  * see full backup-log
+    * [rpms:5000/api/GetBackupDetailsLog/0](http://rpms:5000/api/GetBackupDetailsLog/0)
   * disconnect your disk
 
 ### Off-line viewing backup-data
