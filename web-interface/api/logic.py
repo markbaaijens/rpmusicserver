@@ -5,13 +5,17 @@ import os
 from globals import configObject
 from datetime import datetime
 import math
+import asyncio
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     return process.stdout.decode("utf-8").strip('\n')
 
 def TailFromFile(file, n):
-    process = subprocess.Popen(['tail', '-n', f'{n}', file], stdout=subprocess.PIPE)    
+    if n != 0:
+        process = subprocess.Popen(['tail', '-n', f'{n}', file], stdout=subprocess.PIPE)
+    else:
+        process = subprocess.Popen(['cat', file], stdout=subprocess.PIPE)
     lines = process.stdout.readlines()
     return lines
 
@@ -19,7 +23,20 @@ def GetMachineInfo():
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
-    return {'HostName': hostName, 'IpAddress': ipAddress, "OsCodeName": osCodeName}
+    rpModel = ''
+    if os.path.isfile('/proc/device-tree/model'):    
+        rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
+    cpuTemp = ''
+    if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
+        process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+        cpuTemp = process.stdout.decode("utf-8").strip('\n')
+
+    return {"HostName": hostName,
+            "IpAddress": ipAddress,
+            "OsCodeName": osCodeName,
+            "RpModel": rpModel,
+            "CpuTemp": cpuTemp}
 
 disks = []
 
@@ -192,6 +209,13 @@ def GetVersionInfo():
             "CurrentVersion": currentVersion, 
             "LastUpdateTimeStamp": lastUpdateTimeStampAsString}
 
+def GetBackupInfo():
+    isBackupInProgress = False
+    if os.path.isfile('/media/usbdata/rpms/logs/backup-details.log'):
+        if ExecuteBashCommand("grep 'speedup is ' /media/usbdata/rpms/logs/backup-details.log").strip() == '':
+            isBackupInProgress = True
+    return {"IsBackupInProgress": isBackupInProgress}
+
 def GetApiList():
     dataAsJson = {}
     apiInfoFile = os.path.dirname(__file__) + '/api-info.json'
@@ -216,7 +240,7 @@ def GetLog(logFile, nrOfLines):
         logLinesFromFile = TailFromFile(logFile, nrOfLines)
         for logLine in logLinesFromFile:
             logLines.append(logLine.decode("utf-8").strip('\n'))
-    return { "LogLines": logLines }
+    return logLines
 
 def GetDockerContainerList():
     dockerContainerList = []
@@ -242,17 +266,21 @@ def SetTranscoderSetting(requestData, settingName):
 
     return { "Message": "Transcoder-setting ["+ settingName + "] is modified to [" + str(newValue) + "]"}
 
-def DoRebootServer():
-    subprocess.run(["reboot now"], stdout=subprocess.PIPE, shell=True)
-    return { "Message": "Server is rebooting" }
+async def DoRebootServer():
+    await asyncio.create_subprocess_shell("reboot")
+    pass
 
-def DoHaltServer():
-    subprocess.run(["halt"], stdout=subprocess.PIPE, shell=True)
-    return { "Message": "Server is halting" }
+async def DoBackupServer():
+    await asyncio.create_subprocess_shell("backup-server")
+    pass
 
-def DoUpdateServer():
-    subprocess.run(["update-rpms"], stdout=subprocess.PIPE, shell=True)
-    return { "Message": "Server is updating" }
+async def DoHaltServer():
+    await asyncio.create_subprocess_shell("halt")
+    pass
+
+async def DoUpdateServer():
+    await asyncio.create_subprocess_shell("update-server")
+    pass
 
 def GetLmsServerInfo():
     # LMS API-reference: http://msi:9000/html/docs/cli-api.html 
