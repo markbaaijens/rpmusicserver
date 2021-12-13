@@ -1,9 +1,10 @@
 from flask import Flask, jsonify, abort, make_response, request
 import logging
-from logging.handlers import RotatingFileHandler
+from logging import FileHandler
 import traceback
 from flask_cors import CORS
 from werkzeug.wrappers import response
+import asyncio
 
 import logic 
 from config import Config
@@ -23,11 +24,7 @@ def SetupLogger():
     if not logger.handlers:
         logger.setLevel(logging.DEBUG)
 
-        fileHandler = logging.handlers.RotatingFileHandler(
-            configObject.LogFileName, 
-            'a', 
-            configObject.LogMaxSize, 
-            configObject.LogBackupCount)
+        fileHandler = logging.FileHandler(configObject.LogFileName, 'a')
         fileHandler.setLevel(logging.DEBUG)
         fileHandler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
         logger.addHandler(fileHandler)
@@ -117,6 +114,17 @@ def GetVersionInfo():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
+@app.route('/api/GetBackupInfo', methods=['GET'])
+def GetBackupInfo():
+    try:
+        info = logic.GetBackupInfo()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
 @app.route('/api/GetUpdateLog/<int:nrOfLines>', methods=['GET'])
 def GetUpdateLog(nrOfLines):
     try:
@@ -149,6 +157,28 @@ def GetTranscoderLog(nrOfLines):
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+@app.route('/api/GetBackupLog/<int:nrOfLines>', methods=['GET'])
+def GetBackupLog(nrOfLines):
+    try:
+        info = logic.GetLog('/media/usbdata/rpms/logs/backup.log', nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+@app.route('/api/GetBackupDetailsLog/<int:nrOfLines>', methods=['GET'])
+def GetBackupDetailsLog(nrOfLines):
+    try:
+        info = logic.GetLog('/media/usbdata/rpms/logs/backup-details.log', nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)        
 
 @app.route('/api/SetTranscoderSettingSourceFolder', methods=['POST'])
 def SetTranscoderSettingSourceFolder():
@@ -276,7 +306,20 @@ def GetDiskList():
 @app.route('/api/DoRebootServer', methods=['POST'])
 def DoRebootServer():
     try:
-        info = logic.DoRebootServer()
+        asyncio.run(logic.DoRebootServer())
+        info = { "Message": "Server is rebooting" }
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/DoBackupServer', methods=['POST'])
+def DoBackupServer():
+    try:
+        asyncio.run(logic.DoBackupServer())
+        info = { "Message": "Backup has been started" }        
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -287,7 +330,8 @@ def DoRebootServer():
 @app.route('/api/DoHaltServer', methods=['POST'])
 def DoHaltServer():
     try:
-        info = logic.DoHaltServer()
+        asyncio.run(logic.DoHaltServer())
+        info = { "Message": "Server is halting" }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -298,7 +342,8 @@ def DoHaltServer():
 @app.route('/api/DoUpdateServer', methods=['POST'])
 def DoUpdateServer():
     try:
-        info = logic.DoUpdateServer()
+        asyncio.run(logic.DoUpdateServer())
+        info = { "Message": "Server is updating" }        
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

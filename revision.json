@@ -1,6 +1,18 @@
 {
-    "CurrentVersion": "0.2",
+    "CurrentVersion": "0.3",
     "History": [
+        {
+            "Version":"0.3",
+            "Changes": [
+                "[bug] Set timezone to Europe/Amsterdam",
+                "Using logrotate to prevent infinite large log-files",
+                "Documented system requirements",
+                "Faster reboot after install/update by killing docker-containers",
+                "Extended API-call GetMachineInfo with CpuTemp and RpModel",
+                "Backup, server-based",
+                "[bug] Enhanced burn-script: removed filter for sd, removed default in disk-choice"
+            ]
+        },
         {
             "Version":"0.2",
             "Changes": [
