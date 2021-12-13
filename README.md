@@ -12,9 +12,11 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
 * Burn SD-card:
   * insert SD-card into your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/burn-image.sh`
+    * enter your (personal) password of your PC
 * Format USB-drive for data (ext4, label = usbdata):
   * connect USB-drive to your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/format-usbdisk.sh`
+    * enter your (personal) password of your PC
 * First boot:
   * make sure your Pi is powered off
   * insert SD-card into your Pi
@@ -77,7 +79,7 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
 You can make a backup of all the data contained in your RPMS-server. This backup will be done to a dedicated backup-disk, connected to the Pi it self, a so called server-based backup.
 
 * format a disk dedicated for RPMS-backups (one-time only):
-  * connect your (empty) backup-disk to the Pi
+  * connect your (empty) backup-disk to your Linuc-PC
   * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/burn-image.sh -O /tmp/burn-image.sh && chmod +x /tmp/burn-image.sh && sudo /tmp/burn-image.sh`
   * enter your (personal) password of the client-machine
   * follow the instructions to format as a backup-disk
