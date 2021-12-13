@@ -1,10 +1,11 @@
 {
-    "CurrentVersion": "0.3",
+    "CurrentVersion": "0.4",
     "History": [
         {
             "Version":"0.4",
             "Changes": [
-                "[bug] In readme, instructions for formatting backup-disk pointed to burn-image script"
+                "[bug] In readme, instructions for formatting backup-disk pointed to burn-image script",
+                "[bug] Wrong mountpoint for backup-disk so disk could not be found"
             ]
         },        
         {
