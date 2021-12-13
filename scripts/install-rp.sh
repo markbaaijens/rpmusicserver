@@ -29,13 +29,13 @@ else
     echo " => mountpoint for usbdata is already present."    
 fi
 
-echo "Creating mountpoint for usbackup-disk:"
-if [ ! -d /media/usbackup ]; then
-    mkdir /media/usbackup
-    chmod 777 /media/usbackup -R
-    echo " => mountpoint for usbackup created."    
+echo "Creating mountpoint for usbbackup-disk:"
+if [ ! -d /media/usbbackup ]; then
+    mkdir /media/usbbackup
+    chmod 777 /media/usbbackup -R
+    echo " => mountpoint for usbbackup created."    
 else
-    echo " => mountpoint for usbackup is already present."    
+    echo " => mountpoint for usbbackup is already present."
 fi
 
 echo "Adding line for usbdata-disk to /etc/fstab:"
