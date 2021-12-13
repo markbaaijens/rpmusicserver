@@ -21,7 +21,8 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
   * connect USB-drive to the Pi
   * connect the Pi to your network with a network cable 
   * power up the Pi
-  * check if Pi is running: `watch nmap rpms`
+  * check if Pi is running: 
+    * `watch nmap rpms`
     * wait until port 22 appears; exit with Ctrl-C
 * Installation and configuration:
   * `rsync -r /tmp/rpmusicserver-master/* pi@rpms:/tmp/rpmusicserver`
@@ -40,6 +41,8 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
   * API: 
     * `curl rpms:5000`
     * [rpms:5000](http://rpms:5000)
+  * SSH: `ssh pi@rpms`
+    * password: rpms
 * Engage:
   * copy music files to `smb://rpms/Publiek/Muziek`
   * hookup a Squeezebox player to your network
@@ -78,7 +81,7 @@ You can make a backup of all the data contained in your RPMS-server. This backup
 
 * format a disk dedicated for RPMS-backups (one-time only):
   * connect your (empty) backup-disk to the Pi
-  * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/burn-image.sh -O /tmp/burn-image.sh && chmod +x /tmp/burn-image.sh && sudo /tmp/burn-image.sh`
+  * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/format-usbdisk.sh -O /tmp/format-usbdisk.sh && chmod +x /tmp/format-usbdisk.sh && sudo /tmp/format-usbdisk.sh`
   * enter your (personal) password of the client-machine
   * follow the instructions to format as a backup-disk
 * engage the backup:
