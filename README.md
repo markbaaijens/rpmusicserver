@@ -68,13 +68,16 @@ Update your RPMS by SSH:
 
 ## Transcoder
 For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
-* move your flac-files into a separate folder: `smb://rpms/Publiek/Muziek/flac`
-  * in LMS Server Settings, point music-folder to this location
-* create a folder for lossy files: `smb://rpms/Publiek/Muziek/ogg`
-* modify `/media/usbdata/rpms/config/transcoder-settings.json`
-  * change `sourcefolder` to `/media/usbdata/user/Publiek/Muziek/flac`;use API-call `api/SetTranscoderSettingSourceFolder`
-  * change `oggfolder` to `/media/usbdata/user/Publiek/Muziek/ogg`; use API-call `api/SetTranscoderSettingOggFolder`
-  * (optional) change `oggquality` to a value 1-5; default = 1 (by setting `oggquality` to 0, transcoder will take this default); use API-call `api/SetTranscoderSettingOggQuality`
+* move your flac-files into a separate folder: 
+  * `smb://rpms/Publiek/Muziek/flac`
+* in [LMS](http://rpms:9002/) Settings, point music-folder to this location:
+  * `/music/flac`
+* create a folder for lossy files: 
+  * `smb://rpms/Publiek/Muziek/ogg`
+* change setting `sourcefolder`:
+  * `curl rpms:5000/api/SetTranscoderSettingSourceFolder -X post -H "Content-Type: application/json" -d '{"sourcefolder":"/media/usbdata/user/Publiek/Muziek/flac"}'`
+* change setting `oggfolder`:
+  * `curl rpms:5000/api/SetTranscoderSettingOggFolder -X post -H "Content-Type: application/json" -d '{"oggfolder":"/media/usbdata/user/Publiek/Muziek/ogg"}'`
 * from now on, every hour at 20 minutes, file transcoding will take place and ogg-files will automagically appear in the given ogg-folder!
 
 ### Note(s)
@@ -102,4 +105,4 @@ You can make a backup of all the data contained in your RPMS-server. This backup
   * disconnect your disk
 
 ### Off-line viewing backup-data
-Backup-disk is formatted as ext2; for off-line viewing on your own PC, this format is natively supported on Linux, so just plug-ans-play. Windows however requires additional drivers. And worse, MacOS does not support ext2 entirely (despite ext2 being open-source/open-standard).
+Backup-disk is formatted as ext2; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers. And worse, MacOS does NOT support ext2 (despite ext2 being open-source/open-standard).
