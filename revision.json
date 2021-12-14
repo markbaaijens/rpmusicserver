@@ -6,7 +6,8 @@
             "Changes": [
                 "[bug] In readme, instructions for formatting backup-disk pointed to burn-image script",
                 "[bug] Wrong mountpoint for backup-disk so disk could not be found",
-                "api/GetDiskList: DiskStatus => IsOnline"
+                "api/GetDiskList: DiskStatus => IsOnline",
+                "[bug] Instructions in readme to install nmap before installing RPMS"
             ]
         },        
         {
