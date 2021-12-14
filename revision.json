@@ -7,7 +7,8 @@
                 "[bug] In readme, instructions for formatting backup-disk pointed to burn-image script",
                 "[bug] Wrong mountpoint for backup-disk so disk could not be found",
                 "api/GetDiskList: DiskStatus => IsOnline",
-                "[bug] Instructions in readme to install nmap before installing RPMS"
+                "[bug] Instructions in readme to install nmap before installing RPMS",
+                "Better formatting of transcoder-section in readme"
             ]
         },        
         {
@@ -39,7 +40,7 @@
         {
             "Version":"0.1",
             "Changes": [
-                "Basic install scripts for first pre-production version"
+                "Basic install scripts for first pre-production version, providing LMS and Samba (only)"
             ]
         }
     ]
