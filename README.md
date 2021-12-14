@@ -6,6 +6,9 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
 * [recommended] Raspberry Pi 4 B, 4 GB
 
 ## Steps to turn a Pi into a music server
+* Install package(s) on your Linux PC:
+  * `sudo apt-get install nmap`
+    * enter your (personal) password of your PC  
 * Download code:
   * `wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip`
   * `unzip -d /tmp -o /tmp/rpmusicserver.zip`
@@ -13,10 +16,11 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
   * insert SD-card into your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/burn-image.sh`
     * enter your (personal) password of your PC
-* Format USB-drive for data (ext4, label = usbdata):
+* Format USB-drive for data:
   * connect USB-drive to your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/format-usbdisk.sh`
     * enter your (personal) password of your PC
+  * follow the instructions to format as a DATA-disk    
 * First boot:
   * make sure your Pi is powered off
   * insert SD-card into your Pi
@@ -84,8 +88,8 @@ You can make a backup of all the data contained in your RPMS-server. This backup
 * format a disk dedicated for RPMS-backups (one-time only):
   * connect your (empty) backup-disk to the Pi
   * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/format-usbdisk.sh -O /tmp/format-usbdisk.sh && chmod +x /tmp/format-usbdisk.sh && sudo /tmp/format-usbdisk.sh`
-  * enter your (personal) password of the client-machine
-  * follow the instructions to format as a backup-disk
+    * enter your (personal) password of the client-machine
+  * follow the instructions to format as a BACKUP-disk
 * engage the backup:
   * connect your backup-disk to the Pi
   * start the backup
@@ -98,4 +102,4 @@ You can make a backup of all the data contained in your RPMS-server. This backup
   * disconnect your disk
 
 ### Off-line viewing backup-data
-Backup-disk is formatted as ext2; for off-line viewing on your client-machine, this format is natively supported on Linux. Windows requires additional drivers. MacOS however does NOT support ext2 (despite ext2 being open-source/-standard).
+Backup-disk is formatted as ext2; for off-line viewing on your own PC, this format is natively supported on Linux, so just plug-ans-play. Windows however requires additional drivers. And worse, MacOS does not support ext2 entirely (despite ext2 being open-source/open-standard).
