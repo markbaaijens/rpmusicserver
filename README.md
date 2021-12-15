@@ -72,18 +72,27 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
   * `smb://rpms/Publiek/Muziek/flac`
 * in [LMS](http://rpms:9002/) Settings, point music-folder to this location:
   * `/music/flac`
-* create a folder for lossy files: 
-  * `smb://rpms/Publiek/Muziek/ogg`
 * change setting `sourcefolder`:
   * `curl rpms:5000/api/SetTranscoderSettingSourceFolder -X post -H "Content-Type: application/json" -d '{"sourcefolder":"/media/usbdata/user/Publiek/Muziek/flac"}'`
-* change setting `oggfolder`:
-  * `curl rpms:5000/api/SetTranscoderSettingOggFolder -X post -H "Content-Type: application/json" -d '{"oggfolder":"/media/usbdata/user/Publiek/Muziek/ogg"}'`
-* from now on, every hour at 20 minutes, file transcoding will take place and ogg-files will automagically appear in the given ogg-folder!
+* for transcoding to ogg
+  * create a folder for lossy files: 
+    * `smb://rpms/Publiek/Muziek/ogg`
+  * change setting `oggfolder`:
+    * `curl rpms:5000/api/SetTranscoderSettingOggFolder -X post -H "Content-Type: application/json" -d '{"oggfolder":"/media/usbdata/user/Publiek/Muziek/ogg"}'`
+* for transcoding to mp3
+  * create a folder for lossy files: 
+    * `smb://rpms/Publiek/Muziek/mp3`
+  * change setting `mp3folder`:
+    * `curl rpms:5000/api/SetTranscoderSettingMp3Folder -X post -H "Content-Type: application/json" -d '{"mp3folder":"/media/usbdata/user/Publiek/Muziek/mp3"}'`    
+* from now on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
 
-### Note(s)
-* steps are described for transcoding to ogg; for mp3, follow the same steps, but:
-  * replace `oggfolder` with `mp3folder` 
-  * replace `oggquality`by `mp3bitrate`; value = 128, 256, 384, default = 128
+### Notes
+* Transcoding will be done by these default quality-levels: ogg = 1, mp3 = 128. Optionally, you can change these defaults:
+  * for example, change `oggquality` to 3 (value = 1, 2, 3, 4, or 5):
+     * `curl rpms:5000/api/SetTranscoderSettingOggQuality -X post -H "Content-Type: application/json" -d '{"oggquality": 3}'`
+  * for example, change `mp3bitrate` to 256 (value = 128, 256 or 384):
+     * `curl rpms:5000/api/SetTranscoderSettingMp3BitRate -X post -H "Content-Type: application/json" -d '{"mp3bitrate": 256}'`     
+* Trancoding simultaneously to ogg AND mp3 is possible; just set both `oggfolder` and `mp3folder`
 
 ## Backup
 You can make a backup of all the data contained in your RPMS-server. This backup will be done to a dedicated backup-disk, connected to the Pi it self, a so called server-based backup.
