@@ -56,8 +56,8 @@ def BuildResponse(statusCode, body, location):
 
 @app.route('/', methods=['GET'])
 def root():
-    return BuildResponse(HTTP_OK, jsonify({"ApiName": "rpms-api"},
-                                          {"Documentation": "api/GetApiList"}), request.url)
+    return BuildResponse(HTTP_OK, jsonify({"ApiName": "rpms-api",
+                                           "Documentation": "api/GetApiList"}), request.url)
 
 @app.route('/api/GetApiList', methods=['GET'])
 def GetApiList():
