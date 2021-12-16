@@ -250,9 +250,7 @@ def GetDockerContainerList():
         dockerContainerList.append(line)
     return { "DockerContainers": dockerContainerList }
 
-def SetTranscoderSetting(requestData, settingName):
-    newValue = requestData[settingName]
-    
+def SetTranscoderSetting(settingName, newValue):
     transcoderSettingsFileName = '/media/usbdata/rpms/config/transcoder-settings.json'
     if not os.path.isfile(transcoderSettingsFileName):
         return { "Message": "File " + transcoderSettingsFileName + " does not exist"}

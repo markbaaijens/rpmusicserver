@@ -1,6 +1,14 @@
 {
-    "CurrentVersion": "0.4",
+    "CurrentVersion": "0.5",
     "History": [
+        {
+            "Version":"0.5",
+            "Changes": [
+                "[bug] Call api/ is an list of nodes within a node; should be list of nodes",
+                "[bug] In api/GetDiskList, remove '%' in UsedPercentage; return as int",
+                "[bug] Removed setting-name in request-data in api-calls for modifying transcoder-settings; simplified names"
+            ]
+        },                
         {
             "Version":"0.4",
             "Changes": [
