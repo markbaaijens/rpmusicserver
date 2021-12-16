@@ -112,7 +112,10 @@ You can make a backup of all the data contained in your RPMS-server. This backup
     * refresh until log states: 'Backup ended'
   * see full backup-log
     * [rpms:5000/api/GetBackupDetailsLog/0](http://rpms:5000/api/GetBackupDetailsLog/0)
-  * disconnect your disk
+  * disconnect backup-disk
 
 ### Off-line viewing backup-data
 Backup-disk is formatted as ext2; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers. And worse, MacOS does NOT support ext2 (despite ext2 being open-source/open-standard).
+
+### Disaster-recovery
+B/c the backup-disk is an exact copy aka mirror of the data-disk and of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata`, connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now. Remember to make a backup to a new backup-disk immediately!
