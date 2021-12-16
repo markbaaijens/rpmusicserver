@@ -75,24 +75,24 @@
         "Description": "Backup server",
         "Example":"curl rpms:5000/api/DoBackupServer -X post"
     },    
-    "POST api/SetTranscoderSettingSourceFolder": {
+    "POST api/SetTranscoderSourceFolder": {
         "Description": "Set transcoder-setting [sourcefolder]",
-        "Example":"curl rpms:5000/api/SetTranscoderSettingSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"sourcefolder\":\"NewSourceFolder\"}'"
+        "Example":"curl rpms:5000/api/SetTranscoderSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"Value\":\"NewSourceFolder\"}'"
     },
-    "POST api/SetTranscoderSettingOggFolder": {
+    "POST api/SetTranscoderOggFolder": {
         "Description": "Set transcoder-setting [oggfolder]",
-        "Example":"curl rpms:5000/api/SetTranscoderSettingOggFolder -X post -H \"Content-Type: application/json\" -d '{\"oggfolder\":\"NewOggFolder\"}'"
+        "Example":"curl rpms:5000/api/SetTranscoderOggFolder -X post -H \"Content-Type: application/json\" -d '{\"Value\":\"NewOggFolder\"}'"
     },
-    "POST api/SetTranscoderSettingMp3Folder": {
+    "POST api/SetTranscoderMp3Folder": {
         "Description": "Set transcoder-setting [mp3folder]",
-        "Example":"curl rpms:5000/api/SetTranscoderSettingMp3Folder -X post -H \"Content-Type: application/json\" -d '{\"mp3folder\":\"NewMp3Folder\"}'"
+        "Example":"curl rpms:5000/api/SetTranscoderMp3Folder -X post -H \"Content-Type: application/json\" -d '{\"Value\":\"NewMp3Folder\"}'"
     },
-    "POST api/SetTranscoderSettingOggQuality": {
+    "POST api/SetTranscoderOggQuality": {
         "Description": "Set transcoder-setting [oggquality]; 1, 2, 3,4, or 5; default = 1",
-        "Example":"curl rpms:5000/api/SetTranscoderSettingOggQuality -X post -H \"Content-Type: application/json\" -d '{\"oggquality\": 2}'"
+        "Example":"curl rpms:5000/api/SetTranscoderOggQuality -X post -H \"Content-Type: application/json\" -d '{\"Value\": 2}'"
     },
-    "POST api/SetTranscoderSettingMp3BitRate": {
+    "POST api/SetTranscoderMp3BitRate": {
         "Description": "Set transcoder-setting [mp3bitrate]; 128, 256 or 384; default = 128",
-        "Example":"curl rpms:5000/api/SetTranscoderSettingMp3BitRate -X post -H \"Content-Type: application/json\" -d '{\"mp3bitrate\": 256}'"
+        "Example":"curl rpms:5000/api/SetTranscoderMp3BitRate -X post -H \"Content-Type: application/json\" -d '{\"Value\": 256}'"
     }
 }
