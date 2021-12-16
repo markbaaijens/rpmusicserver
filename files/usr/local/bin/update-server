@@ -1,7 +1,4 @@
 #!/bin/bash
-#
-# This script will update a RP Music Server to the latest software
-#
 
 log () {
     if [ -d "/media/usbdata/rpms/config" ]; then

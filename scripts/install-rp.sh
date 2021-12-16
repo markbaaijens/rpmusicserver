@@ -50,7 +50,7 @@ fi
 echo "Adding line for usbbackup-disk to /etc/fstab:"
 if [ ! "$(grep "LABEL=usbbackup" /etc/fstab)" ]; then
     # auto,nofail: server starts even when harddisk is not present
-    /bin/sh -c 'echo "LABEL=usbbackup /media/usbbackup ext2 auto,nofail 0 0" >> /etc/fstab'
+    /bin/sh -c 'echo "LABEL=usbbackup /media/usbbackup ext4 auto,nofail 0 0" >> /etc/fstab'
     echo " => line added."
 else
     echo " => line is already present."    

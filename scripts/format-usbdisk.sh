@@ -1,7 +1,4 @@
 #!/bin/bash
-#
-# This script will format a disk for use in the RP Music Server
-#
 
 if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
@@ -44,7 +41,7 @@ for disk in "${sd_disks[@]}"; do
 done
 echo "Q: quit"
 
-read -p "Select a disk by a number: " disk_choice
+read -p "Select a disk: " disk_choice
 
 if [ "${disk_choice,,}" == "q" ]; then
     cleanup_environment    
@@ -63,11 +60,11 @@ chosen_disk=${sd_disks[disk_choice]}
 echo "You have chosen: $chosen_disk"
 
 echo "Format as:"
-echo "1: data-disk (ext4, label = usbdata)"
-echo "2: backup-disk (ext2, label = usbbackup)"
+echo "d: DATA-disk (ext4, label = usbdata)"
+echo "b: BACKUP-disk (ext4, label = usbbackup)"
 echo "Q: quit"
 
-read -p "Select a format-type by a number: " type_choice
+read -p "Select a format-type: " type_choice
 
 if [ "$type_choice" == "" ]; then
     type_choice=0
@@ -79,7 +76,7 @@ if [ "${type_choice,,}" == "q" ]; then
     exit
 fi
 
-if [ $type_choice != "1" ] && [ $type_choice != "2" ]; then
+if [ ${type_choice,,} != "d" ] && [ ${type_choice,,} != "b" ]; then
     echo "No type selected."
     cleanup_environment    
     echo "Script ended."
@@ -128,17 +125,17 @@ echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/$chosen_disk
 hdparm -z /dev/$chosen_disk
 echo " => done creating partition on $chosen_disk."
 
-if [ $type_choice == "1" ]; then	
-    echo "Start formatting partition on $chosen_disk as 'usbdata'..."	
-    mkfs.ext4 -L 'usbdata' "/dev/$chosen_disk"
-    hdparm -z /dev/$chosen_disk
-    echo " => done formatting partition on $chosen_disk."		
+disk_label=""
+if [ ${type_choice,,} == "d" ]; then
+    disk_label="usbdata"
 else
-    echo "Start formatting partition on $chosen_disk as 'usbbackup'..."	
-    mkfs.ext2 -E nodiscard -L 'usbbackup' "/dev/$chosen_disk"
-    hdparm -z /dev/$chosen_disk
-    echo " => done formatting partition on $chosen_disk."		
-fi
+    disk_label="usbbackup"
+fi    
+
+echo "Start formatting partition on $chosen_disk as '$disk_label'..."	
+mkfs.ext4 -L "$disk_label" "/dev/$chosen_disk"
+hdparm -z /dev/$chosen_disk
+echo " => done formatting partition on $chosen_disk."		
 
 cleanup_environment
 echo "Script ended successfully."
