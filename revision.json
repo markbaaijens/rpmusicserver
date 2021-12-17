@@ -6,7 +6,8 @@
             "Changes": [
                 "[bug] Call api/ is an list of nodes within a node; should be list of nodes",
                 "[bug] In api/GetDiskList, remove '%' in UsedPercentage; return as int",
-                "[bug] Removed setting-name in request-data in api-calls for modifying transcoder-settings; simplified names"
+                "[bug] Removed setting-name in request-data in api-calls for modifying transcoder-settings; simplified names",
+                "[bug] Format backup-disk as ext4 for faster formatting and to provide disaster-recovery"
             ]
         },                
         {

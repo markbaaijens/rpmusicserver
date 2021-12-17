@@ -71,7 +71,7 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
 * in your file explorer:
   * create a folder `flac` under `smb://rpms/Publiek/Muziek`
   * move your flac-files into that folder `flac`
-* in [LMS](http://rpms:9002/) Server Settings, point music-folder to this location:
+* in [LMS](http://rpms:9002) Server Settings, point music-folder to this location:
   * `/music/flac`
 * change setting `sourcefolder`:
   * `curl rpms:5000/api/SetTranscoderSourceFolder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/flac"}'`
@@ -115,7 +115,7 @@ You can make a backup of all the data contained in your RPMS-server. This backup
   * disconnect backup-disk
 
 ### Off-line viewing backup-data
-Backup-disk is formatted as ext2; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers. And worse, MacOS does NOT support ext2 (despite ext2 being open-source/open-standard).
+Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers. And worse, MacOS does NOT support ext4 (despite ext2 being open-source/open-standard).
 
 ### Disaster-recovery
-B/c the backup-disk is an exact copy aka mirror of the data-disk and of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata`, connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now. Remember to make a backup to a new backup-disk immediately!
+B/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata`, connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made. Remember to make a backup to a new backup-disk immediately!
