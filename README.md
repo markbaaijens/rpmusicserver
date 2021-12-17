@@ -41,18 +41,18 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
 * Test access:
   * `watch nmap rpms`
     * wait until port 9002 appears; exit with Ctrl-C
-  * LMS (browser): <a href="http://rpms:9002" target="_blank">rpms:9002</a>
+  * LMS (browser): [rpms:9002](http://rpms:9002){:target="_blank"}
   * Samba (file explorer): `smb://rpms`
-  * Transmission (browser): <a href="http://rpms:9091" target="_blank">rpms:9091</a>
+  * Transmission (browser): [rpms:9091](http://rpms:9091){:target="_blank"}
   * API: 
     * `curl rpms:5000`
-    * <a href="http://rpms:5000" target="_blank">rpms:5000</a>
+    * [rpms:5000](http://rpms:5000){:target="_blank"}
   * SSH: `ssh pi@rpms`
     * password: rpms
 * Engage:
   * copy music files to `smb://rpms/Publiek/Muziek`
   * hookup a Squeezebox player to your network
-  * install a Android App like <a href="https://play.google.com/store/apps/details?id=uk.org.ngo.squeezer" target="_blank">Squeezer</a>
+  * install a Android App like [Squeezer](https://play.google.com/store/apps/details?id=uk.org.ngo.squeezer){:target="_blank"}
   * enjoy!
 
 ### Update
@@ -64,14 +64,14 @@ Update your RPMS by SSH:
   * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
 * API-documentation: 
   * `curl rpms:5000/api/GetApiList`
-  * <a href="http://rpms:5000/api/GetApiList" target="_blank">rpms:5000/api/GetApiList</a>
+  * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList){:target="_blank"}
 
 ## Transcoder
 For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
 * in your file explorer:
   * create a folder `flac` under `smb://rpms/Publiek/Muziek`
   * move your flac-files into that folder `flac`
-* in <a href="http://rpms:9002" target="_blank">LMS</a> Server Settings, point music-folder to this location:
+* in [LMS](http://rpms:9002){:target="_blank"} Server Settings, point music-folder to this location:
   * `/music/flac`
 * change setting `sourcefolder`:
   * `curl rpms:5000/api/SetTranscoderSourceFolder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/flac"}'`
@@ -108,10 +108,10 @@ You can make a backup of all the data contained in your RPMS-server. This backup
   * start the backup
     * `curl rpms:5000/api/DoBackupServer -X post`
   * watch progress
-    * <a href="http://rpms:5000/api/GetBackupLog/4" target="_blank">rpms:5000/api/GetBackupLog/4</a>
+    * [rpms:5000/api/GetBackupLog/4](http://rpms:5000/api/GetBackupLog/4){:target="_blank"}
     * refresh until log states: 'Backup ended'
   * see full backup-log
-    * <a href="http://rpms:5000/api/GetBackupDetailsLog/0" target="_blank">rpms:5000/api/GetBackupDetailsLog/0</a>
+    * [rpms:5000/api/GetBackupDetailsLog/0](http://rpms:5000/api/GetBackupDetailsLog/0){:target="_blank"}
   * disconnect backup-disk
 
 ### Off-line viewing backup-data
