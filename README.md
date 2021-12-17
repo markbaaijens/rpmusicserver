@@ -41,18 +41,18 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
 * Test access:
   * `watch nmap rpms`
     * wait until port 9002 appears; exit with Ctrl-C
-  * LMS (browser): [rpms:9002](http://rpms:9002)
+  * LMS (browser): <a href="http://rpms:9002" target="_blank">rpms:9002</a>
   * Samba (file explorer): `smb://rpms`
-  * Transmission (browser): [rpms:9091](http://rpms:9091)
+  * Transmission (browser): <a href="http://rpms:9091" target="_blank">rpms:9091</a>
   * API: 
     * `curl rpms:5000`
-    * [rpms:5000](http://rpms:5000)
+    * <a href="http://rpms:5000" target="_blank">rpms:5000</a>
   * SSH: `ssh pi@rpms`
     * password: rpms
 * Engage:
   * copy music files to `smb://rpms/Publiek/Muziek`
   * hookup a Squeezebox player to your network
-  * install a Android App like [Squeezer](https://play.google.com/store/apps/details?id=uk.org.ngo.squeezer)
+  * install a Android App like <a href="https://play.google.com/store/apps/details?id=uk.org.ngo.squeezer" target="_blank">Squeezer</a>
   * enjoy!
 
 ### Update
@@ -64,14 +64,14 @@ Update your RPMS by SSH:
   * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
 * API-documentation: 
   * `curl rpms:5000/api/GetApiList`
-  * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList)
+  * <a href="http://rpms:5000/api/GetApiList" target="_blank">rpms:5000/api/GetApiList</a>
 
 ## Transcoder
 For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
 * in your file explorer:
   * create a folder `flac` under `smb://rpms/Publiek/Muziek`
   * move your flac-files into that folder `flac`
-* in [LMS](http://rpms:9002/) Server Settings, point music-folder to this location:
+* in <a href="http://rpms:9002" target="_blank">LMS</a> Server Settings, point music-folder to this location:
   * `/music/flac`
 * change setting `sourcefolder`:
   * `curl rpms:5000/api/SetTranscoderSourceFolder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/flac"}'`
@@ -108,14 +108,14 @@ You can make a backup of all the data contained in your RPMS-server. This backup
   * start the backup
     * `curl rpms:5000/api/DoBackupServer -X post`
   * watch progress
-    * [rpms:5000/api/GetBackupLog/4](http://rpms:5000/api/GetBackupLog/4)
+    * <a href="http://rpms:5000/api/GetBackupLog/4" target="_blank">rpms:5000/api/GetBackupLog/4</a>
     * refresh until log states: 'Backup ended'
   * see full backup-log
-    * [rpms:5000/api/GetBackupDetailsLog/0](http://rpms:5000/api/GetBackupDetailsLog/0)
+    * <a href="http://rpms:5000/api/GetBackupDetailsLog/0" target="_blank">rpms:5000/api/GetBackupDetailsLog/0</a>
   * disconnect backup-disk
 
 ### Off-line viewing backup-data
-Backup-disk is formatted as ext2; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers. And worse, MacOS does NOT support ext2 (despite ext2 being open-source/open-standard).
+Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers. And worse, MacOS does NOT support ext4 (despite ext2 being open-source/open-standard).
 
 ### Disaster-recovery
-B/c the backup-disk is an exact copy aka mirror of the data-disk and of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata`, connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now. Remember to make a backup to a new backup-disk immediately!
+B/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata`, connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made. Remember to make a backup to a new backup-disk immediately!
