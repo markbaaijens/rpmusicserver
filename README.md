@@ -68,37 +68,38 @@ Update your RPMS by SSH:
 
 ## Transcoder
 For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
-* move your flac-files into a separate folder: 
-  * `smb://rpms/Publiek/Muziek/flac`
-* in [LMS](http://rpms:9002/) Settings, point music-folder to this location:
+* in your file explorer:
+  * create a folder `flac` under `smb://rpms/Publiek/Muziek`
+  * move your flac-files into that folder `flac`
+* in [LMS](http://rpms:9002) Server Settings, point music-folder to this location:
   * `/music/flac`
 * change setting `sourcefolder`:
-  * `curl rpms:5000/api/SetTranscoderSettingSourceFolder -X post -H "Content-Type: application/json" -d '{"sourcefolder":"/media/usbdata/user/Publiek/Muziek/flac"}'`
+  * `curl rpms:5000/api/SetTranscoderSourceFolder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/flac"}'`
 * for transcoding to ogg
-  * create a folder for lossy files: 
-    * `smb://rpms/Publiek/Muziek/ogg`
+  * in your file explorer: 
+    * create a folder `ogg` under `smb://rpms/Publiek/Muziek`
   * change setting `oggfolder`:
-    * `curl rpms:5000/api/SetTranscoderSettingOggFolder -X post -H "Content-Type: application/json" -d '{"oggfolder":"/media/usbdata/user/Publiek/Muziek/ogg"}'`
+    * `curl rpms:5000/api/SetTranscoderOggFolder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/ogg"}'`
 * for transcoding to mp3
-  * create a folder for lossy files: 
-    * `smb://rpms/Publiek/Muziek/mp3`
+  * in your file explorer:
+    * create a folder `mp3`under `smb://rpms/Publiek/Muziek`
   * change setting `mp3folder`:
-    * `curl rpms:5000/api/SetTranscoderSettingMp3Folder -X post -H "Content-Type: application/json" -d '{"mp3folder":"/media/usbdata/user/Publiek/Muziek/mp3"}'`    
+    * `curl rpms:5000/api/SetTranscoderMp3Folder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/mp3"}'`    
 * from now on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
 
 ### Notes
 * Transcoding will be done by these default quality-levels: ogg = 1, mp3 = 128. Optionally, you can change these defaults:
   * for example, change `oggquality` to 3 (value = 1, 2, 3, 4, or 5):
-     * `curl rpms:5000/api/SetTranscoderSettingOggQuality -X post -H "Content-Type: application/json" -d '{"oggquality": 3}'`
+     * `curl rpms:5000/api/SetTranscoderOggQuality -X post -H "Content-Type: application/json" -d '{"Value": 3}'`
   * for example, change `mp3bitrate` to 256 (value = 128, 256 or 384):
-     * `curl rpms:5000/api/SetTranscoderSettingMp3BitRate -X post -H "Content-Type: application/json" -d '{"mp3bitrate": 256}'`     
+     * `curl rpms:5000/api/SetTranscoderMp3BitRate -X post -H "Content-Type: application/json" -d '{"Value": 256}'`     
 * Trancoding simultaneously to ogg AND mp3 is possible; just set both `oggfolder` and `mp3folder`
 
 ## Backup
 You can make a backup of all the data contained in your RPMS-server. This backup will be done to a dedicated backup-disk, connected to the Pi it self, a so called server-based backup.
 
 * format a disk dedicated for RPMS-backups (one-time only):
-  * connect your (empty) backup-disk to the Pi
+  * connect your (empty) backup-disk to your PC
   * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/format-usbdisk.sh -O /tmp/format-usbdisk.sh && chmod +x /tmp/format-usbdisk.sh && sudo /tmp/format-usbdisk.sh`
     * enter your (personal) password of the client-machine
   * follow the instructions to format as a BACKUP-disk
@@ -111,7 +112,10 @@ You can make a backup of all the data contained in your RPMS-server. This backup
     * refresh until log states: 'Backup ended'
   * see full backup-log
     * [rpms:5000/api/GetBackupDetailsLog/0](http://rpms:5000/api/GetBackupDetailsLog/0)
-  * disconnect your disk
+  * disconnect backup-disk
 
 ### Off-line viewing backup-data
-Backup-disk is formatted as ext2; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers. And worse, MacOS does NOT support ext2 (despite ext2 being open-source/open-standard).
+Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers. And worse, MacOS does NOT support ext4 (despite ext2 being open-source/open-standard).
+
+### Disaster-recovery
+B/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata`, connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made. Remember to make a backup to a new backup-disk immediately!

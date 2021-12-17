@@ -51,7 +51,7 @@ def AppendDiskInfo(diskMountPoint):
 
     diskSize = ''
     diskUsed = ''
-    diskUsedPercentage = ''
+    diskUsedPercentage = 0
     if diskDeviceName:
 
         # diskSize => df -h | grep -w / | awk '{print $2}'
@@ -70,7 +70,7 @@ def AppendDiskInfo(diskMountPoint):
         process = subprocess.run(["df -h"], stdout=subprocess.PIPE, shell=True)
         process = subprocess.run(["grep -w " + diskMountPoint], input=process.stdout, stdout=subprocess.PIPE, shell=True)
         process = subprocess.run(["awk '{print $5}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-        diskUsedPercentage = process.stdout.decode("utf-8").strip('\n')
+        diskUsedPercentage = int(process.stdout.decode("utf-8").strip('\n').replace('%', ''))
 
         onlineStatus = True
     else:
@@ -250,9 +250,7 @@ def GetDockerContainerList():
         dockerContainerList.append(line)
     return { "DockerContainers": dockerContainerList }
 
-def SetTranscoderSetting(requestData, settingName):
-    newValue = requestData[settingName]
-    
+def SetTranscoderSetting(settingName, newValue):
     transcoderSettingsFileName = '/media/usbdata/rpms/config/transcoder-settings.json'
     if not os.path.isfile(transcoderSettingsFileName):
         return { "Message": "File " + transcoderSettingsFileName + " does not exist"}
