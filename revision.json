@@ -1,6 +1,10 @@
 {
-    "CurrentVersion": "0.5",
+    "CurrentVersion": "0.6",
     "History": [
+        "Version":"0.6",
+        "Changes": [
+            "Alternative hostname 'rpmsdev' for development"
+        ]        
         {
             "Version":"0.5",
             "Changes": [

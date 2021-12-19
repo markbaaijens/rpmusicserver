@@ -1,7 +1,4 @@
 #!/bin/bash
-#
-# This script will download a Raspbian OS Lite image and burn the image to a SD-card.
-#
 
 if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
