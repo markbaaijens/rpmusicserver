@@ -1,7 +1,4 @@
 #!/bin/bash
-#
-# This script will install RP Music Server onto a copy of Rapsbian OS Lite
-#
 
 if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."

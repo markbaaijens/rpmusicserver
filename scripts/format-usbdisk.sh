@@ -60,8 +60,8 @@ chosen_disk=${sd_disks[disk_choice]}
 echo "You have chosen: $chosen_disk"
 
 echo "Format as:"
-echo "d: DATA-disk (ext4, label = usbdata)"
-echo "b: BACKUP-disk (ext4, label = usbbackup)"
+echo "D: DATA-disk (ext4, label = usbdata)"
+echo "B: BACKUP-disk (ext4, label = usbbackup)"
 echo "Q: quit"
 
 read -p "Select a format-type: " type_choice

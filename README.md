@@ -60,8 +60,17 @@ Update your RPMS by SSH:
 * `ssh pi@rpms "sudo update-server"`
 
 ### Development
-* To update RMPS from `develop` branch instead of `master`: 
+* To update RPMS from `develop` branch instead of `master`: 
   * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
+* To build a development version with a separate hostname `rpmsdev`
+  * `cd <source-folder of rpmusicserver>`
+  * `sudo script/burn-image.sh`
+    * choose type `d = development`
+  * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
+	  * password = raspberry  
+  * `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
+	  * password = raspberry 
+  * after reboot, password is changed to `rpms`   
 * API-documentation: 
   * `curl rpms:5000/api/GetApiList`
   * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList)
