@@ -26,8 +26,11 @@ if [ ! "$(docker ps -f name=lms -q)" ]; then
 if [ ! "$(docker ps -f name=samba -q)" ]; then
   docker run -p 139:139 -p 445:445 -p 137:137/udp -p 138:138/udp \
     -d --rm --name samba \
-    -v /media/usbdata/user/Publiek:/mnt  \
-    dperson/samba -n -p  -s "Publiek;/mnt;yes;no;yes;all;;;Publiek" -r
+    -v /media/usbdata/user/Publiek:/mnt_public \
+    -v /media/usbbackup/user/Publiek:/mnt_backup \
+    dperson/samba -n -p -r \
+      -s "Publiek;/mnt_public;yes;no;yes;all;;;Publiek" \
+      -s "Backup;/mnt_backup;yes;yes;yes;all;;;Backup"
 fi
 
 # Transmission
