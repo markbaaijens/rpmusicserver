@@ -152,9 +152,5 @@ sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 echo -e "rpms\nrpms" | passwd pi
 echo " => done changing password of user 'pi'."
 
-echo "Kill all docker-containers for faster rebooting..."
-kill-docker
-echo " => done killing docker containers"
-
 echo "Installation complete, system will be rebooted."
-reboot now
+reboot-server
