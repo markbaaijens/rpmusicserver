@@ -1,5 +1,12 @@
 #!/bin/bash
 
+install_bin_file () {
+    echo "Copy $1 file:"
+    cp /tmp/rpmusicserver/files/usr/local/bin/$1 /usr/local/bin
+    chmod +x /usr/local/bin/$1
+    echo " => file $1 copied." 
+}
+
 if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
     echo "Script ended with failure."
@@ -105,16 +112,6 @@ cp /tmp/rpmusicserver/revision.json /etc/rpms
 touch /etc/rpms/revision.json  # For retrieving last update timestamp
 echo " => file revision.json copied." 
 
-echo "Copy update-server file:"
-cp /tmp/rpmusicserver/files/usr/local/bin/update-server /usr/local/bin
-chmod +x /usr/local/bin/update-server
-echo " => file update-server copied." 
-
-echo "Copy backup-server file:"
-cp /tmp/rpmusicserver/files/usr/local/bin/backup-server /usr/local/bin
-chmod +x /usr/local/bin/backup-server
-echo " => file backup-server copied." 
-
 echo "Installing transcoder..."
 rm -rf /tmp/transcoder*
 wget https://github.com/markbaaijens/transcoder/archive/refs/tags/v1.0.zip -nv -O /tmp/transcoder.zip
@@ -126,9 +123,14 @@ chmod +x /usr/local/bin/transcoder/transcoder.py
 if [ ! -f /media/usbdata/rpms/config/transcoder-settings.json ]; then
     cp /tmp/transcoder/transcoder-settings.json /media/usbdata/rpms/config/transcoder-settings.json
 fi 
-cp /tmp/rpmusicserver/files/usr/local/bin/transcode /usr/local/bin
-chmod +x /usr/local/bin/transcode
 echo " => transcoder installed"
+
+install_bin_file update-server
+install_bin_file backup-server
+install_bin_file transcode
+install_bin_file kill-docker
+install_bin_file halt-server
+install_bin_file reboot-server
 
 echo "Adding line for transcoder to /etc/crontab:"
 if [ ! "$(grep "transcode" /etc/crontab)" ]; then
@@ -151,15 +153,7 @@ echo -e "rpms\nrpms" | passwd pi
 echo " => done changing password of user 'pi'."
 
 echo "Kill all docker-containers for faster rebooting..."
-if [ "$(docker ps -f name=lms -q)" ]; then
-    docker kill lms
-fi
-if [ "$(docker ps -f name=transmission -q)" ]; then
-    docker kill transmission
-fi
-if [ "$(docker ps -f name=samba -q)" ]; then
-    docker kill samba
-fi
+kill-docker
 echo " => done killing docker containers"
 
 echo "Installation complete, system will be rebooted."
