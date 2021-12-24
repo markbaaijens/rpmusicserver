@@ -80,24 +80,26 @@ Update your RPMS by SSH:
 
 ## Transcoder
 For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
-* in your file explorer:
+* in your file explorer
   * create a folder `flac` under `smb://rpms/Publiek/Muziek`
   * move your flac-files into that folder `flac`
 * in [LMS](http://rpms:9002) Server Settings, point music-folder to this location:
   * `/music/flac`
-* change setting `sourcefolder`:
+* change setting `sourcefolder`
   * `curl rpms:5000/api/SetTranscoderSourceFolder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/flac"}'`
 * for transcoding to ogg
-  * in your file explorer: 
+  * in your file explorer
     * create a folder `ogg` under `smb://rpms/Publiek/Muziek`
-  * change setting `oggfolder`:
+  * change setting `oggfolder`
     * `curl rpms:5000/api/SetTranscoderOggFolder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/ogg"}'`
 * for transcoding to mp3
-  * in your file explorer:
+  * in your file explorer
     * create a folder `mp3`under `smb://rpms/Publiek/Muziek`
-  * change setting `mp3folder`:
+  * change setting `mp3folder`
     * `curl rpms:5000/api/SetTranscoderMp3Folder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/mp3"}'`    
 * from now on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
+* see transcoder-progress
+  * `curl rpms:5000/api/GetTranscoderLog/20`
 
 ### Notes
 * Transcoding will be done by these default quality-levels: ogg = 1, mp3 = 128. Optionally, you can change these defaults:
@@ -119,9 +121,11 @@ You can make a backup of all the data contained in your RPMS-server. This backup
   * connect your backup-disk to the Pi
   * start the backup
     * `curl rpms:5000/api/DoBackupServer -X post`
-  * watch progress
+  * watch overall progress
     * [rpms:5000/api/GetBackupLog/4](http://rpms:5000/api/GetBackupLog/4)
     * refresh until log states: 'Backup ended'
+  * watch detailed progress
+    * [rpms:5000/api/GetBackupDetailsLog/10](http://rpms:5000/api/GetBackupDetailsLog/10)    
   * see full backup-log
     * [rpms:5000/api/GetBackupDetailsLog/0](http://rpms:5000/api/GetBackupDetailsLog/0)
   * disconnect backup-disk
@@ -129,5 +133,8 @@ You can make a backup of all the data contained in your RPMS-server. This backup
 ### Off-line viewing backup-data
 Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers. And worse, MacOS does NOT support ext4 (despite ext2 being open-source/open-standard).
 
-### Disaster-recovery
-B/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata`, connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made. Remember to make a backup to a new backup-disk immediately!
+## Disaster-recovery
+Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple
+* *broken Pi* => just obtain a new Pi which meets the system requirements (see above), swap the SD-card and boot up the Pi; nothing to do here anymore
+* *SD-card corrupt* => re-burn en re-install RPMS (see above for instructions) on the same card (if the hardware is damaged, obtain a new card); then you can reboot the Pi and you are ready to go
+* *data-disk crash* =>  b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata`, connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made. Remember to make a backup to a new backup-disk immediately!
