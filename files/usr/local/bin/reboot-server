@@ -5,4 +5,4 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 kill-docker
-reboot
+reboot now
