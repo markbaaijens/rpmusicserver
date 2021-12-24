@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+for docker_name in "$(docker ps --format '{{.Names}}')"; do
+    if [ ! -z "$docker_name" ]; then
+        docker kill $docker_name
+    fi
+done
