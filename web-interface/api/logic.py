@@ -243,7 +243,7 @@ def GetLog(logFile, nrOfLines):
 
 def GetDockerContainerList():
     dockerContainerList = []
-    process = subprocess.run(["docker ps --format '{{.Image}}'"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["docker ps --format '{{.Names}}'"], stdout=subprocess.PIPE, shell=True)
     lines = process.stdout.decode("utf-8").strip('\n')
     lines = lines.splitlines()
     for line in lines:
