@@ -243,7 +243,7 @@ def GetLog(logFile, nrOfLines):
 
 def GetDockerContainerList():
     dockerContainerList = []
-    process = subprocess.run(["docker ps --format '{{.Image}}'"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["docker ps --format '{{.Names}}'"], stdout=subprocess.PIPE, shell=True)
     lines = process.stdout.decode("utf-8").strip('\n')
     lines = lines.splitlines()
     for line in lines:
@@ -264,7 +264,7 @@ def SetTranscoderSetting(settingName, newValue):
     return { "Message": "Transcoder-setting ["+ settingName + "] is modified to [" + str(newValue) + "]"}
 
 async def DoRebootServer():
-    await asyncio.create_subprocess_shell("reboot")
+    await asyncio.create_subprocess_shell("reboot-server")
     pass
 
 async def DoBackupServer():
@@ -272,7 +272,7 @@ async def DoBackupServer():
     pass
 
 async def DoHaltServer():
-    await asyncio.create_subprocess_shell("halt")
+    await asyncio.create_subprocess_shell("halt-server")
     pass
 
 async def DoUpdateServer():

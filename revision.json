@@ -4,7 +4,8 @@
         {
             "Version":"0.6",
             "Changes": [
-                "Choice (while burning) for alternative hostname 'rpmsdev' for development"
+                "Choice (while burning) for alternative hostname 'rpmsdev' for development",
+                "Faster reboot/halt by first killing docker-containers"
             ]
         },
         {
