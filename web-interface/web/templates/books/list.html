@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Books ({{ nrOfBooks }})</h2>
+    <a href="books/add">Add</a>
+    <p></p>
+    {% for book in books %}
+    <div><b>
+        {{ book.id }} - {{ book.name }}</b>  
+        <a href="/books/{{ book.id }}">Details</a> |
+            <a href="/books/edit/{{ book.id }}">Edit</a> |  
+            <a href="/books/delete/{{ book.id }}">Delete</a>
+    </div>
+    <small>
+    <table>
+        <tr>
+            <td align="right">Price:</td>
+            <td><b>{{ book.price }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">ISBN:</td>
+            <td><b>{{ book.isbn }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">Obsolete:</td>
+            <td><b>{{ book.isObsolete }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">Type:</td>
+            <td><b>{{ book.bookType }}</b></td>
+        </tr>
+    </table>
+    </small>
+    <p>
+    {% endfor %}
+{% endblock %}

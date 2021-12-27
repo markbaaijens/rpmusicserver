@@ -1,3 +1,5 @@
 flask 
 flask-cors  # To enable http over different domains
 requests
+flask-wtf
+enum

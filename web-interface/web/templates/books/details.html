@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>{{ actionTitle }}</h2>
+    <a href="/books/edit/{{ book.id }}">Edit</a> | <a href="/books/delete/{{ book.id }}">Delete</a>
+    <p>
+    <table>
+        <tr>
+            <td align="right">Id:</td>
+            <td><b>{{ book.id }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">Name:</td>
+            <td><b>{{ book.name }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">Price:</td>
+            <td><b>{{ book.price }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">ISBN:</td>
+            <td><b>{{ book.isbn }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">Obsolete:</td>
+            <td><b>{{ book.isObsolete }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">Type:</td>
+            <td><b>{{ book.bookType }}</b></td>
+        </tr>
+    </table>
+{% endblock %}
