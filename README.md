@@ -131,7 +131,7 @@ You can make a backup of all the data contained in your RPMS-server. This backup
   * disconnect backup-disk
 
 ### Off-line viewing backup-data
-Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers. And worse, MacOS does NOT support ext4 (despite ext2 being open-source/open-standard).
+Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
 ## Disaster-recovery
 Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple
