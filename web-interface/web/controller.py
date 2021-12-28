@@ -1,22 +1,13 @@
-# TODO logging: https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-vii-error-handling
-# TODO - create logs folders runtime (delete info.txt files)
-#        if not os.path.exists('logs'):
-#           os.mkdir('logs')
-# TODO - choose console-logging OR file-logging based on debug-modus
-#        if not app.debug:
 # TODO Exception handling API-calls (based on return codes op calls) 
 # TODO see: https://flask.palletsprojects.com/en/1.1.x/patterns/apierrors/
-# TODO Error when page (or id) not found
 # TODO Error when service not found when doing a request
 
 from flask import Flask, render_template, jsonify, request, redirect, flash
 import requests
 import json
 import logging
-from logging.handlers import RotatingFileHandler
 import traceback
 
-from config import Config
 from globals import configObject
 
 from converters import ConvertToTwoDecimals, ConvertBooleanToText

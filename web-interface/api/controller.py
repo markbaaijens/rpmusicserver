@@ -1,13 +1,10 @@
 from flask import Flask, jsonify, abort, make_response, request
 import logging
-from logging import FileHandler
 import traceback
 from flask_cors import CORS
-from werkzeug.wrappers import response
 import asyncio
 
 import logic 
-from config import Config
 from globals import configObject
 
 HTTP_OK = 200
