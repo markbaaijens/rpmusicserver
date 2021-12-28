@@ -4,8 +4,14 @@
     <h2>Disks</h2>
     <p>
     {% for disk in diskList %}
-    <div><b>
-        {{ disk.DiskName }}</b>
+    <div>
+        <b>
+            {% if '/' in disk.DiskName %} 
+                system
+            {% else %}
+                {{ disk.DiskName }}
+            {% endif %}
+        </b>
     </div>
     <small>
     <table>
@@ -34,7 +40,7 @@
                 <td align="right">UsedPercentage:</td>
                 <td><b>{{ disk.UsedPercentage }}</b></td>
             </tr>
-        {% endif %}        
+        {% endif %}
     </table>
     </small>
     <p>
