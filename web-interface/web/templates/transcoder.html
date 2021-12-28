@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Transcoder</h3>
+    <table>
+        <tr>
+            <td align="right">SourceFolder:</td>
+            <td><b>{{ transcoderSettings.sourcefolder }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">OggFolder:</td>
+            <td><b>{{ transcoderSettings.oggfolder }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">OggQuality:</td>
+            <td><b>
+                {% if transcoderSettings.oggquality == 0 %}
+                    [default]
+                {% else %}
+                    {{ transcoderSettings.oggquality }}
+                {% endif %}
+            </b></td>
+        </tr>
+        <tr>
+            <td align="right">Mp3Folder:</td>
+            <td><b>{{ transcoderSettings.mp3folder }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">Mp3Bitrate:</td>
+            <td><b>
+                {% if transcoderSettings.mp3bitrate == 0 %}
+                    [default]
+                {% else %}
+                    {{ transcoderSettings.mp3bitrate }}
+                {% endif %}
+            </b></td>
+
+        </tr>
+    </table>    
+{% endblock %}

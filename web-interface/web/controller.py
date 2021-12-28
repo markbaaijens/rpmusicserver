@@ -103,6 +103,26 @@ def ShowApiList():
     )    
     pass
 
+@app.route('/transcoder', methods=['GET'])
+def ShowTranscoderSettings():
+    global apiInfo
+
+    try:
+        transcoderSettings = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderSettings').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        transcoderSettings = []
+
+    return render_template(
+        'transcoder.html', 
+        appTitle = configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        transcoderSettings = transcoderSettings
+    )    
+    pass
+
 @app.route('/docker', methods=['GET'])
 def ShowDocker():
     global apiInfo
