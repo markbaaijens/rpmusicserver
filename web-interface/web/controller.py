@@ -17,14 +17,13 @@ from logging.handlers import RotatingFileHandler
 import traceback
 
 from config import Config
+from globals import configObject
+
 from forms import EditBookForm, DeleteBookForm
 from converters import ConvertToTwoDecimals, ConvertBooleanToText, ConvertEnumBookTypeToDescription
 from model import Book
 
 app = Flask(__name__)
-
-app.config.from_object(Config)
-
 logger = logging.getLogger()
 
 '''
@@ -46,21 +45,21 @@ if not logger.handlers:
 @app.route('/', methods=['GET'])
 def index():
     try:
-        apiInfo = json.loads(requests.get(app.config['API_ROOT_URL']).content)
+        apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         apiInfo = []
 
     try:
-        versionInfo = json.loads(requests.get(app.config['API_ROOT_URL'] + '/api/GetVersionInfo').content)
+        versionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetVersionInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         versionInfo = []
 
     try:
-        machineInfo = json.loads(requests.get(app.config['API_ROOT_URL'] + '/api/GetMachineInfo').content)
+        machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -68,9 +67,9 @@ def index():
 
     return render_template(
         'details.html', 
-        appTitle = app.config['APP_TITLE'], 
+        appTitle = configObject.AppTitle, 
         apiInfo = apiInfo,
-        apiUrl = app.config['API_ROOT_URL'],
+        apiRootUrl = configObject.ApiRootUrl,
         versionInfo = versionInfo,
         machineInfo = machineInfo
     )
