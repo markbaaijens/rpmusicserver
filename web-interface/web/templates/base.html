@@ -6,7 +6,7 @@
     <body>
         <div>API: <b>{{ apiInfo.ApiName }}</b> | Documentation: <b>{{ apiInfo.Documentation }}</b> | <a href="{{ apiUrl }}">{{ apiRootUrl }}</a></div>
         <p>
-        <a href="/">Home</a> <a href="/disks">Disks</a>
+        <a href="/">Home</a> | <a href="/disks">Disks</a> | <a href="/docker">Docker</a>
         <hr>
         {% with messages = get_flashed_messages() %}
             {% if messages %}

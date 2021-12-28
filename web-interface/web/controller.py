@@ -14,6 +14,16 @@ from converters import ConvertToTwoDecimals, ConvertBooleanToText
 
 app = Flask(__name__)
 logger = logging.getLogger()
+apiInfo = []
+
+def GetApiInfo():
+    try:
+        apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiInfo = []
+    pass
 
 def SetupLogger():
     if not logger.handlers:
@@ -34,12 +44,7 @@ def SetupLogger():
 
 @app.route('/', methods=['GET'])
 def index():
-    try:
-        apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        apiInfo = []
+    global apiInfo
 
     try:
         versionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetVersionInfo').content)
@@ -63,15 +68,11 @@ def index():
         versionInfo = versionInfo,
         machineInfo = machineInfo
     )
+    pass
 
 @app.route('/disks', methods=['GET'])
 def ShowDisks():
-    try:
-        apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        apiInfo = []
+    global apiInfo
 
     try:
         diskList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDiskList').content)
@@ -87,6 +88,27 @@ def ShowDisks():
         apiRootUrl = configObject.ApiRootUrl,
         diskList = diskList
     )    
+    pass
+
+@app.route('/docker', methods=['GET'])
+def ShowDocker():
+    global apiInfo
+
+    try:
+        dockerContainerList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDockerContainerList').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        dockerContainerList = []
+
+    return render_template(
+        'docker.html', 
+        appTitle = configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        dockerContainerList = dockerContainerList
+    )   
+    pass     
 
 if __name__ == '__main__':
     import argparse
@@ -103,6 +125,7 @@ if __name__ == '__main__':
 
     SetupLogger()       
     logger.info('Log to: ' + configObject.LogFileName)
+    GetApiInfo()
 
     if configObject.Debug:
         logger.info('Web started - debug')

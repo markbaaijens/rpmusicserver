@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>DockerContainers</h2>
+    <p>
+    {% for dockerContainer in dockerContainerList %}
+    <div><b>
+        {{ dockerContainer }}</b>
+    </div>
+    <p>
+    {% endfor %} 
+{% endblock %}
