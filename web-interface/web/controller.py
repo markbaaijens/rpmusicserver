@@ -26,6 +26,8 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 logger = logging.getLogger()
+
+'''
 if not logger.handlers:
     logger.setLevel(logging.DEBUG)
 
@@ -39,15 +41,21 @@ if not logger.handlers:
     consoleHandler.setLevel(logging.DEBUG)
     consoleHandler.setFormatter(logging.Formatter('%(message)s'))
     logger.addHandler(consoleHandler)
-
+'''
 # Globals
 apiInfo = []
+'''
+apiInfo = {
+    'ApiName': 'web-demo', 
+    'Documentation': '.....', 
+    "ApiUrl": app.config['API_ROOT_URL']    
+}
+'''
 
 def getApiInfo():
     try:
-        # Using eval to convert string to a dictionairy
         apiInfo = json.loads(requests.get(app.config['API_ROOT_URL']).content)
-        apiInfo.append({"url": app.config['API_ROOT_URL']})
+#        apiInfo.append({"url": app.config['API_ROOT_URL']})
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -59,7 +67,12 @@ def getApiInfo():
 @app.route('/', methods=['GET'])
 def index():
     global apiInfo
-    return render_template('index.html', appTitle = app.config['APP_TITLE'], api = apiInfo)
+    return render_template(
+        'index.html', 
+        appTitle = app.config['APP_TITLE'], 
+        api = apiInfo,
+        apiUrl = app.config['API_ROOT_URL']
+    )
 
 # GET /books
 @app.route('/books', methods=['GET'])

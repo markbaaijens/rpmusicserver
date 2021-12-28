@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, DecimalField, BooleanField, SelectField, RadioField
-from wtforms.validators import Length, InputRequired, NumberRange, Required
+from wtforms.validators import Length, InputRequired, NumberRange
 
 from enums import BookType
 

@@ -4,11 +4,11 @@
         <title>{{ appTitle }}</title>
     </header>
     <body>
-        <div>API: <b>{{ api[0].name }}</b> version <b>{{ api[1].version }}</b></div>
-        <div>Engine: <b>{{ api[2].engine }}</b></div> 
-        <div><a href="{{ api[3].url }}">{{ api[3].url }}</a></div>
+        <div>API: <b>{{ api.ApiName }}</b></div>
+        <div>Documentation: <b>{{ api.Documentation }}</b></div>            
+        <div><a href="{{ apiUrl }}">{{ apiUrl }}</a></div>
         <p>
-        <a href="/">Home</a> <a href="/books">Books</a>
+        <a href="/">Home</a>
         <hr>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
