@@ -64,9 +64,33 @@ def index():
         machineInfo = machineInfo
     )
 
+@app.route('/disks', methods=['GET'])
+def ShowDisks():
+    try:
+        apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiInfo = []
+
+    try:
+        diskList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDiskList').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        diskList = []
+
+    return render_template(
+        'disks.html', 
+        appTitle = configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        diskList = diskList
+    )    
+
 if __name__ == '__main__':
     import argparse
-    parser = argparse.ArgumentParser(description='Controller for RP Music Server API')
+    parser = argparse.ArgumentParser(description='Controller for RP Music Server Web')
     parser.add_argument('--logfile', type=str,  help="file where log is stored", nargs=1) 
     parser.add_argument('-p', '--production', help="start a production server", action="store_true")        
 
@@ -81,10 +105,10 @@ if __name__ == '__main__':
     logger.info('Log to: ' + configObject.LogFileName)
 
     if configObject.Debug:
-        logger.info('API started - debug')
+        logger.info('Web started - debug')
         app.run(port=1080, debug=True)  # auto-reload on file change, only localhost
     else:
-        logger.info('API started - production')
+        logger.info('Web started - production')
         app.run(host='0.0.0.0', port=80)  # public server, reachable from remote
-    logger.info('API stopped')
+    logger.info('Web stopped')
 

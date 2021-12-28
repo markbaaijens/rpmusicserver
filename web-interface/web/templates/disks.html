@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Disks</h2>
+    <p>
+    {% for disk in diskList %}
+    <div><b>
+        {{ disk.DiskName }}</b>
+    </div>
+    <small>
+    <table>
+        <tr>
+            <td align="right">IsOnline:</td>
+            <td><b>{{ disk.IsOnline }}</b></td>
+        </tr>
+        {% if disk.IsOnline %}
+            <tr>
+                <td align="right">MountPoint:</td>
+                <td><b>{{ disk.MountPoint }}</b></td>
+            </tr>
+            <tr>
+                <td align="right">DeviceName:</td>
+                <td><b>{{ disk.DeviceName }}</b></td>
+            </tr>
+            <tr>
+                <td align="right">Size:</td>
+                <td><b>{{ disk.Size }}</b></td>
+            </tr>
+            <tr>
+                <td align="right">Used:</td>
+                <td><b>{{ disk.Used }}</b></td>
+            </tr>
+            <tr>
+                <td align="right">UsedPercentage:</td>
+                <td><b>{{ disk.UsedPercentage }}</b></td>
+            </tr>
+        {% endif %}        
+    </table>
+    </small>
+    <p>
+    {% endfor %} 
+{% endblock %}

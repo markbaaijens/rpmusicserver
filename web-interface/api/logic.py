@@ -92,7 +92,7 @@ def GetDiskList():
     AppendDiskInfo('/')
     AppendDiskInfo('/media/usbdata')
     AppendDiskInfo('/media/usbbackup')
-    return {'Disks': disks}
+    return disks
 
 def GetResourceInfo():
     # memTotal => free | grep 'Mem:' | awk '{print $2}'
@@ -248,7 +248,7 @@ def GetDockerContainerList():
     lines = lines.splitlines()
     for line in lines:
         dockerContainerList.append(line)
-    return { "DockerContainers": dockerContainerList }
+    return dockerContainerList
 
 def SetTranscoderSetting(settingName, newValue):
     transcoderSettingsFileName = '/media/usbdata/rpms/config/transcoder-settings.json'
