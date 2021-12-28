@@ -2,7 +2,7 @@
 # TODO see: https://flask.palletsprojects.com/en/1.1.x/patterns/apierrors/
 # TODO Error when service not found when doing a request
 
-from flask import Flask, render_template, jsonify, request, redirect, flash
+from flask import Flask, render_template, request
 import requests
 import json
 import logging
