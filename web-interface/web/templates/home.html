@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>VersionInfo</h3>
+<table>
+    <tr>
+        <td align="right">CurrentVersion:</td>
+        <td><b>{{ versionInfo.CurrentVersion }}</b></td>
+    </tr>
+    <tr>
+        <td align="right">LastUpdateTimeStamp:</td>
+        <td><b>{{ versionInfo.LastUpdateTimeStamp }}</b></td>
+    </tr>
+    <tr>
+        <td align="right">VersionFile:</td>
+        <td><b>{{ versionInfo.VersionFile }}</b></td>
+    </tr>                
+</table>  
+{% endblock %}

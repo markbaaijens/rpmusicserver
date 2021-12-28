@@ -44,7 +44,7 @@ def SetupLogger():
     pass
 
 @app.route('/', methods=['GET'])
-def index():
+def Root():
     global apiInfo
 
     try:
@@ -55,7 +55,7 @@ def index():
         versionInfo = []
 
     return render_template(
-        'details.html', 
+        'home.html', 
         appTitle = configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
@@ -80,6 +80,26 @@ def ShowDisks():
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         diskList = diskList
+    )    
+    pass
+
+@app.route('/api-list', methods=['GET'])
+def ShowApiList():
+    global apiInfo
+
+    try:
+        apiList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetApiList').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiList = []
+
+    return render_template(
+        'api-list.html', 
+        appTitle = configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        apiList = apiList
     )    
     pass
 
