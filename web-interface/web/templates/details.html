@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>{{ actionTitle }}</h2>
-    <p>
     <h3>VersionInfo</h3>
     <table>
         <tr>
@@ -17,28 +15,5 @@
             <td align="right">VersionFile:</td>
             <td><b>{{ versionInfo.VersionFile }}</b></td>
         </tr>                
-    </table>
-    <h3>MachineInfo</h3>
-    <table>
-        <tr>
-            <td align="right">HostName:</td>
-            <td><b>{{ machineInfo.HostName }}</b></td>
-        </tr>
-        <tr>
-            <td align="right">IpAddress:</td>
-            <td><b>{{ machineInfo.IpAddress }}</b></td>
-        </tr>
-        <tr>
-            <td align="right">RpModel:</td>
-            <td><b>{{ machineInfo.RpModel }}</b></td>
-        </tr>
-        <tr>
-            <td align="right">CpuTemp:</td>
-            <td><b>{{ machineInfo.CpuTemp }}</b></td>
-        </tr>
-        <tr>
-            <td align="right">OsCodeName:</td>
-            <td><b>{{ machineInfo.OsCodeName }}</b></td>
-        </tr>        
-    </table>    
+    </table>  
 {% endblock %}

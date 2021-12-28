@@ -17,6 +17,7 @@ logger = logging.getLogger()
 apiInfo = []
 
 def GetApiInfo():
+    global apiInfo
     try:
         apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
     except Exception as e:
@@ -53,20 +54,12 @@ def index():
         logger.error(traceback.format_exc())
         versionInfo = []
 
-    try:
-        machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        machineInfo = []
-
     return render_template(
         'details.html', 
         appTitle = configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
-        versionInfo = versionInfo,
-        machineInfo = machineInfo
+        versionInfo = versionInfo
     )
     pass
 
@@ -107,6 +100,34 @@ def ShowDocker():
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         dockerContainerList = dockerContainerList
+    )   
+    pass     
+
+@app.route('/machine', methods=['GET'])
+def ShowMachine():
+    global apiInfo
+
+    try:
+        machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        machineInfo = []
+
+    try:
+        resourceInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetResourceInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        resourceInfo = []
+
+    return render_template(
+        'machine.html', 
+        appTitle = configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        machineInfo = machineInfo,
+        resourceInfo = resourceInfo
     )   
     pass     
 
