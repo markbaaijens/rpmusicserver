@@ -171,6 +171,18 @@ def ShowMachine():
     )   
     pass     
 
+@app.route('/logs', methods=['GET'])
+def ShowLogs():
+    global apiInfo
+
+    return render_template(
+        'logs.html', 
+        appTitle = configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl
+    )   
+    pass     
+
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='Controller for RP Music Server Web')
