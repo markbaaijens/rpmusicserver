@@ -42,36 +42,37 @@ if not logger.handlers:
     consoleHandler.setFormatter(logging.Formatter('%(message)s'))
     logger.addHandler(consoleHandler)
 '''
-# Globals
-apiInfo = []
-'''
-apiInfo = {
-    'ApiName': 'web-demo', 
-    'Documentation': '.....', 
-    "ApiUrl": app.config['API_ROOT_URL']    
-}
-'''
 
-def getApiInfo():
+@app.route('/', methods=['GET'])
+def index():
     try:
         apiInfo = json.loads(requests.get(app.config['API_ROOT_URL']).content)
-#        apiInfo.append({"url": app.config['API_ROOT_URL']})
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         apiInfo = []
 
-    return apiInfo
+    try:
+        versionInfo = json.loads(requests.get(app.config['API_ROOT_URL'] + '/api/GetVersionInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        versionInfo = []
 
-# GET /
-@app.route('/', methods=['GET'])
-def index():
-    global apiInfo
+    try:
+        machineInfo = json.loads(requests.get(app.config['API_ROOT_URL'] + '/api/GetMachineInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        machineInfo = []
+
     return render_template(
-        'index.html', 
+        'details.html', 
         appTitle = app.config['APP_TITLE'], 
-        api = apiInfo,
-        apiUrl = app.config['API_ROOT_URL']
+        apiInfo = apiInfo,
+        apiUrl = app.config['API_ROOT_URL'],
+        versionInfo = versionInfo,
+        machineInfo = machineInfo
     )
 
 # GET /books
@@ -262,7 +263,6 @@ def deleteBook(id):
 
 if __name__ == '__main__':
     logger.debug('App Started')
-    apiInfo = getApiInfo()
     app.run(port=5001, debug=True)  # auto-reload, only localhoast
 #    app.run(host='0.0.0.0', port=5001)  # public server, reachable from remote
     logger.debug('App Stopped')
