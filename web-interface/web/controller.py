@@ -181,6 +181,111 @@ def ShowLogs():
     )   
     pass     
 
+@app.route('/logs/api/<int:nrOfLines>', methods=['GET'])
+def ShowApiLog(nrOfLines):
+    apiInfo = GetApiInfo()
+
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetApiLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    return render_template(
+        'loglines.html', 
+        appTitle = configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        logLines = logLines,
+        logTitle = 'ApiLog'
+    )   
+    pass     
+
+@app.route('/logs/backup/<int:nrOfLines>', methods=['GET'])
+def ShowBackupLog(nrOfLines):
+    apiInfo = GetApiInfo()
+
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetBackupLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    return render_template(
+        'loglines.html', 
+        appTitle = configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        logLines = logLines,
+        logTitle = 'BackupLog'
+    )   
+    pass     
+
+@app.route('/logs/backup-details/<int:nrOfLines>', methods=['GET'])
+def ShowBackupDetailsLog(nrOfLines):
+    apiInfo = GetApiInfo()
+
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetBackupDetailsLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    return render_template(
+        'loglines.html', 
+        appTitle = configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        logLines = logLines,
+        logTitle = 'BackupDetailsLog'
+    )   
+    pass     
+
+@app.route('/logs/transcoder/<int:nrOfLines>', methods=['GET'])
+def ShowTranscoderLog(nrOfLines):
+    apiInfo = GetApiInfo()
+
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    return render_template(
+        'loglines.html', 
+        appTitle = configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        logLines = logLines,
+        logTitle = 'TranscoderLog'
+    )   
+    pass     
+
+@app.route('/logs/update/<int:nrOfLines>', methods=['GET'])
+def ShowUpdateLog(nrOfLines):
+    apiInfo = GetApiInfo()
+
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetUpdateLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    return render_template(
+        'loglines.html', 
+        appTitle = configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        logLines = logLines,
+        logTitle = 'UpdateLog'
+    )   
+    pass     
+
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='Controller for RP Music Server Web')
