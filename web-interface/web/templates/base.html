@@ -2,6 +2,9 @@
 <html>
     <header>
         <title>{{ appTitle }}</title>
+        {% if redirect %}
+            <meta http-equiv="refresh" content="8;url=/" />
+        {% endif %}
     </header>
     <body>
         <div>            

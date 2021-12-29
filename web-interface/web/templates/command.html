@@ -4,4 +4,13 @@
     <h2>{{ commandTitle }}</h2>
     <p>
     {{ commandMessage }}
+    {% if showBackugLogLinks %}
+    <div>
+        Watch logs for progress:
+        <ul>
+            <li><a href="/logs/backup/20">Overall</a></li>
+            <li><a href="/logs/backup-details/20">Details</a></li>            
+        </ul>
+    </div>
+    {% endif %}
 {% endblock %}

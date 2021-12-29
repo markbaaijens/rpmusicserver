@@ -1,7 +1,3 @@
-# TODO Exception handling API-calls (based on return codes op calls) 
-# TODO see: https://flask.palletsprojects.com/en/1.1.x/patterns/apierrors/
-# TODO Error when service not found when doing a request
-
 from flask import Flask, render_template, request
 import requests
 import json
@@ -173,8 +169,8 @@ def DoBackupServer():
         appTitle = 'BackupServer - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'BackupServer',
-        commandMessage = 'Backup in progress; watch backup-log for details'
-    )   
+        commandMessage = 'Backup is in progress...',
+        showBackugLogLinks = 1)
     pass     
 
 @app.route('/commands/update-server', methods=['GET'])
@@ -191,7 +187,7 @@ def DoUpdateServer():
         appTitle = 'UpdateServer - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'UpdateServer',
-        commandMessage = 'Update in progress; watch backup-log for details'
+        commandMessage = 'Update is in progress... watch backup-log for details'
     )   
     pass     
 
@@ -209,7 +205,8 @@ def DoHaltServer():
         appTitle = 'HaltServer - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'HaltServer',
-        commandMessage = 'Halt is in progress; refresh in a minute'
+        commandMessage = 'Halt is in progress... in a few seconds this page will be redirected to Home and stops working',
+        redirect = 1
     )   
     pass     
 
@@ -227,7 +224,8 @@ def DoRebootServer():
         appTitle = 'RebootServer - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'RebootServer',
-        commandMessage = 'Reboot is in progress; refresh in a minute'
+        commandMessage = 'Reboot is in progress... in a few seconds this page will be redirected to Home; refresh this page after 1 minute',
+        redirect = 1
     )   
     pass     
 
