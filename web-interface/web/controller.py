@@ -15,15 +15,6 @@ from converters import ConvertToTwoDecimals, ConvertBooleanToText
 app = Flask(__name__)
 logger = logging.getLogger()
 
-def GetApiInfo():
-    try:
-        apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        apiInfo = []
-    return apiInfo
-
 def SetupLogger():
     if not logger.handlers:
         logger.setLevel(logging.DEBUG)
@@ -43,7 +34,12 @@ def SetupLogger():
 
 @app.route('/', methods=['GET'])
 def Root():
-    apiInfo = GetApiInfo()
+    try:
+        apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiInfo = []
 
     try:
         versionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetVersionInfo').content)
@@ -63,8 +59,6 @@ def Root():
 
 @app.route('/disks', methods=['GET'])
 def ShowDisks():
-    apiInfo = GetApiInfo()
-
     try:
         diskList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDiskList').content)
     except Exception as e:
@@ -75,7 +69,6 @@ def ShowDisks():
     return render_template(
         'disks.html', 
         appTitle = 'Disks - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         diskList = diskList
     )    
@@ -83,8 +76,6 @@ def ShowDisks():
 
 @app.route('/api-list', methods=['GET'])
 def ShowApiList():    
-    apiInfo = GetApiInfo()
-
     try:
         apiList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetApiList').content)
     except Exception as e:
@@ -95,7 +86,6 @@ def ShowApiList():
     return render_template(
         'api-list.html', 
         appTitle = 'API Documentation - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         apiList = apiList
     )    
@@ -103,8 +93,6 @@ def ShowApiList():
 
 @app.route('/transcoder', methods=['GET'])
 def ShowTranscoderSettings():
-    apiInfo = GetApiInfo()
-
     try:
         transcoderSettings = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderSettings').content)
     except Exception as e:
@@ -115,7 +103,6 @@ def ShowTranscoderSettings():
     return render_template(
         'transcoder.html', 
         appTitle = 'Transcoder - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         transcoderSettings = transcoderSettings
     )    
@@ -123,8 +110,6 @@ def ShowTranscoderSettings():
 
 @app.route('/docker', methods=['GET'])
 def ShowDocker():
-    apiInfo = GetApiInfo()
-
     try:
         dockerContainerList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDockerContainerList').content)
     except Exception as e:
@@ -135,7 +120,6 @@ def ShowDocker():
     return render_template(
         'docker.html', 
         appTitle = 'Docker - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         dockerContainerList = dockerContainerList
     )   
@@ -143,8 +127,6 @@ def ShowDocker():
 
 @app.route('/machine', methods=['GET'])
 def ShowMachine():
-    apiInfo = GetApiInfo()
-
     try:
         machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
     except Exception as e:
@@ -162,7 +144,6 @@ def ShowMachine():
     return render_template(
         'machine.html', 
         appTitle = 'Machine - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         machineInfo = machineInfo,
         resourceInfo = resourceInfo
@@ -171,20 +152,15 @@ def ShowMachine():
 
 @app.route('/commands', methods=['GET'])
 def ShowCommands():
-    apiInfo = GetApiInfo()
-
     return render_template(
         'commands.html', 
         appTitle = 'Commands - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl
     )   
     pass     
 
 @app.route('/commands/backup-server', methods=['GET'])
 def DoBackupServer():
-    apiInfo = GetApiInfo()
-
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoBackupServer').content)
     except Exception as e:
@@ -195,7 +171,6 @@ def DoBackupServer():
     return render_template(
         'command.html', 
         appTitle = 'BackupServer - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'BackupServer',
         commandMessage = 'Backup in progress; watch backup-log for details'
@@ -204,8 +179,6 @@ def DoBackupServer():
 
 @app.route('/commands/update-server', methods=['GET'])
 def DoUpdateServer():
-    apiInfo = GetApiInfo()
-
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoUpdateServer').content)
     except Exception as e:
@@ -216,7 +189,6 @@ def DoUpdateServer():
     return render_template(
         'command.html', 
         appTitle = 'UpdateServer - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'UpdateServer',
         commandMessage = 'Update in progress; watch backup-log for details'
@@ -225,8 +197,6 @@ def DoUpdateServer():
 
 @app.route('/commands/halt-server', methods=['GET'])
 def DoHaltServer():
-    apiInfo = GetApiInfo()
-
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoHaltServer').content)
     except Exception as e:
@@ -237,7 +207,6 @@ def DoHaltServer():
     return render_template(
         'command.html', 
         appTitle = 'HaltServer - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'HaltServer',
         commandMessage = 'Halt is in progress; refresh in a minute'
@@ -246,8 +215,6 @@ def DoHaltServer():
 
 @app.route('/commands/reboot-server', methods=['GET'])
 def DoRebootServer():
-    apiInfo = GetApiInfo()
-
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoRebootServer').content)
     except Exception as e:
@@ -258,7 +225,6 @@ def DoRebootServer():
     return render_template(
         'command.html', 
         appTitle = 'RebootServer - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'RebootServer',
         commandMessage = 'Reboot is in progress; refresh in a minute'
@@ -267,20 +233,15 @@ def DoRebootServer():
 
 @app.route('/logs', methods=['GET'])
 def ShowLogs():
-    apiInfo = GetApiInfo()
-
     return render_template(
         'logs.html', 
         appTitle = 'Logs - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl
     )   
     pass     
 
 @app.route('/logs/api/<int:nrOfLines>', methods=['GET'])
 def ShowApiLog(nrOfLines):
-    apiInfo = GetApiInfo()
-
     try:
         logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetApiLog/' + str(nrOfLines)).content)
     except Exception as e:
@@ -291,7 +252,6 @@ def ShowApiLog(nrOfLines):
     return render_template(
         'loglines.html', 
         appTitle = 'API-log - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
         logTitle = 'ApiLog'
@@ -300,8 +260,6 @@ def ShowApiLog(nrOfLines):
 
 @app.route('/logs/backup/<int:nrOfLines>', methods=['GET'])
 def ShowBackupLog(nrOfLines):
-    apiInfo = GetApiInfo()
-
     try:
         logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetBackupLog/' + str(nrOfLines)).content)
     except Exception as e:
@@ -312,7 +270,6 @@ def ShowBackupLog(nrOfLines):
     return render_template(
         'loglines.html', 
         appTitle = 'Backup-log - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
         logTitle = 'BackupLog'
@@ -321,8 +278,6 @@ def ShowBackupLog(nrOfLines):
 
 @app.route('/logs/backup-details/<int:nrOfLines>', methods=['GET'])
 def ShowBackupDetailsLog(nrOfLines):
-    apiInfo = GetApiInfo()
-
     try:
         logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetBackupDetailsLog/' + str(nrOfLines)).content)
     except Exception as e:
@@ -333,7 +288,6 @@ def ShowBackupDetailsLog(nrOfLines):
     return render_template(
         'loglines.html', 
         appTitle = 'BackupDetails-log - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
         logTitle = 'BackupDetailsLog'
@@ -342,8 +296,6 @@ def ShowBackupDetailsLog(nrOfLines):
 
 @app.route('/logs/transcoder/<int:nrOfLines>', methods=['GET'])
 def ShowTranscoderLog(nrOfLines):
-    apiInfo = GetApiInfo()
-
     try:
         logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderLog/' + str(nrOfLines)).content)
     except Exception as e:
@@ -354,7 +306,6 @@ def ShowTranscoderLog(nrOfLines):
     return render_template(
         'loglines.html', 
         appTitle = 'Transcoder-log - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
         logTitle = 'TranscoderLog'
@@ -363,8 +314,6 @@ def ShowTranscoderLog(nrOfLines):
 
 @app.route('/logs/update/<int:nrOfLines>', methods=['GET'])
 def ShowUpdateLog(nrOfLines):
-    apiInfo = GetApiInfo()
-
     try:
         logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetUpdateLog/' + str(nrOfLines)).content)
     except Exception as e:
@@ -375,7 +324,6 @@ def ShowUpdateLog(nrOfLines):
     return render_template(
         'loglines.html', 
         appTitle = 'Update-log - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
         logTitle = 'UpdateLog'
