@@ -74,7 +74,7 @@ def ShowDisks():
 
     return render_template(
         'disks.html', 
-        appTitle = configObject.AppTitle, 
+        appTitle = 'Disks - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         diskList = diskList
@@ -94,7 +94,7 @@ def ShowApiList():
 
     return render_template(
         'api-list.html', 
-        appTitle = configObject.AppTitle, 
+        appTitle = 'API Documentation - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         apiList = apiList
@@ -114,7 +114,7 @@ def ShowTranscoderSettings():
 
     return render_template(
         'transcoder.html', 
-        appTitle = configObject.AppTitle, 
+        appTitle = 'Transcoder - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         transcoderSettings = transcoderSettings
@@ -134,7 +134,7 @@ def ShowDocker():
 
     return render_template(
         'docker.html', 
-        appTitle = configObject.AppTitle, 
+        appTitle = 'Docker - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         dockerContainerList = dockerContainerList
@@ -161,7 +161,7 @@ def ShowMachine():
 
     return render_template(
         'machine.html', 
-        appTitle = configObject.AppTitle, 
+        appTitle = 'Machine - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         machineInfo = machineInfo,
@@ -175,7 +175,7 @@ def ShowLogs():
 
     return render_template(
         'logs.html', 
-        appTitle = configObject.AppTitle, 
+        appTitle = 'Logs - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl
     )   
@@ -194,7 +194,7 @@ def ShowApiLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = configObject.AppTitle, 
+        appTitle = 'API-log - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
@@ -215,7 +215,7 @@ def ShowBackupLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = configObject.AppTitle, 
+        appTitle = 'Backup-log - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
@@ -236,7 +236,7 @@ def ShowBackupDetailsLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = configObject.AppTitle, 
+        appTitle = 'BackupDetails-log - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
@@ -257,7 +257,7 @@ def ShowTranscoderLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = configObject.AppTitle, 
+        appTitle = 'Transcoder-log - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
@@ -278,7 +278,7 @@ def ShowUpdateLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = configObject.AppTitle, 
+        appTitle = 'Update-log - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
