@@ -169,6 +169,102 @@ def ShowMachine():
     )   
     pass     
 
+@app.route('/commands', methods=['GET'])
+def ShowCommands():
+    apiInfo = GetApiInfo()
+
+    return render_template(
+        'commands.html', 
+        appTitle = 'Commands - ' + configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl
+    )   
+    pass     
+
+@app.route('/commands/backup-server', methods=['GET'])
+def DoBackupServer():
+    apiInfo = GetApiInfo()
+
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoBackupServer').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    return render_template(
+        'command.html', 
+        appTitle = 'BackupServer - ' + configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        commandTitle = 'BackupServer',
+        commandMessage = 'Backup in progress; watch backup-log for details'
+    )   
+    pass     
+
+@app.route('/commands/update-server', methods=['GET'])
+def DoUpdateServer():
+    apiInfo = GetApiInfo()
+
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoUpdateServer').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    return render_template(
+        'command.html', 
+        appTitle = 'UpdateServer - ' + configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        commandTitle = 'UpdateServer',
+        commandMessage = 'Update in progress; watch backup-log for details'
+    )   
+    pass     
+
+@app.route('/commands/halt-server', methods=['GET'])
+def DoHaltServer():
+    apiInfo = GetApiInfo()
+
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoHaltServer').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    return render_template(
+        'command.html', 
+        appTitle = 'HaltServer - ' + configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        commandTitle = 'HaltServer',
+        commandMessage = 'Halt is in progress; refresh in a minute'
+    )   
+    pass     
+
+@app.route('/commands/reboot-server', methods=['GET'])
+def DoRebootServer():
+    apiInfo = GetApiInfo()
+
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoRebootServer').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    return render_template(
+        'command.html', 
+        appTitle = 'RebootServer - ' + configObject.AppTitle, 
+        apiInfo = apiInfo,
+        apiRootUrl = configObject.ApiRootUrl,
+        commandTitle = 'RebootServer',
+        commandMessage = 'Reboot is in progress; refresh in a minute'
+    )   
+    pass     
+
 @app.route('/logs', methods=['GET'])
 def ShowLogs():
     apiInfo = GetApiInfo()
