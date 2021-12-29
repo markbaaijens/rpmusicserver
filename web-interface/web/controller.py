@@ -14,17 +14,15 @@ from converters import ConvertToTwoDecimals, ConvertBooleanToText
 
 app = Flask(__name__)
 logger = logging.getLogger()
-apiInfo = []
 
 def GetApiInfo():
-    global apiInfo
     try:
         apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         apiInfo = []
-    pass
+    return apiInfo
 
 def SetupLogger():
     if not logger.handlers:
@@ -45,7 +43,7 @@ def SetupLogger():
 
 @app.route('/', methods=['GET'])
 def Root():
-    global apiInfo
+    apiInfo = GetApiInfo()
 
     try:
         versionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetVersionInfo').content)
@@ -65,7 +63,7 @@ def Root():
 
 @app.route('/disks', methods=['GET'])
 def ShowDisks():
-    global apiInfo
+    apiInfo = GetApiInfo()
 
     try:
         diskList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDiskList').content)
@@ -84,8 +82,8 @@ def ShowDisks():
     pass
 
 @app.route('/api-list', methods=['GET'])
-def ShowApiList():
-    global apiInfo
+def ShowApiList():    
+    apiInfo = GetApiInfo()
 
     try:
         apiList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetApiList').content)
@@ -105,7 +103,7 @@ def ShowApiList():
 
 @app.route('/transcoder', methods=['GET'])
 def ShowTranscoderSettings():
-    global apiInfo
+    apiInfo = GetApiInfo()
 
     try:
         transcoderSettings = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderSettings').content)
@@ -125,7 +123,7 @@ def ShowTranscoderSettings():
 
 @app.route('/docker', methods=['GET'])
 def ShowDocker():
-    global apiInfo
+    apiInfo = GetApiInfo()
 
     try:
         dockerContainerList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDockerContainerList').content)
@@ -145,7 +143,7 @@ def ShowDocker():
 
 @app.route('/machine', methods=['GET'])
 def ShowMachine():
-    global apiInfo
+    apiInfo = GetApiInfo()
 
     try:
         machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
@@ -173,7 +171,7 @@ def ShowMachine():
 
 @app.route('/logs', methods=['GET'])
 def ShowLogs():
-    global apiInfo
+    apiInfo = GetApiInfo()
 
     return render_template(
         'logs.html', 
@@ -198,7 +196,6 @@ if __name__ == '__main__':
 
     SetupLogger()       
     logger.info('Log to: ' + configObject.LogFileName)
-    GetApiInfo()
 
     if configObject.Debug:
         logger.info('Web started - debug')
