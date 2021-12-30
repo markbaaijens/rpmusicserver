@@ -6,16 +6,8 @@ p, li, th, td, ol, ul, dl, a, blockquote, body {
     color: #333;
 }
 
-h1 {
-	color:#ccc;
-}
-
-h2 {
-	color:#ccc;
-}
-
-h3 {
-	color:#ccc;
+h1, h2, h3 {
+	color:gray;
 }
 
 a {
