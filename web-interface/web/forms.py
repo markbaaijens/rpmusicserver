@@ -11,7 +11,7 @@ class EditTranscoderForm(FlaskForm):
 
     # Not using standard wtf-validators like Required b/c they do not 
     # show custom messages; this is overruled by HTML5
-    # Name of field validatirs must be in this exact format: validate_<variable>
+    # Name of field validators must be in this exact format: validate_<variable>
     def validate_oggQuality(self, field):
         if not field.data in [1, 2, 3, 4, 5]:  
             raise ValidationError('Value must be between 1 and 5')
