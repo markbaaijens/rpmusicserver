@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>EditTranscoder</h2>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+        <table>
+            <tr>
+                <td align="right">{{ form.sourceFolder.label }}:</td>
+                <td>
+                    {{ form.sourceFolder(size=30) }}
+                    {% for error in form.sourceFolder.errors %}
+                        <br><small><span style="color: red;">[{{ error }}]</span></small>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td align="right">{{ form.oggFolder.label }}:</td>
+                <td>
+                    {{ form.oggFolder(size=30) }}
+                    {% for error in form.oggFolder.errors %}
+                        <br><small><span style="color: red;">[{{ error }}]</span></small>
+                    {% endfor %}
+                </td>
+            </tr>            
+            <tr>
+                <td align="right">{{ form.oggQuality.label }}:</td>
+                <td>
+                    {{ form.oggQuality(size=5) }}
+                    {% for error in form.oggQuality.errors %}
+                        <br><small><span style="color: red;">[{{ error }}]</span></small>
+                    {% endfor %}
+                </td>                
+            </tr>
+            <tr>
+                <td align="right">{{ form.mp3Folder.label }}:</td>
+                <td>
+                    {{ form.mp3Folder(size=30) }}
+                    {% for error in form.mp3Folder.errors %}
+                        <br><small><span style="color: red;">[{{ error }}]</span></small>
+                    {% endfor %}
+                </td>
+            </tr>                        
+            <tr>
+                <td align="right">{{ form.mp3BitRate.label }}:</td>
+                <td>
+                    {{ form.mp3BitRate(size=5) }}
+                    {% for error in form.mp3BitRate.errors %}
+                        <br><small><span style="color: red;">[{{ error }}]</span></small>
+                    {% endfor %}
+                </td>
+            </tr>                                    
+        </table>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}

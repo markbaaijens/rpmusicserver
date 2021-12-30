@@ -222,12 +222,9 @@ def GetVersionInfo():
 
     updateBranchName = 'master'
     updateBranchFile = '/media/usbdata/rpms/config/update-branch.txt'
-    print('0')
     if os.path.isfile(updateBranchFile):
-        print('1')
         file = open(updateBranchFile, 'r')
         updateBranchName = file.read()
-        print(updateBranchName)        
 
     # Always update if override-branch has been given, even if versions don't match        
     if updateBranchName != 'master':

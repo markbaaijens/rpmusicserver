@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, flash
 import requests
 import json
 import logging
@@ -7,8 +7,11 @@ import traceback
 from globals import configObject
 
 from converters import ConvertToTwoDecimals, ConvertBooleanToText
+from forms import EditTranscoderForm
+import os
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.urandom(32)  # For flask/wtf-forms
 logger = logging.getLogger()
 
 def SetupLogger():
@@ -154,7 +157,6 @@ def ShowCommands():
         logger.error(e)
         logger.error(traceback.format_exc())
         versionInfo = []
-    print(versionInfo)
 
     return render_template(
         'commands.html', 
@@ -375,6 +377,83 @@ def ShowUpdateLog(nrOfLines):
         logTitle = 'UpdateLog'
     )   
     pass     
+
+@app.route('/transcoder/edit', methods=['GET', 'POST'])
+def EditTranscoderSettings():
+    form = EditTranscoderForm()
+
+    try:
+        transcoderSettings = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderSettings').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        transcoderSettings = []
+
+    if request.method == 'GET':
+
+        form.sourceFolder.data = transcoderSettings['sourcefolder']
+        form.oggFolder.data = transcoderSettings['oggfolder']
+        form.oggQuality.data = transcoderSettings['oggquality']
+        form.mp3Folder.data = transcoderSettings['mp3folder']
+        form.mp3BitRate.data = transcoderSettings['mp3bitrate']
+
+    if request.method == 'POST' and form.validate(): 
+
+        if request.form['sourceFolder'].strip() != transcoderSettings['sourcefolder'].strip():
+            try:
+                requests.post(
+                    configObject.ApiRootUrl + '/api/SetTranscoderSourceFolder', 
+                    json = {"Value": request.form['sourceFolder'].strip()})
+                flash('Saved [' + request.form['sourceFolder'].strip() + '] to SourceFolder')
+            except Exception as e:
+                logger.error(e)
+                logger.error(traceback.format_exc())
+
+        if request.form['oggFolder'].strip() != transcoderSettings['oggfolder'].strip():
+            try:
+                requests.post(
+                    configObject.ApiRootUrl + '/api/SetTranscoderOggFolder', 
+                    json = {"Value": request.form['oggFolder'].strip()})
+                flash('Saved [' + request.form['oggFolder'].strip() + '] to OggFolder')
+            except Exception as e:
+                logger.error(e)
+                logger.error(traceback.format_exc())
+
+        if int(request.form['oggQuality']) != int(transcoderSettings['oggquality']):
+            try:
+                requests.post(
+                    configObject.ApiRootUrl + '/api/SetTranscoderOggQuality', 
+                    json = {"Value": int(request.form['oggQuality'])})
+                flash('Saved [' + request.form['oggQuality'] + '] to OggQuality')
+            except Exception as e:
+                logger.error(e)
+                logger.error(traceback.format_exc())
+
+        if request.form['mp3Folder'].strip() != transcoderSettings['mp3folder'].strip():
+            try:
+                requests.post(
+                    configObject.ApiRootUrl + '/api/SetTranscoderMp3Folder', 
+                    json = {"Value": request.form['mp3Folder'].strip()})
+                flash('Saved [' + request.form['mp3Folder'].strip() + '] to Mp3Folder')
+            except Exception as e:
+                logger.error(e)
+                logger.error(traceback.format_exc())
+
+        if int(request.form['mp3BitRate']) != int(transcoderSettings['mp3bitrate']):
+            try:
+                requests.post(
+                    configObject.ApiRootUrl + '/api/SetTranscoderMp3BitRate', 
+                    json = {"Value": int(request.form['mp3BitRate'])})
+                flash('Saved [' + request.form['mp3BitRate'] + '] to Mp3BitRate')
+            except Exception as e:
+                logger.error(e)
+                logger.error(traceback.format_exc())
+
+        return redirect('/transcoder')
+
+    return render_template('transcoder-edit.html', 
+        appTitle = 'TransCoderEdit - ' + configObject.AppTitle, 
+        form = form)
 
 if __name__ == '__main__':
     import argparse
