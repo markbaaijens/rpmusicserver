@@ -144,6 +144,17 @@ def GetApiLog(nrOfLines):
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
+@app.route('/api/GetWebLog/<int:nrOfLines>', methods=['GET'])
+def GetWebLog(nrOfLines):
+    try:
+        info = logic.GetLog('/media/usbdata/rpms/logs/web.log', nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
 @app.route('/api/GetTranscoderLog/<int:nrOfLines>', methods=['GET'])
 def GetTranscoderLog(nrOfLines):
     try:

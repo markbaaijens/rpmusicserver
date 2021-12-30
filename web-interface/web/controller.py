@@ -286,6 +286,24 @@ def ShowApiLog(nrOfLines):
     )   
     pass     
 
+@app.route('/logs/web/<int:nrOfLines>', methods=['GET'])
+def ShowWebLog(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetWebLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    return render_template(
+        'loglines.html', 
+        appTitle = 'Web-log - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        logLines = logLines,
+        logTitle = 'WebLog'
+    )   
+    pass     
+
 @app.route('/logs/backup/<int:nrOfLines>', methods=['GET'])
 def ShowBackupLog(nrOfLines):
     try:
