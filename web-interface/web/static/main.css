@@ -1,0 +1,30 @@
+body {
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+p, li, th, td, ol, ul, dl, a, blockquote, body { 
+    color: #333;
+    font-size: 14px;
+}
+
+h1 {
+	color:#ccc;
+}
+
+h2 {
+	color:#ccc;
+}
+
+h3 {
+	color:#ccc;
+}
+
+a {
+	text-decoration: none;
+	font-weight: 600;
+	color: #09c;
+}
+a:link { color: #09c;}
+a:visited {color: #07a;}
+a:hover { background-color: #eee;}
+
