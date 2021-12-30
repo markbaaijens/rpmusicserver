@@ -6,6 +6,7 @@ from globals import configObject
 from datetime import datetime
 import math
 import asyncio
+import urllib.request
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -186,7 +187,7 @@ def GetVersionInfo():
     if not os.path.isfile(revisionFile):
         revisionFile = os.path.dirname(__file__) + '/../../revision.json'
 
-    currentVersion = ''
+    currentVersion = '0.0'
     lastUpdateTimeStampAsString = ''
     if os.path.isfile(revisionFile):
         with open(revisionFile) as file:
@@ -204,9 +205,40 @@ def GetVersionInfo():
             pass
         lastUpdateTimeStampAsString = datetime.utcfromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
 
+    availableVersion = '0.0'
+    with urllib.request.urlopen("https://raw.githubusercontent.com/markbaaijens/rpmusicserver/master/revision.json") as url:
+        revisionData = json.loads(url.read().decode())
+        availableVersion = revisionData['CurrentVersion']
+
+    canUpdate = False
+    availableVersionSplit = availableVersion.split('.')
+    currentVersionSplit = currentVersion.split('.')    
+    if int(availableVersionSplit[0]) > int(currentVersionSplit[0]):
+        canUpdate = True
+    else:
+        if int(availableVersionSplit[0]) == int(currentVersionSplit[0]):
+            if int(availableVersionSplit[1]) > int(currentVersionSplit[1]):
+                canUpdate = True
+
+    updateBranchName = 'master'
+    updateBranchFile = '/media/usbdata/rpms/config/update-branch.txt'
+    print('0')
+    if os.path.isfile(updateBranchFile):
+        print('1')
+        file = open(updateBranchFile, 'r')
+        updateBranchName = file.read()
+        print(updateBranchName)        
+
+    # Always update if override-branch has been given, even if versions don't match        
+    if updateBranchName != 'master':
+        canUpdate = True
+
     return {"VersionFile": revisionFile,
             "CurrentVersion": currentVersion, 
-            "LastUpdateTimeStamp": lastUpdateTimeStampAsString}
+            "LastUpdateTimeStamp": lastUpdateTimeStampAsString,
+            "AvailableVersion": availableVersion,
+            "CanUpdate": canUpdate,
+            "UpdateBranchName": updateBranchName}
 
 def GetBackupInfo():
     isBackupInProgress = False

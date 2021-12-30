@@ -7,7 +7,18 @@
         <a href="/commands/backup-server">BackupServer</a>
     </li>
     <li>
-        <a href="/commands/update-server">UpdateServer</a>
+        {% if versionInfo.CanUpdate %}
+            <a href="/commands/update-server">UpdateServer</a> 
+        {% else %}
+            UpdateServer
+        {% endif %}
+        <ul>
+        <small>
+            <li>CurrentVersion: <b>{{ versionInfo.CurrentVersion }}</b></li>
+            <li>AvailableVersion: <b>{{ versionInfo.AvailableVersion }}</b></li>
+            <li>UpdateBranchName: <b>{{ versionInfo.UpdateBranchName }}</b></li>
+        </small>
+        </ul>
     </li>
     <li>
         <a href="/commands/reboot-server">RebootServer</a>

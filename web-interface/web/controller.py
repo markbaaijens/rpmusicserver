@@ -29,7 +29,7 @@ def SetupLogger():
     pass
 
 @app.route('/', methods=['GET'])
-def Root():
+def Home():
     try:
         apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
     except Exception as e:
@@ -46,7 +46,7 @@ def Root():
 
     return render_template(
         'home.html', 
-        appTitle = configObject.AppTitle, 
+        appTitle = 'Home - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         versionInfo = versionInfo
@@ -148,10 +148,19 @@ def ShowMachine():
 
 @app.route('/commands', methods=['GET'])
 def ShowCommands():
+    try:
+        versionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetVersionInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        versionInfo = []
+    print(versionInfo)
+
     return render_template(
         'commands.html', 
         appTitle = 'Commands - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl
+        apiRootUrl = configObject.ApiRootUrl,
+        versionInfo = versionInfo
     )   
     pass     
 
@@ -170,7 +179,8 @@ def DoBackupServer():
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'BackupServer',
         commandMessage = 'Backup is in progress...',
-        showBackugLogLinks = 1)
+        showBackugLogLinks = 1
+    )
     pass     
 
 @app.route('/commands/update-server', methods=['GET'])
@@ -187,7 +197,8 @@ def DoUpdateServer():
         appTitle = 'UpdateServer - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'UpdateServer',
-        commandMessage = 'Update is in progress... watch backup-log for details'
+        commandMessage = 'Update is in progress... in a few seconds you will be redirected to Home; refresh that page after 1 minute',
+        redirect = 1        
     )   
     pass     
 
@@ -224,7 +235,7 @@ def DoRebootServer():
         appTitle = 'RebootServer - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'RebootServer',
-        commandMessage = 'Reboot is in progress... in a few seconds this page will be redirected to Home; refresh this page after 1 minute',
+        commandMessage = 'Reboot is in progress... in a few seconds you will be redirected to Home; refresh that page after 1 minute',
         redirect = 1
     )   
     pass     
