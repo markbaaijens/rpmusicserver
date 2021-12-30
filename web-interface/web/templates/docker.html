@@ -5,11 +5,15 @@
     <p>
     {% for dockerContainer in dockerContainerList %}
     <div>
-        {{ dockerContainer }}
+        {% if dockerContainer.IsActive %}
+            {{ dockerContainer.ContainerName }}
+        {% else %}
+            <del>{{ dockerContainer.ContainerName }}</del>        
+        {% endif %}        
     </div>
     {% endfor %} 
     <div>
         <p>
-        <a href="/commands/kill-docker">KillDocker</a>
+        <small><a href="/commands/kill-docker">KillDocker</a></small>
     </div>        
 {% endblock %}

@@ -275,11 +275,27 @@ def GetLog(logFile, nrOfLines):
 
 def GetDockerContainerList():
     dockerContainerList = []
+
     process = subprocess.run(["docker ps --format '{{.Names}}'"], stdout=subprocess.PIPE, shell=True)
-    lines = process.stdout.decode("utf-8").strip('\n')
-    lines = lines.splitlines()
-    for line in lines:
-        dockerContainerList.append(line)
+    activeContainers = process.stdout.decode("utf-8").strip('\n')
+    activeContainers = activeContainers.splitlines()
+
+    isActive = 'lms' in activeContainers
+    dockerContainerList.append({
+                    "ContainerName": 'lms',
+                    "IsActive": isActive
+                 })    
+    isActive = 'transmission' in activeContainers                 
+    dockerContainerList.append({
+                    "ContainerName": 'transmission',
+                    "IsActive": isActive
+                 })    
+    isActive = 'samba' in activeContainers                 
+    dockerContainerList.append({
+                    "ContainerName": 'samba',
+                    "IsActive": isActive
+                 })    
+
     return dockerContainerList
 
 def SetTranscoderSetting(settingName, newValue):
