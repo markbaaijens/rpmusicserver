@@ -3,11 +3,11 @@ body {
 }
 
 p, li, th, td, ol, ul, dl, a, blockquote, body { 
-    color: #333;
+    color: black;
 }
 
 h1, h2, h3 {
-	color:gray;
+	color: gray;
 }
 
 a {
