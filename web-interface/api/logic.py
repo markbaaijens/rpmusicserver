@@ -33,11 +33,17 @@ def GetMachineInfo():
         process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
         cpuTemp = process.stdout.decode("utf-8").strip('\n')
 
+    # upTime => uptime -p | cut -c 4-
+    process = subprocess.run(["uptime -p"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["cut -c 4-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    upTime = process.stdout.decode("utf-8").strip('\n')
+
     return {"HostName": hostName,
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
             "RpModel": rpModel,
-            "CpuTemp": cpuTemp}
+            "CpuTemp": cpuTemp,
+            "UpTime": upTime}
 
 disks = []
 
@@ -124,11 +130,6 @@ def GetResourceInfo():
 
     swapUsedPercentage = math.floor(swapUsed/swapTotal * 100)
 
-    # upTime => uptime -p | cut -c 4-
-    process = subprocess.run(["uptime -p"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["cut -c 4-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    upTime = process.stdout.decode("utf-8").strip('\n')
-
     # averageLoad1 => uptime | tail -c 17 | awk '{print $1}' | cut -c 1-4
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
@@ -175,7 +176,6 @@ def GetResourceInfo():
             "SwapTotal": swapTotal,
             "SwapUsed": swapUsed,
             "SwapUsedPercentage": swapUsedPercentage,            
-            "UpTime": upTime,
             "OverageLoad1": averageLoad1,
             "OverageLoad5": averageLoad5,
             "OverageLoad15": averageLoad15,
