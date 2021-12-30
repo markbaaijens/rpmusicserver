@@ -103,7 +103,7 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
   * for example, change `oggquality` to 3 (value = 1, 2, 3, 4, or 5):
      * `curl rpms:5000/api/SetTranscoderOggQuality -X post -H "Content-Type: application/json" -d '{"Value": 3}'`
   * for example, change `mp3bitrate` to 256 (value = 128, 256 or 384):
-     * `curl rpms:5000/api/SetTranscoderMp3BitRate -X post -H "Content-Type: application/json" -d '{"Value": 256}'`     
+     * `curl rpms:5000/api/SetTranscoderMp3Bitrate -X post -H "Content-Type: application/json" -d '{"Value": 256}'`     
 * Trancoding simultaneously to ogg AND mp3 is possible; just set both `oggfolder` and `mp3folder`
 
 ## Backup

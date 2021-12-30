@@ -6,7 +6,7 @@ class EditTranscoderForm(FlaskForm):
     oggFolder = StringField('OggFolder')
     oggQuality = IntegerField('OggQuality')
     mp3Folder = StringField('Mp3Folder')
-    mp3BitRate = IntegerField('Mp3BitRate')
+    mp3Bitrate = IntegerField('Mp3Bitrate')
     submit = SubmitField('Save')
 
     # Not using standard wtf-validators like Required b/c they do not 
@@ -17,7 +17,7 @@ class EditTranscoderForm(FlaskForm):
             raise ValidationError('Value must be between 1 and 5')
         pass
 
-    def validate_mp3BitRate(self, field):
+    def validate_mp3Bitrate(self, field):
         if not field.data in [128, 256, 384]:  
             raise ValidationError('Value must be 128, 256 or 384')
         pass

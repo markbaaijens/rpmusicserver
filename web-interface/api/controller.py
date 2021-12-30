@@ -263,8 +263,8 @@ def SetTranscoderOggQuality():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-@app.route('/api/SetTranscoderMp3BitRate', methods=['POST'])
-def SetTranscoderMp3BitRate():
+@app.route('/api/SetTranscoderMp3Bitrate', methods=['POST'])
+def SetTranscoderMp3Bitrate():
     if not request.json:
         abort(HTTP_BAD_REQUEST)
     requestData = request.get_json()

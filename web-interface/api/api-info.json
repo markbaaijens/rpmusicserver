@@ -95,8 +95,8 @@
         "Description": "Set transcoder-setting [oggquality]; 1, 2, 3,4, or 5; default = 1",
         "Example":"curl rpms:5000/api/SetTranscoderOggQuality -X post -H \"Content-Type: application/json\" -d '{\"Value\": 2}'"
     },
-    {   "EndPoint": "POST api/SetTranscoderMp3BitRate",
+    {   "EndPoint": "POST api/SetTranscoderMp3Bitrate",
         "Description": "Set transcoder-setting [mp3bitrate]; 128, 256 or 384; default = 128",
-        "Example":"curl rpms:5000/api/SetTranscoderMp3BitRate -X post -H \"Content-Type: application/json\" -d '{\"Value\": 256}'"
+        "Example":"curl rpms:5000/api/SetTranscoderMp3Bitrate -X post -H \"Content-Type: application/json\" -d '{\"Value\": 256}'"
     }
 ]

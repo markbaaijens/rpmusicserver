@@ -395,7 +395,7 @@ def EditTranscoderSettings():
         form.oggFolder.data = transcoderSettings['oggfolder']
         form.oggQuality.data = transcoderSettings['oggquality']
         form.mp3Folder.data = transcoderSettings['mp3folder']
-        form.mp3BitRate.data = transcoderSettings['mp3bitrate']
+        form.mp3Bitrate.data = transcoderSettings['mp3bitrate']
 
     if request.method == 'POST' and form.validate(): 
 
@@ -439,12 +439,12 @@ def EditTranscoderSettings():
                 logger.error(e)
                 logger.error(traceback.format_exc())
 
-        if int(request.form['mp3BitRate']) != int(transcoderSettings['mp3bitrate']):
+        if int(request.form['mp3Bitrate']) != int(transcoderSettings['mp3bitrate']):
             try:
                 requests.post(
-                    configObject.ApiRootUrl + '/api/SetTranscoderMp3BitRate', 
-                    json = {"Value": int(request.form['mp3BitRate'])})
-                flash('Saved [' + request.form['mp3BitRate'] + '] to Mp3BitRate')
+                    configObject.ApiRootUrl + '/api/SetTranscoderMp3Bitrate', 
+                    json = {"Value": int(request.form['mp3Bitrate'])})
+                flash('Saved [' + request.form['mp3Bitrate'] + '] to Mp3Bitrate')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
