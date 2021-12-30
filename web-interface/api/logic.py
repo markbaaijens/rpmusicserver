@@ -307,6 +307,10 @@ async def DoHaltServer():
     await asyncio.create_subprocess_shell("halt-server")
     pass
 
+async def DoKillDocker():
+    await asyncio.create_subprocess_shell("kill-docker")
+    pass
+
 async def DoUpdateServer():
     await asyncio.create_subprocess_shell("update-server")
     pass

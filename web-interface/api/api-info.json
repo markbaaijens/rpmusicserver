@@ -75,6 +75,10 @@
         "Description": "Backup server",
         "Example":"curl rpms:5000/api/DoBackupServer -X post"
     },    
+    {   "EndPoint": "POST api/DoKillDocker",
+        "Description": "Kill all docker-containers",
+        "Example":"curl rpms:5000/api/DoKillDocker -X post"
+    },        
     {   "EndPoint": "POST api/SetTranscoderSourceFolder",
         "Description": "Set transcoder-setting [sourcefolder]",
         "Example":"curl rpms:5000/api/SetTranscoderSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"Value\":\"NewSourceFolder\"}'"

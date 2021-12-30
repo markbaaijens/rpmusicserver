@@ -6,11 +6,16 @@
     {{ commandMessage }}
     {% if showBackugLogLinks %}
     <div>
-        Logs:
+        See logs:
         <ul>
             <li><a href="/logs/backup/20">Compact</a></li>
             <li><a href="/logs/backup-details/20">Details</a></li>            
         </ul>
     </div>
     {% endif %}
+    {% if showDockerLink %}
+    <div>
+        See <a href="/docker">Docker</a>
+    </div>
+    {% endif %}    
 {% endblock %}

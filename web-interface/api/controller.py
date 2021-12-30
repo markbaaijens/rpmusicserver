@@ -331,6 +331,18 @@ def DoHaltServer():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
+@app.route('/api/DoKillDocker', methods=['POST'])
+def DoKillDocker():
+    try:
+        asyncio.run(logic.DoKillDocker())
+        info = { "Message": "Docker-container will be killed" }
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/DoUpdateServer', methods=['POST'])
 def DoUpdateServer():
     try:

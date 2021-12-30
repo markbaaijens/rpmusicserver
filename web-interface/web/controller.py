@@ -183,6 +183,25 @@ def DoBackupServer():
     )
     pass     
 
+@app.route('/commands/kill-docker', methods=['GET'])
+def DoKillDocker():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoKillDocker').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    return render_template(
+        'command.html', 
+        appTitle = 'KillDocker - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        commandTitle = 'KillDocker',
+        commandMessage = 'Killing docker-containers is in progress...',
+        showDockerLink = 1
+    )
+    pass     
+
 @app.route('/commands/update-server', methods=['GET'])
 def DoUpdateServer():
     try:
