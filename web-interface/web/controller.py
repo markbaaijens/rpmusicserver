@@ -384,6 +384,8 @@ def ShowUpdateLog(nrOfLines):
 
 @app.route('/transcoder/edit', methods=['GET', 'POST'])
 def EditTranscoderSettings():
+    musicFolder = '/media/usbdata/user/Publiek/Muziek/'
+
     form = EditTranscoderForm()
 
     try:
@@ -394,31 +396,35 @@ def EditTranscoderSettings():
         transcoderSettings = []
 
     if request.method == 'GET':
-
-        form.sourceFolder.data = transcoderSettings['sourcefolder']
-        form.oggFolder.data = transcoderSettings['oggfolder']
+        form.sourceFolder.data = transcoderSettings['sourcefolder'].replace(musicFolder, '')
+        form.oggFolder.data = transcoderSettings['oggfolder'].replace(musicFolder, '')
         form.oggQuality.data = transcoderSettings['oggquality']
-        form.mp3Folder.data = transcoderSettings['mp3folder']
+        form.mp3Folder.data = transcoderSettings['mp3folder'].replace(musicFolder, '')
         form.mp3Bitrate.data = transcoderSettings['mp3bitrate']
 
     if request.method == 'POST' and form.validate(): 
-
-        if request.form['sourceFolder'].strip() != transcoderSettings['sourcefolder'].strip():
+        newSourceFolder = musicFolder + request.form['sourceFolder'].strip()
+        if not newSourceFolder.replace(musicFolder, ''):
+            newSourceFolder = ''
+        if newSourceFolder != transcoderSettings['sourcefolder'].strip():
             try:
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderSourceFolder', 
-                    json = {"Value": request.form['sourceFolder'].strip()})
-                flash('Saved [' + request.form['sourceFolder'].strip() + '] to SourceFolder')
+                    json = {"Value": newSourceFolder})
+                flash('Saved \'' + newSourceFolder + '\' to SourceFolder')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
 
-        if request.form['oggFolder'].strip() != transcoderSettings['oggfolder'].strip():
+        newOggFolder = musicFolder + request.form['oggFolder'].strip()
+        if not newOggFolder.replace(musicFolder, ''):
+            newOggFolder = ''
+        if newOggFolder != transcoderSettings['oggfolder'].strip():
             try:
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderOggFolder', 
-                    json = {"Value": request.form['oggFolder'].strip()})
-                flash('Saved [' + request.form['oggFolder'].strip() + '] to OggFolder')
+                    json = {"Value": newOggFolder})
+                flash('Saved \'' + newOggFolder + '\' to OggFolder')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
@@ -428,17 +434,20 @@ def EditTranscoderSettings():
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderOggQuality', 
                     json = {"Value": int(request.form['oggQuality'])})
-                flash('Saved [' + request.form['oggQuality'] + '] to OggQuality')
+                flash('Saved \'' + request.form['oggQuality'] + '\' to OggQuality')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
 
-        if request.form['mp3Folder'].strip() != transcoderSettings['mp3folder'].strip():
+        newMp3Folder = musicFolder + request.form['mp3Folder'].strip()
+        if not newMp3Folder.replace(musicFolder, ''):
+            newMp3Folder = ''            
+        if newMp3Folder != transcoderSettings['mp3folder'].strip():
             try:
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderMp3Folder', 
-                    json = {"Value": request.form['mp3Folder'].strip()})
-                flash('Saved [' + request.form['mp3Folder'].strip() + '] to Mp3Folder')
+                    json = {"Value": newMp3Folder})
+                flash('Saved \'' + newMp3Folder + '\' to Mp3Folder')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
@@ -448,7 +457,7 @@ def EditTranscoderSettings():
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderMp3Bitrate', 
                     json = {"Value": int(request.form['mp3Bitrate'])})
-                flash('Saved [' + request.form['mp3Bitrate'] + '] to Mp3Bitrate')
+                flash('Saved \'' + request.form['mp3Bitrate'] + '\' to Mp3Bitrate')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
@@ -457,7 +466,8 @@ def EditTranscoderSettings():
 
     return render_template('transcoder-edit.html', 
         appTitle = 'TransCoderEdit - ' + configObject.AppTitle, 
-        form = form)
+        form = form,
+        musicFolder = musicFolder)
 
 if __name__ == '__main__':
     import argparse

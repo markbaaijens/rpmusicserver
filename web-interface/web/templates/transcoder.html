@@ -21,13 +21,13 @@
         </tr>
         <tr>
             <td align="right">OggQuality:</td>
-            <td><b>
+            <td>
                 {% if transcoderSettings.oggquality == 0 %}
-                    [default]
+                    (default)
                 {% else %}
-                    {{ transcoderSettings.oggquality }}
+                <b>{{ transcoderSettings.oggquality }}</b>
                 {% endif %}
-            </b></td>
+            </td>
         </tr>
         <tr>
             <td align="right">Mp3Folder:</td>
@@ -35,13 +35,13 @@
         </tr>
         <tr>
             <td align="right">Mp3Bitrate:</td>
-            <td><b>
+            <td>
                 {% if transcoderSettings.mp3bitrate == 0 %}
-                    [default]
+                    (default)
                 {% else %}
-                    {{ transcoderSettings.mp3bitrate }}
+                <b>{{ transcoderSettings.mp3bitrate }}</b>
                 {% endif %}
-            </b></td>
+            </td>
 
         </tr>
     </table>  
