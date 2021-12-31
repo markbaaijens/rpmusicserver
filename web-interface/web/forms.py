@@ -26,10 +26,10 @@ class EditTranscoderForm(FlaskForm):
     # Name of field validators must be in this exact format: validate_<variable>
     def validate_oggQuality(self, field):
         if not int(field.data) in [0, 1, 2, 3, 4, 5]:  
-            raise ValidationError('Value must be between 1 and 5')
+            raise ValidationError('Value must be between 0 and 5')
         pass
 
     def validate_mp3Bitrate(self, field):
         if not int(field.data) in [0, 128, 256, 384]:  
-            raise ValidationError('Value must be 128, 256 or 384')
+            raise ValidationError('Value must be 0, 128, 256 or 384')
         pass
