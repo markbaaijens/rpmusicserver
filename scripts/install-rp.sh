@@ -92,10 +92,10 @@ echo "Install (python) pip-packages:"
 pip3 install -r /tmp/rpmusicserver/web-interface/requirements.txt 
 echo " => pip-packages installed." 
 
-echo "Install program files for API:"
+echo "Install program files for web-interface:"
 mkdir -p /usr/local/bin/rpmusicserver/web-interface
 cp -r /tmp/rpmusicserver/web-interface/* /usr/local/bin/rpmusicserver/web-interface
-echo " => program files installed." 
+echo " => program files for web-interface installed." 
 
 echo "Copy rc.local file:"
 cp /tmp/rpmusicserver/files/etc/rc.local /etc

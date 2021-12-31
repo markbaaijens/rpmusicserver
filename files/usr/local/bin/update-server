@@ -59,7 +59,8 @@ else
     fi
 fi
 
-if [ "$branch_name" = "develop" ]; then
+# Always update if override-branch has been given, even if versions don't match
+if [ "$branch_name" != "master" ]; then
     update=1
 fi
 
@@ -69,6 +70,7 @@ if [ $update -eq 1 ]; then
     # B/c install-rp.sh ends with a reboot, nothing *after* executing install-rp.sh
     # will be reached. To have a nice log file, we just pretend the update has ended
     # so we print it *before* the actual update (install).
+    log "- system will be rebooted in a few moments."
     log "Update ended."
     /tmp/rpmusicserver/scripts/install-rp.sh
     exit 0

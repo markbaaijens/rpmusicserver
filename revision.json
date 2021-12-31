@@ -7,7 +7,8 @@
                 "Choice (while burning) for alternative hostname 'rpmsdev' for development",
                 "Expose backup-disk through samba",
                 "Faster reboot/halt by first killing docker-containers",
-                "Enhanced readme, commands for transcoder- and backup-progress, extended disaster-recovery"
+                "Enhanced readme, commands for transcoder- and backup-progress, extended disaster-recovery",
+                "Web-frontend"
             ]
         },
         {
