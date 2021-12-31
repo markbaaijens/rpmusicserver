@@ -251,7 +251,7 @@ def SetTranscoderOggQuality():
     if not 'Value' in requestData:
         abort(HTTP_BAD_REQUEST)
 
-    if not (1 <= requestData['Value'] <= 5):
+    if not (0 <= requestData['Value'] <= 5):
         abort(HTTP_BAD_REQUEST) 
 
     try:
@@ -272,7 +272,7 @@ def SetTranscoderMp3Bitrate():
     if not 'Value' in requestData:
         abort(HTTP_BAD_REQUEST)
 
-    if not (requestData['Value'] in [128, 256, 384]):
+    if not (requestData['Value'] in [0, 128, 256, 384]):
         abort(HTTP_BAD_REQUEST) 
 
     try:
