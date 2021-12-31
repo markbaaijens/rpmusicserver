@@ -65,13 +65,16 @@ Update your RPMS by SSH:
   * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
 * To build a development version with a separate hostname `rpmsdev`
   * `cd <source-folder of rpmusicserver>`
-  * `sudo script/burn-image.sh`
+  * `sudo scripts/burn-image.sh`
     * choose type `d = development`
   * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
 	  * password = raspberry  
   * `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
 	  * password = raspberry 
-  * after reboot, password is changed to `rpms`   
+  * after reboot, password is changed to `rpms`
+  * from now on, you can reach the development-server on `rpmsdev`
+  * in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
+    * `sudo systemd-resolve --flush-caches`
 * API-documentation: 
   * `curl rpms:5000/api/GetApiList`
   * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList)
@@ -133,7 +136,7 @@ You can make a backup of all the data contained in your RPMS-server. This backup
   * disconnect backup-disk
 
 ### Off-line viewing backup-data
-Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers. And worse, MacOS does NOT support ext4 (despite ext2 being open-source/open-standard).
+Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
 ## Disaster-recovery
 Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple

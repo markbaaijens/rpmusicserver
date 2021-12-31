@@ -17,7 +17,13 @@
     <table>
         <tr>
             <td align="right">IsOnline:</td>
-            <td><b>{{ disk.IsOnline }}</b></td>
+            <td>
+                {% if disk.IsOnline %}
+                    &#10004;
+                {% else %}
+                    &#x2717; 
+                {% endif %}                
+            </td>
         </tr>
         {% if disk.IsOnline %}
             <tr>

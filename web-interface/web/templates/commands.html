@@ -2,13 +2,14 @@
 
 {% block content %}
 <h2>Commands</h2>
+<h3>Server</h3>
 <ul>
     <li>
-        <a href="/commands/backup-server">BackupServer</a>
+        <a href="/commands/backup-server">Backup</a>
     </li>
     <li>
         {% if versionInfo.CanUpdate %}
-            <a href="/commands/update-server">UpdateServer</a> 
+            <a href="/commands/update-server">Update</a> 
         {% else %}
             UpdateServer
         {% endif %}
@@ -21,11 +22,14 @@
         </ul>
     </li>
     <li>
-        <a href="/commands/reboot-server">RebootServer</a>
+        <a href="/commands/reboot-server">Reboot</a>
     </li>    
     <li>
-        <a href="/commands/halt-server">HaltServer</a>        
+        <a href="/commands/halt-server">Halt</a>        
     </li>    
+</ul>
+<h3>Docker</h3>
+<ul>
     <li>
         <a href="/commands/kill-docker">KillDocker</a>
     </li>        

@@ -14,7 +14,11 @@
     <tr>
         <td align="right">CanUpdate:</td>
         <td>
-            <b>{{ versionInfo.CanUpdate }}</b>
+            {% if versionInfo.CanUpdate %}
+                &#10004;
+            {% else %}
+                &#x2717; 
+            {% endif %}            
             <small>
                 {% if versionInfo.CanUpdate %}
                     <a href="/commands/update-server">UpdateServer</a> 
