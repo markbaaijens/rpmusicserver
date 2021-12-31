@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Docker</h2>
+    <p>
+    {% for dockerContainer in dockerContainerList %}
+    <div>
+        {% if dockerContainer.IsActive %}
+            {{ dockerContainer.ContainerName }}
+        {% else %}
+            <del>{{ dockerContainer.ContainerName }}</del>        
+        {% endif %}        
+    </div>
+    {% endfor %} 
+    <div>
+        <p>
+        <small><a href="/commands/kill-docker">KillDocker</a></small>
+    </div>        
+{% endblock %}

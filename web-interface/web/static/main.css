@@ -1,0 +1,23 @@
+body {
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+p, li, th, td, ol, ul, dl, a, blockquote, body { 
+    color: black;
+}
+
+h1, h2, h3 {
+	color: gray;
+}
+
+a {
+	text-decoration: none;
+	font-weight: bolder;
+}
+a:link { color: steelblue;}
+a:visited {color: steelblue;}
+a:hover { background-color: lightgray;}
+
+em {
+	color: red;
+}

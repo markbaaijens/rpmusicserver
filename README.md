@@ -41,13 +41,14 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
 * Test access:
   * `watch nmap rpms`
     * wait until port 9002 appears; exit with Ctrl-C
+  * RPMS (browser): [rpms](http://rpms:80)
   * LMS (browser): [rpms:9002](http://rpms:9002)
-  * Samba (file explorer): `smb://rpms`
   * Transmission (browser): [rpms:9091](http://rpms:9091)
+  * Samba (file explorer): `smb://rpms`
   * API: 
     * `curl rpms:5000`
-    * [rpms:5000](http://rpms:5000)
-  * SSH: `ssh pi@rpms`
+  * SSH: 
+    * `ssh pi@rpms`
     * password: rpms
 * Engage:
   * copy music files to `smb://rpms/Publiek/Muziek`
@@ -74,6 +75,7 @@ Update your RPMS by SSH:
 * API-documentation: 
   * `curl rpms:5000/api/GetApiList`
   * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList)
+  * [rpms/api-list](http://rpms/api-list)
 
 ## Transcoder
 For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
@@ -82,29 +84,31 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
   * move your flac-files into that folder `flac`
 * in [LMS](http://rpms:9002) Server Settings, point music-folder to this location:
   * `/music/flac`
-* change setting `sourcefolder`
-  * `curl rpms:5000/api/SetTranscoderSourceFolder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/flac"}'`
+* change [setting](http://rpms/transcoder/edit) `SourceFolder`
+  * point to `/media/usbdata/user/Publiek/Muziek/flac`
+  * click  Save
 * for transcoding to ogg
   * in your file explorer
     * create a folder `ogg` under `smb://rpms/Publiek/Muziek`
-  * change setting `oggfolder`
-    * `curl rpms:5000/api/SetTranscoderOggFolder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/ogg"}'`
+  * change [setting](http://rpms/transcoder/edit) `OggFolder`
+    * point to `/media/usbdata/user/Publiek/Muziek/ogg`
+    * click Save
 * for transcoding to mp3
   * in your file explorer
     * create a folder `mp3`under `smb://rpms/Publiek/Muziek`
-  * change setting `mp3folder`
-    * `curl rpms:5000/api/SetTranscoderMp3Folder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/mp3"}'`    
+  * change [setting](http://rpms/transcoder/edit) `Mp3Folder`
+    * point to `/media/usbdata/user/Publiek/Muziek/mp3`
+    * click Save
 * from now on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
 * see transcoder-progress
+  * [rpms/logs/transcoder/20](http://rpms/logs/transcoder/20)
   * `curl rpms:5000/api/GetTranscoderLog/20`
 
 ### Notes
 * Transcoding will be done by these default quality-levels: ogg = 1, mp3 = 128. Optionally, you can change these defaults:
-  * for example, change `oggquality` to 3 (value = 1, 2, 3, 4, or 5):
-     * `curl rpms:5000/api/SetTranscoderOggQuality -X post -H "Content-Type: application/json" -d '{"Value": 3}'`
-  * for example, change `mp3bitrate` to 256 (value = 128, 256 or 384):
-     * `curl rpms:5000/api/SetTranscoderMp3BitRate -X post -H "Content-Type: application/json" -d '{"Value": 256}'`     
-* Trancoding simultaneously to ogg AND mp3 is possible; just set both `oggfolder` and `mp3folder`
+  * for example, change [setting](http://rpms/transcoder/edit) `OggQuality` to 3 (value = 1, 2, 3, 4, or 5):
+  * for example, change [setting](http://rpms/transcoder/edit) `Mp3Bitrate` to 256 (value = 128, 256 or 384):
+* Trancoding simultaneously to ogg AND mp3 is possible; just set both `OggFolder` and `Mp3Folder`
 
 ## Backup
 You can make a backup of all the data contained in your RPMS-server. This backup will be done to a dedicated backup-disk, connected to the Pi it self, a so called server-based backup.
@@ -117,14 +121,15 @@ You can make a backup of all the data contained in your RPMS-server. This backup
 * engage the backup:
   * connect your backup-disk to the Pi
   * start the backup
-    * `curl rpms:5000/api/DoBackupServer -X post`
+    * [rpms/commands](http://rpms/commands)
+    * click BackupServer
   * watch overall progress
-    * [rpms:5000/api/GetBackupLog/4](http://rpms:5000/api/GetBackupLog/4)
+    * [rpms/logs/backup/20](http://rpms/logs/backup/20)
     * refresh until log states: 'Backup ended'
   * watch detailed progress
-    * [rpms:5000/api/GetBackupDetailsLog/10](http://rpms:5000/api/GetBackupDetailsLog/10)    
+    * [rpms/logs/backup-details/20](http://rpms/logs/backup-details/20)
   * see full backup-log
-    * [rpms:5000/api/GetBackupDetailsLog/0](http://rpms:5000/api/GetBackupDetailsLog/0)
+    * [rpms/logs/backup-details/0](http://rpms/logs/backup-details/0)
   * disconnect backup-disk
 
 ### Off-line viewing backup-data
