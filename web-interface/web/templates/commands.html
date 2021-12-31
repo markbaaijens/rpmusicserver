@@ -3,35 +3,29 @@
 {% block content %}
 <h2>Commands</h2>
 <h3>Server</h3>
-<ul>
-    <li>
+    <div>
         <a href="/commands/backup-server">Backup</a>
-    </li>
-    <li>
+    </div>
+    <div>
         {% if versionInfo.CanUpdate %}
             <a href="/commands/update-server">Update</a> 
         {% else %}
             UpdateServer
         {% endif %}
-        <ul>
         <small>
-            <li>CurrentVersion: <b>{{ versionInfo.CurrentVersion }}</b></li>
-            <li>AvailableVersion: <b>{{ versionInfo.AvailableVersion }}</b></li>
-            <li>UpdateBranchName: <b>{{ versionInfo.UpdateBranchName }}</b></li>
+            CurrentVersion: <b>{{ versionInfo.CurrentVersion }}</b> |
+            AvailableVersion: <b>{{ versionInfo.AvailableVersion }}</b> |
+            UpdateBranchName: <b>{{ versionInfo.UpdateBranchName }}</b> 
         </small>
-        </ul>
-    </li>
-    <li>
+    </div>
+    <div>
         <a href="/commands/reboot-server">Reboot</a>
-    </li>    
-    <li>
+    </div>    
+    <div>
         <a href="/commands/halt-server">Halt</a>        
-    </li>    
-</ul>
+    </div>    
 <h3>Docker</h3>
-<ul>
-    <li>
-        <a href="/commands/kill-docker">KillDocker</a>
-    </li>        
-</ul>  
+<div>
+    <a href="/commands/kill-docker">KillDocker</a>
+</div>  
 {% endblock %}
