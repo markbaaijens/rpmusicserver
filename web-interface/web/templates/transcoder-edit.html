@@ -25,7 +25,11 @@
                 </td>
             </tr>            
             <tr>
-                <td align="right">{{ form.oggQuality.label }}:</td>
+                <td align="right">
+                    <abbr title="Value must be between 0 and 5; leave as 0 to obtain the default">
+                        {{ form.oggQuality.label }}
+                    </abbr>
+                </td>
                 <td>
                     {{ form.oggQuality(size=5) }}
                     {% for error in form.oggQuality.errors %}
@@ -43,7 +47,11 @@
                 </td>
             </tr>                        
             <tr>
-                <td align="right">{{ form.mp3Bitrate.label }}:</td>
+                <td align="right">
+                    <abbr title="Value must be either 0, 128, 256 or 384; leave as 0 to obtain the default">
+                        {{ form.mp3Bitrate.label }}
+                    </abbr>
+                </td>
                 <td>
                     {{ form.mp3Bitrate(size=5) }}
                     {% for error in form.mp3Bitrate.errors %}

@@ -7,6 +7,14 @@
             <td align="right">SourceFolder:</td>
             <td><b>{{ transcoderSettings.sourcefolder }}</b></td>
         </tr>
+        <div>
+            <p>
+            TranscoderLog
+            <a href="/logs/transcoder/0">0</a>
+            <a href="/logs/transcoder/20">20</a>
+            <a href="/logs/transcoder/50">50</a>
+            <a href="/logs/transcoder/100">100</a>
+        </div>        
         <tr>
             <td align="right">OggFolder:</td>
             <td><b>{{ transcoderSettings.oggfolder }}</b></td>
@@ -39,12 +47,4 @@
     </table>  
     <p>
     <div><a href="/transcoder/edit">Edit</a></div>
-    <div>
-        <p>
-        TranscoderLog
-        <a href="/logs/transcoder/0">0</a>
-        <a href="/logs/transcoder/20">20</a>
-        <a href="/logs/transcoder/50">50</a>
-        <a href="/logs/transcoder/100">100</a>
-    </div>
 {% endblock %}

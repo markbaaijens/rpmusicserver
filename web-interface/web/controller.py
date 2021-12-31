@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, flash
+from flask_wtf import CSRFProtect
 import requests
 import json
 import logging
@@ -12,6 +13,9 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)  # For flask/wtf-forms
+csrf = CSRFProtect() # SRSF-setup for wtf-forms
+csrf.init_app(app)
+
 logger = logging.getLogger()
 
 def SetupLogger():
