@@ -3,40 +3,37 @@
 {% block content %}
 <h2>Commands</h2>
 <h3>Server</h3>
-<ul>
-    <li>
-        <a href="/commands/backup-server">Backup</a>
-    </li>
-    <li>
-        {% if versionInfo.CanUpdate %}
-            <a href="/commands/update-server">Update</a> 
-        {% else %}
-            UpdateServer
-        {% endif %}
-        <small>
-            <abbr title="CurrentVersion {{ versionInfo.CurrentVersion }} | AvailableVersion {{ versionInfo.AvailableVersion }} | UpdateBranchName {{ versionInfo.UpdateBranchName }}">
-                CanUpdate 
-                <b>
-                    {% if versionInfo.CanUpdate %}
-                        &#10004;
-                    {% else %}
-                        &#x2717; 
-                    {% endif %}
-                </b>        
-            </abbr>
-        </small>
-    </li>
-    <li>
-        <a href="/commands/reboot-server">Reboot</a>
-    </li>    
-    <li>
-        <a href="/commands/halt-server">Halt</a>        
-    </li>    
-</ul>
+<div class="indent">
+    <a href="/commands/backup-server">Backup</a>
+</div>
+<div class="indent">
+    {% if versionInfo.CanUpdate %}
+        <a href="/commands/update-server">Update</a> 
+    {% else %}
+        UpdateServer
+    {% endif %}
+    <small>
+        <abbr title="CurrentVersion {{ versionInfo.CurrentVersion }} | AvailableVersion {{ versionInfo.AvailableVersion }} | UpdateBranchName {{ versionInfo.UpdateBranchName }}">
+            CanUpdate
+        </abbr>
+        <b>
+            {% if versionInfo.CanUpdate %}
+                &#10004;
+            {% else %}
+                &#x2717; 
+            {% endif %}
+        </b>        
+    </small>
+</div>
+<div class="indent">
+    <a href="/commands/reboot-server">Reboot</a>
+</div>    
+<div class="indent">
+    <a href="/commands/halt-server">Halt</a>        
+</div>    
+
 <h3>Docker</h3>
-<ul>
-    <li>
-        <a href="/commands/kill-docker">KillDocker</a>
-    </li>  
-</ul>
+<div class="indent">
+    <a href="/commands/kill-docker">KillDocker</a>
+</div>  
 {% endblock %}

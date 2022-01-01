@@ -36,3 +36,7 @@ td {
 	background-repeat: no-repeat;
 	padding-right: 15px
 }
+
+.indent {
+	padding-left: 10px;
+}
