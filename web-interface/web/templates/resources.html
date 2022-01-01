@@ -9,11 +9,10 @@
         </tr>
         <tr>
             <td align="right">MemUsed</td>
-            <td><b>{{ resourceInfo.MemUsed }}</b></td>
-        </tr>
-        <tr>
-            <td align="right">MemUsedPercentage</td>
-            <td><b>{{ resourceInfo.MemUsedPercentage }}</b></td>
+            <td>
+                <b>{{ resourceInfo.MemUsed }}</b>
+                <small>{{ resourceInfo.MemUsedPercentage }}%</small>
+            </td>
         </tr>
         <tr>
             <td align="right">SwapTotal</td>
@@ -21,23 +20,16 @@
         </tr>
         <tr>
             <td align="right">SwapUsed</td>
-            <td><b>{{ resourceInfo.SwapUsed }}</b></td>
+            <td>
+                <b>{{ resourceInfo.SwapUsed }}</b>
+                <small>{{ resourceInfo.SwapUsedPercentage }}%</small>                
+            </td>
         </tr>        
         <tr>
-            <td align="right">SwapUsedPercentage</td>
-            <td><b>{{ resourceInfo.SwapUsedPercentage }}</b></td>
-        </tr>                
-        <tr>
-            <td align="right">OverageLoad1</td>
-            <td><b>{{ resourceInfo.OverageLoad1 }}</b></td>
+            <td align="right">
+                <abbr title="overload in 1, 5 and 15 minutes">OverageLoad</abbr>
+            </td>
+            <td><b>{{ resourceInfo.OverageLoad1 }} {{ resourceInfo.OverageLoad5 }} {{ resourceInfo.OverageLoad15 }}</b></td>
         </tr>
-        <tr>
-            <td align="right">OverageLoad5</td>
-            <td><b>{{ resourceInfo.OverageLoad5 }}</b></td>
-        </tr>        
-        <tr>
-            <td align="right">OverageLoad15</td>
-            <td><b>{{ resourceInfo.OverageLoad15 }}</b></td>
-        </tr>                        
     </table>        
 {% endblock %}
