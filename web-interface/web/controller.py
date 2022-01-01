@@ -84,23 +84,6 @@ def ShowDisks():
     )    
     pass
 
-@app.route('/api-list', methods=['GET'])
-def ShowApiList():    
-    try:
-        apiList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetApiList').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        apiList = []
-
-    return render_template(
-        'api-list.html', 
-        appTitle = 'API Documentation - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        apiList = apiList
-    )    
-    pass
-
 @app.route('/transcoder', methods=['GET'])
 def ShowTranscoderSettings():
     try:
