@@ -37,6 +37,13 @@ def SetupLogger():
 @app.route('/', methods=['GET'])
 def Home():
     try:
+        machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        machineInfo = []
+
+    try:
         apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
     except Exception as e:
         logger.error(e)
@@ -55,6 +62,7 @@ def Home():
         appTitle = 'Home - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
+        machineInfo = machineInfo,
         versionInfo = versionInfo
     )
     pass
@@ -127,15 +135,8 @@ def ShowDocker():
     )   
     pass     
 
-@app.route('/machine', methods=['GET'])
-def ShowMachine():
-    try:
-        machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        machineInfo = []
-
+@app.route('/resources', methods=['GET'])
+def ShowResources():
     try:
         resourceInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetResourceInfo').content)
     except Exception as e:
@@ -144,10 +145,9 @@ def ShowMachine():
         resourceInfo = []
 
     return render_template(
-        'machine.html', 
-        appTitle = 'Machine - ' + configObject.AppTitle, 
+        'resources.html', 
+        appTitle = 'Resources - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        machineInfo = machineInfo,
         resourceInfo = resourceInfo
     )   
     pass     

@@ -10,7 +10,34 @@
     </small>
 </div>
 <p>
-<h2>VersionInfo</h2>
+    <h2>Machine</h2>
+    <table>
+        <tr>
+            <td align="right">HostName:</td>
+            <td><b>{{ machineInfo.HostName }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">IpAddress:</td>
+            <td><b>{{ machineInfo.IpAddress }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">RpModel:</td>
+            <td><b>{{ machineInfo.RpModel }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">CpuTemp:</td>
+            <td><b>{{ machineInfo.CpuTemp }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">OsCodeName:</td>
+            <td><b>{{ machineInfo.OsCodeName }}</b></td>
+        </tr>        
+        <tr>
+            <td align="right">UpTime:</td>
+            <td><b>{{ machineInfo.UpTime }}</b></td>
+        </tr>
+    </table>    
+<h2>Version</h2>
 <table>
     <tr>
         <td align="right">CanUpdate:</td>
@@ -50,7 +77,7 @@
         <td><b>{{ versionInfo.VersionFile }}</b></td>
     </tr>                
 </table>  
-<h2>ApiInfo</h2>
+<h2>Api</h2>
 <table>
     <tr>
         <td align="right">ApiName:</td>
