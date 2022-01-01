@@ -24,9 +24,9 @@
             <td align="right">OggQuality</td>
             <td>
                 {% if transcoderSettings.oggquality == 0 %}
-                    (default)
+                    <small>(default = 1)</small>
                 {% else %}
-                <b>{{ transcoderSettings.oggquality }}</b>
+                    <b>{{ transcoderSettings.oggquality }}</b>
                 {% endif %}
             </td>
         </tr>
@@ -38,9 +38,9 @@
             <td align="right">Mp3Bitrate</td>
             <td>
                 {% if transcoderSettings.mp3bitrate == 0 %}
-                    (default)
+                    <small>(default = 128)</small>
                 {% else %}
-                <b>{{ transcoderSettings.mp3bitrate }}</b>
+                    <b>{{ transcoderSettings.mp3bitrate }}</b>
                 {% endif %}
             </td>
 
