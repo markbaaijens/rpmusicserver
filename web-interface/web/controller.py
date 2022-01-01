@@ -4,12 +4,11 @@ import requests
 import json
 import logging
 import traceback
+import os
 
 from globals import configObject
-
 from converters import ConvertToTwoDecimals, ConvertBooleanToText
 from forms import EditTranscoderForm
-import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)  # For flask/wtf-forms
@@ -35,8 +34,22 @@ def SetupLogger():
         logger.addHandler(consoleHandler)
     pass
 
+def SizeHumanReadable(num, suffix="B"):
+    for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
+        if abs(num) < 1024.0:
+            return f"{num:3.1f}{unit}{suffix}"
+        num /= 1024.0
+    return f"{num:.1f}Yi{suffix}"
+
 @app.route('/', methods=['GET'])
 def Home():
+    try:
+        machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        machineInfo = []
+
     try:
         apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
     except Exception as e:
@@ -56,6 +69,7 @@ def Home():
         appTitle = 'Home - ' + configObject.AppTitle, 
         apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
+        machineInfo = machineInfo,
         versionInfo = versionInfo
     )
     pass
@@ -74,23 +88,6 @@ def ShowDisks():
         appTitle = 'Disks - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         diskList = diskList
-    )    
-    pass
-
-@app.route('/api-list', methods=['GET'])
-def ShowApiList():    
-    try:
-        apiList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetApiList').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        apiList = []
-
-    return render_template(
-        'api-list.html', 
-        appTitle = 'API Documentation - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        apiList = apiList
     )    
     pass
 
@@ -128,27 +125,24 @@ def ShowDocker():
     )   
     pass     
 
-@app.route('/machine', methods=['GET'])
-def ShowMachine():
-    try:
-        machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        machineInfo = []
-
+@app.route('/resources', methods=['GET'])
+def ShowResources():
     try:
         resourceInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetResourceInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         resourceInfo = []
+    
+    resourceInfo['MemTotal'] = SizeHumanReadable(int(resourceInfo['MemTotal']) * 1024, '')
+    resourceInfo['MemUsed'] = SizeHumanReadable(int(resourceInfo['MemUsed']) * 1024, '')    
+    resourceInfo['SwapTotal'] = SizeHumanReadable(int(resourceInfo['SwapTotal']) * 1024, '')
+    resourceInfo['SwapUsed'] = SizeHumanReadable(int(resourceInfo['SwapUsed']) * 1024, '')    
 
     return render_template(
-        'machine.html', 
-        appTitle = 'Machine - ' + configObject.AppTitle, 
+        'resources.html', 
+        appTitle = 'Resources - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        machineInfo = machineInfo,
         resourceInfo = resourceInfo
     )   
     pass     

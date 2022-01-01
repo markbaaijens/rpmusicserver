@@ -13,13 +13,12 @@
     <body>
         <div>                        
             <a href="/"><img src="{{ url_for('static',filename='home.png') }}" alt="Home" style="width:20px;height:20x;"></a> | 
-            <a href="/machine">Machine</a> | 
+            <a href="/resources">Resources</a> | 
             <a href="/disks">Disks</a> | 
             <a href="/docker">Docker</a> | 
             <a href="/transcoder">Transcoder</a> | 
-            <a href="/logs">Logs</a> | 
             <a href="/commands">Commands</a> |             
-            <a href="/api-list">ApiList</a>
+            <a href="/logs">Logs</a>
         </div>        
         <hr>
         {% with messages = get_flashed_messages() %}
