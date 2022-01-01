@@ -4,12 +4,11 @@ import requests
 import json
 import logging
 import traceback
+import os
 
 from globals import configObject
-
 from converters import ConvertToTwoDecimals, ConvertBooleanToText
 from forms import EditTranscoderForm
-import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)  # For flask/wtf-forms
