@@ -46,6 +46,7 @@ def GetMachineInfo():
             "UpTime": upTime}
 
 disks = []
+services = []
 
 def AppendDiskInfo(diskMountPoint):
     # diskDeviceName => mount | grep -w / | awk '{print $1}'
@@ -94,6 +95,21 @@ def AppendDiskInfo(diskMountPoint):
                  })
     pass
 
+def AppendServiceInfo(portNumber, serviceName):
+    # isOnline => nmap localhost | grep <port>/tcp'
+    isOnline = False
+    process = subprocess.run(["nmap localhost"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep " + str(portNumber) + '/tcp'], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    if process.stdout.decode("utf-8").strip('\n'):
+        isOnline = True
+
+    services.append({
+                    "PortNumber": portNumber,
+                    "ServiceName": serviceName,
+                    "IsOnline": isOnline
+                 })
+    pass
+
 def GetDiskList():
     disks.clear()
     AppendDiskInfo('/')
@@ -101,6 +117,18 @@ def GetDiskList():
     AppendDiskInfo('/media/usbbackup')
     return disks
 
+def GetServiceList():
+    services.clear()
+    AppendServiceInfo(22, 'SSH')
+    AppendServiceInfo(80, 'RPMS/web')
+    AppendServiceInfo(139, 'Samba/netbios')
+    AppendServiceInfo(445, 'Samba/tcp')
+    AppendServiceInfo(5000, 'RPMS/api')
+    AppendServiceInfo(9002, 'LMS/web')
+    AppendServiceInfo(9090, 'LMS/telnet')
+    AppendServiceInfo(9091, 'Transmission')
+    return services
+    
 def GetResourceInfo():
     # memTotal => free | grep 'Mem:' | awk '{print $2}'
     process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
