@@ -34,6 +34,13 @@ def SetupLogger():
         logger.addHandler(consoleHandler)
     pass
 
+def SizeHumanReadable(num, suffix="B"):
+    for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
+        if abs(num) < 1024.0:
+            return f"{num:3.1f}{unit}{suffix}"
+        num /= 1024.0
+    return f"{num:.1f}Yi{suffix}"
+
 @app.route('/', methods=['GET'])
 def Home():
     try:
@@ -126,6 +133,11 @@ def ShowResources():
         logger.error(e)
         logger.error(traceback.format_exc())
         resourceInfo = []
+    
+    resourceInfo['MemTotal'] = SizeHumanReadable(int(resourceInfo['MemTotal']) * 1024, '')
+    resourceInfo['MemUsed'] = SizeHumanReadable(int(resourceInfo['MemUsed']) * 1024, '')    
+    resourceInfo['SwapTotal'] = SizeHumanReadable(int(resourceInfo['SwapTotal']) * 1024, '')
+    resourceInfo['SwapUsed'] = SizeHumanReadable(int(resourceInfo['SwapUsed']) * 1024, '')    
 
     return render_template(
         'resources.html', 
