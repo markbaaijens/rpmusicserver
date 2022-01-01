@@ -3,10 +3,11 @@
 {% block content %}
 <h2>Commands</h2>
 <h3>Server</h3>
-    <div>
+<ul>
+    <li>
         <a href="/commands/backup-server">Backup</a>
-    </div>
-    <div>
+    </li>
+    <li>
         {% if versionInfo.CanUpdate %}
             <a href="/commands/update-server">Update</a> 
         {% else %}
@@ -24,15 +25,18 @@
                 </b>        
             </abbr>
         </small>
-    </div>
-    <div>
+    </li>
+    <li>
         <a href="/commands/reboot-server">Reboot</a>
-    </div>    
-    <div>
+    </li>    
+    <li>
         <a href="/commands/halt-server">Halt</a>        
-    </div>    
+    </li>    
+</ul>
 <h3>Docker</h3>
-<div>
-    <a href="/commands/kill-docker">KillDocker</a>
-</div>  
+<ul>
+    <li>
+        <a href="/commands/kill-docker">KillDocker</a>
+    </li>  
+</ul>
 {% endblock %}

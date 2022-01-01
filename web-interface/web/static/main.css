@@ -22,6 +22,10 @@ em {
 	color: red;
 }
 
+ul {
+	list-style-type:none;
+}
+
 .external {
 	background-image: url(/static/external.svg);
 	background-position: center right;
