@@ -13,10 +13,16 @@
             UpdateServer
         {% endif %}
         <small>
-            CanUpdate <b>{{ versionInfo.CanUpdate }}</b> |            
-            CurrentVersion <b>{{ versionInfo.CurrentVersion }}</b> |
-            AvailableVersion <b>{{ versionInfo.AvailableVersion }}</b> |
-            UpdateBranchName <b>{{ versionInfo.UpdateBranchName }}</b> 
+            <abbr title="CurrentVersion {{ versionInfo.CurrentVersion }} | AvailableVersion {{ versionInfo.AvailableVersion }} | UpdateBranchName {{ versionInfo.UpdateBranchName }}">
+                CanUpdate 
+                <b>
+                    {% if versionInfo.CanUpdate %}
+                        &#10004;
+                    {% else %}
+                        &#x2717; 
+                    {% endif %}
+                </b>        
+            </abbr>
         </small>
     </div>
     <div>
