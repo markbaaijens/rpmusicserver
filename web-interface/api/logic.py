@@ -176,9 +176,9 @@ def GetResourceInfo():
             "SwapTotal": swapTotal,
             "SwapUsed": swapUsed,
             "SwapUsedPercentage": swapUsedPercentage,            
-            "OverageLoad1": averageLoad1,
-            "OverageLoad5": averageLoad5,
-            "OverageLoad15": averageLoad15,
+            "AverageLoad1": averageLoad1,
+            "AverageLoad5": averageLoad5,
+            "AverageLoad15": averageLoad15,
             "TopProcessesByCpu": topProcessesByCpu,
             "TopProcessesByMemory":topProcessesByMemory}
 

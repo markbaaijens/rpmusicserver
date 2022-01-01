@@ -21,3 +21,22 @@ a:hover { background-color: lightgray;}
 em {
 	color: red;
 }
+
+ul {
+	list-style-type:none;
+}
+
+td {
+	padding-right: 5px;
+}
+
+.external {
+	background-image: url(/static/external.svg);
+	background-position: center right;
+	background-repeat: no-repeat;
+	padding-right: 15px
+}
+
+.indent {
+	padding-left: 10px;
+}
