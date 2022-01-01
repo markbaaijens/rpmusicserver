@@ -26,6 +26,10 @@ ul {
 	list-style-type:none;
 }
 
+td {
+	padding-right: 5px;
+}
+
 .external {
 	background-image: url(/static/external.svg);
 	background-position: center right;

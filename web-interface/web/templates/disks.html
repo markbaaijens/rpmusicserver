@@ -15,7 +15,7 @@
     </div>
     <table>
         <tr>
-            <td align="right">IsOnline:</td>
+            <td align="right">IsOnline</td>
             <td>
                 {% if disk.IsOnline %}
                     &#10004;
@@ -26,23 +26,23 @@
         </tr>
         {% if disk.IsOnline %}
             <tr>
-                <td align="right">Size:</td>
+                <td align="right">Size</td>
                 <td><b>{{ disk.Size }}</b></td>
             </tr>
             <tr>
-                <td align="right">Used:</td>
+                <td align="right">Used</td>
                 <td><b>{{ disk.Used }}</b></td>
             </tr>
             <tr>
-                <td align="right">UsedPercentage:</td>
+                <td align="right">UsedPercentage</td>
                 <td><b>{{ disk.UsedPercentage }}</b></td>
             </tr>
             <tr>
-                <td align="right">MountPoint:</td>
+                <td align="right">MountPoint</td>
                 <td><b>{{ disk.MountPoint }}</b></td>
             </tr>
             <tr>
-                <td align="right">DeviceName:</td>
+                <td align="right">DeviceName</td>
                 <td><b>{{ disk.DeviceName }}</b></td>
             </tr>
         {% endif %}
