@@ -13,14 +13,6 @@
 <h2>VersionInfo</h2>
 <table>
     <tr>
-        <td align="right">CurrentVersion:</td>
-        <td><b>{{ versionInfo.CurrentVersion }}</b></td>
-    </tr>
-    <tr>
-        <td align="right">AvailableVersion:</td>
-        <td><b>{{ versionInfo.AvailableVersion }}</b></td>
-    </tr>
-    <tr>
         <td align="right">CanUpdate:</td>
         <td>
             {% if versionInfo.CanUpdate %}
@@ -36,6 +28,14 @@
                 {% endif %}            
             </small>            
         </td>
+    </tr>    
+    <tr>
+        <td align="right">CurrentVersion:</td>
+        <td><b>{{ versionInfo.CurrentVersion }}</b></td>
+    </tr>
+    <tr>
+        <td align="right">AvailableVersion:</td>
+        <td><b>{{ versionInfo.AvailableVersion }}</b></td>
     </tr>
     <tr>
         <td align="right">UpdateBranchName:</td>
