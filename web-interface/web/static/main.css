@@ -21,3 +21,10 @@ a:hover { background-color: lightgray;}
 em {
 	color: red;
 }
+
+.external {
+	background-image: url(/static/external.svg);
+	background-position: center right;
+	background-repeat: no-repeat;
+	padding-right: 13px;
+}
