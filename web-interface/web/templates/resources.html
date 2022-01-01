@@ -4,30 +4,26 @@
     <h2>Resources</h2>
     <table>
         <tr>
-            <td align="right">MemTotal</td>
-            <td><b>{{ resourceInfo.MemTotal }}</b></td>
-        </tr>
-        <tr>
-            <td align="right">MemUsed</td>
+            <td align="right">Memory</td>
             <td>
+                <b>{{ resourceInfo.MemTotal }}</b>
+                <small>used</small>
                 <b>{{ resourceInfo.MemUsed }}</b>
                 <small>{{ resourceInfo.MemUsedPercentage }}%</small>
             </td>
         </tr>
         <tr>
-            <td align="right">SwapTotal</td>
-            <td><b>{{ resourceInfo.SwapTotal }}</b></td>
+            <td align="right">Swap</td>
+            <td>
+                <b>{{ resourceInfo.SwapTotal }}</b>
+                <small>used</small>
+                <b>{{ resourceInfo.SwapUsed }}</b>
+                <small>{{ resourceInfo.SwapUsedPercentage }}%</small>
+            </td>
         </tr>
         <tr>
-            <td align="right">SwapUsed</td>
-            <td>
-                <b>{{ resourceInfo.SwapUsed }}</b>
-                <small>{{ resourceInfo.SwapUsedPercentage }}%</small>                
-            </td>
-        </tr>        
-        <tr>
             <td align="right">
-                <abbr title="Average overload in 1, 5 and 15 minutes">AverageLoad</abbr>
+                <abbr title="Average load in 1, 5 and 15 minutes">AverageLoad</abbr>
             </td>
             <td><b>{{ resourceInfo.AverageLoad1 }} {{ resourceInfo.AverageLoad5 }} {{ resourceInfo.AverageLoad15 }}</b></td>
         </tr>
