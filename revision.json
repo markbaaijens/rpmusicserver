@@ -8,7 +8,8 @@
                 "Expose backup-disk through samba",
                 "Faster reboot/halt by first killing docker-containers",
                 "Enhanced readme, commands for transcoder- and backup-progress, extended disaster-recovery",
-                "Web-frontend"
+                "Web-frontend",
+                "Install nmap"
             ]
         },
         {
