@@ -30,7 +30,11 @@ td {
 	padding-right: 5px;
 }
 
-.external {
+.margin-above {
+	margin-top: 10px;
+}
+
+.external-link {
 	background-image: url(/static/external.svg);
 	background-position: center right;
 	background-repeat: no-repeat;
