@@ -5,11 +5,12 @@
             "Version":"0.6",
             "Changes": [
                 "Choice (while burning) for alternative hostname 'rpmsdev' for development",
-                "Expose backup-disk through samba",
+                "Expose backup-disk through samba (experimental)",
                 "Faster reboot/halt by first killing docker-containers",
                 "Enhanced readme, commands for transcoder- and backup-progress, extended disaster-recovery",
                 "Web-frontend",
-                "Install nmap"
+                "Install nmap",
+                "Service detection, web + api"
             ]
         },
         {

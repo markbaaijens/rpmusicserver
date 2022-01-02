@@ -125,6 +125,23 @@ def ShowDocker():
     )   
     pass     
 
+@app.route('/services', methods=['GET'])
+def ShowServices():
+    try:
+        serviceList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceList').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        serviceList = []
+
+    return render_template(
+        'services.html', 
+        appTitle = 'Services - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        serviceList = serviceList
+    )   
+    pass     
+
 @app.route('/resources', methods=['GET'])
 def ShowResources():
     try:

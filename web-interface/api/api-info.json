@@ -12,7 +12,7 @@
         "Example":"curl rpms:5000/api/GetMachineInfo"
     },
     {   "EndPoint": "GET api/GetVersionInfo",
-        "Description": "Shows the current version of RPMS & timestamp of the last update",
+        "Description": "Shows info about version of RPMS",
         "Example":"curl rpms:5000/api/GetVersionInfo"
     },
     {   "EndPoint": "GET api/GetUpdateLog/<int>",
@@ -59,6 +59,10 @@
         "Description": "Show info about backup",
         "Example":"curl rpms:5000/api/GetBackupInfo"
     },    
+    {   "EndPoint": "GET api/GetServiceList",
+        "Description": "Show services",
+        "Example":"curl rpms:5000/api/GetSrviceList"
+    },
     {   "EndPoint": "POST api/DoUpdateServer",
         "Description": "Update RPMS to the latest version",
         "Example":"curl rpms:5000/api/DoUpdateServer -X post"

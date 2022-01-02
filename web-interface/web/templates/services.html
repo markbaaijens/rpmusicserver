@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Services</h2>
+    <p>
+    {% for service in serviceList %}
+    <div>
+        {% if service.IsActive %}
+            &#10004;
+            {{ service.PortNumber }} {{ service.ServiceName }}
+        {% else %}
+            &#x2717; 
+            <del>{{ service.PortNumber }} {{ service.ServiceName }}</del>        
+        {% endif %}        
+    </div>
+    {% endfor %} 
+{% endblock %}
