@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Services</h2>
+    <p>
+    {% for service in serviceList %}
+    <div>
+        {% if service.IsActive %}
+            &#10004;
+            {{ service.PortNumber }} {{ service.ServiceName }}
+        {% else %}
+            &#x2717; 
+            <del>{{ service.PortNumber }} {{ service.ServiceName }}</del>        
+        {% endif %}        
+    </div>
+    {% endfor %} 
+    <p>
+    <div><em>Services may take a few moments to become visible to the outside.</em></div>
+    <div><em>Use <code>watch nmap rpms</code> to have a proper result.</em></div>            
+{% endblock %}

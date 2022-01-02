@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Resources</h2>
+    <table>
+        <tr>
+            <td align="right">Memory</td>
+            <td>
+                <b>{{ resourceInfo.MemTotal }}</b> |
+                <small>used</small>
+                <b>{{ resourceInfo.MemUsed }}</b>
+                <small>{{ resourceInfo.MemUsedPercentage }}%</small>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">Swap</td>
+            <td>
+                <b>{{ resourceInfo.SwapTotal }}</b> |
+                <small>used</small>
+                <b>{{ resourceInfo.SwapUsed }}</b>
+                <small>{{ resourceInfo.SwapUsedPercentage }}%</small>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <abbr title="Average load in 1, 5 and 15 minutes">AverageLoad</abbr>
+            </td>
+            <td><b>{{ resourceInfo.AverageLoad1 }} {{ resourceInfo.AverageLoad5 }} {{ resourceInfo.AverageLoad15 }}</b></td>
+        </tr>
+    </table>        
+{% endblock %}

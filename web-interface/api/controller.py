@@ -1,13 +1,10 @@
 from flask import Flask, jsonify, abort, make_response, request
 import logging
-from logging import FileHandler
 import traceback
 from flask_cors import CORS
-from werkzeug.wrappers import response
 import asyncio
 
 import logic 
-from config import Config
 from globals import configObject
 
 HTTP_OK = 200
@@ -147,6 +144,17 @@ def GetApiLog(nrOfLines):
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
+@app.route('/api/GetWebLog/<int:nrOfLines>', methods=['GET'])
+def GetWebLog(nrOfLines):
+    try:
+        info = logic.GetLog('/media/usbdata/rpms/logs/web.log', nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
 @app.route('/api/GetTranscoderLog/<int:nrOfLines>', methods=['GET'])
 def GetTranscoderLog(nrOfLines):
     try:
@@ -243,7 +251,7 @@ def SetTranscoderOggQuality():
     if not 'Value' in requestData:
         abort(HTTP_BAD_REQUEST)
 
-    if not (1 <= requestData['Value'] <= 5):
+    if not (0 <= requestData['Value'] <= 5):
         abort(HTTP_BAD_REQUEST) 
 
     try:
@@ -255,8 +263,8 @@ def SetTranscoderOggQuality():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-@app.route('/api/SetTranscoderMp3BitRate', methods=['POST'])
-def SetTranscoderMp3BitRate():
+@app.route('/api/SetTranscoderMp3Bitrate', methods=['POST'])
+def SetTranscoderMp3Bitrate():
     if not request.json:
         abort(HTTP_BAD_REQUEST)
     requestData = request.get_json()
@@ -264,7 +272,7 @@ def SetTranscoderMp3BitRate():
     if not 'Value' in requestData:
         abort(HTTP_BAD_REQUEST)
 
-    if not (requestData['Value'] in [128, 256, 384]):
+    if not (requestData['Value'] in [0, 128, 256, 384]):
         abort(HTTP_BAD_REQUEST) 
 
     try:
@@ -297,6 +305,17 @@ def GetDiskList():
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetServiceList', methods=['GET'])
+def GetServiceList():
+    try:
+        info = logic.GetServiceList()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
 @app.route('/api/DoRebootServer', methods=['POST'])
 def DoRebootServer():
@@ -333,6 +352,18 @@ def DoHaltServer():
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/DoKillDocker', methods=['POST'])
+def DoKillDocker():
+    try:
+        asyncio.run(logic.DoKillDocker())
+        info = { "Message": "Docker-container will be killed" }
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
 @app.route('/api/DoUpdateServer', methods=['POST'])
 def DoUpdateServer():

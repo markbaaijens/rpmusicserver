@@ -1,7 +1,11 @@
 #!/bin/bash
-#
-# This script will install RP Music Server onto a copy of Rapsbian OS Lite
-#
+
+install_bin_file () {
+    echo "Copy $1 file:"
+    cp /tmp/rpmusicserver/files/usr/local/bin/$1 /usr/local/bin
+    chmod +x /usr/local/bin/$1
+    echo " => file $1 copied." 
+}
 
 if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
@@ -11,7 +15,7 @@ fi
 
 echo "Start installing packages..."
 apt-get update
-apt-get install docker.io python3-pip tree jq bwm-ng -y  # Generic
+apt-get install docker.io python3-pip tree jq bwm-ng -y nmap  # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
 echo " => done installing packages."
 
@@ -88,10 +92,10 @@ echo "Install (python) pip-packages:"
 pip3 install -r /tmp/rpmusicserver/web-interface/requirements.txt 
 echo " => pip-packages installed." 
 
-echo "Install program files for API:"
+echo "Install program files for web-interface:"
 mkdir -p /usr/local/bin/rpmusicserver/web-interface
 cp -r /tmp/rpmusicserver/web-interface/* /usr/local/bin/rpmusicserver/web-interface
-echo " => program files installed." 
+echo " => program files for web-interface installed." 
 
 echo "Copy rc.local file:"
 cp /tmp/rpmusicserver/files/etc/rc.local /etc
@@ -108,16 +112,6 @@ cp /tmp/rpmusicserver/revision.json /etc/rpms
 touch /etc/rpms/revision.json  # For retrieving last update timestamp
 echo " => file revision.json copied." 
 
-echo "Copy update-server file:"
-cp /tmp/rpmusicserver/files/usr/local/bin/update-server /usr/local/bin
-chmod +x /usr/local/bin/update-server
-echo " => file update-server copied." 
-
-echo "Copy backup-server file:"
-cp /tmp/rpmusicserver/files/usr/local/bin/backup-server /usr/local/bin
-chmod +x /usr/local/bin/backup-server
-echo " => file backup-server copied." 
-
 echo "Installing transcoder..."
 rm -rf /tmp/transcoder*
 wget https://github.com/markbaaijens/transcoder/archive/refs/tags/v1.0.zip -nv -O /tmp/transcoder.zip
@@ -129,9 +123,14 @@ chmod +x /usr/local/bin/transcoder/transcoder.py
 if [ ! -f /media/usbdata/rpms/config/transcoder-settings.json ]; then
     cp /tmp/transcoder/transcoder-settings.json /media/usbdata/rpms/config/transcoder-settings.json
 fi 
-cp /tmp/rpmusicserver/files/usr/local/bin/transcode /usr/local/bin
-chmod +x /usr/local/bin/transcode
 echo " => transcoder installed"
+
+install_bin_file update-server
+install_bin_file backup-server
+install_bin_file transcode
+install_bin_file kill-docker
+install_bin_file halt-server
+install_bin_file reboot-server
 
 echo "Adding line for transcoder to /etc/crontab:"
 if [ ! "$(grep "transcode" /etc/crontab)" ]; then
@@ -153,17 +152,5 @@ sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 echo -e "rpms\nrpms" | passwd pi
 echo " => done changing password of user 'pi'."
 
-echo "Kill all docker-containers for faster rebooting..."
-if [ "$(docker ps -f name=lms -q)" ]; then
-    docker kill lms
-fi
-if [ "$(docker ps -f name=transmission -q)" ]; then
-    docker kill transmission
-fi
-if [ "$(docker ps -f name=samba -q)" ]; then
-    docker kill samba
-fi
-echo " => done killing docker containers"
-
 echo "Installation complete, system will be rebooted."
-reboot now
+reboot-server

@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">        
+        <title>{{ appTitle }}</title>
+        {% if redirect %}
+            <meta http-equiv="refresh" content="2;url=/" />
+        {% endif %}
+        <link 
+            rel= "stylesheet" 
+            type= "text/css" 
+            href= "{{ url_for('static',filename='main.css') }}">    
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='favicon.ico') }}">
+    </head>
+    <body>
+        <div>                        
+            <a href="/"><img src="{{ url_for('static',filename='home.png') }}" alt="Home" style="width:20px;height:20x;"></a> | 
+            <a href="/services">Services</a> |             
+            <a href="/resources">Resources</a> | 
+            <a href="/disks">Disks</a> | 
+            <a href="/docker">Docker</a> | 
+            <a href="/transcoder">Transcoder</a> | 
+            <a href="/commands">Commands</a> |             
+            <a href="/logs">Logs</a>
+        </div>        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <p>
+                {% for message in messages %}
+                    <div>
+                        <em>{{ message }}</em>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}      
+        
+        {% block content %}{% endblock %}    
+    </body>
+</html>

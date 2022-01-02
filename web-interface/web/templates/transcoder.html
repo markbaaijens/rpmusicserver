@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Transcoder</h2>
+    <table>
+        <tr>
+            <td align="right">SourceFolder</td>
+            <td><b>{{ transcoderSettings.sourcefolder }}</b></td>
+        </tr>
+        <div>
+            <p>
+            TranscoderLog -
+            <a href="/logs/transcoder/0">0</a>
+            <a href="/logs/transcoder/20">20</a>
+            <a href="/logs/transcoder/50">50</a>
+            <a href="/logs/transcoder/100">100</a>
+        </div>   
+        <h3>Settings</h3>     
+        <tr>
+            <td align="right">OggFolder</td>
+            <td><b>{{ transcoderSettings.oggfolder }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">OggQuality</td>
+            <td>
+                {% if transcoderSettings.oggquality == 0 %}
+                    <small>(default = 1)</small>
+                {% else %}
+                    <b>{{ transcoderSettings.oggquality }}</b>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td align="right">Mp3Folder</td>
+            <td><b>{{ transcoderSettings.mp3folder }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">Mp3Bitrate</td>
+            <td>
+                {% if transcoderSettings.mp3bitrate == 0 %}
+                    <small>(default = 128)</small>
+                {% else %}
+                    <b>{{ transcoderSettings.mp3bitrate }}</b>
+                {% endif %}
+            </td>
+
+        </tr>
+    </table>  
+    <p>
+    <div><a href="/transcoder/edit"><img src="{{ url_for('static',filename='edit.png') }}" alt="Home" style="width:20px;height:20x;"></a></div>
+{% endblock %}

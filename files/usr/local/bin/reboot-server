@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+kill-docker
+sleep 3
+reboot now

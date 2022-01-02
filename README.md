@@ -39,15 +39,19 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
     * system will be rebooted automatically after installation
     * after reboot, password of user `pi` is changed to `rpms`
 * Test access:
-  * `watch nmap rpms`
-    * wait until port 9002 appears; exit with Ctrl-C
+  * watch services to become active:
+    * `watch nmap rpms`
+      * wait until port 9002 appears; exit with Ctrl-C
+    * [rpms/services](http://rpms:80/services)
+      * wait until port 9002 is active
+  * RPMS (browser): [rpms](http://rpms:80)
   * LMS (browser): [rpms:9002](http://rpms:9002)
-  * Samba (file explorer): `smb://rpms`
   * Transmission (browser): [rpms:9091](http://rpms:9091)
+  * Samba (file explorer): `smb://rpms`
   * API: 
     * `curl rpms:5000`
-    * [rpms:5000](http://rpms:5000)
-  * SSH: `ssh pi@rpms`
+  * SSH: 
+    * `ssh pi@rpms`
     * password: rpms
 * Engage:
   * copy music files to `smb://rpms/Publiek/Muziek`
@@ -56,44 +60,62 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
   * enjoy!
 
 ### Update
-Update your RPMS by SSH: 
-* `ssh pi@rpms "sudo update-server"`
+Update your RPMS-server: 
+* [rpms/commands](http://rpms:80/commands)
+* click Update
 
 ### Development
-* To update RMPS from `develop` branch instead of `master`: 
+* To update RPMS from `develop` branch instead of `master`: 
   * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
+* To build a development version with a separate hostname `rpmsdev`
+  * `cd <source-folder of rpmusicserver>`
+  * `sudo scripts/burn-image.sh`
+    * choose type `d = development`
+  * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
+	  * password = raspberry  
+  * `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
+	  * password = raspberry 
+  * after reboot, password is changed to `rpms`
+  * from now on, you can reach the development-server on `rpmsdev`
+  * in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
+    * `sudo systemd-resolve --flush-caches`
 * API-documentation: 
   * `curl rpms:5000/api/GetApiList`
   * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList)
+  * [rpms/api-list](http://rpms/api-list)
 
 ## Transcoder
 For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
-* in your file explorer:
+* in your file explorer
   * create a folder `flac` under `smb://rpms/Publiek/Muziek`
   * move your flac-files into that folder `flac`
 * in [LMS](http://rpms:9002) Server Settings, point music-folder to this location:
   * `/music/flac`
-* change setting `sourcefolder`:
-  * `curl rpms:5000/api/SetTranscoderSourceFolder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/flac"}'`
+* change [setting](http://rpms/transcoder/edit) `SourceFolder`
+  * point to `/media/usbdata/user/Publiek/Muziek/flac`
+  * click  Save
 * for transcoding to ogg
-  * in your file explorer: 
+  * in your file explorer
     * create a folder `ogg` under `smb://rpms/Publiek/Muziek`
-  * change setting `oggfolder`:
-    * `curl rpms:5000/api/SetTranscoderOggFolder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/ogg"}'`
+  * change [setting](http://rpms/transcoder/edit) `OggFolder`
+    * point to `/media/usbdata/user/Publiek/Muziek/ogg`
+    * click Save
 * for transcoding to mp3
-  * in your file explorer:
+  * in your file explorer
     * create a folder `mp3`under `smb://rpms/Publiek/Muziek`
-  * change setting `mp3folder`:
-    * `curl rpms:5000/api/SetTranscoderMp3Folder -X post -H "Content-Type: application/json" -d '{"Value":"/media/usbdata/user/Publiek/Muziek/mp3"}'`    
+  * change [setting](http://rpms/transcoder/edit) `Mp3Folder`
+    * point to `/media/usbdata/user/Publiek/Muziek/mp3`
+    * click Save
 * from now on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
+* see transcoder-progress
+  * [rpms/logs/transcoder/20](http://rpms/logs/transcoder/20)
+  * `curl rpms:5000/api/GetTranscoderLog/20`
 
 ### Notes
 * Transcoding will be done by these default quality-levels: ogg = 1, mp3 = 128. Optionally, you can change these defaults:
-  * for example, change `oggquality` to 3 (value = 1, 2, 3, 4, or 5):
-     * `curl rpms:5000/api/SetTranscoderOggQuality -X post -H "Content-Type: application/json" -d '{"Value": 3}'`
-  * for example, change `mp3bitrate` to 256 (value = 128, 256 or 384):
-     * `curl rpms:5000/api/SetTranscoderMp3BitRate -X post -H "Content-Type: application/json" -d '{"Value": 256}'`     
-* Trancoding simultaneously to ogg AND mp3 is possible; just set both `oggfolder` and `mp3folder`
+  * for example, change [setting](http://rpms/transcoder/edit) `OggQuality` to 3 (value = 1, 2, 3, 4, or 5):
+  * for example, change [setting](http://rpms/transcoder/edit) `Mp3Bitrate` to 256 (value = 128, 256 or 384):
+* Trancoding simultaneously to ogg AND mp3 is possible; just set both `OggFolder` and `Mp3Folder`
 
 ## Backup
 You can make a backup of all the data contained in your RPMS-server. This backup will be done to a dedicated backup-disk, connected to the Pi it self, a so called server-based backup.
@@ -106,16 +128,22 @@ You can make a backup of all the data contained in your RPMS-server. This backup
 * engage the backup:
   * connect your backup-disk to the Pi
   * start the backup
-    * `curl rpms:5000/api/DoBackupServer -X post`
-  * watch progress
-    * [rpms:5000/api/GetBackupLog/4](http://rpms:5000/api/GetBackupLog/4)
+    * [rpms/commands](http://rpms/commands)
+    * click BackupServer
+  * watch overall progress
+    * [rpms/logs/backup/20](http://rpms/logs/backup/20)
     * refresh until log states: 'Backup ended'
+  * watch detailed progress
+    * [rpms/logs/backup-details/20](http://rpms/logs/backup-details/20)
   * see full backup-log
-    * [rpms:5000/api/GetBackupDetailsLog/0](http://rpms:5000/api/GetBackupDetailsLog/0)
+    * [rpms/logs/backup-details/0](http://rpms/logs/backup-details/0)
   * disconnect backup-disk
 
 ### Off-line viewing backup-data
-Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers. And worse, MacOS does NOT support ext4 (despite ext2 being open-source/open-standard).
+Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
-### Disaster-recovery
-B/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata`, connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made. Remember to make a backup to a new backup-disk immediately!
+## Disaster-recovery
+Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple
+* *broken Pi* => just obtain a new Pi which meets the system requirements (see above), swap the SD-card and boot up the Pi; nothing to do here anymore
+* *SD-card corrupt* => re-burn en re-install RPMS (see above for instructions) on the same card (if the hardware is damaged, obtain a new card); then you can reboot the Pi and you are ready to go
+* *data-disk crash* =>  b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata`, connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made. Remember to make a backup to a new backup-disk immediately!

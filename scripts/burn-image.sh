@@ -1,7 +1,4 @@
 #!/bin/bash
-#
-# This script will download a Raspbian OS Lite image and burn the image to a SD-card.
-#
 
 if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
@@ -81,7 +78,7 @@ for disk in "${sd_disks[@]}"; do
 done
 echo "Q: quit"
 
-read -p "Select a disk by number: " disk_choice
+read -p "Select a disk: " disk_choice
 
 if [ "${disk_choice,,}" == "q" ]; then
     cleanup_environment    
@@ -98,6 +95,33 @@ fi
 
 chosen_disk=${sd_disks[disk_choice]}
 echo "You have chosen: $chosen_disk"
+
+echo "Image-type:"
+echo "P: Production (hostname = rpms)"
+echo "D: Development (hostname = rpmsdev)"
+echo "Q: quit"
+
+read -p "Select a type: " type_choice
+
+if [ "${type_choice,,}" == "q" ]; then
+    cleanup_environment    
+    echo "Script ended by user."
+    exit
+fi
+
+if [ "$type_choice" == "" ]; then
+    echo "No type selected."
+    cleanup_environment    
+    echo "Script ended."
+    exit
+fi
+if [ ${type_choice,,} != "p" ] && [ ${type_choice,,} != "d" ]; then
+    echo "No type selected."
+    cleanup_environment    
+    echo "Script ended."
+    exit
+fi
+echo "You have chosen: $type_choice $([ ${type_choice,,} == "p" ] && echo "=> production" || echo "=> development")"
 
 read -r -p "Do you want to continue burning on $chosen_disk? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
@@ -176,11 +200,16 @@ touch $mount_point/ssh
 unmount_partition
 echo " => SSH has been activated on $chosen_disk."
 
-echo "Change hostname..."
+if [ ${type_choice,,} == "p" ]; then
+    hostname="rpms"
+else
+    hostname="rpmsdev"
+fi
+echo "Change hostname to $hostname..."
 partition=$(ls -l /dev/disk/by-label | grep "rootfs" | grep -oE "$chosen_disk.*$")
 mount_partition
-sed -i -e 's/raspberrypi/rpms/g' $mount_point/etc/hostname
-sed -i -e 's/raspberrypi/rpms/g' $mount_point/etc/hosts
+sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hostname
+sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hosts
 unmount_partition
 echo " => done changing hostname."
 

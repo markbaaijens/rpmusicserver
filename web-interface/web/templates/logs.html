@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Logs</h2>
+<div class="indent">
+    Backup - 
+    <a href="/logs/backup/0">0</a>        
+    <a href="/logs/backup/20">20</a>
+    <a href="/logs/backup/50">50</a>
+    <a href="/logs/backup/100">100</a>
+</div>
+<div class="indent">
+    BackupDetails - 
+    <a href="/logs/backup-details/0">0</a>        
+    <a href="/logs/backup-details/20">20</a>
+    <a href="/logs/backup-details/50">50</a>
+    <a href="/logs/backup-details/100">100</a>
+</div>    
+<div class="indent">
+    Transcoder - 
+    <a href="/logs/transcoder/0">0</a>        
+    <a href="/logs/transcoder/20">20</a>
+    <a href="/logs/transcoder/50">50</a>
+    <a href="/logs/transcoder/100">100</a>                
+</div>
+<div class="indent">
+    Update - 
+    <a href="/logs/update/0">0</a>        
+    <a href="/logs/update/20">20</a>
+    <a href="/logs/update/50">50</a>
+    <a href="/logs/update/100">100</a>
+</div>
+
+<h3>InfraStructure</h3>
+<div class="indent">
+    Api - 
+    <a href="/logs/api/0">0</a>        
+    <a href="/logs/api/20">20</a>
+    <a href="/logs/api/50">50</a>
+    <a href="/logs/api/100">100</a>
+</div>    
+<div class="indent">
+    Web - 
+    <a href="/logs/web/0">0</a>        
+    <a href="/logs/web/20">20</a>
+    <a href="/logs/web/50">50</a>
+    <a href="/logs/web/100">100</a>
+</div>    
+{% endblock %}

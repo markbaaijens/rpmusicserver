@@ -1,0 +1,46 @@
+body {
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+p, li, th, td, ol, ul, dl, a, blockquote, body { 
+    color: black;
+}
+
+h1, h2, h3 {
+	color: gray;
+}
+
+a {
+	text-decoration: none;
+	font-weight: bolder;
+}
+a:link { color: steelblue;}
+a:visited {color: steelblue;}
+a:hover { background-color: lightgray;}
+
+em {
+	color: red;
+}
+
+ul {
+	list-style-type:none;
+}
+
+td {
+	padding-right: 5px;
+}
+
+.margin-above {
+	margin-top: 10px;
+}
+
+.external-link {
+	background-image: url(/static/external.svg);
+	background-position: center right;
+	background-repeat: no-repeat;
+	padding-right: 15px
+}
+
+.indent {
+	padding-left: 10px;
+}
