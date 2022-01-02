@@ -6,4 +6,5 @@ if [ -z "$(whoami | grep root)" ]; then
 fi
 
 kill-docker
+sleep 3
 halt
