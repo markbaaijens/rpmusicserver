@@ -3,7 +3,7 @@
     <header>
         <title>{{ appTitle }}</title>
         {% if redirect %}
-            <meta http-equiv="refresh" content="2;url=/" />
+            <meta http-equiv="refresh" content="1;url=/" />
         {% endif %}
         <link 
             rel= "stylesheet" 
@@ -23,9 +23,10 @@
         </div>        
         {% with messages = get_flashed_messages() %}
             {% if messages %}
+                <p>
                 {% for message in messages %}
                     <div>
-                        <i>{{ message }}</i>
+                        <em>{{ message }}</em>
                     </div>
                 {% endfor %}
             {% endif %}
