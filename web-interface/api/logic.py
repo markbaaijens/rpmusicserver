@@ -106,7 +106,7 @@ def AppendServiceInfo(portNumber, serviceName):
     services.append({
                     "PortNumber": portNumber,
                     "ServiceName": serviceName,
-                    "IsOnline": isOnline
+                    "IsActive": isOnline
                  })
     pass
 

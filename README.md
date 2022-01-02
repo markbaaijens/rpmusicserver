@@ -39,8 +39,11 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
     * system will be rebooted automatically after installation
     * after reboot, password of user `pi` is changed to `rpms`
 * Test access:
-  * `watch nmap rpms`
-    * wait until port 9002 appears; exit with Ctrl-C
+  * watch services to become active:
+    * `watch nmap rpms`
+      * wait until port 9002 appears; exit with Ctrl-C
+    * [rpms/services](http://rpms:80/services)
+      * wait until port 9002 is active
   * RPMS (browser): [rpms](http://rpms:80)
   * LMS (browser): [rpms:9002](http://rpms:9002)
   * Transmission (browser): [rpms:9091](http://rpms:9091)
@@ -57,8 +60,9 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
   * enjoy!
 
 ### Update
-Update your RPMS by SSH: 
-* `ssh pi@rpms "sudo update-server"`
+Update your RPMS-server: 
+* [rpms/commands](http://rpms:80/commands)
+* click Update
 
 ### Development
 * To update RPMS from `develop` branch instead of `master`: 
