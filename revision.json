@@ -1,6 +1,12 @@
 {
-    "CurrentVersion": "0.6",
+    "CurrentVersion": "0.7",
     "History": [
+        {
+            "Version":"0.7",
+            "Changes": [
+                ""
+            ]
+        },        
         {
             "Version":"0.6",
             "Changes": [
