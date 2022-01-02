@@ -12,7 +12,7 @@
         "Example":"curl rpms:5000/api/GetMachineInfo"
     },
     {   "EndPoint": "GET api/GetVersionInfo",
-        "Description": "Shows info about versions of RPMS",
+        "Description": "Shows info about version of RPMS",
         "Example":"curl rpms:5000/api/GetVersionInfo"
     },
     {   "EndPoint": "GET api/GetUpdateLog/<int>",
