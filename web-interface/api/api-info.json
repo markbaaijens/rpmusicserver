@@ -60,7 +60,7 @@
         "Example":"curl rpms:5000/api/GetBackupInfo"
     },    
     {   "EndPoint": "GET api/GetServiceList",
-        "Description": "Show of services",
+        "Description": "Show services",
         "Example":"curl rpms:5000/api/GetSrviceList"
     },
     {   "EndPoint": "POST api/DoUpdateServer",

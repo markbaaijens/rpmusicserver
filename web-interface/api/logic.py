@@ -99,7 +99,7 @@ def AppendServiceInfo(portNumber, serviceName):
     # isOnline => nmap localhost | grep <port>/tcp'
     isOnline = False
     process = subprocess.run(["nmap localhost"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep " + str(portNumber) + '/tcp'], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep " + str(portNumber) + "/tcp"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     if process.stdout.decode("utf-8").strip('\n'):
         isOnline = True
 
