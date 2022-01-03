@@ -35,8 +35,8 @@ if [ ! -f /etc/rpms/revision.json ]; then
     exit 3
 fi
 version_actual=$(jq '.CurrentVersion' /etc/rpms/revision.json)
-major_actual=$(echo $version_actual | cut -c2)
-minor_actual=$(echo $version_actual | cut -c4)
+major_actual=$(echo $version_actual | cut -d'.' -f1 | sed 's/"//g')
+minor_actual=$(echo $version_actual | cut -d'.' -f2 | sed 's/"//g')
 log "- current version is $major_actual.$minor_actual"
 
 if [ ! -f /tmp/rpmusicserver/revision.json ]; then
@@ -45,8 +45,8 @@ if [ ! -f /tmp/rpmusicserver/revision.json ]; then
     exit 4
 fi
 version_new=$(jq '.CurrentVersion' /tmp/rpmusicserver/revision.json)
-major_new=$(echo $version_new | cut -c2)
-minor_new=$(echo $version_new | cut -c4)
+major_new=$(echo $version_new | cut -d'.' -f1 | sed 's/"//g')
+minor_new=$(echo $version_new | cut -d'.' -f2 | sed 's/"//g')
 log "- available version is $major_new.$minor_new"
 
 update=0

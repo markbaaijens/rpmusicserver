@@ -5,7 +5,8 @@
             "Version":"0.7",
             "Changes": [
                 "Several small enhancements to web",
-                "[bug] In backup, filter on Downloads removed"
+                "[bug] Do not exclude `Downloads` on backup; b/c otherwise, backup is *not* a mirror of the data-disk",
+                "[bug] Update-script cannot handle revisions with two digits"
             ]
         },        
         {
