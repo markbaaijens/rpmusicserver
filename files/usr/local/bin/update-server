@@ -22,6 +22,7 @@ if [ -f /media/usbdata/rpms/config/update-branch.txt ]; then
     branch_name=$(cat /media/usbdata/rpms/config/update-branch.txt)
 fi
 log "- downloading (new) software from github - branch [$branch_name]."
+
 rm -rf /tmp/rpmusicserver*
 wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/$branch_name.zip -nv -O /tmp/rpmusicserver.zip
 echo "Unzipping /tmp/rpmusicserver.zip"
