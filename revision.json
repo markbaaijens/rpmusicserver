@@ -9,7 +9,8 @@
                 "[bug] Update-script could handle revisions with two digits",
                 "[bug] Fixed font-size to have a uniform appearance",
                 "[bug] logrotate was not respecting size-parameter",
-                "[bug] Timestamp of last update was not in local time"
+                "[bug] Timestamp of last update was not in local time",
+                "Expose revision.json from github"
             ]
         },        
         {
