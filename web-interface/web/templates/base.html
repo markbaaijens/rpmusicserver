@@ -17,13 +17,17 @@
     </head>
     <body>
         <div>                        
-            <a href="/"><img src="{{ url_for('static',filename='home.png') }}" alt="Home" style="width:20px;height:20x;"></a> | 
-            <a href="/services">Services</a> |             
-            <a href="/resources">Resources</a> | 
-            <a href="/disks">Disks</a> | 
-            <a href="/docker">Docker</a> | 
-            <a href="/transcoder">Transcoder</a> | 
-            <a href="/commands">Commands</a> |             
+            <a href="/">
+                <img src="{{ url_for('static',filename='home.png') }}" 
+                alt="Home" 
+                style="width:20px;height:20x;">
+            </a>&nbsp;
+            <a href="/services">Services</a>&nbsp;&nbsp;
+            <a href="/resources">Resources</a>&nbsp;&nbsp;
+            <a href="/disks">Disks</a>&nbsp;&nbsp;
+            <a href="/docker">Docker</a>&nbsp;&nbsp;
+            <a href="/transcoder">Transcoder</a>&nbsp;&nbsp;
+            <a href="/commands">Commands</a>&nbsp;&nbsp;
             <a href="/logs">Logs</a>
         </div>        
         {% with messages = get_flashed_messages() %}
