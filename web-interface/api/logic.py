@@ -231,7 +231,7 @@ def GetVersionInfo():
             lastUpdateTimeStamp = os.path.getmtime(revisionFile)
         except:
             pass
-        lastUpdateTimeStampAsString = datetime.utcfromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
+        lastUpdateTimeStampAsString = datetime.fromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
 
     availableVersion = '0.0'
     with urllib.request.urlopen("https://raw.githubusercontent.com/markbaaijens/rpmusicserver/master/revision.json") as url:
