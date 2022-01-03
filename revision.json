@@ -4,7 +4,8 @@
         {
             "Version":"0.7",
             "Changes": [
-                "Several small enhancements to web"
+                "Several small enhancements to web",
+                "[bug] In backup, filter on Downloads removed"
             ]
         },        
         {

@@ -23,7 +23,7 @@ if [ ! "$(mount | grep /media/usbbackup)" ]; then
 else
     log_details_file=$log_dir/backup-details.log
     log "- executing backup; see details in $log_details_file"
-    rsync -v --delete -rt /media/usbdata/* /media/usbbackup --exclude Downloads --exclude lost+found > $log_details_file
+    rsync -v --delete -rt /media/usbdata/* /media/usbbackup --exclude lost+found > $log_details_file
     log "- setting full rights on backup-files"
     chmod 777 /media/usbbackup -R
     sync
