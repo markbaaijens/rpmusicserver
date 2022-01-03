@@ -6,7 +6,8 @@
             "Changes": [
                 "Several small enhancements to web",
                 "[bug] Do not exclude `Downloads` on backup; b/c otherwise, backup is *not* a mirror of the data-disk",
-                "[bug] Update-script cannot handle revisions with two digits"
+                "[bug] Update-script cannot handle revisions with two digits",
+                "[bug] Fixed font-size to have a uniform appearance"
             ]
         },        
         {
