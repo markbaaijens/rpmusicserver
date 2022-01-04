@@ -58,6 +58,14 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
   * hookup a Squeezebox player to your network
   * install a Android App like [Squeezer](https://play.google.com/store/apps/details?id=uk.org.ngo.squeezer)
   * enjoy!
+### Troubleshooting
+#### *Reconnect players after LMS migration*
+When migrating from an existing LMS-server or upgraded your Pi-hardware, you have to reconfigure all players to point to the new LMS-server (even if LMS has the same name). This is especially true for Squeezebox-hardware like Squeezebox Classic, Duet, Touch, Radio, Boom or Transporter. Note: clients with piCorePlayer will autodetect the new LMS-server.
+
+Reconfiguring is best done:
+* by the Squeezer-app (per player, disconnect server and reconnect)
+* (or) by the Squeezebox Controller (per player, change 'Music Collection')
+* (or) on the Squeezebox-device itself (all except Duet which has no physical interface)
 
 ### Update
 Update your RPMS-server: 
@@ -145,5 +153,5 @@ Backup-disk is formatted as ext4; for off-line viewing on your own PC, this form
 ## Disaster-recovery
 Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple
 * *broken Pi* => just obtain a new Pi which meets the system requirements (see above), swap the SD-card and boot up the Pi; nothing to do here anymore
-* *SD-card corrupt* => re-burn en re-install RPMS (see above for instructions) on the same card (if the hardware is damaged, obtain a new card); then you can reboot the Pi and you are ready to go
+* *corrupt SD-card* => re-burn en re-install RPMS (see above for instructions) on the same card (if the hardware is damaged, obtain a new card); then you can reboot the Pi and you are ready to go
 * *data-disk crash* =>  b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata`, connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made. Remember to make a backup to a new backup-disk immediately!
