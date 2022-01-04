@@ -1,23 +1,36 @@
 {
-    "CurrentVersion": "0.6",
+    "CurrentVersion": "0.7",
     "History": [
+        {
+            "Version":"0.7",
+            "Changes": [
+                "Several small enhancements to web",
+                "[bug] Do not exclude `Downloads` on backup; b/c otherwise, backup is *not* a mirror of the data-disk",
+                "[bug] Update-script could not handle revisions with two digits",
+                "[bug] Fixed font-size to have a uniform appearance",
+                "[bug] logrotate was not respecting size-parameter",
+                "[bug] Timestamp of last update was not in local time",
+                "Show version-list (revision.json) trough web",
+                "Extended readme with troubleshooting-section (reconfigure players after migration)"
+            ]
+        },        
         {
             "Version":"0.6",
             "Changes": [
-                "Choice (while burning) for alternative hostname 'rpmsdev' for development",
+                "While burning, choice for alternative hostname 'rpmsdev' for development",
                 "Expose backup-disk through samba (experimental)",
-                "Faster reboot/halt by first killing docker-containers",
+                "Faster reboot/halt by first killing docker-containers (refactoring)",
                 "Enhanced readme, commands for transcoder- and backup-progress, extended disaster-recovery",
                 "Web-frontend",
-                "Install nmap",
+                "Installed nmap",
                 "Service detection, web + api"
             ]
         },
         {
             "Version":"0.5",
             "Changes": [
-                "[bug] Call api/ is an list of nodes within a node; should be list of nodes",
-                "[bug] In api/GetDiskList, remove '%' in UsedPercentage; return as int",
+                "[bug] Call api/ was a list of nodes within a node; should be list of nodes",
+                "[bug] In api/GetDiskList, removed '%' in UsedPercentage; return as int",
                 "[bug] Removed setting-name in request-data in api-calls for modifying transcoder-settings; simplified names",
                 "[bug] Format backup-disk as ext4 for faster formatting and to provide disaster-recovery"
             ]
@@ -27,7 +40,7 @@
             "Changes": [
                 "[bug] In readme, instructions for formatting backup-disk pointed to burn-image script",
                 "[bug] Wrong mountpoint for backup-disk so disk could not be found",
-                "api/GetDiskList: DiskStatus => IsOnline",
+                "Changed api/GetDiskList: DiskStatus => IsOnline",
                 "[bug] Instructions in readme to install nmap before installing RPMS",
                 "Better formatting of transcoder-section in readme"
             ]
@@ -35,9 +48,9 @@
         {
             "Version":"0.3",
             "Changes": [
-                "[bug] Set timezone to Europe/Amsterdam",
-                "Using logrotate to prevent infinite large log-files",
-                "Documented system requirements",
+                "[bug] On install, set timezone to Europe/Amsterdam",
+                "Using logrotate to prevent infinite grow of log-files",
+                "Documented system requirements in readme",
                 "Faster reboot after install/update by killing docker-containers",
                 "Extended API-call GetMachineInfo with CpuTemp and RpModel",
                 "Backup, server-based",

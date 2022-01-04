@@ -67,6 +67,17 @@ def GetApiList():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
+@app.route('/api/GetVersionList', methods=['GET'])
+def GetVersionList():
+    try:
+        info = logic.GetVersionList()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetTranscoderSettings', methods=['GET'])
 def GetTranscoderSettings():
     try:

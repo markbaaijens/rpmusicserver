@@ -20,6 +20,12 @@ def TailFromFile(file, n):
     lines = process.stdout.readlines()
     return lines
 
+def RevisionFileName():
+    revisionFile = '/etc/rpms/revision.json'
+    if not os.path.isfile(revisionFile):
+        revisionFile = os.path.dirname(__file__) + '/../../revision.json'
+    return revisionFile
+
 def GetMachineInfo():
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
@@ -211,9 +217,7 @@ def GetResourceInfo():
             "TopProcessesByMemory":topProcessesByMemory}
 
 def GetVersionInfo():
-    revisionFile = '/etc/rpms/revision.json'
-    if not os.path.isfile(revisionFile):
-        revisionFile = os.path.dirname(__file__) + '/../../revision.json'
+    revisionFile = RevisionFileName()
 
     currentVersion = '0.0'
     lastUpdateTimeStampAsString = ''
@@ -231,7 +235,7 @@ def GetVersionInfo():
             lastUpdateTimeStamp = os.path.getmtime(revisionFile)
         except:
             pass
-        lastUpdateTimeStampAsString = datetime.utcfromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
+        lastUpdateTimeStampAsString = datetime.fromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
 
     availableVersion = '0.0'
     with urllib.request.urlopen("https://raw.githubusercontent.com/markbaaijens/rpmusicserver/master/revision.json") as url:
@@ -254,16 +258,31 @@ def GetVersionInfo():
         file = open(updateBranchFile, 'r')
         updateBranchName = file.read()
 
-    # Always update if override-branch has been given, even if versions don't match        
+    # Always update if override-branch has been given, even if versions don't match   
+    developmentVersionOverride = False
     if updateBranchName != 'master':
         canUpdate = True
+        developmentVersionOverride = True
 
     return {"VersionFile": revisionFile,
             "CurrentVersion": currentVersion, 
             "LastUpdateTimeStamp": lastUpdateTimeStampAsString,
             "AvailableVersion": availableVersion,
             "CanUpdate": canUpdate,
-            "UpdateBranchName": updateBranchName}
+            "UpdateBranchName": updateBranchName,
+            "DevelopmentVersionOverride": developmentVersionOverride}
+
+def GetVersionList():
+    revisionFile = RevisionFileName()
+
+    dataAsJson = {}
+    apiInfoFile = revisionFile
+    if os.path.isfile(apiInfoFile):
+        with open(apiInfoFile) as file:
+            dataAsDict = json.load(file)
+        dataAsJson = json.loads(json.dumps(dataAsDict))
+    return dataAsJson
+
 
 def GetBackupInfo():
     isBackupInProgress = False
