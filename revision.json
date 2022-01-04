@@ -10,7 +10,8 @@
                 "[bug] Fixed font-size to have a uniform appearance",
                 "[bug] logrotate was not respecting size-parameter",
                 "[bug] Timestamp of last update was not in local time",
-                "Show version-list (revision.json) trough web"
+                "Show version-list (revision.json) trough web",
+                "Extended readme with troubleshooting-section (reconfigure players after migration)"
             ]
         },        
         {
