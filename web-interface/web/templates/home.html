@@ -66,7 +66,12 @@
         </tr>
         <tr>
             <td align="right">UpdateBranch</td>
-            <td><b>{{ versionInfo.UpdateBranchName }}</b></td>
+            <td>
+                <b>{{ versionInfo.UpdateBranchName }}</b>
+                {% if versionInfo.DevelopmentVersionOverride %}
+                    <small>VersionOverride</small>
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <td align="right">LastUpdate</td>
@@ -74,7 +79,7 @@
         </tr>
         <tr>
             <td align="right">VersionFile</td>
-            <td><a href="https://raw.githubusercontent.com/markbaaijens/rpmusicserver/master/revision.json">{{ versionInfo.VersionFile }}</a></td>
+            <td><a class="external-link" href="http://rpms:5000/api/GetVersionList">{{ versionInfo.VersionFile }}</a></td>
         </tr>                
     </table>  
     <h2>Api</h2>
