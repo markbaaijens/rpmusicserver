@@ -58,8 +58,25 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
   * hookup a Squeezebox player to your network
   * install a Android App like [Squeezer](https://play.google.com/store/apps/details?id=uk.org.ngo.squeezer)
   * enjoy!
-### Troubleshooting
-#### *Reconnect players after LMS migration*
+
+## Troubleshooting
+### *Pi/rpms cannot be reached on the network*
+Sometimes the pi is not visible in the network, either by hostname `rpms` or even by ip-address.
+
+* if rpms cannot be found, first try pinging for rpms:
+  * `ping rpms`
+* if there is no response from the ping-command, check if pi is running and properly connected to the network (watch network-leds on the pi)
+* if there is no response from the ping-command, try:
+  * `nmap 192.168.x.*`
+  * fill for x your personal subnet-number; use `hostname -I` to retrieve that info
+* try to ping by ip-address (if hostname `rpms` is not mentioned by nmap)
+  * ping 192.168.x.y
+* for most network-problems (no hostname shown for pi, multiple ip-addresses for hostname, not able to ping on hostname, etc.):
+  * reboot router
+* if hostname `rpms` is not found (after reboot router):
+  * reboot pi (best done by rpms web-interface) 
+
+### *Reconnect players after LMS migration*
 When migrating from an existing LMS-server or upgraded your Pi-hardware, you have to reconfigure all players to point to the new LMS-server (even if LMS has the same name). This is especially true for Squeezebox-hardware like Squeezebox Classic, Duet, Touch, Radio, Boom or Transporter. Note: clients with piCorePlayer will autodetect the new LMS-server.
 
 Reconfiguring is best done:
@@ -67,12 +84,12 @@ Reconfiguring is best done:
 * (or) by the Squeezebox Controller (per player, change 'Music Collection')
 * (or) on the Squeezebox-device itself (all except Duet which has no physical interface)
 
-### Update
+## Update
 Update your RPMS-server: 
 * [rpms/commands](http://rpms:80/commands)
 * click Update
 
-### Development
+## Development
 * To update RPMS from `develop` branch instead of `master`: 
   * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
 * To build a development version with a separate hostname `rpmsdev`
@@ -147,11 +164,11 @@ You can make a backup of all the data contained in your RPMS-server. This backup
     * [rpms/logs/backup-details/0](http://rpms/logs/backup-details/0)
   * disconnect backup-disk
 
-### Off-line viewing backup-data
+### Off-line backup-data viewing
 Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
 ## Disaster-recovery
 Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple
-* *broken Pi* => just obtain a new Pi which meets the system requirements (see above), swap the SD-card and boot up the Pi; nothing to do here anymore
-* *corrupt SD-card* => re-burn en re-install RPMS (see above for instructions) on the same card (if the hardware is damaged, obtain a new card); then you can reboot the Pi and you are ready to go
-* *data-disk crash* =>  b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata`, connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made. Remember to make a backup to a new backup-disk immediately!
+* *broken Pi* => just obtain a new Pi which meets the system requirements (see above), swap the SD-card and boot up the Pi (possible need to recoonect player, see Troubleshooting-section)
+* *corrupt SD-card* => re-burn en re-install RPMS (see above for instructions) on the same card (if the hardware is damaged, obtain a new card); then you can reboot the Pi and you are ready to go (possible need to recoonect player, see Troubleshooting-section)
+* *data-disk crash* =>  b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata` with your favourite disk-tool (Disks, gparted, etc.), connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made. Remember to make a backup to a new backup-disk immediately!
