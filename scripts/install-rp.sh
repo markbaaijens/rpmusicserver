@@ -152,5 +152,11 @@ sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 echo -e "rpms\nrpms" | passwd pi
 echo " => done changing password of user 'pi'."
 
+echo "Change swappiness to 1..."
+if ([ $(grep -c 'vm.swappiness=1' /etc/sysctl.conf) -eq 0 ])
+then
+sudo /bin/sh -c 'echo "vm.swappiness=1" >> /etc/sysctl.conf'
+fi
+
 echo "Installation complete, system will be rebooted."
 reboot-server
