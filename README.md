@@ -5,7 +5,7 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
 * [minimum] Raspberry Pi 2 (B or B+), 1 GB
 * [recommended] Raspberry Pi 4 B, 4 GB
 
-## Steps to turn a Pi into a music server
+## Installation of RPMS on a Pi
 * Install package(s) on your Linux PC:
   * `sudo apt-get install nmap`
     * enter your (personal) password of your PC  
@@ -75,6 +75,17 @@ Sometimes the pi is not visible in the network, either by hostname `rpms` or eve
   * reboot router
 * if hostname `rpms` is not found (after reboot router):
   * reboot pi (best done by rpms web-interface) 
+
+### *Pi/rpms can only reached by ip-address*
+On some local networks, there might be a problem present that the hostname of all connected devices, including RPMS cannot be resolved. In practice, `ping rpms` does not return anything. So any command directly targeted at RPMS such as `ssh pi@rpms` does not work. This is a problem within the router/network, the origin of this problem is unknown to date.
+
+The good news however is that a device is *always* accesible by ip-address. So once you know the ip-address of your RPMS-instance, by executing `nmap 192.168.x.*` (x is the subnet, normally 1 or 2), you can install, configure and use RPMS.
+
+All you have to do is the following: in any command in the section *Installation of RPMS on a Pi* (and following sections), replace RPMS with the discovered ip-address.
+
+So for example, if the ip-address of RPMS is 192.68.1.20: `ping rpms` will become `ping 192.68.1.20`. And `ssh pi@rpms` will become `ssh pi@192.68.1.20`. In your browser, LMS `rpms:9002` wil become `192.68.1.20:9002` Etc. 
+
+Note that the ip-address might change over time b/c RPMS does not use a fixed address, but instead depends on the router which determines the address. In that case, point to the new address.
 
 ### *Reconnect players after LMS migration*
 When migrating from an existing LMS-server or upgraded your Pi-hardware, you have to reconfigure all players to point to the new LMS-server (even if LMS has the same name). This is especially true for Squeezebox-hardware like Squeezebox Classic, Duet, Touch, Radio, Boom or Transporter. Note: clients with piCorePlayer will autodetect the new LMS-server.
