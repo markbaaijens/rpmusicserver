@@ -5,7 +5,8 @@
             "Version":"0.8",
             "Changes": [
                 "Readme: added network-section under Troubleshooting",
-                "[bug] Lower swappines (cat /proc/sys/vm/swappiness) to 1"
+                "Readme: added troubleshooting section when hostname cannot be resolved",
+                "[bug] Lower swappines to 1"                
             ]
         },
         {
