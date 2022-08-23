@@ -132,7 +132,7 @@ install_bin_file kill-docker
 install_bin_file halt-server
 install_bin_file reboot-server
 
-echo "Adding line for transcoder to /etc/crontab:"
+echo "Adding line for transcoder to /etc/crontab..."
 if [ ! "$(grep "transcode" /etc/crontab)" ]; then
     /bin/sh -c 'echo "20 * * * * root transcode" >> /etc/crontab'
     echo " => line added."    
