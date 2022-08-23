@@ -1,0 +1,18 @@
+2022-08-23 15:09:41,636 INFO Log to: api.log
+2022-08-23 15:09:41,636 INFO API started - debug
+2022-08-23 15:09:41,642 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2022-08-23 15:09:41,642 INFO [33mPress CTRL+C to quit[0m
+2022-08-23 15:09:41,643 INFO  * Restarting with stat
+2022-08-23 15:09:41,872 INFO Log to: api.log
+2022-08-23 15:09:41,873 INFO API started - debug
+2022-08-23 15:09:41,887 WARNING  * Debugger is active!
+2022-08-23 15:09:41,887 INFO  * Debugger PIN: 132-101-985
+2022-08-23 15:10:15,711 INFO 127.0.0.1 - - [23/Aug/2022 15:10:15] "GET /api/GetMachineInfo HTTP/1.1" 200 -
+2022-08-23 15:10:15,753 INFO 127.0.0.1 - - [23/Aug/2022 15:10:15] "GET / HTTP/1.1" 200 -
+2022-08-23 15:10:16,104 INFO 127.0.0.1 - - [23/Aug/2022 15:10:16] "GET /api/GetVersionInfo HTTP/1.1" 200 -
+2022-08-23 15:20:10,456 INFO 127.0.0.1 - - [23/Aug/2022 15:20:10] "GET /api/GetMachineInfo HTTP/1.1" 200 -
+2022-08-23 15:20:10,500 INFO 127.0.0.1 - - [23/Aug/2022 15:20:10] "GET / HTTP/1.1" 200 -
+2022-08-23 15:20:10,832 INFO 127.0.0.1 - - [23/Aug/2022 15:20:10] "GET /api/GetVersionInfo HTTP/1.1" 200 -
+2022-08-23 15:20:40,277 INFO API stopped
+2022-08-23 15:20:40,392 INFO API stopped
