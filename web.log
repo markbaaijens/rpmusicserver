@@ -32,3 +32,225 @@
 2022-08-23 15:20:11,106 INFO 127.0.0.1 - - [23/Aug/2022 15:20:11] "[36mGET /static/favicon.ico HTTP/1.1[0m" 304 -
 2022-08-23 15:20:50,877 INFO Web stopped
 2022-08-23 15:20:50,992 INFO Web stopped
+2022-08-23 15:29:54,974 INFO Log to: web.log
+2022-08-23 15:29:54,974 INFO Web started - debug
+2022-08-23 15:29:54,977 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:1080
+2022-08-23 15:29:54,977 INFO [33mPress CTRL+C to quit[0m
+2022-08-23 15:29:54,978 INFO  * Restarting with stat
+2022-08-23 15:29:55,164 INFO Log to: web.log
+2022-08-23 15:29:55,164 INFO Web started - debug
+2022-08-23 15:29:55,167 WARNING  * Debugger is active!
+2022-08-23 15:29:55,168 INFO  * Debugger PIN: 132-101-985
+2022-08-23 15:30:13,164 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:30:13,311 DEBUG http://localhost:5000 "GET /api/GetMachineInfo HTTP/1.1" 200 163
+2022-08-23 15:30:13,313 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:30:13,350 DEBUG http://localhost:5000 "GET / HTTP/1.1" 200 65
+2022-08-23 15:30:13,352 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:30:13,676 DEBUG http://localhost:5000 "GET /api/GetVersionInfo HTTP/1.1" 200 320
+2022-08-23 15:30:13,711 INFO 127.0.0.1 - - [23/Aug/2022 15:30:13] "GET / HTTP/1.1" 200 -
+2022-08-23 15:30:13,776 INFO 127.0.0.1 - - [23/Aug/2022 15:30:13] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:30:13,776 INFO 127.0.0.1 - - [23/Aug/2022 15:30:13] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:30:13,871 INFO 127.0.0.1 - - [23/Aug/2022 15:30:13] "[36mGET /static/external.svg HTTP/1.1[0m" 304 -
+2022-08-23 15:30:13,962 INFO 127.0.0.1 - - [23/Aug/2022 15:30:13] "[36mGET /static/favicon.ico HTTP/1.1[0m" 304 -
+2022-08-23 15:30:15,501 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:30:15,653 DEBUG http://localhost:5000 "GET /api/GetMachineInfo HTTP/1.1" 200 163
+2022-08-23 15:30:15,655 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:30:15,694 DEBUG http://localhost:5000 "GET / HTTP/1.1" 200 65
+2022-08-23 15:30:15,697 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:30:15,865 DEBUG http://localhost:5000 "GET /api/GetVersionInfo HTTP/1.1" 200 320
+2022-08-23 15:30:15,868 INFO 127.0.0.1 - - [23/Aug/2022 15:30:15] "GET / HTTP/1.1" 200 -
+2022-08-23 15:30:15,952 INFO 127.0.0.1 - - [23/Aug/2022 15:30:15] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:30:15,952 INFO 127.0.0.1 - - [23/Aug/2022 15:30:15] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:30:16,183 INFO 127.0.0.1 - - [23/Aug/2022 15:30:16] "[36mGET /static/favicon.ico HTTP/1.1[0m" 304 -
+2022-08-23 15:30:57,159 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:30:57,323 DEBUG http://localhost:5000 "GET /api/GetVersionInfo HTTP/1.1" 200 320
+2022-08-23 15:30:57,347 INFO 127.0.0.1 - - [23/Aug/2022 15:30:57] "GET /commands HTTP/1.1" 200 -
+2022-08-23 15:30:57,412 INFO 127.0.0.1 - - [23/Aug/2022 15:30:57] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:30:57,412 INFO 127.0.0.1 - - [23/Aug/2022 15:30:57] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:30:59,885 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:00,025 DEBUG http://localhost:5000 "GET /api/GetVersionInfo HTTP/1.1" 200 320
+2022-08-23 15:31:00,028 INFO 127.0.0.1 - - [23/Aug/2022 15:31:00] "GET /commands HTTP/1.1" 200 -
+2022-08-23 15:31:00,096 INFO 127.0.0.1 - - [23/Aug/2022 15:31:00] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:00,097 INFO 127.0.0.1 - - [23/Aug/2022 15:31:00] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:01,281 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:01,555 DEBUG http://localhost:5000 "GET /api/GetDockerContainerList HTTP/1.1" 200 191
+2022-08-23 15:31:01,568 INFO 127.0.0.1 - - [23/Aug/2022 15:31:01] "GET /docker HTTP/1.1" 200 -
+2022-08-23 15:31:01,640 INFO 127.0.0.1 - - [23/Aug/2022 15:31:01] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:01,643 INFO 127.0.0.1 - - [23/Aug/2022 15:31:01] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:02,340 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:03,751 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:04,644 INFO 127.0.0.1 - - [23/Aug/2022 15:31:04] "GET /logs HTTP/1.1" 200 -
+2022-08-23 15:31:04,744 INFO 127.0.0.1 - - [23/Aug/2022 15:31:04] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:04,754 INFO 127.0.0.1 - - [23/Aug/2022 15:31:04] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:05,544 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 603
+2022-08-23 15:31:05,551 INFO 127.0.0.1 - - [23/Aug/2022 15:31:05] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:05,696 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:05,817 DEBUG http://localhost:5000 "GET /api/GetDockerContainerList HTTP/1.1" 200 191
+2022-08-23 15:31:05,820 INFO 127.0.0.1 - - [23/Aug/2022 15:31:05] "GET /docker HTTP/1.1" 200 -
+2022-08-23 15:31:05,912 INFO 127.0.0.1 - - [23/Aug/2022 15:31:05] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:05,927 INFO 127.0.0.1 - - [23/Aug/2022 15:31:05] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:07,263 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 1037
+2022-08-23 15:31:07,264 INFO 127.0.0.1 - - [23/Aug/2022 15:31:07] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:25,818 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:25,926 DEBUG http://localhost:5000 "GET /api/GetDockerContainerList HTTP/1.1" 200 191
+2022-08-23 15:31:25,932 INFO 127.0.0.1 - - [23/Aug/2022 15:31:25] "GET /docker HTTP/1.1" 200 -
+2022-08-23 15:31:25,981 INFO 127.0.0.1 - - [23/Aug/2022 15:31:25] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:25,982 INFO 127.0.0.1 - - [23/Aug/2022 15:31:25] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:26,200 INFO 127.0.0.1 - - [23/Aug/2022 15:31:26] "[36mGET /static/favicon.ico HTTP/1.1[0m" 304 -
+2022-08-23 15:31:27,938 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:28,104 DEBUG http://localhost:5000 "GET /api/GetMachineInfo HTTP/1.1" 200 163
+2022-08-23 15:31:28,106 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:28,149 DEBUG http://localhost:5000 "GET / HTTP/1.1" 200 65
+2022-08-23 15:31:28,152 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:28,291 DEBUG http://localhost:5000 "GET /api/GetVersionInfo HTTP/1.1" 200 320
+2022-08-23 15:31:28,293 INFO 127.0.0.1 - - [23/Aug/2022 15:31:28] "GET / HTTP/1.1" 200 -
+2022-08-23 15:31:28,368 INFO 127.0.0.1 - - [23/Aug/2022 15:31:28] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:28,369 INFO 127.0.0.1 - - [23/Aug/2022 15:31:28] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:28,444 INFO 127.0.0.1 - - [23/Aug/2022 15:31:28] "[36mGET /static/external.svg HTTP/1.1[0m" 304 -
+2022-08-23 15:31:28,762 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:28,982 DEBUG http://localhost:5000 "GET /api/GetResourceInfo HTTP/1.1" 200 2972
+2022-08-23 15:31:28,985 INFO 127.0.0.1 - - [23/Aug/2022 15:31:28] "GET /resources HTTP/1.1" 200 -
+2022-08-23 15:31:29,031 INFO 127.0.0.1 - - [23/Aug/2022 15:31:29] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:29,034 INFO 127.0.0.1 - - [23/Aug/2022 15:31:29] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:29,759 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:29,891 DEBUG http://localhost:5000 "GET /api/GetDiskList HTTP/1.1" 200 522
+2022-08-23 15:31:29,897 INFO 127.0.0.1 - - [23/Aug/2022 15:31:29] "GET /disks HTTP/1.1" 200 -
+2022-08-23 15:31:29,944 INFO 127.0.0.1 - - [23/Aug/2022 15:31:29] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:29,945 INFO 127.0.0.1 - - [23/Aug/2022 15:31:29] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:30,603 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:30,644 DEBUG http://localhost:5000 "GET /api/GetTranscoderSettings HTTP/1.1" 200 3
+2022-08-23 15:31:30,648 INFO 127.0.0.1 - - [23/Aug/2022 15:31:30] "GET /transcoder HTTP/1.1" 200 -
+2022-08-23 15:31:30,711 INFO 127.0.0.1 - - [23/Aug/2022 15:31:30] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:30,713 INFO 127.0.0.1 - - [23/Aug/2022 15:31:30] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:30,762 INFO 127.0.0.1 - - [23/Aug/2022 15:31:30] "GET /static/edit.png HTTP/1.1" 200 -
+2022-08-23 15:31:32,686 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:32,853 DEBUG http://localhost:5000 "GET /api/GetVersionInfo HTTP/1.1" 200 320
+2022-08-23 15:31:32,856 INFO 127.0.0.1 - - [23/Aug/2022 15:31:32] "GET /commands HTTP/1.1" 200 -
+2022-08-23 15:31:32,957 INFO 127.0.0.1 - - [23/Aug/2022 15:31:32] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:32,960 INFO 127.0.0.1 - - [23/Aug/2022 15:31:32] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:36,688 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:36,771 DEBUG http://localhost:5000 "GET /api/GetDockerContainerList HTTP/1.1" 200 191
+2022-08-23 15:31:36,773 INFO 127.0.0.1 - - [23/Aug/2022 15:31:36] "GET /docker HTTP/1.1" 200 -
+2022-08-23 15:31:36,829 INFO 127.0.0.1 - - [23/Aug/2022 15:31:36] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:36,830 INFO 127.0.0.1 - - [23/Aug/2022 15:31:36] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:38,077 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:39,604 INFO 127.0.0.1 - - [23/Aug/2022 15:31:39] "GET /logs HTTP/1.1" 200 -
+2022-08-23 15:31:39,668 INFO 127.0.0.1 - - [23/Aug/2022 15:31:39] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:39,669 INFO 127.0.0.1 - - [23/Aug/2022 15:31:39] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:40,416 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:40,638 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 93
+2022-08-23 15:31:40,639 INFO 127.0.0.1 - - [23/Aug/2022 15:31:40] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:41,570 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:42,487 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:43,094 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 436
+2022-08-23 15:31:43,095 INFO 127.0.0.1 - - [23/Aug/2022 15:31:43] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:43,367 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:43,543 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:43,732 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:45,157 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:45,164 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 1103
+2022-08-23 15:31:45,168 INFO 127.0.0.1 - - [23/Aug/2022 15:31:45] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:46,605 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 1116
+2022-08-23 15:31:46,606 INFO 127.0.0.1 - - [23/Aug/2022 15:31:46] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:46,643 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:46,832 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:47,201 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:47,445 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:47,842 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 513
+2022-08-23 15:31:47,845 INFO 127.0.0.1 - - [23/Aug/2022 15:31:47] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:48,092 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:48,260 DEBUG http://localhost:5000 "GET /api/GetDockerContainerList HTTP/1.1" 200 191
+2022-08-23 15:31:48,262 INFO 127.0.0.1 - - [23/Aug/2022 15:31:48] "GET /docker HTTP/1.1" 200 -
+2022-08-23 15:31:48,340 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:48,542 DEBUG http://localhost:5000 "GET /api/GetDockerContainerList HTTP/1.1" 200 191
+2022-08-23 15:31:48,542 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 1012
+2022-08-23 15:31:48,544 INFO 127.0.0.1 - - [23/Aug/2022 15:31:48] "GET /docker HTTP/1.1" 200 -
+2022-08-23 15:31:48,545 INFO 127.0.0.1 - - [23/Aug/2022 15:31:48] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:48,666 INFO 127.0.0.1 - - [23/Aug/2022 15:31:48] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:31:48,671 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 1102
+2022-08-23 15:31:48,673 INFO 127.0.0.1 - - [23/Aug/2022 15:31:48] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:48,676 INFO 127.0.0.1 - - [23/Aug/2022 15:31:48] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:50,408 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:31:51,513 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 858
+2022-08-23 15:31:51,515 INFO 127.0.0.1 - - [23/Aug/2022 15:31:51] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:51,976 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 1119
+2022-08-23 15:31:51,978 INFO 127.0.0.1 - - [23/Aug/2022 15:31:51] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:52,025 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 1297
+2022-08-23 15:31:52,027 INFO 127.0.0.1 - - [23/Aug/2022 15:31:52] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:52,243 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 1477
+2022-08-23 15:31:52,244 INFO 127.0.0.1 - - [23/Aug/2022 15:31:52] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:52,376 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 1567
+2022-08-23 15:31:52,377 INFO 127.0.0.1 - - [23/Aug/2022 15:31:52] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:53,679 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 2001
+2022-08-23 15:31:53,680 INFO 127.0.0.1 - - [23/Aug/2022 15:31:53] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:31:53,720 INFO 127.0.0.1 - - [23/Aug/2022 15:31:53] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:31:53,720 INFO 127.0.0.1 - - [23/Aug/2022 15:31:53] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:35:03,862 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:03,991 DEBUG http://localhost:5000 "GET /api/GetMachineInfo HTTP/1.1" 200 163
+2022-08-23 15:35:03,993 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:04,024 DEBUG http://localhost:5000 "GET / HTTP/1.1" 200 65
+2022-08-23 15:35:04,025 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:04,154 DEBUG http://localhost:5000 "GET /api/GetVersionInfo HTTP/1.1" 200 320
+2022-08-23 15:35:04,158 INFO 127.0.0.1 - - [23/Aug/2022 15:35:04] "GET / HTTP/1.1" 200 -
+2022-08-23 15:35:04,263 INFO 127.0.0.1 - - [23/Aug/2022 15:35:04] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:35:04,267 INFO 127.0.0.1 - - [23/Aug/2022 15:35:04] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:35:04,317 INFO 127.0.0.1 - - [23/Aug/2022 15:35:04] "[36mGET /static/external.svg HTTP/1.1[0m" 304 -
+2022-08-23 15:35:05,252 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:05,497 DEBUG http://localhost:5000 "GET /api/GetResourceInfo HTTP/1.1" 200 2682
+2022-08-23 15:35:05,499 INFO 127.0.0.1 - - [23/Aug/2022 15:35:05] "GET /resources HTTP/1.1" 200 -
+2022-08-23 15:35:05,547 INFO 127.0.0.1 - - [23/Aug/2022 15:35:05] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:35:05,548 INFO 127.0.0.1 - - [23/Aug/2022 15:35:05] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:35:06,166 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:06,302 DEBUG http://localhost:5000 "GET /api/GetDiskList HTTP/1.1" 200 522
+2022-08-23 15:35:06,303 INFO 127.0.0.1 - - [23/Aug/2022 15:35:06] "GET /disks HTTP/1.1" 200 -
+2022-08-23 15:35:06,375 INFO 127.0.0.1 - - [23/Aug/2022 15:35:06] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:35:06,381 INFO 127.0.0.1 - - [23/Aug/2022 15:35:06] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:35:07,137 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:07,178 DEBUG http://localhost:5000 "GET /api/GetTranscoderSettings HTTP/1.1" 200 3
+2022-08-23 15:35:07,180 INFO 127.0.0.1 - - [23/Aug/2022 15:35:07] "GET /transcoder HTTP/1.1" 200 -
+2022-08-23 15:35:07,223 INFO 127.0.0.1 - - [23/Aug/2022 15:35:07] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:35:07,229 INFO 127.0.0.1 - - [23/Aug/2022 15:35:07] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:35:07,356 INFO 127.0.0.1 - - [23/Aug/2022 15:35:07] "[36mGET /static/edit.png HTTP/1.1[0m" 304 -
+2022-08-23 15:35:17,982 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:18,032 DEBUG http://localhost:5000 "GET /api/GetTranscoderSettings HTTP/1.1" 200 3
+2022-08-23 15:35:18,038 INFO 127.0.0.1 - - [23/Aug/2022 15:35:18] "GET /transcoder HTTP/1.1" 200 -
+2022-08-23 15:35:18,100 INFO 127.0.0.1 - - [23/Aug/2022 15:35:18] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:35:18,101 INFO 127.0.0.1 - - [23/Aug/2022 15:35:18] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:35:18,229 INFO 127.0.0.1 - - [23/Aug/2022 15:35:18] "[36mGET /static/edit.png HTTP/1.1[0m" 304 -
+2022-08-23 15:35:18,320 INFO 127.0.0.1 - - [23/Aug/2022 15:35:18] "[36mGET /static/favicon.ico HTTP/1.1[0m" 304 -
+2022-08-23 15:35:38,577 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:38,693 DEBUG http://localhost:5000 "GET /api/GetMachineInfo HTTP/1.1" 200 163
+2022-08-23 15:35:38,694 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:38,727 DEBUG http://localhost:5000 "GET / HTTP/1.1" 200 65
+2022-08-23 15:35:38,728 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:39,041 DEBUG http://localhost:5000 "GET /api/GetVersionInfo HTTP/1.1" 200 320
+2022-08-23 15:35:39,042 INFO 127.0.0.1 - - [23/Aug/2022 15:35:39] "GET / HTTP/1.1" 200 -
+2022-08-23 15:35:39,104 INFO 127.0.0.1 - - [23/Aug/2022 15:35:39] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:35:39,105 INFO 127.0.0.1 - - [23/Aug/2022 15:35:39] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:35:39,169 INFO 127.0.0.1 - - [23/Aug/2022 15:35:39] "[36mGET /static/external.svg HTTP/1.1[0m" 304 -
+2022-08-23 15:35:44,439 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:44,589 DEBUG http://localhost:5000 "GET /api/GetVersionInfo HTTP/1.1" 200 320
+2022-08-23 15:35:44,592 INFO 127.0.0.1 - - [23/Aug/2022 15:35:44] "GET /commands HTTP/1.1" 200 -
+2022-08-23 15:35:44,660 INFO 127.0.0.1 - - [23/Aug/2022 15:35:44] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:35:44,662 INFO 127.0.0.1 - - [23/Aug/2022 15:35:44] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:35:45,459 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:45,582 DEBUG http://localhost:5000 "GET /api/GetDockerContainerList HTTP/1.1" 200 191
+2022-08-23 15:35:45,584 INFO 127.0.0.1 - - [23/Aug/2022 15:35:45] "GET /docker HTTP/1.1" 200 -
+2022-08-23 15:35:45,653 INFO 127.0.0.1 - - [23/Aug/2022 15:35:45] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:35:45,667 INFO 127.0.0.1 - - [23/Aug/2022 15:35:45] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:35:46,396 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:47,323 INFO 127.0.0.1 - - [23/Aug/2022 15:35:47] "GET /logs HTTP/1.1" 200 -
+2022-08-23 15:35:47,398 INFO 127.0.0.1 - - [23/Aug/2022 15:35:47] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:35:47,399 INFO 127.0.0.1 - - [23/Aug/2022 15:35:47] "[36mGET /static/home.png HTTP/1.1[0m" 304 -
+2022-08-23 15:35:48,895 DEBUG http://localhost:5000 "GET /api/GetServiceList HTTP/1.1" 200 689
+2022-08-23 15:35:48,896 INFO 127.0.0.1 - - [23/Aug/2022 15:35:48] "GET /services HTTP/1.1" 200 -
+2022-08-23 15:35:48,928 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:49,059 DEBUG http://localhost:5000 "GET /api/GetMachineInfo HTTP/1.1" 200 163
+2022-08-23 15:35:49,060 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:49,101 DEBUG http://localhost:5000 "GET / HTTP/1.1" 200 65
+2022-08-23 15:35:49,103 DEBUG Starting new HTTP connection (1): localhost:5000
+2022-08-23 15:35:49,227 DEBUG http://localhost:5000 "GET /api/GetVersionInfo HTTP/1.1" 200 320
+2022-08-23 15:35:49,229 INFO 127.0.0.1 - - [23/Aug/2022 15:35:49] "GET / HTTP/1.1" 200 -
+2022-08-23 15:35:49,282 INFO 127.0.0.1 - - [23/Aug/2022 15:35:49] "[36mGET /static/main.css HTTP/1.1[0m" 304 -
+2022-08-23 15:35:49,291 INFO 127.0.0.1 - - [23/Aug/2022 15:35:49] "[36mGET /static/home.png HTTP/1.1[0m" 304 -

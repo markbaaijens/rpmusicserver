@@ -1,5 +1,6 @@
 __pycache__/
 web-interface/api/api.log
 web-interface/web/web.log
+web.log
+api.log
 files/update.log
-
