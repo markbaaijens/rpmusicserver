@@ -6,7 +6,7 @@
             "Changes": [
                 "Readme: added network-section under Troubleshooting",
                 "Readme: added troubleshooting section when hostname cannot be resolved",
-                "[bug] Lower swappines to 1"                
+                "Prevent swapping by lowering swappiness to 1"                
             ]
         },
         {
