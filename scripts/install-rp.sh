@@ -153,8 +153,7 @@ echo -e "rpms\nrpms" | passwd pi
 echo " => done changing password of user 'pi'."
 
 echo "Change swappiness to 1..."
-if ([ $(grep -c 'vm.swappiness=1' /etc/sysctl.conf) -eq 0 ])
-    then
+if ([ $(grep -c 'vm.swappiness=1' /etc/sysctl.conf) -eq 0 ]); then
     sudo /bin/sh -c 'echo "vm.swappiness=1" >> /etc/sysctl.conf'
 fi
 
