@@ -70,14 +70,6 @@ mkdir /media/usbdata/user/Publiek/Muziek -p
 chmod 777 /media/usbdata/user/Publiek -R
 chmod 777 /media/usbbackup -R
 
-echo "Adding line for upgrade to /etc/crontab:"
-if [ ! "$(grep "apt-get upgrade" /etc/crontab)" ]; then
-    /bin/sh -c 'echo "02 10 * * * root apt-get upgrade -y" >> /etc/crontab'
-    echo " => line added."    
-else
-    echo " => line is already present."    
-fi
-
 echo "Copy LMS config files"
 if [ ! -d /media/usbdata/rpms/config/docker/lms ]; then
     mkdir -p /media/usbdata/rpms/config/docker/lms
@@ -132,9 +124,25 @@ install_bin_file kill-docker
 install_bin_file halt-server
 install_bin_file reboot-server
 
+echo "Adding line for auto-upgrade to /etc/crontab:"
+if [ ! "$(grep "apt-get upgrade" /etc/crontab)" ]; then
+    /bin/sh -c 'echo "02 10 * * * root apt-get upgrade -y" >> /etc/crontab'
+    echo " => line added."    
+else
+    echo " => line is already present."    
+fi
+
 echo "Adding line for transcoder to /etc/crontab..."
 if [ ! "$(grep "transcode" /etc/crontab)" ]; then
     /bin/sh -c 'echo "20 * * * * root transcode" >> /etc/crontab'
+    echo " => line added."    
+else
+    echo " => line is already present."    
+fi
+
+echo "Adding line for setting rights to /etc/crontab..."
+if [ ! "$(grep "chmod 777" /etc/crontab)" ]; then
+    /bin/sh -c 'echo "0 2 * * * root chmod 777 /media/usbdata/user/Publiek -R" >> /etc/crontab'
     echo " => line added."    
 else
     echo " => line is already present."    
