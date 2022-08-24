@@ -82,9 +82,9 @@ if [ ${type_choice,,} != "d" ] && [ ${type_choice,,} != "b" ]; then
     echo "Script ended."
     exit
 fi
-echo "You have chosen: $type_choice $([ $type_choice == 1 ] && echo "=> usbdata" || echo "=> usbbackup")"
+echo "You have chosen: $type_choice $([ ${type_choice,,} == "d" ] && echo "=> usbdata" || echo "=> usbbackup")"
 
-read -r -p "Do you want to continue formatting '$chosen_disk' as $([ $type_choice == 1 ] && echo "'usbdata'" || echo "'usbbackup'")? [yes/NO] " start_install
+read -r -p "Do you want to continue formatting '$chosen_disk' as $([ ${type_choice,,} == "d" ] && echo "'usbdata'" || echo "'usbbackup'")? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
     cleanup_environment
     echo "Script ended by user."
