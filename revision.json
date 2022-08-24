@@ -7,7 +7,8 @@
                 "Readme: added network-section under Troubleshooting",
                 "Readme: added troubleshooting section when hostname cannot be resolved",
                 "Prevent swapping by lowering swappiness to 1",
-                "Prevent rights issues by setting all right to everyone periodially"
+                "Prevent rights issues by setting all right to everyone periodially",
+                "Implemented syncthing (as a docker container)"
             ]
         },
         {
