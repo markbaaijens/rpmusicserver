@@ -112,8 +112,9 @@ mv /tmp/transcoder-1.0 /tmp/transcoder
 mkdir -p /usr/local/bin/transcoder
 cp /tmp/transcoder/transcoder.py /usr/local/bin/transcoder/transcoder.py
 chmod +x /usr/local/bin/transcoder/transcoder.py
+
 if [ ! -f /media/usbdata/rpms/config/transcoder-settings.json ]; then
-    cp /tmp/transcoder/transcoder-settings.json /media/usbdata/rpms/config/transcoder-settings.json
+    cp /tmp/rpmusicserver/files/config/transcoder/transcoder-settings.json /media/usbdata/rpms/config/transcoder-settings.json
 fi 
 echo " => transcoder installed"
 
