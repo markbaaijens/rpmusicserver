@@ -9,38 +9,71 @@ echo "Starting docker-containers..."
 
 # LMS (Logitech Media Server)
 if [ ! "$(docker ps -f name=lms -q)" ]; then
-  docker run -d --rm --name lms \
-    -v "/media/usbdata/rpms/config/docker/lms":"/config":rw \
-    -v "/media/usbdata/user/Publiek/Muziek":"/music":ro \
-    -v "/etc/localtime":"/etc/localtime":ro \
-    -v "/etc/timezone":"/etc/timezone":ro \
-    -p 9002:9002/tcp \
-    -p 9090:9090/tcp \
-    -p 3483:3483/tcp \
-    -p 3483:3483/udp \
-    -e HTTP_PORT=9002 \
-    -e PUID=0 \
-    -e PGID=0 \
-    lmscommunity/logitechmediaserver:stable
+    docker run \
+        -d \
+        --rm \
+        --name lms \
+        -v "/media/usbdata/rpms/config/docker/lms":"/config":rw \
+        -v "/media/usbdata/user/Publiek/Muziek":"/music":ro \
+        -v "/etc/localtime":"/etc/localtime":ro \
+        -v "/etc/timezone":"/etc/timezone":ro \
+        -p 9002:9002/tcp \
+        -p 9090:9090/tcp \
+        -p 3483:3483/tcp \
+        -p 3483:3483/udp \
+        -e HTTP_PORT=9002 \
+        -e PUID=0 \
+        -e PGID=0 \
+        lmscommunity/logitechmediaserver:stable
   fi
 
 # Samba
 if [ ! "$(docker ps -f name=samba -q)" ]; then
-  docker run -p 139:139 -p 445:445 -p 137:137/udp -p 138:138/udp \
-    -d --rm --name samba \
-    -v /media/usbdata/user/Publiek:/mnt_public \
-    -v /media/usbbackup/user/Publiek:/mnt_backup \
-    dperson/samba -n -p -r \
-      -s "Publiek;/mnt_public;yes;no;yes;all;;;Publiek" \
-      -s "Backup;/mnt_backup;yes;yes;yes;all;;;Backup"
+    docker run \
+        -d \
+        --rm \
+        --name samba \
+        -p 139:139 \
+        -p 445:445 \
+        -p 137:137/udp \
+        -p 138:138/udp \
+        -v /media/usbdata/user/Publiek:/mnt_public \
+        -v /media/usbbackup/user/Publiek:/mnt_backup \
+        dperson/samba -n -p -r \
+        -s "Publiek;/mnt_public;yes;no;yes;all;;;Publiek" \
+        -s "Backup;/mnt_backup;yes;yes;yes;all;;;Backup"
 fi
 
 # Transmission
 if [ ! "$(docker ps -f name=transmission -q)" ]; then
-  docker run -d --rm --name transmission -p 9091:9091 -e PUID=1000 -e PGID=1000 \
-    -v /media/usbdata/rpms/config/docker/transmission:/config  \
-    -v /media/usbdata/user/Publiek/Downloads:/downloads  \
-    linuxserver/transmission
+    docker run \
+        -d \
+        --rm \
+        --name transmission \
+        -p 9091:9091 \
+        -e PUID=1000 \
+        -e PGID=1000 \
+        -v /media/usbdata/rpms/config/docker/transmission:/config \
+        -v /media/usbdata/user/Publiek/Downloads:/downloads \
+        linuxserver/transmission
+fi
+
+if [ ! "$(docker ps -f name=syncthing -q)" ]; then
+    docker run \
+        -d \
+        --rm \
+        --name syncthing \
+        --hostname rpmsdev \
+        -e PUID=1000 \
+        -e PGID=1000 \
+        -e TZ=Europe/Amsterdam \
+        -p 8384:8384 \
+        -p 22000:22000/tcp \
+        -p 22000:22000/udp \
+        -p 21027:21027/udp \
+        -v /media/usbdata/rpms/config/docker/syncthing:/config \
+        -v /media/usbdata/user/Publiek:/data\
+        lscr.io/linuxserver/syncthing:latest
 fi
 
 echo " => done starting docker-containers"
