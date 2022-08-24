@@ -5,7 +5,8 @@
             "Version":"0.8",
             "Changes": [
                 "Readme: added network-section under Troubleshooting",
-                "Readme: added troubleshooting section when hostname cannot be resolved"
+                "Readme: added troubleshooting section when hostname cannot be resolved",
+                "Prevent swapping by lowering swappiness to 1"                
             ]
         },
         {

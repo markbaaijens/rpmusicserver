@@ -132,7 +132,7 @@ install_bin_file kill-docker
 install_bin_file halt-server
 install_bin_file reboot-server
 
-echo "Adding line for transcoder to /etc/crontab:"
+echo "Adding line for transcoder to /etc/crontab..."
 if [ ! "$(grep "transcode" /etc/crontab)" ]; then
     /bin/sh -c 'echo "20 * * * * root transcode" >> /etc/crontab'
     echo " => line added."    
@@ -151,6 +151,11 @@ sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 # does NOT require to enter the old password
 echo -e "rpms\nrpms" | passwd pi
 echo " => done changing password of user 'pi'."
+
+echo "Change swappiness to 1..."
+if ([ $(grep -c 'vm.swappiness=1' /etc/sysctl.conf) -eq 0 ]); then
+    sudo /bin/sh -c 'echo "vm.swappiness=1" >> /etc/sysctl.conf'
+fi
 
 echo "Installation complete, system will be rebooted."
 reboot-server
