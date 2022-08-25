@@ -7,7 +7,6 @@ fi
 
 echo "Starting docker-containers..."
 
-# LMS (Logitech Media Server)
 if [ ! "$(docker ps -f name=lms -q)" ]; then
     docker run \
         -d \
@@ -25,9 +24,8 @@ if [ ! "$(docker ps -f name=lms -q)" ]; then
         -e PUID=0 \
         -e PGID=0 \
         lmscommunity/logitechmediaserver:stable
-  fi
+fi
 
-# Samba
 if [ ! "$(docker ps -f name=samba -q)" ]; then
     docker run \
         -d \
@@ -44,7 +42,6 @@ if [ ! "$(docker ps -f name=samba -q)" ]; then
         -s "Backup;/mnt_backup;yes;yes;yes;all;;;Backup"
 fi
 
-# Transmission
 if [ ! "$(docker ps -f name=transmission -q)" ]; then
     docker run \
         -d \
@@ -59,6 +56,7 @@ if [ ! "$(docker ps -f name=transmission -q)" ]; then
 fi
 
 if [ ! "$(docker ps -f name=syncthing -q)" ]; then
+    # Note: parameter hostname is optional
     docker run \
         -d \
         --rm \
