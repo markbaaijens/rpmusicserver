@@ -164,7 +164,7 @@ def ShowResources():
     )   
     pass     
 
-@app.route('/commands', methods=['GET'])
+@app.route('/tasks', methods=['GET'])
 def ShowCommands():
     try:
         versionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetVersionInfo').content)
@@ -174,7 +174,7 @@ def ShowCommands():
         versionInfo = []
 
     return render_template(
-        'commands.html', 
+        'tasks.html', 
         appTitle = 'Commands - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         versionInfo = versionInfo
