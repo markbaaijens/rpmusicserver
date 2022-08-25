@@ -106,20 +106,22 @@ echo " => file revision.json copied."
 
 echo "Installing transcoder..."
 rm -rf /tmp/transcoder*
-wget https://github.com/markbaaijens/transcoder/archive/refs/tags/v1.0.zip -nv -O /tmp/transcoder.zip
+wget https://github.com/markbaaijens/transcoder/archive/refs/tags/v1.1.zip -nv -O /tmp/transcoder.zip
 unzip -o -q -d /tmp -o /tmp/transcoder.zip
-mv /tmp/transcoder-1.0 /tmp/transcoder
+mv /tmp/transcoder-1.1 /tmp/transcoder
 mkdir -p /usr/local/bin/transcoder
 cp /tmp/transcoder/transcoder.py /usr/local/bin/transcoder/transcoder.py
 chmod +x /usr/local/bin/transcoder/transcoder.py
+
 if [ ! -f /media/usbdata/rpms/config/transcoder-settings.json ]; then
-    cp /tmp/transcoder/transcoder-settings.json /media/usbdata/rpms/config/transcoder-settings.json
+    cp /tmp/rpmusicserver/files/config/transcoder/transcoder-settings.json /media/usbdata/rpms/config/transcoder-settings.json
 fi 
 echo " => transcoder installed"
 
 install_bin_file update-server
 install_bin_file backup-server
 install_bin_file transcode
+install_bin_file start-docker
 install_bin_file kill-docker
 install_bin_file halt-server
 install_bin_file reboot-server
