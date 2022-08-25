@@ -104,7 +104,7 @@ def AppendDiskInfo(diskMountPoint):
 def AppendServiceInfo(portNumber, serviceName):
     # isActive => nmap localhost | grep <port>/tcp'
     isActive = False
-    process = subprocess.run(["nmap localhost"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["nmap localhost -p " + str(portNumber) + ""], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["grep " + str(portNumber) + "/tcp"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     if process.stdout.decode("utf-8").strip('\n'):
         isActive = True
@@ -125,14 +125,15 @@ def GetDiskList():
 
 def GetServiceList():
     services.clear()
-    AppendServiceInfo(22, 'SSH')
-    AppendServiceInfo(80, 'RPMS/web')
-    AppendServiceInfo(139, 'Samba/netbios')
-    AppendServiceInfo(445, 'Samba/tcp')
-    AppendServiceInfo(5000, 'RPMS/api')
-    AppendServiceInfo(9002, 'LMS/web')
-    AppendServiceInfo(9090, 'LMS/telnet')
-    AppendServiceInfo(9091, 'Transmission')
+    AppendServiceInfo(22, 'ssh')
+    AppendServiceInfo(80, 'rpms/web')
+    AppendServiceInfo(139, 'samba/netbios')
+    AppendServiceInfo(445, 'samba/tcp')
+    AppendServiceInfo(5000, 'rpms/api')
+    AppendServiceInfo(8384, 'syncthing/web')
+    AppendServiceInfo(9002, 'lms/web')
+    AppendServiceInfo(9090, 'lms/telnet')
+    AppendServiceInfo(9091, 'transmission/web')
     return services
     
 def GetResourceInfo():
