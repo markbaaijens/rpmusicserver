@@ -106,9 +106,9 @@ echo " => file revision.json copied."
 
 echo "Installing transcoder..."
 rm -rf /tmp/transcoder*
-wget https://github.com/markbaaijens/transcoder/archive/refs/tags/v1.1.zip -nv -O /tmp/transcoder.zip
+wget https://github.com/markbaaijens/transcoder/archive/refs/tags/v1.2.zip -nv -O /tmp/transcoder.zip
 unzip -o -q -d /tmp -o /tmp/transcoder.zip
-mv /tmp/transcoder-1.1 /tmp/transcoder
+mv /tmp/transcoder-1.2 /tmp/transcoder
 mkdir -p /usr/local/bin/transcoder
 cp /tmp/transcoder/transcoder.py /usr/local/bin/transcoder/transcoder.py
 chmod +x /usr/local/bin/transcoder/transcoder.py
