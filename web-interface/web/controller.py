@@ -181,7 +181,7 @@ def ShowCommands():
     )   
     pass     
 
-@app.route('/commands/backup-server', methods=['GET'])
+@app.route('/backup-server', methods=['GET'])
 def DoBackupServer():
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoBackupServer').content)
@@ -200,7 +200,7 @@ def DoBackupServer():
     )
     pass     
 
-@app.route('/commands/kill-docker', methods=['GET'])
+@app.route('/kill-docker', methods=['GET'])
 def DoKillDocker():
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoKillDocker').content)
@@ -219,7 +219,7 @@ def DoKillDocker():
     )
     pass     
 
-@app.route('/commands/update-server', methods=['GET'])
+@app.route('/update-server', methods=['GET'])
 def DoUpdateServer():
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoUpdateServer').content)
@@ -238,7 +238,7 @@ def DoUpdateServer():
     )   
     pass     
 
-@app.route('/commands/halt-server', methods=['GET'])
+@app.route('/halt-server', methods=['GET'])
 def DoHaltServer():
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoHaltServer').content)
@@ -257,7 +257,7 @@ def DoHaltServer():
     )   
     pass     
 
-@app.route('/commands/reboot-server', methods=['GET'])
+@app.route('/reboot-server', methods=['GET'])
 def DoRebootServer():
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoRebootServer').content)
