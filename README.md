@@ -97,7 +97,7 @@ Reconfiguring is best done:
 
 ## Update
 Update your RPMS-server: 
-* [rpms/commands](http://rpms:80/commands)
+* [rpms/tasks](http://rpms:80/tasks)
 * click Update
 
 ## Development
@@ -163,7 +163,7 @@ You can make a backup of all the data contained in your RPMS-server. This backup
 * engage the backup:
   * connect your backup-disk to the Pi
   * start the backup
-    * [rpms/commands](http://rpms/commands)
+    * [rpms/tasks](http://rpms/tasks
     * click BackupServer
   * watch overall progress
     * [rpms/logs/backup/20](http://rpms/logs/backup/20)
