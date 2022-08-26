@@ -16,10 +16,10 @@ if [ -z $sourcefolder ]; then
 fi
 
 python3 /usr/local/bin/transcoder/transcoder.py \
-    --sourcefolder $sourcefolder \
-    --oggfolder $oggfolder \
+    --sourcefolder "$sourcefolder" \
+    --oggfolder "$oggfolder" \
     --oggquality $oggquality \
-    --mp3folder $mp3folder \
+    --mp3folder "$mp3folder" \
     --mp3bitrate $mp3bitrate \
     --verbose \
     --logfolder "/media/usbdata/rpms/logs"
