@@ -219,6 +219,25 @@ def DoKillDocker():
     )
     pass     
 
+@app.route('/start-docker', methods=['GET'])
+def DoStartDocker():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoStartDocker').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    return render_template(
+        'command.html', 
+        appTitle = 'StartDocker - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        commandTitle = 'StartDocker',
+        commandMessage = '(Re)Initializing docker-containers in progress...',
+        showDockerLink = 1
+    )
+    pass 
+
 @app.route('/update-server', methods=['GET'])
 def DoUpdateServer():
     try:
