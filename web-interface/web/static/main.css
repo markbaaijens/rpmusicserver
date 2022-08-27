@@ -1,6 +1,10 @@
 body {
     font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 16px;
+	margin:0;
+	padding:20px;
+	padding-top:0 !important;
+	margin-top:0 !important;
 }
 
 p, li, th, td, ol, ul, dl, a, blockquote, body { 
@@ -33,6 +37,10 @@ td {
 
 .margin-above {
 	margin-top: 10px;
+	background-color:#f6f4f4 !important;
+	padding: 10px;
+	padding-bottom: 15px;
+	margin: 0px -20px 0px -20px;
 }
 
 .external-link {
@@ -44,4 +52,11 @@ td {
 
 .indent {
 	padding-left: 10px;
+}
+
+.base-header {
+	background-color:#e7ecf0 !important;
+	padding: 10px;
+	padding-bottom: 15px;
+	margin: 0px -20px 0px -20px;
 }
