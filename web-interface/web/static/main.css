@@ -31,8 +31,12 @@ td {
 	padding-right: 5px;
 }
 
-.margin-above {
-	margin-top: 10px;
+.top-header {
+	padding-top: 3px;
+}
+
+.sub-header {
+	margin-top: 8px;
 }
 
 .external-link {
