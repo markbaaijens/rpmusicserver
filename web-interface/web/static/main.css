@@ -36,10 +36,9 @@ td {
 }
 
 .margin-above {
-	margin-top: 10px;
-	background-color:#f6f4f4 !important;
-	padding: 10px;
-	padding-bottom: 15px;
+	margin-top: 8px;
+	padding: 8px;
+	padding-bottom: 8px;
 	margin: 0px -20px 0px -20px;
 }
 
@@ -55,7 +54,6 @@ td {
 }
 
 .base-header {
-	background-color:#e7ecf0 !important;
 	padding: 10px;
 	padding-bottom: 15px;
 	margin: 0px -20px 0px -20px;
