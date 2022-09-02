@@ -84,7 +84,7 @@
         "Example":"curl rpms:5000/api/DoKillDocker -X post"
     },        
     {   "EndPoint": "POST api/DoStartDocker",
-        "Description": "(Re)Start all docker-containers",
+        "Description": "Start all (stopped) docker-containers",
         "Example":"curl rpms:5000/api/DoStartDocker -X post"
     },    
     {   "EndPoint": "POST api/SetTranscoderSourceFolder",
