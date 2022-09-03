@@ -94,6 +94,16 @@ if [ "$disk_choice" == "" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
 fi
 
 chosen_disk=${sd_disks[disk_choice]}
+
+checksize=$(echo "$size" | awk '{ print substr( $0, 1, length($0)-2 ) }')
+if [[ $checksize -lt 5500 ]]; then
+    echo "Your chosen disk $chosen_disk has a size of $size"
+    echo "Cannot continue. Please re-run this script after selecting an SD-card with at least 8gb capacity."
+    cleanup_environment    
+    echo "Script ended."
+    exit
+fi
+
 echo "You have chosen: $chosen_disk"
 
 echo "Image-type:"
