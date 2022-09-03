@@ -4,11 +4,11 @@
     <h2>Tasks</h2>
     <h3>Server</h3>
     <div class="indent">
-        <a href="/backup-server">Backup</a>
+        <a href="/backup-server" class="link-button">Backup</a>
     </div>
     <div class="indent">
         {% if versionInfo.CanUpdate %}
-            <a href="/update-server">Update</a> 
+            <a href="/update-server" class="link-button">Update</a> 
         {% else %}
             Update
         {% endif %}
@@ -26,17 +26,17 @@
         </small>
     </div>
     <div class="indent">
-        <a href="/reboot-server">Reboot</a>
+        <a href="/reboot-server" class="link-button">Reboot</a>
     </div>    
     <div class="indent">
-        <a href="/halt-server">Halt</a>        
+        <a href="/halt-server" class="link-button">Halt</a>        
     </div>    
 
     <h3>Docker</h3>
     <div class="indent">
-        <a href="/start-docker">StartDocker</a>       
+        <a href="/start-docker" class="link-button">StartDocker</a>       
     </div>
     <div class="indent">
-        <a href="/kill-docker">KillDocker</a>
+        <a href="/kill-docker" class="link-button">KillDocker</a>
     </div>    
 {% endblock %}

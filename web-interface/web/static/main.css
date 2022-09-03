@@ -49,3 +49,19 @@ td {
 .indent {
 	padding-left: 10px;
 }
+
+.link-button {
+	background-color: lightgray;
+	border: none;
+	color: white;
+	padding: 5px 5px;
+	text-align: center;
+	text-decoration: none;
+	border-radius: 8px;
+	border: 1px solid grey;
+  }
+  
+  .link-button:hover {
+	border: 1px solid black;
+	background-color: gray;
+  }
