@@ -51,17 +51,17 @@ td {
 }
 
 .link-button {
-	background-color: lightgray;
+	background-color: white;
 	border: none;
 	color: white;
-	padding: 5px 5px;
+	padding: 3px 5px;
 	text-align: center;
 	text-decoration: none;
 	border-radius: 8px;
-	border: 1px solid grey;
+	border: 1px solid lightgray;
   }
   
   .link-button:hover {
-	border: 1px solid black;
-	background-color: gray;
+	border: 1px solid grey;
+	background-color: whitesmoke;
   }
