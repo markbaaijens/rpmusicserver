@@ -51,7 +51,7 @@ td {
 }
 
 .link-button {
-	background-color: white;
+	background-color: whitesmoke;
 	border: none;
 	color: white;
 	padding: 3px 5px;
@@ -61,7 +61,12 @@ td {
 	border: 1px solid lightgray;
   }
   
-  .link-button:hover {
+.link-button:hover {
 	border: 1px solid grey;
-	background-color: whitesmoke;
+	background-color: lightgray;
   }
+
+.disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+  }  
