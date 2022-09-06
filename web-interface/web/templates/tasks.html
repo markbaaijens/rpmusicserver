@@ -3,10 +3,10 @@
 {% block content %}
     <h2>Tasks</h2>
     <h3>Server</h3>
-    <div class="indent">
+    <div class="indent margin-top-bottom">
         <a href="/backup-server" class="link-button">Backup</a>
     </div>
-    <div class="indent">
+    <div class="indent margin-top-bottom">
         {% if versionInfo.CanUpdate %}
             <a href="/update-server" class="link-button">Update</a> 
         {% else %}
@@ -25,18 +25,18 @@
             </b>        
         </small>
     </div>
-    <div class="indent">
+    <div class="indent margin-top-bottom">
         <a href="/reboot-server" class="link-button">Reboot</a>
     </div>    
-    <div class="indent">
+    <div class="indent margin-top-bottom">
         <a href="/halt-server" class="link-button">Halt</a>        
     </div>    
 
     <h3>Docker</h3>
-    <div class="indent">
+    <div class="indent margin-top-bottom">
         <a href="/start-docker" class="link-button">StartDocker</a>       
     </div>
-    <div class="indent">
+    <div class="indent margin-top-bottom">
         <a href="/kill-docker" class="link-button">KillDocker</a>
     </div>    
 {% endblock %}
