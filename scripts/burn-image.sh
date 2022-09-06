@@ -100,7 +100,7 @@ echo "You have chosen: $chosen_disk ($size)"
 # Variable $size returns a string like 32.2GB (or MB or KB)
 size_val=${size%??}  # Extract the pure value
 size_val=${size_val%.*} # Convert to int, bash cannot handle floats
-size_id=${size: -2} # Extract Indentifier KB. MB or GB in the last two charakters
+size_id=${size: -2} # Extract Indentifier KB. MB or GB in the last two characters
 
 # We check against KB so we must recalculate in case size is given in MB of GB 
 if [ "$size_id" == "MB" ]; then
