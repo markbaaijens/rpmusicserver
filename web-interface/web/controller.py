@@ -233,7 +233,7 @@ def DoStartDocker():
         appTitle = 'StartDocker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'StartDocker',
-        commandMessage = '(Re)starting docker-containers is in progress...',
+        commandMessage = 'Starting docker-containers is in progress...',
         showDockerLink = 1
     )
     pass 
