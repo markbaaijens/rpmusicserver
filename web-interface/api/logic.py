@@ -102,10 +102,11 @@ def AppendDiskInfo(diskMountPoint):
     pass
 
 def AppendServiceInfo(portNumber, serviceName):
-    # isActive => nmap localhost | grep <port>/tcp'
+    # isActive => nmap localhost | grep <port>/tcp | grep open'
     isActive = False
     process = subprocess.run(["nmap localhost -p " + str(portNumber) + ""], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["grep " + str(portNumber) + "/tcp"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep open"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     if process.stdout.decode("utf-8").strip('\n'):
         isActive = True
 
