@@ -48,6 +48,7 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
   * LMS (browser): [rpms:9002](http://rpms:9002)
   * Transmission (browser): [rpms:9091](http://rpms:9091)
   * Samba (file explorer): `smb://rpms`
+  * Syncthing: [rpms:8384](http://rpms:8384)
   * API: 
     * `curl rpms:5000`
   * SSH: 
