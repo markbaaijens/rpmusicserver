@@ -94,7 +94,29 @@ if [ "$disk_choice" == "" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
 fi
 
 chosen_disk=${sd_disks[disk_choice]}
-echo "You have chosen: $chosen_disk"
+size=$(parted /dev/$chosen_disk print | grep "Disk /dev/" | awk '{print $3}')
+echo "You have chosen: $chosen_disk ($size)"
+
+# Variable $size returns a string like 32.2GB (or MB or KB)
+size_val=${size%??}  # Extract the pure value
+size_val=${size_val%.*} # Convert to int, bash cannot handle floats
+size_id=${size: -2} # Extract Indentifier KB. MB or GB in the last two characters
+
+# We check against KB so we must recalculate in case size is given in MB of GB 
+if [ "$size_id" == "MB" ]; then
+    size_kb=$(($size_val * 1024))
+fi
+if [ "$size_id" == "GB" ]; then
+    size_kb=$(($size_val * 1024 * 1024))
+fi
+
+minsize_kb=$((1024 * 1024 * 7))  # approximately 8GB in KB
+if [ $size_kb -lt $minsize_kb ]; then
+    echo "Error: SD-card has insufficient capacity. Minimum size is 8GB."
+    cleanup_environment    
+    echo "Script ended."
+    exit
+fi
 
 echo "Image-type:"
 echo "P: Production (hostname = rpms)"
