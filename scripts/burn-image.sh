@@ -110,7 +110,7 @@ if [ "$size_id" == "GB" ]; then
     size_kb=$(($size_val * 1024 * 1024))
 fi
 
-minsize_kb=$((1024 * 1024 * 8))  # 8GB in KB
+minsize_kb=$((1024 * 1024 * 7))  # approximately 8GB in KB
 if [ $size_kb -lt $minsize_kb ]; then
     echo "Error: SD-card has insufficient capacity. Minimum size is 8GB."
     cleanup_environment    
