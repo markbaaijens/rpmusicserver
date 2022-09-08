@@ -28,6 +28,7 @@ a.link-button {
 	border: 1px solid lightgray;
 	display: inline-block;
 	font-weight: normal;
+	margin-bottom: 5px;
   }
   
 a.link-button:hover {
