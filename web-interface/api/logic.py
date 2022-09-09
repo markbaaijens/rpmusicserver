@@ -101,6 +101,7 @@ def AppendDiskInfo(diskMountPoint):
                  })
     pass
 
+# Going to be updating to increase efficiency of nmap scans.
 def AppendServiceInfo(portNumber, serviceName):
     # isActive => nmap localhost | grep <port>/tcp | grep open'
     isActive = False
