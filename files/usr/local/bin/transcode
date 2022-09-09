@@ -8,12 +8,21 @@ fi
 
 sourcefolder=$(jq '.sourcefolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
 oggfolder=$(jq '.oggfolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
+oggquality=$(jq '.oggquality' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
 mp3folder=$(jq '.mp3folder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
+mp3bitrate=$(jq '.mp3bitrate' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
 if [ -z $sourcefolder ]; then
     exit
 fi
 
-python3 /usr/local/bin/transcoder/transcoder.py --settingsfile /media/usbdata/rpms/config/transcoder-settings.json --verbose --logfolder "/media/usbdata/rpms/logs"
+python3 /usr/local/bin/transcoder/transcoder.py \
+    --sourcefolder "$sourcefolder" \
+    --oggfolder "$oggfolder" \
+    --oggquality $oggquality \
+    --mp3folder "$mp3folder" \
+    --mp3bitrate $mp3bitrate \
+    --verbose \
+    --logfolder "/media/usbdata/rpms/logs"
 
 if [ ! -z $mp3folder ]; then
     chmod 777 $mp3folder/* -R -f

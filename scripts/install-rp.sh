@@ -70,14 +70,6 @@ mkdir /media/usbdata/user/Publiek/Muziek -p
 chmod 777 /media/usbdata/user/Publiek -R
 chmod 777 /media/usbbackup -R
 
-echo "Adding line for upgrade to /etc/crontab:"
-if [ ! "$(grep "apt-get upgrade" /etc/crontab)" ]; then
-    /bin/sh -c 'echo "02 10 * * * root apt-get upgrade -y" >> /etc/crontab'
-    echo " => line added."    
-else
-    echo " => line is already present."    
-fi
-
 echo "Copy LMS config files"
 if [ ! -d /media/usbdata/rpms/config/docker/lms ]; then
     mkdir -p /media/usbdata/rpms/config/docker/lms
@@ -114,27 +106,45 @@ echo " => file revision.json copied."
 
 echo "Installing transcoder..."
 rm -rf /tmp/transcoder*
-wget https://github.com/markbaaijens/transcoder/archive/refs/tags/v1.0.zip -nv -O /tmp/transcoder.zip
+wget https://github.com/markbaaijens/transcoder/archive/refs/tags/v1.2.zip -nv -O /tmp/transcoder.zip
 unzip -o -q -d /tmp -o /tmp/transcoder.zip
-mv /tmp/transcoder-1.0 /tmp/transcoder
+mv /tmp/transcoder-1.2 /tmp/transcoder
 mkdir -p /usr/local/bin/transcoder
 cp /tmp/transcoder/transcoder.py /usr/local/bin/transcoder/transcoder.py
 chmod +x /usr/local/bin/transcoder/transcoder.py
+
 if [ ! -f /media/usbdata/rpms/config/transcoder-settings.json ]; then
-    cp /tmp/transcoder/transcoder-settings.json /media/usbdata/rpms/config/transcoder-settings.json
+    cp /tmp/rpmusicserver/files/config/transcoder/transcoder-settings.json /media/usbdata/rpms/config/transcoder-settings.json
 fi 
 echo " => transcoder installed"
 
 install_bin_file update-server
 install_bin_file backup-server
 install_bin_file transcode
+install_bin_file start-docker
 install_bin_file kill-docker
 install_bin_file halt-server
 install_bin_file reboot-server
 
-echo "Adding line for transcoder to /etc/crontab:"
+echo "Adding line for auto-upgrade to /etc/crontab:"
+if [ ! "$(grep "apt-get upgrade" /etc/crontab)" ]; then
+    /bin/sh -c 'echo "02 10 * * * root apt-get upgrade -y" >> /etc/crontab'
+    echo " => line added."    
+else
+    echo " => line is already present."    
+fi
+
+echo "Adding line for transcoder to /etc/crontab..."
 if [ ! "$(grep "transcode" /etc/crontab)" ]; then
     /bin/sh -c 'echo "20 * * * * root transcode" >> /etc/crontab'
+    echo " => line added."    
+else
+    echo " => line is already present."    
+fi
+
+echo "Adding line for setting rights to /etc/crontab..."
+if [ ! "$(grep "chmod 777" /etc/crontab)" ]; then
+    /bin/sh -c 'echo "0 2 * * * root chmod 777 /media/usbdata/user/Publiek -R" >> /etc/crontab'
     echo " => line added."    
 else
     echo " => line is already present."    
@@ -151,6 +161,11 @@ sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 # does NOT require to enter the old password
 echo -e "rpms\nrpms" | passwd pi
 echo " => done changing password of user 'pi'."
+
+echo "Change swappiness to 1..."
+if ([ $(grep -c 'vm.swappiness=1' /etc/sysctl.conf) -eq 0 ]); then
+    sudo /bin/sh -c 'echo "vm.swappiness=1" >> /etc/sysctl.conf'
+fi
 
 echo "Installation complete, system will be rebooted."
 reboot-server

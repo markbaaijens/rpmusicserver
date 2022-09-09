@@ -102,10 +102,11 @@ def AppendDiskInfo(diskMountPoint):
     pass
 
 def AppendServiceInfo(portNumber, serviceName):
-    # isActive => nmap localhost | grep <port>/tcp'
+    # isActive => nmap localhost | grep <port>/tcp | grep open'
     isActive = False
-    process = subprocess.run(["nmap localhost"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["nmap localhost -p " + str(portNumber) + ""], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["grep " + str(portNumber) + "/tcp"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep open"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     if process.stdout.decode("utf-8").strip('\n'):
         isActive = True
 
@@ -125,14 +126,15 @@ def GetDiskList():
 
 def GetServiceList():
     services.clear()
-    AppendServiceInfo(22, 'SSH')
-    AppendServiceInfo(80, 'RPMS/web')
-    AppendServiceInfo(139, 'Samba/netbios')
-    AppendServiceInfo(445, 'Samba/tcp')
-    AppendServiceInfo(5000, 'RPMS/api')
-    AppendServiceInfo(9002, 'LMS/web')
-    AppendServiceInfo(9090, 'LMS/telnet')
-    AppendServiceInfo(9091, 'Transmission')
+    AppendServiceInfo(22, 'ssh')
+    AppendServiceInfo(80, 'rpms/web')
+    AppendServiceInfo(139, 'samba/netbios')
+    AppendServiceInfo(445, 'samba/tcp')
+    AppendServiceInfo(5000, 'rpms/api')
+    AppendServiceInfo(8384, 'syncthing/web')
+    AppendServiceInfo(9002, 'lms/web')
+    AppendServiceInfo(9090, 'lms/telnet')
+    AppendServiceInfo(9091, 'transmission/web')
     return services
     
 def GetResourceInfo():
@@ -339,6 +341,11 @@ def GetDockerContainerList():
                     "ContainerName": 'samba',
                     "IsActive": isActive
                  })    
+    isActive = 'syncthing' in activeContainers                 
+    dockerContainerList.append({
+                    "ContainerName": 'syncthing',
+                    "IsActive": isActive
+                 })                    
 
     return dockerContainerList
 
@@ -369,6 +376,10 @@ async def DoHaltServer():
 
 async def DoKillDocker():
     await asyncio.create_subprocess_shell("kill-docker")
+    pass
+
+async def DoStartDocker():
+    await asyncio.create_subprocess_shell("start-docker")
     pass
 
 async def DoUpdateServer():

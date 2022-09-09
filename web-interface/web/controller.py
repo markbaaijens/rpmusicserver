@@ -164,7 +164,7 @@ def ShowResources():
     )   
     pass     
 
-@app.route('/commands', methods=['GET'])
+@app.route('/tasks', methods=['GET'])
 def ShowCommands():
     try:
         versionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetVersionInfo').content)
@@ -174,14 +174,14 @@ def ShowCommands():
         versionInfo = []
 
     return render_template(
-        'commands.html', 
+        'tasks.html', 
         appTitle = 'Commands - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         versionInfo = versionInfo
     )   
     pass     
 
-@app.route('/commands/backup-server', methods=['GET'])
+@app.route('/backup-server', methods=['GET'])
 def DoBackupServer():
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoBackupServer').content)
@@ -200,7 +200,7 @@ def DoBackupServer():
     )
     pass     
 
-@app.route('/commands/kill-docker', methods=['GET'])
+@app.route('/kill-docker', methods=['GET'])
 def DoKillDocker():
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoKillDocker').content)
@@ -219,7 +219,26 @@ def DoKillDocker():
     )
     pass     
 
-@app.route('/commands/update-server', methods=['GET'])
+@app.route('/start-docker', methods=['GET'])
+def DoStartDocker():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoStartDocker').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    return render_template(
+        'command.html', 
+        appTitle = 'StartDocker - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        commandTitle = 'StartDocker',
+        commandMessage = '(Re)starting docker-containers is in progress...',
+        showDockerLink = 1
+    )
+    pass 
+
+@app.route('/update-server', methods=['GET'])
 def DoUpdateServer():
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoUpdateServer').content)
@@ -238,7 +257,7 @@ def DoUpdateServer():
     )   
     pass     
 
-@app.route('/commands/halt-server', methods=['GET'])
+@app.route('/halt-server', methods=['GET'])
 def DoHaltServer():
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoHaltServer').content)
@@ -257,7 +276,7 @@ def DoHaltServer():
     )   
     pass     
 
-@app.route('/commands/reboot-server', methods=['GET'])
+@app.route('/reboot-server', methods=['GET'])
 def DoRebootServer():
     try:
         apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoRebootServer').content)

@@ -1,6 +1,22 @@
 {
-    "CurrentVersion": "0.7",
+    "CurrentVersion": "0.8",
     "History": [
+        {
+            "Version":"0.8",
+            "Changes": [
+                "Implemented syncthing (as a docker container) #99",
+                "Bug: No command StartDocker in web #119 (web)",
+                "Renamed Commands to Tasks #105 (web)",
+                "Bug: Link to revision list should open a new tab #104",
+                "Prevented file rights issues #96",
+                "Lowered swappines to 1 #97",
+                "Showed Home next to icon #102 (web)",
+                "Bug: While formatting, the confirmation is always 'usbbackup' #95",
+                "Navigation: moved Services and Docker to the back #103 (web)",
+                "Documented in readme if hostname ('rpms') cannot be resolved #101 (doc)",
+                "In readme, added section 'Pi/rpms cannot be reached on the network' #100 (doc)"
+            ]
+        },
         {
             "Version":"0.7",
             "Changes": [

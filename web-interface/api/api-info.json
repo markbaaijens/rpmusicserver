@@ -83,6 +83,10 @@
         "Description": "Kill all docker-containers",
         "Example":"curl rpms:5000/api/DoKillDocker -X post"
     },        
+    {   "EndPoint": "POST api/DoStartDocker",
+        "Description": "Start all (stopped) docker-containers",
+        "Example":"curl rpms:5000/api/DoStartDocker -X post"
+    },    
     {   "EndPoint": "POST api/SetTranscoderSourceFolder",
         "Description": "Set transcoder-setting [sourcefolder]",
         "Example":"curl rpms:5000/api/SetTranscoderSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"Value\":\"NewSourceFolder\"}'"

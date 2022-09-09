@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Commands</h2>
+    <h2>Tasks</h2>
     <h3>Server</h3>
     <div class="indent">
-        <a href="/commands/backup-server">Backup</a>
+        <a href="/backup-server">Backup</a>
     </div>
     <div class="indent">
         {% if versionInfo.CanUpdate %}
-            <a href="/commands/update-server">Update</a> 
+            <a href="/update-server">Update</a> 
         {% else %}
             Update
         {% endif %}
@@ -26,14 +26,17 @@
         </small>
     </div>
     <div class="indent">
-        <a href="/commands/reboot-server">Reboot</a>
+        <a href="/reboot-server">Reboot</a>
     </div>    
     <div class="indent">
-        <a href="/commands/halt-server">Halt</a>        
+        <a href="/halt-server">Halt</a>        
     </div>    
 
     <h3>Docker</h3>
     <div class="indent">
-        <a href="/commands/kill-docker">KillDocker</a>
-    </div>  
+        <a href="/start-docker">StartDocker</a>       
+    </div>
+    <div class="indent">
+        <a href="/kill-docker">KillDocker</a>
+    </div>    
 {% endblock %}
