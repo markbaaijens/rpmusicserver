@@ -3,40 +3,41 @@
 {% block content %}
     <h2>Tasks</h2>
     <h3>Server</h3>
-    <div class="indent">
-        <a href="/backup-server">Backup</a>
-    </div>
-    <div class="indent">
+    <div>
+        <a href="/reboot-server" class="link-button">Reboot</a>
+        <a href="/halt-server" class="link-button">Halt</a>          
+
         {% if versionInfo.CanUpdate %}
-            <a href="/update-server">Update</a> 
+            <a href="/update-server" class="link-button">Update</a> 
         {% else %}
-            Update
+            <a class="link-button disabled">Update</a> 
         {% endif %}
-        <small>
-            <abbr title="CurrentVersion {{ versionInfo.CurrentVersion }} AvailableVersion {{ versionInfo.AvailableVersion }} UpdateBranchName {{ versionInfo.UpdateBranchName }} VersionOverride {{ versionInfo.DevelopmentVersionOverride }}">
-                CanUpdate
-            </abbr>
-            <b>
-                {% if versionInfo.CanUpdate %}
-                    &#10004;
-                {% else %}
-                    &#x2717; 
-                {% endif %}
-            </b>        
-        </small>
+
+        <a href="/backup-server" class="link-button">Backup</a>    
     </div>
-    <div class="indent">
-        <a href="/reboot-server">Reboot</a>
-    </div>    
-    <div class="indent">
-        <a href="/halt-server">Halt</a>        
-    </div>    
+    <small>
+        <table>
+            <tr>
+                <td align="right">
+                    <abbr title="CurrentVersion {{ versionInfo.CurrentVersion }} AvailableVersion {{ versionInfo.AvailableVersion }} UpdateBranchName {{ versionInfo.UpdateBranchName }} VersionOverride {{ versionInfo.DevelopmentVersionOverride }}">
+                        CanUpdate
+                    </abbr>
+                </td>
+                <td><b>
+                    {% if versionInfo.CanUpdate %}
+                        &#10004;
+                    {% else %}
+                    &#x2717; 
+                    {% endif %}
+                </b></td>
+            </tr>
+        </table>        
+    </small>
 
     <h3>Docker</h3>
-    <div class="indent">
-        <a href="/start-docker">StartDocker</a>       
+    <div>
+        <a href="/start-docker" class="link-button">StartDocker</a>       
+        <a href="/kill-docker" class="link-button">KillDocker</a>
     </div>
-    <div class="indent">
-        <a href="/kill-docker">KillDocker</a>
-    </div>    
+
 {% endblock %}
