@@ -102,32 +102,39 @@ def AppendDiskInfo(diskMountPoint):
     pass
 
 
-# Create a list of ports and services, and create a class to define ports and services.
-ServiceList = []
-class PortInfo:
-    def __init__(self, port, service, IsActive):
-        self.port = port
-        self.service = service
-        self.IsActive = IsActive
-# Define ports. IsActive will be "False" by default. Becomes "True" it the port is Open.
-port22 = PortInfo(22, 'ssh', False)
-port80 = PortInfo(80, 'rpms/web', False)
-port139 = PortInfo(139, 'samba/netbios', False)
-port445 = PortInfo(445, 'samba/tcp', False)
-port5000 = PortInfo(5000, 'rpms/api', False)
-port8384 = PortInfo(8384, 'syncthing/web', False)
-port9002 = PortInfo(9002, 'lms/web', False)
-port9090 = PortInfo(9090, 'lms/telnet', False)
-port9091 = PortInfo(9091, 'transmission/web', False)
 
-# Save the list of ports as a string "PortList" for passing to Nmap.
-portList = f"{port22.port},{port80.port},{port139.port},{port445.port},{port5000.port},{port8384.port},{port9002.port},{port9090.port},{port9091.port}"
+
+
+    
+class PortInfo:
+
+    def __init__(self, portNumber, serviceName, isActive):
+        self.port = portNumber
+        self.service = serviceName
+        self.IsActive = isActive
+
+        ServiceList = []
+
+        PortList = [
+            (22, 'ssh', False),
+            (80, 'rpms/web', False),
+            (139, 'samba/netbios', False),
+            (445, 'samba/tcp', False),
+            (5000, 'rpms/api', False),
+            (8384, 'syncthing/web', False),
+            (9002, 'lms/web', False),
+            (9090, 'lms/telnet', False),
+            (9091, 'transmission/web', False),
+            ]
+
+        for port in PortList:
+            ServiceList.append(f"{port[0]}")
+  
 
 def AppendServiceInfo(portNumber, serviceName):
     # isActive => nmap localhost | grep <port>/tcp | grep open'
     isActive = False
-    process = subprocess.run(["nmap localhost --open -p " + str(portList) + ""], stdout=subprocess.PIPE, shell=True)
-#    process = subprocess.run(["grep " + str(portNumber) + "/tcp"], input=process.stdout, stdout=subprocess.PIPE, shell=True) # Will remove.
+    process = subprocess.run(["nmap localhost --open -p " + ", ".join(ServiceList) + ""], stdout=subprocess.PIPE, shell=True)
     if process.stdout.decode("utf-8").strip('\n'):
         isActive = True
 
