@@ -76,6 +76,13 @@ given_an_api_when_called_docker_container_list_then_dockercontainers_returned ()
     if [ "$(cat /tmp/curl-output.txt | jq .DockerConatiners)" ]; then echo "$func_name => OK"; else echo "$func_name => Fail"; fi
 }
 
+given_an_api_when_called_backup_disk_is_present_returned () {
+    func_name="* ${FUNCNAME[0]}"
+    test_value=$(\"DiskName\":\"usbbackup\")
+    call_api "localhost:5000/api/GetDiskList"
+    if [ "$(cat /tmp/curl-output.txt | grep -o $test_value)" ]; then echo "$func_name => OK"; else echo "$func_name => Fail"; fi
+}
+
 given_an_api_when_called_root_then_correct_output_returned
 echo 
 given_an_api_when_called_api_list_then_root_returned
@@ -93,3 +100,5 @@ echo
 given_an_api_when_called_resource_info_then_memtotal_returned
 echo 
 given_an_api_when_called_docker_container_list_then_dockercontainers_returned
+echo
+given_an_api_when_called_backup_disk_is_present_returned
