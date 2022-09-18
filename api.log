@@ -1,0 +1,30 @@
+2022-09-16 19:04:04,516 INFO Log to: api.log
+2022-09-16 19:04:04,516 INFO API started - debug
+2022-09-16 19:04:04,522 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2022-09-16 19:04:04,522 INFO [33mPress CTRL+C to quit[0m
+2022-09-16 19:04:04,523 INFO  * Restarting with stat
+2022-09-16 19:04:04,765 INFO Log to: api.log
+2022-09-16 19:04:04,765 INFO API started - debug
+2022-09-16 19:04:04,770 WARNING  * Debugger is active!
+2022-09-16 19:04:04,770 INFO  * Debugger PIN: 639-589-132
+2022-09-16 19:04:14,803 INFO 127.0.0.1 - - [16/Sep/2022 19:04:14] "GET /api/GetMachineInfo HTTP/1.1" 200 -
+2022-09-16 19:04:14,848 INFO 127.0.0.1 - - [16/Sep/2022 19:04:14] "GET / HTTP/1.1" 200 -
+2022-09-16 19:04:15,008 INFO 127.0.0.1 - - [16/Sep/2022 19:04:15] "GET /api/GetVersionInfo HTTP/1.1" 200 -
+2022-09-16 19:04:24,178 INFO 127.0.0.1 - - [16/Sep/2022 19:04:24] "GET /api/GetMachineInfo HTTP/1.1" 200 -
+2022-09-16 19:04:24,235 INFO 127.0.0.1 - - [16/Sep/2022 19:04:24] "GET / HTTP/1.1" 200 -
+2022-09-16 19:04:24,414 INFO 127.0.0.1 - - [16/Sep/2022 19:04:24] "GET /api/GetVersionInfo HTTP/1.1" 200 -
+2022-09-18 11:09:36,106 INFO Log to: api.log
+2022-09-18 11:09:36,106 INFO API started - debug
+2022-09-18 11:09:36,110 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2022-09-18 11:09:36,110 INFO [33mPress CTRL+C to quit[0m
+2022-09-18 11:09:36,110 INFO  * Restarting with stat
+2022-09-18 11:09:36,293 INFO Log to: api.log
+2022-09-18 11:09:36,293 INFO API started - debug
+2022-09-18 11:09:36,297 WARNING  * Debugger is active!
+2022-09-18 11:09:36,297 INFO  * Debugger PIN: 102-763-422
+2022-09-18 11:09:39,098 INFO 127.0.0.1 - - [18/Sep/2022 11:09:39] "GET /api/GetMachineInfo HTTP/1.1" 200 -
+2022-09-18 11:09:39,157 INFO 127.0.0.1 - - [18/Sep/2022 11:09:39] "GET / HTTP/1.1" 200 -
+2022-09-18 11:09:39,540 INFO 127.0.0.1 - - [18/Sep/2022 11:09:39] "GET /api/GetVersionInfo HTTP/1.1" 200 -
+2022-09-18 11:09:45,017 INFO 127.0.0.1 - - [18/Sep/2022 11:09:45] "GET /api/GetServiceList HTTP/1.1" 200 -

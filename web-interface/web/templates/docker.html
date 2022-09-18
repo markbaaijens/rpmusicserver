@@ -10,7 +10,7 @@
             {{ dockerContainer.ContainerName }}
         {% else %}
             <span class="checkmark-n"> &#x2717; </span>
-            <del>{{ dockerContainer.ContainerName }}</del>        
+            {{ dockerContainer.ContainerName }}        
         {% endif %}        
     </div>
     {% endfor %} 

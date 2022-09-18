@@ -10,7 +10,7 @@
             {{ service.PortNumber }} {{ service.ServiceName }}
         {% else %}
             <span class="checkmark-n"> &#x2717; </span>
-            <del>{{ service.PortNumber }} {{ service.ServiceName }}</del>        
+            {{ service.PortNumber }} {{ service.ServiceName }}        
         {% endif %}        
     </div>
     {% endfor %} 
