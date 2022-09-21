@@ -32,8 +32,18 @@ def GetMachineInfo():
             rpModelMemoryInGB = "1"
         return rpModelMemoryInGB + "GB"
         
+    def GetOsBitType():
+        osBitType = ExecuteBashCommand("uname -m")
+        if osBitType == "armv7l":
+            return osBitType + '/32-bit'
+        elif osBitType == "armv8":
+            return osBitType + '/64-bit'
+        return osBitType
+
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
+    osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
+    osBitType = GetOsBitType()
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
     rpModel = '?'
     rpModelMemoryInGB = CheckRpModelMemoryInGB(ExecuteBashCommand("free --giga | grep Mem: | awk '{print $2}'"))
@@ -53,6 +63,8 @@ def GetMachineInfo():
     return {"HostName": hostName,
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
+            "OsDescription": osDescription,
+            "OsBitType": osBitType,
             "RpModel": rpModel,
             "RpModelMemoryInGB": rpModelMemoryInGB,
             "CpuTemp": cpuTemp,
@@ -300,17 +312,7 @@ def GetBackupInfo():
         if ExecuteBashCommand("grep 'speedup is ' /media/usbdata/rpms/logs/backup-details.log").strip() == '':
             isBackupInProgress = True
 
-#    isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label")# | grep usbbackup")# == "usbbackup"
-    isBackupDiskPresent = []
-    isBackupDiskPresent.clear()
-    process = subprocess.run(["ls /dev/disk/by-label"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep usbbackup"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    lines = process.stdout.decode("utf-8").strip('\n')
-    lines = lines.splitlines()
-    for line in lines:
-        isBackupDiskPresent.append(line)
-
-    isBackupDiskPresent = isBackupDiskPresent == ["usbbackup"]
+    isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup") == "usbbackup"
     canBackup = isBackupDiskPresent and not isBackupInProgress
 
     return {"IsBackupInProgress": isBackupInProgress,
