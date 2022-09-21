@@ -27,13 +27,23 @@ def RevisionFileName():
     return revisionFile
 
 def GetMachineInfo():
+    def GetOsBitType():
+        osBitType = ExecuteBashCommand("uname -m")
+        if osBitType == "armv7l":
+            return 32
+        elif osBitType == "armv8":
+            return 64
+        return 0
+
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
+    osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
+    osBitType = GetOsBitType()
+    osBitType = (str(osBitType)+"-bits") if osBitType > 0 else "?"
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
     rpModel = ''
     if os.path.isfile('/proc/device-tree/model'):    
         rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
-    OSDescription = ExecuteBashCommand("lsb_release -d | awk '{print $2}'")
     cpuTemp = ''
     if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
         process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
@@ -48,6 +58,8 @@ def GetMachineInfo():
     return {"HostName": hostName,
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
+            "OsDescription": osDescription,
+            "OsBitType": osBitType,
             "RpModel": rpModel,
             "CpuTemp": cpuTemp,
             "UpTime": upTime}
