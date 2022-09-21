@@ -12,12 +12,6 @@
         {% else %}
             <a class="link-button disabled">Update</a> 
         {% endif %}
-
-        {% if backupInfo.CanBackup %}
-            <a href="/backup-server" class="link-button">Backup</a>    
-        {% else %}
-            <a class="link-button disabled">Backup</a> 
-        {% endif %}
     </div>
     <small>
         <table>
@@ -35,11 +29,22 @@
                     {% endif %}
                 </b></td>
             </tr>
+        </table>        
+    </small>
+
+    <h3>Backup</h3>    
+    <div>
+        {% if backupInfo.CanBackup %}
+            <a href="/backup-server" class="link-button">Backup</a>    
+        {% else %}
+            <a class="link-button disabled">Backup</a> 
+        {% endif %}
+    </div>    
+    <small>
+        <table>
             <tr>
                 <td align="right">
-                    <abbr title="IsBackupDiskPresent {{ backupInfo.IsBackupDiskPresent }} IsBackupInProgress {{ backupInfo.IsBackupInProgress }}">
-                        IsBackupDiskPresent
-                    </abbr>
+                    IsBackupDiskPresent
                 </td>
                 <td><b>
                     {% if backupInfo.IsBackupDiskPresent %}
@@ -51,12 +56,10 @@
             </tr>
             <tr>
                 <td align="right">
-                    <abbr title="IsBackupDiskPresent {{ backupInfo.IsBackupDiskPresent }} IsBackupInProgress {{ backupInfo.IsBackupInProgress }}">
-                        CanBackup
-                    </abbr>
+                    IsBackupInProgress
                 </td>
                 <td><b>
-                    {% if backupInfo.CanBackup %}
+                    {% if backupInfo.IsBackupInProgress %}
                         &#10004;
                     {% else %}
                         &#x2717; 
@@ -65,6 +68,7 @@
             </tr>
         </table>        
     </small>
+
 
     <h3>Docker</h3>
     <div>
