@@ -12,8 +12,6 @@
         {% else %}
             <a class="link-button disabled">Update</a> 
         {% endif %}
-
-        <a href="/backup-server" class="link-button">Backup</a>    
     </div>
     <small>
         <table>
@@ -25,15 +23,53 @@
                 </td>
                 <td><b>
                     {% if versionInfo.CanUpdate %}
-                       <span class="checkmark-y"> &#10004; </span>
+                        &#10004;
                     {% else %}
-                       <span class="checkmark-n"> &#x2717;  </span>
+                    &#x2717; 
                     {% endif %}
                 </b></td>
             </tr>
         </table>        
     </small>
-   
+
+    <h3>Backup</h3>    
+    <div>
+        {% if backupInfo.CanBackup %}
+            <a href="/backup-server" class="link-button">Backup</a>    
+        {% else %}
+            <a class="link-button disabled">Backup</a> 
+        {% endif %}
+    </div>    
+    <small>
+        <table>
+            <tr>
+                <td align="right">
+                    IsBackupDiskPresent
+                </td>
+                <td><b>
+                    {% if backupInfo.IsBackupDiskPresent %}
+                        &#10004;
+                    {% else %}
+                        &#x2717; 
+                    {% endif %}
+                </b></td>
+            </tr>
+            <tr>
+                <td align="right">
+                    IsBackupInProgress
+                </td>
+                <td><b>
+                    {% if backupInfo.IsBackupInProgress %}
+                        &#10004;
+                    {% else %}
+                        &#x2717; 
+                    {% endif %}
+                </b></td>
+            </tr>
+        </table>        
+    </small>
+
+
     <h3>Docker</h3>
     <div>
         <a href="/start-docker" class="link-button">StartDocker</a>       

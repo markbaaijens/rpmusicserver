@@ -27,13 +27,19 @@ def RevisionFileName():
     return revisionFile
 
 def GetMachineInfo():
+    def CheckRpModelMemoryInGB(rpModelMemoryInGB):
+        if int(rpModelMemoryInGB) < 1:
+            rpModelMemoryInGB = "1"
+        return rpModelMemoryInGB + "GB"
+        
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
-    rpModel = ''
+    rpModel = '?'
+    rpModelMemoryInGB = CheckRpModelMemoryInGB(ExecuteBashCommand("free --giga | grep Mem: | awk '{print $2}'"))
     if os.path.isfile('/proc/device-tree/model'):    
         rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
-    cpuTemp = ''
+    cpuTemp = '?'
     if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
         process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
         process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
@@ -48,6 +54,7 @@ def GetMachineInfo():
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
             "RpModel": rpModel,
+            "RpModelMemoryInGB": rpModelMemoryInGB,
             "CpuTemp": cpuTemp,
             "UpTime": upTime}
 
@@ -288,10 +295,27 @@ def GetVersionList():
 
 def GetBackupInfo():
     isBackupInProgress = False
+
     if os.path.isfile('/media/usbdata/rpms/logs/backup-details.log'):
         if ExecuteBashCommand("grep 'speedup is ' /media/usbdata/rpms/logs/backup-details.log").strip() == '':
             isBackupInProgress = True
-    return {"IsBackupInProgress": isBackupInProgress}
+
+#    isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label")# | grep usbbackup")# == "usbbackup"
+    isBackupDiskPresent = []
+    isBackupDiskPresent.clear()
+    process = subprocess.run(["ls /dev/disk/by-label"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep usbbackup"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    lines = process.stdout.decode("utf-8").strip('\n')
+    lines = lines.splitlines()
+    for line in lines:
+        isBackupDiskPresent.append(line)
+
+    isBackupDiskPresent = isBackupDiskPresent == ["usbbackup"]
+    canBackup = isBackupDiskPresent and not isBackupInProgress
+
+    return {"IsBackupInProgress": isBackupInProgress,
+            "IsBackupDiskPresent": isBackupDiskPresent,
+            "CanBackup": canBackup}
 
 def GetApiList():
     dataAsJson = {}
