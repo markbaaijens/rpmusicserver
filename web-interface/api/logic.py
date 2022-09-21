@@ -34,8 +34,6 @@ def GetMachineInfo():
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
-    osDescription = ExecuteBashCommand("lsb_release -d | cut -f2'")
-    osBitType = GetOsBitType()
     rpModel = ''
     if os.path.isfile('/proc/device-tree/model'):    
         rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
@@ -53,8 +51,6 @@ def GetMachineInfo():
     return {"HostName": hostName,
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
-            "OsDescription": osDescription,
-            "OsBitType": osBitType,
             "RpModel": rpModel,
             "CpuTemp": cpuTemp,
             "UpTime": upTime}
