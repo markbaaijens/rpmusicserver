@@ -30,16 +30,15 @@ def GetMachineInfo():
     def GetOsBitType():
         osBitType = ExecuteBashCommand("uname -m")
         if osBitType == "armv7l":
-            return 32
+            return osBitType + '/32-bit'
         elif osBitType == "armv8":
-            return 64
-        return 0
+            return osBitType + '/64-bit'
+        return osBitType
 
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
     osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
     osBitType = GetOsBitType()
-    osBitType = (str(osBitType)+"-bits") if osBitType > 0 else "?"
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
     rpModel = ''
     if os.path.isfile('/proc/device-tree/model'):    
