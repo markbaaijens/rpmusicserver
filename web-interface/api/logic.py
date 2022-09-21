@@ -27,10 +27,17 @@ def RevisionFileName():
     return revisionFile
 
 def GetMachineInfo():
+    def CheckRpMem(rpMem):
+        if int(rpMem) < 1:
+            rpMem = "1"
+        rpMemInt = int(rpMem)
+        return rpMem + "G", ("V" if math.pow(2, int(math.log(rpMemInt, 2))) == rpMemInt else "Inv") + "alid"
+        
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
     rpModel = ''
+    rpMem = CheckRpMem(ExecuteBashCommand("free --giga | grep Mem: | awk '{print $2}'"))
     if os.path.isfile('/proc/device-tree/model'):    
         rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
     cpuTemp = ''
@@ -47,7 +54,7 @@ def GetMachineInfo():
     return {"HostName": hostName,
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
-            "RpModel": rpModel,
+            "RpModel": [rpModel, rpMem[0] if rpMem[1] == "Valid" else ""],
             "CpuTemp": cpuTemp,
             "UpTime": upTime}
 
