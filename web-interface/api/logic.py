@@ -35,11 +35,11 @@ def GetMachineInfo():
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
-    rpModel = ''
+    rpModel = '?'
     rpModelMemoryInGB = CheckRpModelMemoryInGB(ExecuteBashCommand("free --giga | grep Mem: | awk '{print $2}'"))
     if os.path.isfile('/proc/device-tree/model'):    
         rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
-    cpuTemp = ''
+    cpuTemp = '?'
     if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
         process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
         process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
