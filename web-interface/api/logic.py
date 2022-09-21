@@ -288,16 +288,17 @@ def GetVersionList():
 
 def GetBackupInfo():
     isBackupInProgress = False
-    isBackupDiskPresent = False
 
     if os.path.isfile('/media/usbdata/rpms/logs/backup-details.log'):
         if ExecuteBashCommand("grep 'speedup is ' /media/usbdata/rpms/logs/backup-details.log").strip() == '':
             isBackupInProgress = True
-        if ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup" == "usbbackup"):
-            isBackupDiskPresent = True
-        
+
+    isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup") == "usbbackup"
+    canBackup = isBackupDiskPresent and not isBackupInProgress
+
     return {"IsBackupInProgress": isBackupInProgress,
-            "IsBackupDiskPresent": isBackupDiskPresent}
+            "IsBackupDiskPresent": isBackupDiskPresent,
+            "CanBackup": canBackup}
 
 def GetApiList():
     dataAsJson = {}

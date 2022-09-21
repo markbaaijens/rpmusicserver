@@ -13,12 +13,13 @@
             <a class="link-button disabled">Update</a> 
         {% endif %}
 
-        {% if backupInfo.IsBackupDiskPresent %}
+        {% if backupInfo.CanBackup %}
             <a href="/backup-server" class="link-button">Backup</a>    
         {% else %}
             <a class="link-button disabled">Backup</a> 
         {% endif %}
     </div>
+    {% print(backupInfo) %}
     <small>
         <table>
             <tr>
@@ -41,12 +42,12 @@
         <table>
             <tr>
                 <td align="right">
-                    <abbr title="IsBackupDiskPresent {{ backupInfo.IsBackupDiskPresent }}">
+                    <abbr title="IsBackupDiskPresent {{ backupInfo.IsBackupDiskPresent }} IsBackupInProgress {{ backupInfo.IsBackupInProgress }}">
                         CanBackup
                     </abbr>
                 </td>
                 <td><b>
-                    {% if backupInfo.IsBackupDiskPresent %}
+                    {% if backupInfo.CanBackup %}
                         &#10004;
                     {% else %}
                         &#x2717; 
