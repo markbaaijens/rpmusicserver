@@ -71,3 +71,6 @@ td {
 .indent {
 	padding-left: 10px;
 }
+
+.checkmark-y {color: green;}
+.checkmark-n {color: red;}

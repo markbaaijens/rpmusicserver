@@ -23,9 +23,9 @@
                 </td>
                 <td><b>
                     {% if versionInfo.CanUpdate %}
-                        &#10004;
+                        <span class="checkmark-y"> &#10004; </span>
                     {% else %}
-                    &#x2717; 
+                        <span class="checkmark-n"> &#x2717; </span> 
                     {% endif %}
                 </b></td>
             </tr>
@@ -48,9 +48,9 @@
                 </td>
                 <td><b>
                     {% if backupInfo.IsBackupDiskPresent %}
-                        &#10004;
+                        <span class="checkmark-y"> &#10004; </span>
                     {% else %}
-                        &#x2717; 
+                        <span class="checkmark-n"> &#x2717; </span> 
                     {% endif %}
                 </b></td>
             </tr>
@@ -60,9 +60,9 @@
                 </td>
                 <td><b>
                     {% if backupInfo.IsBackupInProgress %}
-                        &#10004;
+                        <span class="checkmark-y"> &#10004; </span>
                     {% else %}
-                        &#x2717; 
+                        <span class="checkmark-n"> &#x2717; </span> 
                     {% endif %}
                 </b></td>
             </tr>
