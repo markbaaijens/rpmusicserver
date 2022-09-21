@@ -19,7 +19,6 @@
             <a class="link-button disabled">Backup</a> 
         {% endif %}
     </div>
-    {% print(backupInfo) %}
     <small>
         <table>
             <tr>
@@ -36,10 +35,20 @@
                     {% endif %}
                 </b></td>
             </tr>
-        </table>        
-    </small>
-    <small>
-        <table>
+            <tr>
+                <td align="right">
+                    <abbr title="IsBackupDiskPresent {{ backupInfo.IsBackupDiskPresent }} IsBackupInProgress {{ backupInfo.IsBackupInProgress }}">
+                        IsBackupDiskPresent
+                    </abbr>
+                </td>
+                <td><b>
+                    {% if backupInfo.IsBackupDiskPresent %}
+                        &#10004;
+                    {% else %}
+                        &#x2717; 
+                    {% endif %}
+                </b></td>
+            </tr>
             <tr>
                 <td align="right">
                     <abbr title="IsBackupDiskPresent {{ backupInfo.IsBackupDiskPresent }} IsBackupInProgress {{ backupInfo.IsBackupInProgress }}">

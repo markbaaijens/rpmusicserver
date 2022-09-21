@@ -27,9 +27,15 @@ def RevisionFileName():
     return revisionFile
 
 def GetMachineInfo():
+    def GetOsBitType():
+        cpuType = ExecuteBashCommand("uname -m") 
+        switch(cpuType)
+        return 0
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
+    osDescription = ExecuteBashCommand("lsb_release -d | cut -f2'")
+    osBitType = GetOsBitType()
     rpModel = ''
     if os.path.isfile('/proc/device-tree/model'):    
         rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
@@ -47,6 +53,8 @@ def GetMachineInfo():
     return {"HostName": hostName,
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
+            "OsDescription": osDescription,
+            "OsBitType": osBitType,
             "RpModel": rpModel,
             "CpuTemp": cpuTemp,
             "UpTime": upTime}
@@ -293,7 +301,17 @@ def GetBackupInfo():
         if ExecuteBashCommand("grep 'speedup is ' /media/usbdata/rpms/logs/backup-details.log").strip() == '':
             isBackupInProgress = True
 
-    isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup") == "usbbackup"
+#    isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label")# | grep usbbackup")# == "usbbackup"
+    isBackupDiskPresent = []
+    isBackupDiskPresent.clear()
+    process = subprocess.run(["ls /dev/disk/by-label"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep usbbackup"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    lines = process.stdout.decode("utf-8").strip('\n')
+    lines = lines.splitlines()
+    for line in lines:
+        isBackupDiskPresent.append(line)
+
+    isBackupDiskPresent = isBackupDiskPresent == ["usbbackup"]
     canBackup = isBackupDiskPresent and not isBackupInProgress
 
     return {"IsBackupInProgress": isBackupInProgress,
