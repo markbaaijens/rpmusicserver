@@ -27,10 +27,6 @@ def RevisionFileName():
     return revisionFile
 
 def GetMachineInfo():
-    def GetOsBitType():
-        cpuType = ExecuteBashCommand("uname -m") 
-        switch(cpuType)
-        return 0
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
