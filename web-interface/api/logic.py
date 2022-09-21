@@ -30,8 +30,7 @@ def GetMachineInfo():
     def CheckRpMem(rpMem):
         if int(rpMem) < 1:
             rpMem = "1"
-        rpMemInt = int(rpMem)
-        return rpMem + "G", ("V" if math.pow(2, int(math.log(rpMemInt, 2))) == rpMemInt else "Inv") + "alid"
+        return rpMem + "GB"
         
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
@@ -55,7 +54,7 @@ def GetMachineInfo():
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
             "RpModel": rpModel,
-            "RpModelMemory": rpMem[0] if rpMem[1] == "Valid" else "",
+            "RpModelMemoryInGB": rpMem,
             "CpuTemp": cpuTemp,
             "UpTime": upTime}
 
