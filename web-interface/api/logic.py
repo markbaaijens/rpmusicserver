@@ -54,7 +54,8 @@ def GetMachineInfo():
     return {"HostName": hostName,
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
-            "RpModel": [rpModel, rpMem[0] if rpMem[1] == "Valid" else ""],
+            "RpModel": rpModel,
+            "RpModelMemory": rpMem[0] if rpMem[1] == "Valid" else "",
             "CpuTemp": cpuTemp,
             "UpTime": upTime}
 
