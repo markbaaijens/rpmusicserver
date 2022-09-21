@@ -102,21 +102,30 @@ Update your RPMS-server:
 * click Update
 
 ## Development
-* To update RPMS from `develop` branch instead of `master`: 
-  * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
-* To build a development version with a separate hostname `rpmsdev`
-  * `cd <source-folder of rpmusicserver>`
-  * `sudo scripts/burn-image.sh`
-    * choose type `d = development`
-  * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
-	  * password = raspberry  
-  * `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
-	  * password = raspberry 
-  * after reboot, password is changed to `rpms`
-  * from now on, you can reach the development-server on `rpmsdev`
-  * in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
-    * `sudo systemd-resolve --flush-caches`
-* API-documentation: 
+
+### Update from another git branch
+RPMS can be updated from a github branch, where the rpms-code is stored. The update depends on version-numbering in the file `revision.json` (locally stored on rpms) on one hand and on `revision.json` in the github-repo in the other hand. By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. An indicator VersionOverride pops up in the web-interface.
+
+To switch version from `master` branch to e.g. `develop` branch:
+* `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
+
+Returning to the `master` branch version simply delete the `/media/usbdata/rpms/config/update-branch.txt` text file.
+
+### Build development version with separate hostname
+The `rpmsdev` hostname is used in this build
+* `cd <source-folder of rpmusicserver>`
+* `sudo scripts/burn-image.sh`
+  * choose type `d = development`
+* `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
+  * password = raspberry  
+* `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
+  * password = raspberry 
+* after reboot, password is changed to `rpms`
+* from now on, you can reach the development-server on `rpmsdev`
+* in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
+  * `sudo systemd-resolve --flush-caches`
+
+### List of API requests 
   * `curl rpms:5000/api/GetApiList`
   * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList)
 
