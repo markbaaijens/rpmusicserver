@@ -1,3 +1,4 @@
+from itertools import count
 import subprocess
 import requests
 import json
@@ -52,7 +53,6 @@ def GetMachineInfo():
             "UpTime": upTime}
 
 disks = []
-services = []
 
 def AppendDiskInfo(diskMountPoint):
     # diskDeviceName => mount | grep -w / | awk '{print $1}'
@@ -101,50 +101,6 @@ def AppendDiskInfo(diskMountPoint):
                  })
     pass
 
-
-
-
-
-    
-class PortInfo:
-
-    def __init__(self, portNumber, serviceName, isActive):
-        self.port = portNumber
-        self.service = serviceName
-        self.IsActive = isActive
-
-        ServiceList = []
-
-        PortList = [
-            (22, 'ssh', False),
-            (80, 'rpms/web', False),
-            (139, 'samba/netbios', False),
-            (445, 'samba/tcp', False),
-            (5000, 'rpms/api', False),
-            (8384, 'syncthing/web', False),
-            (9002, 'lms/web', False),
-            (9090, 'lms/telnet', False),
-            (9091, 'transmission/web', False),
-            ]
-
-        for port in PortList:
-            ServiceList.append(f"{port[0]}")
-  
-
-def AppendServiceInfo(portNumber, serviceName):
-    # isActive => nmap localhost | grep <port>/tcp | grep open'
-    isActive = False
-    process = subprocess.run(["nmap localhost --open -p " + ", ".join(ServiceList) + ""], stdout=subprocess.PIPE, shell=True)
-    if process.stdout.decode("utf-8").strip('\n'):
-        isActive = True
-
-    services.append({
-                    "PortNumber": portNumber,
-                    "ServiceName": serviceName,
-                    "IsActive": isActive
-                 })
-    pass
-
 def GetDiskList():
     disks.clear()
     AppendDiskInfo('/')
@@ -152,18 +108,53 @@ def GetDiskList():
     AppendDiskInfo('/media/usbbackup')
     return disks
 
+class ServiceInfo:
+    def __init__(self, portNumber, serviceName, isActive=False):
+        self.PortNumber = portNumber
+        self.ServiceName = serviceName
+        self.IsActive = isActive
+
+'''
+def AppendServiceInfo(portNumber, serviceName):
+    # isActive => nmap localhost | grep <port>/tcp | grep open'
+    isActive = False
+    process = subprocess.run(["nmap localhost --open -p " + ", ".join(ServiceList) + ""], stdout=subprocess.PIPE, shell=True)
+    if process.stdout.decode("utf-8").strip('\n'):
+        isActive = True
+
+    serviceList.append({
+                    "PortNumber": portNumber,
+                    "ServiceName": serviceName,
+                    "IsActive": isActive
+                 })
+    pass
+'''
+
 def GetServiceList():
-    services.clear()
-    AppendServiceInfo(22, 'ssh')
-    AppendServiceInfo(80, 'rpms/web')
-    AppendServiceInfo(139, 'samba/netbios')
-    AppendServiceInfo(445, 'samba/tcp')
-    AppendServiceInfo(5000, 'rpms/api')
-    AppendServiceInfo(8384, 'syncthing/web')
-    AppendServiceInfo(9002, 'lms/web')
-    AppendServiceInfo(9090, 'lms/telnet')
-    AppendServiceInfo(9091, 'transmission/web')
-    return services
+    serviceList = []
+
+    serviceList.append(ServiceInfo(22, 'ssh'))
+    serviceList.append(ServiceInfo(22, 'ssh'))
+    serviceList.append(ServiceInfo(80, 'rpms/web'))
+    serviceList.append(ServiceInfo(139, 'samba/netbios'))
+    serviceList.append(ServiceInfo(5000, 'rpms/api'))
+    serviceList.append(ServiceInfo(8384, 'syncthing/web'))
+    serviceList.append(ServiceInfo(9002, 'lms/web'))
+    serviceList.append(ServiceInfo(9091, 'transmission/web'))
+
+    portList = ''
+    for serviceObject in serviceList:
+        portList = portList + ',' + str(serviceObject.PortNumber)
+
+    serviceListResult = []
+    for serviceObject in serviceList:
+        serviceListResult.append({
+                    "PortNumber": serviceObject.PortNumber,
+                    "ServiceName": serviceObject.ServiceName,
+                    "IsActive": serviceObject.IsActive
+                 })
+
+    return serviceListResult
     
 def GetResourceInfo():
     # memTotal => free | grep 'Mem:' | awk '{print $2}'
