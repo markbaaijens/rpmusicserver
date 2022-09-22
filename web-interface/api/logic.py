@@ -147,7 +147,9 @@ def GetServiceList():
         if portList != '':
             portList = portList + ','
         portList = portList + str(serviceObject.PortNumber)
-    print(portList)
+
+    # Execute nmap with portList, store result in nmapResultList
+    # Loop over nmapResultList, modify corresponding object in servceList
 
     serviceListResult = []
     for serviceObject in serviceList:
