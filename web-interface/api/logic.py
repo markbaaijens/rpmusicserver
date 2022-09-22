@@ -142,21 +142,19 @@ def GetServiceList():
             portList = portList + ','
         portList = portList + str(serviceObject.PortNumber)
 
-
-    # nmap localhost -p 22,60,5000 | grep '/tcp'
+    # nmap localhost --open -p 22,60,5000,9002,9091 | grep '/tcp'
     process = subprocess.run(["nmap localhost --open -p " + portList], stdout=subprocess.PIPE, shell=True)
-    nmapResultList = process.stdout.decode("utf-8").strip('\n')
-    nmapResultList = nmapResultList.splitlines()
+    nmapResult = process.stdout.decode("utf-8").strip('\n')
 
-#    for nmapResult in nmapResultList:
+    for serviceObject in serviceList:
+        serviceObject.IsActive = True  # Find portnumer/tcp in nmapResult
 
     serviceListResult = []
     for serviceObject in serviceList:
-        serviceListResult.append({
-                    "PortNumber": serviceObject.PortNumber,
-                    "ServiceName": serviceObject.ServiceName,
-                    "IsActive": serviceObject.IsActive
-                 })
+        serviceListResult.append({"PortNumber": serviceObject.PortNumber,
+                                  "ServiceName": serviceObject.ServiceName,
+                                  "IsActive": serviceObject.IsActive
+                                 })
 
     return serviceListResult
     
