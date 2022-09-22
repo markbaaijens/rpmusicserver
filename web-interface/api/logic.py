@@ -108,12 +108,6 @@ def GetDiskList():
     AppendDiskInfo('/media/usbbackup')
     return disks
 
-class ServiceInfo:
-    def __init__(self, portNumber, serviceName, isActive=False):
-        self.PortNumber = portNumber
-        self.ServiceName = serviceName
-        self.IsActive = isActive
-
 '''
 def AppendServiceInfo(portNumber, serviceName):
     # isActive => nmap localhost | grep <port>/tcp | grep open'
@@ -131,6 +125,12 @@ def AppendServiceInfo(portNumber, serviceName):
 '''
 
 def GetServiceList():
+    class ServiceInfo:
+        def __init__(self, portNumber, serviceName, isActive=False):
+            self.PortNumber = portNumber
+            self.ServiceName = serviceName
+            self.IsActive = isActive
+
     serviceList = []
 
     serviceList.append(ServiceInfo(22, 'ssh'))
