@@ -108,7 +108,7 @@ def GetDiskList():
     AppendDiskInfo('/media/usbbackup')
     return disks
 
-'''
+
 def AppendServiceInfo(portNumber, serviceName):
     # isActive => nmap localhost | grep <port>/tcp | grep open'
     isActive = False
@@ -116,13 +116,7 @@ def AppendServiceInfo(portNumber, serviceName):
     if process.stdout.decode("utf-8").strip('\n'):
         isActive = True
 
-    serviceList.append({
-                    "PortNumber": portNumber,
-                    "ServiceName": serviceName,
-                    "IsActive": isActive
-                 })
     pass
-'''
 
 def GetServiceList():
     class ServiceInfo:
@@ -148,8 +142,13 @@ def GetServiceList():
             portList = portList + ','
         portList = portList + str(serviceObject.PortNumber)
 
-    # Execute nmap with portList, store result in nmapResultList
-    # Loop over nmapResultList, modify corresponding object in servceList
+
+    # nmap localhost -p 22,60,5000 | grep '/tcp'
+    process = subprocess.run(["nmap localhost --open -p " + portList], stdout=subprocess.PIPE, shell=True)
+    nmapResultList = process.stdout.decode("utf-8").strip('\n')
+    nmapResultList = nmapResultList.splitlines()
+
+#    for nmapResult in nmapResultList:
 
     serviceListResult = []
     for serviceObject in serviceList:
