@@ -144,7 +144,10 @@ def GetServiceList():
 
     portList = ''
     for serviceObject in serviceList:
-        portList = portList + ',' + str(serviceObject.PortNumber)
+        if portList != '':
+            portList = portList + ','
+        portList = portList + str(serviceObject.PortNumber)
+    print(portList)
 
     serviceListResult = []
     for serviceObject in serviceList:
