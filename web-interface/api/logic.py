@@ -136,7 +136,6 @@ def GetServiceList():
 
     serviceList = []
     serviceList.append(ServiceInfo(22, 'ssh'))
-    serviceList.append(ServiceInfo(22, 'ssh'))
     serviceList.append(ServiceInfo(80, 'rpms/web'))
     serviceList.append(ServiceInfo(139, 'samba/netbios'))
     serviceList.append(ServiceInfo(5000, 'rpms/api'))
