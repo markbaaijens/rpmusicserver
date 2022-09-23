@@ -126,7 +126,6 @@ def GetServiceList():
             self.IsActive = isActive
 
     serviceList = []
-
     serviceList.append(ServiceInfo(22, 'ssh'))
     serviceList.append(ServiceInfo(22, 'ssh'))
     serviceList.append(ServiceInfo(80, 'rpms/web'))
@@ -142,12 +141,11 @@ def GetServiceList():
             portList = portList + ','
         portList = portList + str(serviceObject.PortNumber)
 
-    # nmap localhost --open -p 22,60,5000,9002,9091 | grep '/tcp'
-    process = subprocess.run(["nmap localhost --open -p " + portList], stdout=subprocess.PIPE, shell=True)
-    nmapResult = process.stdout.decode("utf-8").strip('\n')
+    nmapResult = ExecuteBashCommand('nmap localhost --open -p ' + portList)
 
     for serviceObject in serviceList:
-        serviceObject.IsActive = True  # Find portnumer/tcp in nmapResult
+        if (str(serviceObject.PortNumber) + '/tcp') in nmapResult:
+            serviceObject.IsActive = True
 
     serviceListResult = []
     for serviceObject in serviceList:
