@@ -22,41 +22,24 @@
         </tr>
         <tr>
             <td align="right">RpModel</td>
-            <td><b>{{ machineInfo.RpModel }}</b></td>
+            <td><b>{{ machineInfo.RpModel }}</b> | <b>{{ machineInfo.RpModelMemoryInGB }}</b></td>
         </tr>
         <tr>
             <td align="right">CpuTemp</td>
             <td><b>{{ machineInfo.CpuTemp }}</b></td>
         </tr>
         <tr>
-            <td align="right">OsCodeName</td>
-            <td><b>{{ machineInfo.OsCodeName }}</b></td>
+            <td align="right">OS</td>
+            <td><b>{{ machineInfo.OsDescription }}</b> | <b>{{ machineInfo.OsCodeName }}</b> | <b>{{ machineInfo.OsBitType }}</b></td>
         </tr>        
         <tr>
             <td align="right">UpTime</td>
             <td><b>{{ machineInfo.UpTime }}</b></td>
         </tr>
     </table>    
-    <small><a href="/resources">Resources</a></small>
+
     <h2>Version</h2>
     <table>
-        <tr>
-            <td align="right">CanUpdate</td>
-            <td>
-                {% if versionInfo.CanUpdate %}
-                    &#10004;
-                {% else %}
-                    &#x2717; 
-                {% endif %}
-                <small>
-                    {% if versionInfo.CanUpdate %}
-                        <a href="/update-server">UpdateServer</a> 
-                    {% else %}
-                        UpdateServer
-                    {% endif %}            
-                </small>            
-            </td>
-        </tr>    
         <tr>
             <td align="right">CurrentVersion</td>
             <td><b>{{ versionInfo.CurrentVersion }}</b></td>
@@ -82,7 +65,24 @@
             <td align="right">VersionFile</td>
             <td><a class="external-link" href="http://rpms:5000/api/GetVersionList" target="_blank">{{ versionInfo.VersionFile }}</a></td>
         </tr>                
+        <tr>
+            <td align="right">CanUpdate</td>
+            <td>
+                {% if versionInfo.CanUpdate %}
+                    <span class="checkmark-y"> &#10004; </span>
+                {% else %}
+                    <span class="checkmark-n"> &#x2717; </span> 
+                {% endif %}
+            </td>
+        </tr>            
     </table>  
+    <p>
+    {% if versionInfo.CanUpdate %}
+        <a href="/update-server" class="link-button">UpdateServer</a> 
+    {% else %}
+        <a class="link-button disabled">UpdateServer</a> 
+    {% endif %}            
+
     <h2>Api</h2>
     <table>
         <tr>

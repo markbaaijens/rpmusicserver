@@ -1,6 +1,12 @@
 {
-    "CurrentVersion": "0.8",
+    "CurrentVersion": "0.9",
     "History": [
+        {
+            "Version":"0.9",
+            "Changes": [
+                ""
+            ]
+        },
         {
             "Version":"0.8",
             "Changes": [
@@ -8,8 +14,8 @@
                 "Bug: No command StartDocker in web #119 (web)",
                 "Renamed Commands to Tasks #105 (web)",
                 "Bug: Link to revision list should open a new tab #104",
-                "Prevented file rights issues #96",
-                "Lowered swappines to 1 #97",
+                "Bug: Prevented file rights issues #96",
+                "Bug: Lowered swappines to 1 #97",
                 "Showed Home next to icon #102 (web)",
                 "Bug: While formatting, the confirmation is always 'usbbackup' #95",
                 "Navigation: moved Services and Docker to the back #103 (web)",

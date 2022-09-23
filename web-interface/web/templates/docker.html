@@ -6,16 +6,16 @@
     {% for dockerContainer in dockerContainerList %}
     <div>
         {% if dockerContainer.IsActive %}
-            &#10004;
+            <span class="checkmark-y"> &#10004; </span>
             {{ dockerContainer.ContainerName }}
         {% else %}
-            &#x2717; 
-            <del>{{ dockerContainer.ContainerName }}</del>        
+            <span class="checkmark-n"> &#x2717; </span>
+            {{ dockerContainer.ContainerName }}        
         {% endif %}        
     </div>
     {% endfor %} 
     <div>
         <p>
-        <small><a href="/start-docker">StartDocker</a></small> |  <small><a href="/kill-docker">KillDocker</a></small>
+        <a href="/start-docker" class="link-button">StartDocker</a> <a href="/kill-docker" class="link-button">KillDocker</a>
     </div>        
 {% endblock %}

@@ -173,11 +173,19 @@ def ShowCommands():
         logger.error(traceback.format_exc())
         versionInfo = []
 
+    try:
+        backupInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetBackupInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        backupInfo = []
+
     return render_template(
         'tasks.html', 
         appTitle = 'Commands - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        versionInfo = versionInfo
+        versionInfo = versionInfo,
+        backupInfo = backupInfo
     )   
     pass     
 
@@ -233,7 +241,7 @@ def DoStartDocker():
         appTitle = 'StartDocker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'StartDocker',
-        commandMessage = '(Re)starting docker-containers is in progress...',
+        commandMessage = 'Starting docker-containers is in progress...',
         showDockerLink = 1
     )
     pass 

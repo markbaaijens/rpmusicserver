@@ -28,13 +28,29 @@ def RevisionFileName():
     return revisionFile
 
 def GetMachineInfo():
+    def CheckRpModelMemoryInGB(rpModelMemoryInGB):
+        if int(rpModelMemoryInGB) < 1:
+            rpModelMemoryInGB = "1"
+        return rpModelMemoryInGB + "GB"
+        
+    def GetOsBitType():
+        osBitType = ExecuteBashCommand("uname -m")
+        if osBitType == "armv7l":
+            return osBitType + '/32-bit'
+        elif osBitType == "armv8":
+            return osBitType + '/64-bit'
+        return osBitType
+
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
+    osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
+    osBitType = GetOsBitType()
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
-    rpModel = ''
+    rpModel = '?'
+    rpModelMemoryInGB = CheckRpModelMemoryInGB(ExecuteBashCommand("free --giga | grep Mem: | awk '{print $2}'"))
     if os.path.isfile('/proc/device-tree/model'):    
         rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
-    cpuTemp = ''
+    cpuTemp = '?'
     if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
         process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
         process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
@@ -48,7 +64,10 @@ def GetMachineInfo():
     return {"HostName": hostName,
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
+            "OsDescription": osDescription,
+            "OsBitType": osBitType,
             "RpModel": rpModel,
+            "RpModelMemoryInGB": rpModelMemoryInGB,
             "CpuTemp": cpuTemp,
             "UpTime": upTime}
 
@@ -297,10 +316,17 @@ def GetVersionList():
 
 def GetBackupInfo():
     isBackupInProgress = False
+
     if os.path.isfile('/media/usbdata/rpms/logs/backup-details.log'):
         if ExecuteBashCommand("grep 'speedup is ' /media/usbdata/rpms/logs/backup-details.log").strip() == '':
             isBackupInProgress = True
-    return {"IsBackupInProgress": isBackupInProgress}
+
+    isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup") == "usbbackup"
+    canBackup = isBackupDiskPresent and not isBackupInProgress
+
+    return {"IsBackupInProgress": isBackupInProgress,
+            "IsBackupDiskPresent": isBackupDiskPresent,
+            "CanBackup": canBackup}
 
 def GetApiList():
     dataAsJson = {}

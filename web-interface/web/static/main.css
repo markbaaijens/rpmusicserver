@@ -19,6 +19,28 @@ a:link { color: steelblue;}
 a:visited {color: steelblue;}
 a:hover { background-color: lightgray;}
 
+a.link-button {
+	background-color: whitesmoke;
+	color: black;
+	padding: 5px 8px;
+	text-decoration: none;
+	border-radius: 8px;
+	border: 1px solid lightgray;
+	display: inline-block;
+	font-weight: normal;
+	margin-bottom: 5px;
+  }
+  
+a.link-button:hover {
+	border: 1px solid grey;
+	background-color: lightgray;
+  }
+
+.disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+  }    
+
 em {
 	color: red;
 }
@@ -49,3 +71,6 @@ td {
 .indent {
 	padding-left: 10px;
 }
+
+.checkmark-y {color: green;}
+.checkmark-n {color: red;}
