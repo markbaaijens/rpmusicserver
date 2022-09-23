@@ -1,0 +1,18 @@
+{
+    "Languages": [
+        {
+            "LanguageCode":"nl",
+            "Translations": [
+                {"PublicFolderName":"Publiek"},
+                {"MusicFolderName":"Muziek"}                
+            ]
+        },
+        {
+            "LanguageCode":"en",
+            "Translations": [
+                {"PublicFolderName":"Public"},
+                {"MusicFolderName":"Music"}                
+            ]
+        }
+    ]
+}
