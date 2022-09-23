@@ -108,16 +108,6 @@ def GetDiskList():
     AppendDiskInfo('/media/usbbackup')
     return disks
 
-
-def AppendServiceInfo(portNumber, serviceName):
-    # isActive => nmap localhost | grep <port>/tcp | grep open'
-    isActive = False
-    process = subprocess.run(["nmap localhost --open -p " + ", ".join(ServiceList) + ""], stdout=subprocess.PIPE, shell=True)
-    if process.stdout.decode("utf-8").strip('\n'):
-        isActive = True
-
-    pass
-
 def GetServiceList():
     class ServiceInfo:
         def __init__(self, portNumber, serviceName, isActive=False):
