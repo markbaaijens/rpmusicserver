@@ -2,6 +2,7 @@
 
 {% block content %}
     <h2>Services</h2>
+    <h3>Status</h3>
     <p>
     {% for service in serviceList %}
     <div>
@@ -16,5 +17,44 @@
     {% endfor %} 
     <p>
     <div><em>Services may take a few moments to become visible to the outside.</em></div>
-    <div><em>Use <code>watch nmap rpms</code> on your client for a correct result.</em></div>            
+    <div><em>Use <code>watch nmap rpms</code> on your client for a correct result.</em></div>  
+
+    <h3>Docker</h3>
+    <p>
+    {% for dockerContainer in dockerContainerList %}
+    <div>
+        {% if dockerContainer.IsActive %}
+            <span class="checkmark-y"> &#10004; </span>
+            {{ dockerContainer.ContainerName }}
+        {% else %}
+            <span class="checkmark-n"> &#x2717; </span>
+            {{ dockerContainer.ContainerName }}        
+        {% endif %}        
+    </div>
+    {% endfor %} 
+    <div>
+        <p>
+        <a href="/start-docker" class="link-button">StartDocker</a> <a href="/kill-docker" class="link-button">KillDocker</a>
+    </div> 
+
+    <h3>Api</h3>
+    <table>
+        <tr>
+            <td align="right">ApiName</td>
+            <td><b>{{ apiInfo.ApiName }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">Documentation</td>
+            <td>
+                <b>
+                <a class="external-link" href="http://rpms:5000/api/GetApiList" target="_blank">{{ apiInfo.Documentation }}</a>
+                </b>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">ApiRootUrl</td>
+            <td><b>{{ apiRootUrl }}</b></td>
+        </tr>                
+    </table>  
+
 {% endblock %}

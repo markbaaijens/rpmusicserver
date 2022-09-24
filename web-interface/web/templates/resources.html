@@ -2,6 +2,7 @@
 
 {% block content %}
     <h2>Resources</h2>
+    <h3>Memory & Processor</h3>
     <table>
         <tr>
             <td align="right">Memory</td>
@@ -27,5 +28,53 @@
             </td>
             <td><b>{{ resourceInfo.AverageLoad1 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad5 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad15 }}</b></td>
         </tr>
-    </table>        
+    </table> 
+
+    <h3>Disks</h3>
+    <p>
+    {% for disk in diskList %}
+    <div>
+        <b>
+            {% if '/' in disk.DiskName %} 
+                system
+            {% else %}
+                {{ disk.DiskName }}
+            {% endif %}
+        </b>
+    </div>
+    <table>
+        <tr>
+            <td align="right">IsOnline</td>
+            <td>
+                {% if disk.IsOnline %}
+                    <span class="checkmark-y"> &#10004; </span>
+                {% else %}
+                    <span class="checkmark-n"> &#x2717; </span>
+                {% endif %}                
+            </td>
+        </tr>
+        {% if disk.IsOnline %}
+            <tr>
+                <td align="right">Size</td>
+                <td><b>{{ disk.Size }}</b></td>
+            </tr>
+            <tr>
+                <td align="right">Used</td>
+                <td>
+                    <b>{{ disk.Used }}</b>
+                    <small>{{ disk.UsedPercentage }}%</small>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">MountPoint</td>
+                <td><b>{{ disk.MountPoint }}</b></td>
+            </tr>
+            <tr>
+                <td align="right">DeviceName</td>
+                <td><b>{{ disk.DeviceName }}</b></td>
+            </tr>
+        {% endif %}
+    </table>
+    <p>
+    {% endfor %} 
 {% endblock %}

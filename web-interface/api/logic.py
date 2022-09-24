@@ -1,4 +1,3 @@
-from itertools import count
 import subprocess
 import requests
 import json
@@ -36,9 +35,9 @@ def GetMachineInfo():
     def GetOsBitType():
         osBitType = ExecuteBashCommand("uname -m")
         if osBitType == "armv7l":
-            return osBitType + '/32-bit'
+            return osBitType + ' - 32-bit'
         elif osBitType == "armv8":
-            return osBitType + '/64-bit'
+            return osBitType + ' - 64-bit'
         return osBitType
 
     hostName = ExecuteBashCommand("hostname")
@@ -127,7 +126,7 @@ def GetDiskList():
     AppendDiskInfo('/media/usbbackup')
     return disks
 
-def GetServiceList():
+def GetServiceStatusList():
     class ServiceInfo:
         def __init__(self, portNumber, serviceName, isActive=False):
             self.PortNumber = portNumber
@@ -144,27 +143,27 @@ def GetServiceList():
     serviceList.append(ServiceInfo(9091, 'transmission/web'))
 
     portList = ''
-    for serviceObject in serviceList:
+    for serviceInfoObject in serviceList:
         if portList != '':
             portList = portList + ','
-        portList = portList + str(serviceObject.PortNumber)
+        portList = portList + str(serviceInfoObject.PortNumber)
 
     nmapResult = ExecuteBashCommand('nmap localhost --open -p ' + portList)
 
-    for serviceObject in serviceList:
-        if (str(serviceObject.PortNumber) + '/tcp') in nmapResult:
-            serviceObject.IsActive = True
+    for serviceInfoObject in serviceList:
+        if (str(serviceInfoObject.PortNumber) + '/tcp') in nmapResult:
+            serviceInfoObject.IsActive = True
 
     serviceListResult = []
-    for serviceObject in serviceList:
-        serviceListResult.append({"PortNumber": serviceObject.PortNumber,
-                                  "ServiceName": serviceObject.ServiceName,
-                                  "IsActive": serviceObject.IsActive
+    for serviceInfoObject in serviceList:
+        serviceListResult.append({"PortNumber": serviceInfoObject.PortNumber,
+                                  "ServiceName": serviceInfoObject.ServiceName,
+                                  "IsActive": serviceInfoObject.IsActive
                                  })
 
     return serviceListResult
     
-def GetResourceInfo():
+def GetGenericResourceInfo():
     # memTotal => free | grep 'Mem:' | awk '{print $2}'
     process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
