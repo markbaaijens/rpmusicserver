@@ -30,7 +30,7 @@ Transform a Raspberry Pi in a streaming/-file-server for your music with LMS (Lo
   * check if Pi is running: 
     * `watch nmap rpms`
     * wait until port 22 appears; exit with Ctrl-C
-    * if the Pi does not appear in the network, checkout the Troubleshooting-section below
+    * _if the Pi does not appear in the network, checkout the Troubleshooting-section below_
 
 * Installation:
   * `rsync -r /tmp/rpmusicserver-master/* pi@rpms:/tmp/rpmusicserver`
