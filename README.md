@@ -1,5 +1,5 @@
 # RP Music Server
-Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Squeezebox), Samba, Tranmission, transcoder, etc.
+Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc.
 
 ## System requirements
 * [minimum] Raspberry Pi 2 (B or B+), 1 GB
