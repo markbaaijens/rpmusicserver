@@ -6,10 +6,21 @@ Transform a Raspberry Pi in a streaming/-file-server for your music with LMS (Lo
 * [recommended] Raspberry Pi 4 B, 4 GB
 
 ## Installation of RPMS on a Pi
+Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network on local DNS.
+
+Note. As for now, the installation requires you to have a Linux PC.
 
 ### Check your network if local DNS works
+Local DNS (Domain Name System) provides a mechanism for resolving a computer-name to a ip-address. As the computer- or hostname is more convenient to use than the ip-address, this is our starting point: in the install-steps below, computers like RPMS are thus referred to by their (user-friendly) hostname.
 
+Problem though is that on many local networks, local DNS is _not_ working, the cause of this problem is yet unknown. 
 
+To detect if your network supports local DNS, execute the following command in a terminal:
+* `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
+
+If this command produces output, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific _Pi/rpms can only reached by ip-address_.
+
+If this command has no output, it is all good and you can proceed installing RPMS on your Pi.
 
 ### Steps to install RPMS on your Pi
 * Install package(s) on your Linux PC:
