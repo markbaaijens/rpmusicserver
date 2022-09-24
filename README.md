@@ -1,5 +1,5 @@
 # RP Music Server
-Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Squeezebox), Samba, Tranmission, transcoder, etc.
+Transform a Raspberry Pi in a streaming/-file-server for your music with LMS (Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
 ## System requirements
 * [minimum] Raspberry Pi 2 (B or B+), 1 GB
@@ -30,7 +30,9 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
   * check if Pi is running: 
     * `watch nmap rpms`
     * wait until port 22 appears; exit with Ctrl-C
-* Installation and configuration:
+    * _if the Pi does not appear in the network, checkout the Troubleshooting-section below_
+
+* Installation:
   * `rsync -r /tmp/rpmusicserver-master/* pi@rpms:/tmp/rpmusicserver`
 	  * password = raspberry  
   * `ssh pi@rpms "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`
