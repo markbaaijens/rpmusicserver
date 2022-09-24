@@ -143,7 +143,7 @@ def GetDiskList():
     AppendDiskInfo('/media/usbbackup')
     return disks
 
-def GetServiceList():
+def GetServiceStatusList():
     services.clear()
     AppendServiceInfo(22, 'ssh')
     AppendServiceInfo(80, 'rpms/web')
@@ -156,7 +156,7 @@ def GetServiceList():
     AppendServiceInfo(9091, 'transmission/web')
     return services
     
-def GetResourceInfo():
+def GetGenericResourceInfo():
     # memTotal => free | grep 'Mem:' | awk '{print $2}'
     process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)

@@ -66,7 +66,7 @@ given_an_api_when_called_api_log_then_api_log_returned () {
 
 given_an_api_when_called_resource_info_then_memtotal_returned () {
     func_name="* ${FUNCNAME[0]}"
-    call_api "localhost:5000/api/GetResourceInfo/10"
+    call_api "localhost:5000/api/GetGenericResourceInfo/10"
     if [ "$(cat /tmp/curl-output.txt | jq .MemTotal)" ]; then echo "$func_name => OK"; else echo "$func_name => Fail"; fi
 }
 

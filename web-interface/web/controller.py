@@ -74,6 +74,7 @@ def Home():
     )
     pass
 
+'''
 @app.route('/disks', methods=['GET'])
 def ShowDisks():
     try:
@@ -90,6 +91,7 @@ def ShowDisks():
         diskList = diskList
     )    
     pass
+'''
 
 @app.route('/transcoder', methods=['GET'])
 def ShowTranscoderSettings():
@@ -108,6 +110,7 @@ def ShowTranscoderSettings():
     )    
     pass
 
+'''
 @app.route('/docker', methods=['GET'])
 def ShowDocker():
     try:
@@ -124,32 +127,48 @@ def ShowDocker():
         dockerContainerList = dockerContainerList
     )   
     pass     
+'''
 
 @app.route('/services', methods=['GET'])
 def ShowServices():
     try:
-        serviceList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceList').content)
+        serviceList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceStatusList').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         serviceList = []
+    
+    try:
+        dockerContainerList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDockerContainerList').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        dockerContainerList = []
 
     return render_template(
         'services.html', 
         appTitle = 'Services - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        serviceList = serviceList
+        serviceList = serviceList,
+        dockerContainerList = dockerContainerList
     )   
     pass     
 
 @app.route('/resources', methods=['GET'])
 def ShowResources():
     try:
-        resourceInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetResourceInfo').content)
+        resourceInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetGenericResourceInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         resourceInfo = []
+
+    try:
+        diskList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDiskList').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        diskList = []
     
     resourceInfo['MemTotal'] = SizeHumanReadable(int(resourceInfo['MemTotal']) * 1024, '')
     resourceInfo['MemUsed'] = SizeHumanReadable(int(resourceInfo['MemUsed']) * 1024, '')    
@@ -160,6 +179,7 @@ def ShowResources():
         'resources.html', 
         appTitle = 'Resources - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
+        diskList = diskList,
         resourceInfo = resourceInfo
     )   
     pass     
