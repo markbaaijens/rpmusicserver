@@ -6,6 +6,12 @@ Transform a Raspberry Pi in a streaming/-file-server for your music with LMS (Lo
 * [recommended] Raspberry Pi 4 B, 4 GB
 
 ## Installation of RPMS on a Pi
+
+### Check your network if local DNS works
+
+
+
+### Steps to install RPMS on your Pi
 * Install package(s) on your Linux PC:
   * `sudo apt-get install nmap`
     * enter your (personal) password of your PC  
