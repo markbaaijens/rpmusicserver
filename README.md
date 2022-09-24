@@ -1,12 +1,12 @@
 # RP Music Server
-Transform a Raspberry Pi in a streaming/-file-server for your music with LMS (Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
+Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
 ## System requirements
 * [minimum] Raspberry Pi 2 (B or B+), 1 GB
 * [recommended] Raspberry Pi 4 B, 4 GB
 
 ## Installation of RPMS on a Pi
-Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network on local DNS.
+Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
 
 Note. As for now, the installation requires you to have a Linux PC.
 
