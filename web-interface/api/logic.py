@@ -35,9 +35,9 @@ def GetMachineInfo():
     def GetOsBitType():
         osBitType = ExecuteBashCommand("uname -m")
         if osBitType == "armv7l":
-            return osBitType + '/32-bit'
+            return osBitType + ' - 32-bit'
         elif osBitType == "armv8":
-            return osBitType + '/64-bit'
+            return osBitType + ' - 64-bit'
         return osBitType
 
     hostName = ExecuteBashCommand("hostname")
@@ -143,22 +143,22 @@ def GetServiceStatusList():
     serviceList.append(ServiceInfo(9091, 'transmission/web'))
 
     portList = ''
-    for serviceObject in serviceList:
+    for serviceInfoObject in serviceList:
         if portList != '':
             portList = portList + ','
-        portList = portList + str(serviceObject.PortNumber)
+        portList = portList + str(serviceInfoObject.PortNumber)
 
     nmapResult = ExecuteBashCommand('nmap localhost --open -p ' + portList)
 
-    for serviceObject in serviceList:
-        if (str(serviceObject.PortNumber) + '/tcp') in nmapResult:
-            serviceObject.IsActive = True
+    for serviceInfoObject in serviceList:
+        if (str(serviceInfoObject.PortNumber) + '/tcp') in nmapResult:
+            serviceInfoObject.IsActive = True
 
     serviceListResult = []
-    for serviceObject in serviceList:
-        serviceListResult.append({"PortNumber": serviceObject.PortNumber,
-                                  "ServiceName": serviceObject.ServiceName,
-                                  "IsActive": serviceObject.IsActive
+    for serviceInfoObject in serviceList:
+        serviceListResult.append({"PortNumber": serviceInfoObject.PortNumber,
+                                  "ServiceName": serviceInfoObject.ServiceName,
+                                  "IsActive": serviceInfoObject.IsActive
                                  })
 
     return serviceListResult
