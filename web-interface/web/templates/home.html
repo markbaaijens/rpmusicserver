@@ -82,24 +82,6 @@
     {% else %}
         <a class="link-button disabled">UpdateServer</a> 
     {% endif %}            
-
-    <h2>Api</h2>
-    <table>
-        <tr>
-            <td align="right">ApiName</td>
-            <td><b>{{ apiInfo.ApiName }}</b></td>
-        </tr>
-        <tr>
-            <td align="right">Documentation</td>
-            <td>
-                <b>
-                <a class="external-link" href="http://rpms:5000/api/GetApiList" target="_blank">{{ apiInfo.Documentation }}</a>
-                </b>
-            </td>
-        </tr>
-        <tr>
-            <td align="right">ApiRootUrl</td>
-            <td><b>{{ apiRootUrl }}</b></td>
-        </tr>                
+        
     </table>  
 {% endblock %}

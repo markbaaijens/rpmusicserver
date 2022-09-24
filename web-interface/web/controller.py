@@ -51,13 +51,6 @@ def Home():
         machineInfo = []
 
     try:
-        apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        apiInfo = []
-
-    try:
         versionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetVersionInfo').content)
     except Exception as e:
         logger.error(e)
@@ -67,31 +60,11 @@ def Home():
     return render_template(
         'home.html', 
         appTitle = 'Home - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         machineInfo = machineInfo,
         versionInfo = versionInfo
     )
     pass
-
-'''
-@app.route('/disks', methods=['GET'])
-def ShowDisks():
-    try:
-        diskList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDiskList').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        diskList = []
-
-    return render_template(
-        'disks.html', 
-        appTitle = 'Disks - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        diskList = diskList
-    )    
-    pass
-'''
 
 @app.route('/transcoder', methods=['GET'])
 def ShowTranscoderSettings():
@@ -110,25 +83,6 @@ def ShowTranscoderSettings():
     )    
     pass
 
-'''
-@app.route('/docker', methods=['GET'])
-def ShowDocker():
-    try:
-        dockerContainerList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDockerContainerList').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        dockerContainerList = []
-
-    return render_template(
-        'docker.html', 
-        appTitle = 'Docker - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        dockerContainerList = dockerContainerList
-    )   
-    pass     
-'''
-
 @app.route('/services', methods=['GET'])
 def ShowServices():
     try:
@@ -145,11 +99,19 @@ def ShowServices():
         logger.error(traceback.format_exc())
         dockerContainerList = []
 
+    try:
+        apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiInfo = []
+
     return render_template(
         'services.html', 
         appTitle = 'Services - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         serviceList = serviceList,
+        apiInfo = apiInfo,
         dockerContainerList = dockerContainerList
     )   
     pass     

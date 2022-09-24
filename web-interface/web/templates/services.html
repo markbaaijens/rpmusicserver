@@ -1,7 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <hr/>
+ 
+    <h2>Status</h2>
+    <p>
+    {% for service in serviceList %}
+    <div>
+        {% if service.IsActive %}
+            <span class="checkmark-y"> &#10004; </span>
+            {{ service.PortNumber }} {{ service.ServiceName }}
+        {% else %}
+            <span class="checkmark-n"> &#x2717; </span>
+            {{ service.PortNumber }} {{ service.ServiceName }}        
+        {% endif %}        
+    </div>
+    {% endfor %} 
+    <p>
+    <div><em>Services may take a few moments to become visible to the outside.</em></div>
+    <div><em>Use <code>watch nmap rpms</code> on your client for a correct result.</em></div>  
+
     <h2>Docker</h2>
     <p>
     {% for dockerContainer in dockerContainerList %}
@@ -18,22 +35,26 @@
     <div>
         <p>
         <a href="/start-docker" class="link-button">StartDocker</a> <a href="/kill-docker" class="link-button">KillDocker</a>
-    </div>        
-    <hr/>
-    <h2>Services</h2>
-    <p>
-    {% for service in serviceList %}
-    <div>
-        {% if service.IsActive %}
-            <span class="checkmark-y"> &#10004; </span>
-            {{ service.PortNumber }} {{ service.ServiceName }}
-        {% else %}
-            <span class="checkmark-n"> &#x2717; </span>
-            {{ service.PortNumber }} {{ service.ServiceName }}        
-        {% endif %}        
-    </div>
-    {% endfor %} 
-    <p>
-    <div><em>Services may take a few moments to become visible to the outside.</em></div>
-    <div><em>Use <code>watch nmap rpms</code> on your client for a correct result.</em></div>            
+    </div> 
+
+    <h2>Api</h2>
+    <table>
+        <tr>
+            <td align="right">ApiName</td>
+            <td><b>{{ apiInfo.ApiName }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">Documentation</td>
+            <td>
+                <b>
+                <a class="external-link" href="http://rpms:5000/api/GetApiList" target="_blank">{{ apiInfo.Documentation }}</a>
+                </b>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">ApiRootUrl</td>
+            <td><b>{{ apiRootUrl }}</b></td>
+        </tr>                
+    </table>  
+
 {% endblock %}
