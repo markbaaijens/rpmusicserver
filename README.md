@@ -11,10 +11,6 @@ Installing RPMS on your Pi can be done with a few simple steps, described below.
 Note. As for now, the installation requires you to have a Linux PC.
 
 ### Check your network if local DNS works
-Local DNS (Domain Name System) provides a mechanism for resolving a computer-name to a ip-address. As the computer- or hostname is more convenient to use than the ip-address, this is our starting point: in the install-steps below, computers like RPMS are thus referred to by their (user-friendly) hostname.
-
-Problem though is that on many local networks, local DNS is _not_ working, the cause of this problem is yet unknown. 
-
 To detect if your network supports local DNS, execute the following command in a terminal:
 * `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
 
