@@ -14,9 +14,9 @@ Note. As for now, the installation requires you to have a Linux PC.
 To detect if your network supports local DNS, execute the following command in a terminal:
 * `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
 
-If this command produces output, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific _Pi/rpms can only reached by ip-address_.
+_If this command produces output_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific _Pi/rpms can only reached by ip-address_.
 
-If this command has no output, it is all good and you can proceed installing RPMS on your Pi.
+_If this command has no output_, it is all good and you can proceed installing RPMS on your Pi.
 
 ### Steps to install RPMS on your Pi
 * Install package(s) on your Linux PC:
