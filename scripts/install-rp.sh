@@ -64,10 +64,15 @@ mount -a
 
 echo "Creating directories."
 mkdir /media/usbdata/rpms/logs -p
+
 mkdir /media/usbdata/user/Publiek -p
-mkdir /media/usbdata/user/Publiek/Downloads -p
-mkdir /media/usbdata/user/Publiek/Muziek -p
 chmod 777 /media/usbdata/user/Publiek
+
+mkdir /media/usbdata/user/Publiek/Downloads -p
+chmod 777 /media/usbdata/user/Publiek/Downloads
+
+mkdir /media/usbdata/user/Publiek/Muziek -p
+chmod 777 /media/usbdata/user/Publiek/Muziek
 
 echo "Copy LMS config files"
 if [ ! -d /media/usbdata/rpms/config/docker/lms ]; then
