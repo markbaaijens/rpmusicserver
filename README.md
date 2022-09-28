@@ -81,19 +81,19 @@ Sometimes the pi is not visible in the network, either by hostname `rpms` or eve
 
 * if rpms cannot be found, first try pinging for rpms:
   * `ping rpms`
-* if there is no response from the ping-command, check if pi is running and properly connected to the network (watch network-leds on the pi)
+* if there is no response from the ping-command: 
+  * check if pi is running and properly connected to the network (watch network-leds on the pi)
 * if there is no response from the ping-command, try:
-  * `nmap 192.168.x.* -p 9002 --open`
-  * fill for x your personal subnet-number; use `hostname -I | awk '{print $1}'` to retrieve that info
-  * find the device with open port 9002, that is the RPMS-Pi
+  * `nmap $(echo "$(hostname -I | cut -d"." -f1-3).*") -p 22 --open`
+  * find the device with open port 22, that might be the Pi
 * try to ping RPMS by ip-address
   * ping 192.168.x.y
   * if the server responds, proceed with _Pi/rpms can only reached by ip-address_
   
-If everything fails (no hostname shown for pi, multiple ip-addresses for hostname, not able to ping on hostname, etc.):
+If everything fails (no hostname shown for pi, multiple ip-addresses for hostname, not able to ping on hostname, etc.), try:
 * reboot router
-* if hostname `rpms` is not found (after reboot router):
-  * reboot pi (best done by rpms web-interface) 
+* reboot pi (best done by rpms web-interface) 
+* connect a keyboard and display to the pi to troubleshoot the issue directly from the device
 
 ### *Pi/rpms can only reached by ip-address*
 On some local networks, there might be a problem present that the hostname of all connected devices, including RPMS cannot be resolved. In practice, `ping rpms` does not return anything. So any command directly targeted at RPMS such as `ssh pi@rpms` does not work. This is a problem within the router/network, the origin of this problem is unknown to date.
