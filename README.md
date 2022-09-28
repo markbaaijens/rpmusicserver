@@ -81,32 +81,22 @@ Sometimes the pi is not visible in the network, either by hostname `rpms` or eve
 
 * if rpms cannot be found, first try pinging for rpms:
   * `ping rpms`
-* if there is no response from the ping-command, try:
-  * `nmap 192.168.x.*`
-  * fill for x your personal subnet-number; use `hostname -I` to retrieve that info
-  * find the device which has port 9002 open (that will be the Pi running RPMS)
+* if there is no response from the ping-command
+  * check if pi is running and properly connected to the network (watch network-leds on the pi)
+  * `nmap $(echo "$(hostname -I | cut -d"." -f1-3).*) -p 22 --open`
+  * find the device which has port 22 open (that will be the Pi running RPMS)
 * try to ping RPMS by ip-address, retrieved by nmap-command above (if hostname `rpms` is not mentioned by nmap)
   * ping 192.168.x.y
 * for most network-problems (no hostname shown for pi, multiple ip-addresses for hostname, not able to ping on hostname, etc.):
   * reboot router
 * if rpms still cannot be found, it's possible that the pi is unable to connect to the network:
   * connect a keyboard and display to the pi to troubleshoot the issue directly from the device
-  * `nmap 192.168.x.* -p 9002 --open`
-  * fill for x your personal subnet-number; use `hostname -I | awk '{print $1}'` to retrieve that info
-  * find the device with open port 9002, that is the RPMS-Pi
-* try to ping RPMS by ip-address
-  * ping 192.168.x.y
-  * if the server responds, proceed with _Pi/rpms can only reached by ip-address_
-  
-If everything fails (no hostname shown for pi, multiple ip-addresses for hostname, not able to ping on hostname, etc.):
-* reboot router
-* if hostname `rpms` is not found (after reboot router):
-  * reboot pi (best done by rpms web-interface) 
+
 
 ### *Pi/rpms can only reached by ip-address*
 On some local networks, there might be a problem present that the hostname of all connected devices, including RPMS cannot be resolved. In practice, `ping rpms` does not return anything. So any command directly targeted at RPMS such as `ssh pi@rpms` does not work. This is a problem within the router/network, the origin of this problem is unknown to date.
 
-The good news however is that a device is *always* accesible by ip-address. So once you know the ip-address of your RPMS-instance, you can install, configure and use RPMS. For more details about discovering de Pi-address, see _Pi/rpms cannot be reached on the network_
+The good news however is that a device is *always* accesible by ip-address. So once you know the ip-address of your RPMS-instance, by executing `nmap 192.168.x.*` (x is the subnet, normally 1 or 2), you can install, configure and use RPMS.
 
 All you have to do is the following: in any command in the section *Installation of RPMS on a Pi* (and following sections), replace RPMS with the discovered ip-address.
 
