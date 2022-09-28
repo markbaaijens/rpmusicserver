@@ -167,9 +167,9 @@ if ([ $(grep -c 'vm.swappiness=1' /etc/sysctl.conf) -eq 0 ]); then
 fi
 
 # Execute /etc/rc.local for preloading docker containers
-echo "Start executing /etc/rc.local..."
-/etc/rc.local
-echo " => done executing /etc/rc.local."
+echo "Start docker-containers..."
+start-docker
+echo " => done starting docker-containers."
 
 echo "Installation complete, system will be rebooted."
 reboot-server
