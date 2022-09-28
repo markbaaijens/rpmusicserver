@@ -81,16 +81,8 @@ Sometimes the pi is not visible in the network, either by hostname `rpms` or eve
 
 * if rpms cannot be found, first try pinging for rpms:
   * `ping rpms`
+* if there is no response from the ping-command, check if pi is running and properly connected to the network (watch network-leds on the pi)
 * if there is no response from the ping-command, try:
-  * `nmap 192.168.x.*`
-  * fill for x your personal subnet-number; use `hostname -I` to retrieve that info
-  * find the device which has port 9002 open (that will be the Pi running RPMS)
-* try to ping RPMS by ip-address, retrieved by nmap-command above (if hostname `rpms` is not mentioned by nmap)
-  * ping 192.168.x.y
-* for most network-problems (no hostname shown for pi, multiple ip-addresses for hostname, not able to ping on hostname, etc.):
-  * reboot router
-* if rpms still cannot be found, it's possible that the pi is unable to connect to the network:
-  * connect a keyboard and display to the pi to troubleshoot the issue directly from the device
   * `nmap 192.168.x.* -p 9002 --open`
   * fill for x your personal subnet-number; use `hostname -I | awk '{print $1}'` to retrieve that info
   * find the device with open port 9002, that is the RPMS-Pi
