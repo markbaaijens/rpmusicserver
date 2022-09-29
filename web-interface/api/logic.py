@@ -242,7 +242,10 @@ def GetGenericResourceInfo():
             "AverageLoad5": averageLoad5,
             "AverageLoad15": averageLoad15,
             "TopProcessesByCpu": topProcessesByCpu,
-            "TopProcessesByMemory":topProcessesByMemory}
+            "TopProcessesByMemory":topProcessesByMemory,
+            "AverageLoad1Factor": 50,            
+            "CpuTemp": 70
+            }
 
 def GetVersionInfo():
     revisionFile = RevisionFileName()
