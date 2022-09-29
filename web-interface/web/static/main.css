@@ -52,6 +52,7 @@ ul {
 
 td {
 	padding-right: 5px;
+	vertical-align: top;
 }
 
 .top-header {
@@ -75,3 +76,8 @@ td {
 
 .checkmark-y {color: green;}
 .checkmark-n {color: red;}
+
+meter {width: 120px;height:22px;border-radius: 5px ;overflow: hidden; position: relative;}
+.small{font-size: 90% !important; display: block;margin-top: -7px;}
+meter:before,meter:after {content: "";left: 0;position: absolute;top: 50%;transform: translateY(-50%);width: 100%;}
+meter:after {background-image: linear-gradient(to left, transparent 0%, transparent 25%, #333 25%, #333 25.5%, transparent 25.5%, transparent 50%, #333 50%, #333 50.5%, transparent 50.5%, transparent 75%, #333 75%, #333 75.5%, transparent 75.5%, transparent 100%, #333 100%, #333 100.5%, transparent 100.5%); height: 8px;}   
