@@ -242,9 +242,8 @@ if [ ! -d /dev/disk/by-label ]; then
     exit
 fi
 
-partition=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$chosen_disk.*$")
-
 echo "Activate SSH..."
+partition=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$chosen_disk.*$")
 mount_partition
 touch $mount_point/ssh
 unmount_partition
@@ -256,6 +255,7 @@ else
     hostname="rpmsdev"
 fi
 echo "Change hostname to $hostname..."
+partition=$(ls -l /dev/disk/by-label | grep "rootfs" | grep -oE "$chosen_disk.*$")
 mount_partition
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hostname
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hosts
@@ -271,6 +271,7 @@ case ${lang_choice,,} in
     ;;
 esac
 echo "Set language..."
+partition=$(ls -l /dev/disk/by-label | grep "rootfs" | grep -oE "$chosen_disk.*$")
 mount_partition
 echo $langcode > /etc/language.txt
 unmount_partition
