@@ -145,6 +145,33 @@ if [ ${type_choice,,} != "p" ] && [ ${type_choice,,} != "d" ]; then
 fi
 echo "You have chosen: $type_choice $([ ${type_choice,,} == "p" ] && echo "=> production" || echo "=> development")"
 
+echo "Language:"
+echo "E: English"
+echo "D: Dutch"
+echo "Q: quit"
+
+read -p "Select a language: " lang_choice
+
+if [ "${lang_choice,,}" == "q" ]; then
+    cleanup_environment    
+    echo "Script ended by user."
+    exit
+fi
+
+if [ "$lang_choice" == "" ]; then
+    echo "No language selected."
+    cleanup_environment    
+    echo "Script ended."
+    exit
+fi
+if [ ${lang_choice,,} != "e" ] && [ ${lang_choice,,} != "dd" ]; then
+    echo "No language selected."
+    cleanup_environment    
+    echo "Script ended."
+    exit
+fi
+echo "You have chosen: $lang_choice $([ ${lang_choice,,} == "e" ] && echo "=> English" || echo "=> Dutch")"
+
 read -r -p "Do you want to continue burning on $chosen_disk? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
     cleanup_environment
@@ -215,8 +242,9 @@ if [ ! -d /dev/disk/by-label ]; then
     exit
 fi
 
-echo "Activate SSH..."
 partition=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$chosen_disk.*$")
+
+echo "Activate SSH..."
 mount_partition
 touch $mount_point/ssh
 unmount_partition
@@ -228,12 +256,25 @@ else
     hostname="rpmsdev"
 fi
 echo "Change hostname to $hostname..."
-partition=$(ls -l /dev/disk/by-label | grep "rootfs" | grep -oE "$chosen_disk.*$")
 mount_partition
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hostname
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hosts
 unmount_partition
 echo " => done changing hostname."
+
+case ${lang_choice,,} in
+"e")
+    langcode="EN"
+    ;;
+"n")
+    langcode="NL"
+    ;;
+esac
+echo "Set language..."
+mount_partition
+echo $langcode > /etc/language.txt
+unmount_partition
+echo " => language has been set to $lang_choice."
 
 cleanup_environment
 echo "Script ended successfully."
