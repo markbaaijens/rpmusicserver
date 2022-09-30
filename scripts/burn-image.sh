@@ -38,13 +38,11 @@ mount_partition () {
     fi
 
     mount "/dev/$partition" $mount_point
-    hdparm -z /dev/$chosen_disk
     echo "Partition /dev/$partition mounted."
 }
 
 unmount_partition () {
     umount "/dev/$partition"
-    hdparm -z /dev/$chosen_disk
     if [ -d $mount_point ]; then 
         rm -rf $mount_point
     fi
@@ -273,7 +271,7 @@ esac
 echo "Set language..."
 partition=$(ls -l /dev/disk/by-label | grep "rootfs" | grep -oE "$chosen_disk.*$")
 mount_partition
-echo $langcode > /etc/language.txt
+echo $langcode > $mount_point/etc/language.txt
 unmount_partition
 echo " => language has been set to $lang_choice."
 
