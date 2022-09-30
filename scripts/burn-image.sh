@@ -32,7 +32,6 @@ mount_partition () {
     fi
 
     mount "/dev/$partition" $mount_point
-    echo "Partition /dev/$partition mounted."
 }
 
 unmount_partition () {
@@ -42,7 +41,6 @@ unmount_partition () {
         rm -rf $mount_point
     fi
     sleep 3 # Give the OS time to reread
-    echo "Partition /dev/$partition unmounted."
 }
 
 working_dir=/tmp/raspbian
@@ -164,7 +162,7 @@ if [ "$lang_choice" == "" ]; then
     echo "Script ended."
     exit
 fi
-if [ ${lang_choice,,} != "e" ] && [ ${lang_choice,,} != "dd" ]; then
+if [ ${lang_choice,,} != "e" ] && [ ${lang_choice,,} != "d" ]; then
     echo "No language selected."
     cleanup_environment    
     echo "Script ended."
@@ -264,7 +262,7 @@ case ${lang_choice,,} in
 "e")
     langcode="EN"
     ;;
-"n")
+"d")
     langcode="NL"
     ;;
 esac
