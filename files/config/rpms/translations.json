@@ -1,14 +1,16 @@
 {
     "Languages": [
         {
-            "LanguageCode":"nl",
+            "LanguageCode":"NL",
+            "LanguageDescription":"Dutch",            
             "Translations": [
                 {"PublicFolderName":"Publiek"},
                 {"MusicFolderName":"Muziek"}                
             ]
         },
         {
-            "LanguageCode":"en",
+            "LanguageCode":"EN",
+            "LanguageDescription":"English",                        
             "Translations": [
                 {"PublicFolderName":"Public"},
                 {"MusicFolderName":"Music"}                
