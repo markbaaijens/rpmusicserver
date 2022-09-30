@@ -1,11 +1,24 @@
 # RP Music Server
-Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Squeezebox), Samba, Tranmission, transcoder, etc.
+Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
 ## System requirements
 * [minimum] Raspberry Pi 2 (B or B+), 1 GB
 * [recommended] Raspberry Pi 4 B, 4 GB
 
 ## Installation of RPMS on a Pi
+Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
+
+Note. As for now, the installation requires you to have a Linux PC.
+
+### Check your network if local DNS works
+To detect if your network supports local DNS, execute the following command in a terminal:
+* `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
+
+_If this command produces output_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific _Pi/rpms can only reached by ip-address_.
+
+_If this command has no output_, it is all good and you can proceed installing RPMS on your Pi.
+
+### Steps to install RPMS on your Pi
 * Install package(s) on your Linux PC:
   * `sudo apt-get install nmap`
     * enter your (personal) password of your PC  
@@ -30,7 +43,9 @@ Transforms a Raspberry Pi in a music server with LMS (Logitech Media Server/Sque
   * check if Pi is running: 
     * `watch nmap rpms`
     * wait until port 22 appears; exit with Ctrl-C
-* Installation and configuration:
+    * _if the Pi does not appear in the network, checkout the Troubleshooting-section below_
+
+* Installation:
   * `rsync -r /tmp/rpmusicserver-master/* pi@rpms:/tmp/rpmusicserver`
 	  * password = raspberry  
   * `ssh pi@rpms "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`
@@ -66,21 +81,24 @@ Sometimes the pi is not visible in the network, either by hostname `rpms` or eve
 
 * if rpms cannot be found, first try pinging for rpms:
   * `ping rpms`
-* if there is no response from the ping-command, check if pi is running and properly connected to the network (watch network-leds on the pi)
+* if there is no response from the ping-command: 
+  * check if pi is running and properly connected to the network (watch network-leds on the pi)
 * if there is no response from the ping-command, try:
-  * `nmap 192.168.x.*`
-  * fill for x your personal subnet-number; use `hostname -I` to retrieve that info
-* try to ping by ip-address (if hostname `rpms` is not mentioned by nmap)
+  * `nmap $(echo "$(hostname -I | cut -d"." -f1-3).*") -p 22 --open`
+  * find the device with open port 22, that might be the Pi
+* try to ping RPMS by ip-address
   * ping 192.168.x.y
-* for most network-problems (no hostname shown for pi, multiple ip-addresses for hostname, not able to ping on hostname, etc.):
-  * reboot router
-* if hostname `rpms` is not found (after reboot router):
-  * reboot pi (best done by rpms web-interface) 
+  * if the server responds, proceed with _Pi/rpms can only reached by ip-address_
+  
+If everything fails (no hostname shown for pi, multiple ip-addresses for hostname, not able to ping on hostname, etc.), try:
+* reboot router
+* reboot pi (best done by rpms web-interface) 
+* connect a keyboard and display to the pi to troubleshoot the issue directly from the device
 
 ### *Pi/rpms can only reached by ip-address*
 On some local networks, there might be a problem present that the hostname of all connected devices, including RPMS cannot be resolved. In practice, `ping rpms` does not return anything. So any command directly targeted at RPMS such as `ssh pi@rpms` does not work. This is a problem within the router/network, the origin of this problem is unknown to date.
 
-The good news however is that a device is *always* accesible by ip-address. So once you know the ip-address of your RPMS-instance, by executing `nmap 192.168.x.*` (x is the subnet, normally 1 or 2), you can install, configure and use RPMS.
+The good news however is that a device is *always* accesible by ip-address. So once you know the ip-address of your RPMS-instance, you can install, configure and use RPMS. For more details about discovering de Pi-address, see _Pi/rpms cannot be reached on the network_
 
 All you have to do is the following: in any command in the section *Installation of RPMS on a Pi* (and following sections), replace RPMS with the discovered ip-address.
 

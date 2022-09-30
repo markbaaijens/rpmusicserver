@@ -35,9 +35,9 @@
         "Description": "Get the last x lines of the backup-details-log; 0 gives the whole file",
         "Example":"curl rpms:5000/api/GetBackupDetailsLog/10"
     },        
-    {   "EndPoint": "GET api/GetResourceInfo",
+    {   "EndPoint": "GET api/GetGenericResourceInfo",
         "Description": "Show system-resources like memory- and CPU-usage, system-load",
-        "Example":"curl rpms:5000/api/GetResourceInfo"
+        "Example":"curl rpms:5000/api/GetGenericResourceInfo"
     },
     {   "EndPoint": "GET api/GetLmsServerInfo",
         "Description": "Show LMS server-info",
@@ -59,7 +59,7 @@
         "Description": "Show info about backup",
         "Example":"curl rpms:5000/api/GetBackupInfo"
     },    
-    {   "EndPoint": "GET api/GetServiceList",
+    {   "EndPoint": "GET api/GetServiceStatusList",
         "Description": "Show services",
         "Example":"curl rpms:5000/api/GetSrviceList"
     },

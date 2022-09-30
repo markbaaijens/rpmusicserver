@@ -295,10 +295,10 @@ def SetTranscoderMp3Bitrate():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
-@app.route('/api/GetResourceInfo', methods=['GET'])
-def GetResourceInfo():
+@app.route('/api/GetGenericResourceInfo', methods=['GET'])
+def GetGenericResourceInfo():
     try:
-        info = logic.GetResourceInfo()
+        info = logic.GetGenericResourceInfo()
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -317,10 +317,10 @@ def GetDiskList():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-@app.route('/api/GetServiceList', methods=['GET'])
-def GetServiceList():
+@app.route('/api/GetServiceStatusList', methods=['GET'])
+def GetServiceStatusList():
     try:
-        info = logic.GetServiceList()
+        info = logic.GetServiceStatusList()
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
