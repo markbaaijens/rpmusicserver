@@ -64,11 +64,15 @@ mount -a
 
 echo "Creating directories."
 mkdir /media/usbdata/rpms/logs -p
+
 mkdir /media/usbdata/user/Publiek -p
+chmod 777 /media/usbdata/user/Publiek
+
 mkdir /media/usbdata/user/Publiek/Downloads -p
+chmod 777 /media/usbdata/user/Publiek/Downloads
+
 mkdir /media/usbdata/user/Publiek/Muziek -p
-chmod 777 /media/usbdata/user/Publiek -R
-chmod 777 /media/usbbackup -R
+chmod 777 /media/usbdata/user/Publiek/Muziek
 
 echo "Copy LMS config files"
 if [ ! -d /media/usbdata/rpms/config/docker/lms ]; then
@@ -150,11 +154,6 @@ else
     echo " => line is already present."    
 fi
 
-# Execute /etc/rc.local for preloading docker containers
-echo "Start executing /etc/rc.local..."
-/etc/rc.local
-echo " => done executing /etc/rc.local."
-
 echo "Change password of user 'pi'..."
 sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 # Note that changing password in su-mode (which is different than sudo-mode)
@@ -166,6 +165,9 @@ echo "Change swappiness to 1..."
 if ([ $(grep -c 'vm.swappiness=1' /etc/sysctl.conf) -eq 0 ]); then
     sudo /bin/sh -c 'echo "vm.swappiness=1" >> /etc/sysctl.conf'
 fi
+
+# Start docker for preloading containers
+start-docker
 
 echo "Installation complete, system will be rebooted."
 reboot-server
