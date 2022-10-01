@@ -74,6 +74,14 @@ chmod 777 /media/usbdata/user/Publiek/Downloads
 mkdir /media/usbdata/user/Publiek/Muziek -p
 chmod 777 /media/usbdata/user/Publiek/Muziek
 
+echo "Copy language files"
+mkdir -p /media/usbdata/rpms/config
+cp /tmp/rpmusicserver/files/config/rpms/translations.json /media/usbdata/rpms/config
+if [ ! -f /media/usbdata/rpms/config/rpms-settings.json ]; then
+    cp /tmp/rpmusicserver/files/config/rpms/rpms-settings.json /media/usbdata/rpms/config
+fi
+echo " => language files copied."    
+
 echo "Copy LMS config files"
 if [ ! -d /media/usbdata/rpms/config/docker/lms ]; then
     mkdir -p /media/usbdata/rpms/config/docker/lms
