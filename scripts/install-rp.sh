@@ -13,7 +13,7 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
-echo "Start installing packages..."
+echo "Installing packages..."
 apt-get update
 apt-get install docker.io python3-pip tree jq bwm-ng -y nmap  # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
@@ -74,13 +74,13 @@ chmod 777 /media/usbdata/user/Publiek/Downloads
 mkdir /media/usbdata/user/Publiek/Muziek -p
 chmod 777 /media/usbdata/user/Publiek/Muziek
 
-echo "Copy language files"
+echo "Copy language-files"
 mkdir -p /media/usbdata/rpms/config
 cp /tmp/rpmusicserver/files/config/rpms/translations.json /media/usbdata/rpms/config
 if [ ! -f /media/usbdata/rpms/config/rpms-settings.json ]; then
     cp /tmp/rpmusicserver/files/config/rpms/rpms-settings.json /media/usbdata/rpms/config
 fi
-echo " => language files copied."    
+echo " => language-files copied."    
 
 if [ -f /etc/language.txt ]; then
     if [ ! "$(cat rpms-settings.json | grep LanguageCode)" ]; then
