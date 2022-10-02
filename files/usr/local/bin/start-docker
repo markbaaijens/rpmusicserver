@@ -5,6 +5,26 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
+'''
+language=$(jq '.LanguageCode' rpms-settings.json)
+
+public_folder_name=$(jq '.Languages[] | select(.Code == "$language") | \
+    .Translations[] | select(.Id == "PublicFolderName") \
+    | {Text} | join("") ' translations.json)
+
+language=$(jq '.LanguageCode' rpms-settings.json)
+echo $language
+
+public_folder_name=$(jq -n --arg langcode "$language" '.Languages[] | select(.Code == "$langcode") | \
+    .Translations[] | select(.Id == "PublicFolderName") \
+    | {Text} | join("") ' translations.json)
+
+echo $public_folder_name
+
+'''
+
+exit 
+
 echo "Starting docker-containers..."
 
 if [ ! "$(docker ps -f name=lms -q)" ]; then

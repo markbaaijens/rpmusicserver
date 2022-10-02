@@ -1,19 +1,19 @@
 {
     "Languages": [
         {
-            "LanguageCode":"NL",
-            "LanguageDescription":"Dutch",            
+            "Code":"NL",
+            "Description":"Dutch",            
             "Translations": [
-                {"PublicFolderName":"Publiek"},
-                {"MusicFolderName":"Muziek"}                
+                {"Id": "PublicFolderName", "Text":"Publiek"},
+                {"Id": "MusicFolderName", "Text":"Muziek"}   
             ]
         },
         {
-            "LanguageCode":"EN",
-            "LanguageDescription":"English",                        
+            "Code":"EN",
+            "Description":"English",                        
             "Translations": [
-                {"PublicFolderName":"Public"},
-                {"MusicFolderName":"Music"}                
+                {"Id": "PublicFolderName", "Text":"Public"},
+                {"Id": "MusicFolderName", "Text":"Music"}                
             ]
         }
     ]
