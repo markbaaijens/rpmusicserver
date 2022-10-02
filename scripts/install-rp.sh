@@ -82,6 +82,13 @@ if [ ! -f /media/usbdata/rpms/config/rpms-settings.json ]; then
 fi
 echo " => language files copied."    
 
+if [ -f /etc/language.txt ]; then
+    jq -n --arg langcode "$(cat /etc/language.txt)" '.LanguageCode = $langcode' \
+        /media/usbdata/rpms/config/rpms-settings.json > /tmp/temp.json && \
+        mv /tmp/temp.json /media/usbdata/rpms/config/rpms-settings.json 
+    rm /etc/language.txt
+fi
+
 echo "Copy LMS config files"
 if [ ! -d /media/usbdata/rpms/config/docker/lms ]; then
     mkdir -p /media/usbdata/rpms/config/docker/lms
