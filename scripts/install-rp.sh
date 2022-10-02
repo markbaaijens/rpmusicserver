@@ -83,7 +83,7 @@ fi
 echo " => language files copied."    
 
 if [ -f /etc/language.txt ]; then
-    if [ "$(cat rpms-settings.json | grep LanguageCode)" == "" ]; then
+    if [ ! "$(cat rpms-settings.json | grep LanguageCode)" ]; then
         jq -n --arg langcode "$(cat /etc/language.txt)" '.LanguageCode = $langcode' \
             /media/usbdata/rpms/config/rpms-settings.json > /tmp/temp.json && \
             mv /tmp/temp.json /media/usbdata/rpms/config/rpms-settings.json
