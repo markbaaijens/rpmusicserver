@@ -270,15 +270,8 @@ def GetVersionInfo():
         revisionData = json.loads(url.read().decode())
         availableVersion = revisionData['CurrentVersion']
 
-    canUpdate = False
     availableVersionSplit = availableVersion.split('.')
     currentVersionSplit = currentVersion.split('.')    
-    if int(availableVersionSplit[0]) > int(currentVersionSplit[0]):
-        canUpdate = True
-    else:
-        if int(availableVersionSplit[0]) == int(currentVersionSplit[0]):
-            if int(availableVersionSplit[1]) > int(currentVersionSplit[1]):
-                canUpdate = True
 
     updateBranchName = 'master'
     updateBranchFile = '/media/usbdata/rpms/config/update-branch.txt'
@@ -286,19 +279,17 @@ def GetVersionInfo():
         file = open(updateBranchFile, 'r')
         updateBranchName = file.read()
 
-    # Always update if override-branch has been given, even if versions don't match   
-    developmentVersionOverride = False
-    if updateBranchName != 'master':
-        canUpdate = True
-        developmentVersionOverride = True
+    # Always update if override-branch has been given, even if versions don't match
+    isVersionOverridden = updateBranchName != 'master'
+    canUpdate = int(availableVersionSplit[0]) > int(currentVersionSplit[0]) or (int(availableVersionSplit[0]) == int(currentVersionSplit[0]) and int(availableVersionSplit[1]) > int(currentVersionSplit[1])) or isVersionOverridden
 
-    return {"VersionFile": revisionFile,
-            "CurrentVersion": currentVersion, 
-            "LastUpdateTimeStamp": lastUpdateTimeStampAsString,
+    return {"CurrentVersion": currentVersion,
             "AvailableVersion": availableVersion,
-            "CanUpdate": canUpdate,
+            "LastUpdateTimeStamp": lastUpdateTimeStampAsString,
+            "VersionFile": revisionFile, 
             "UpdateBranchName": updateBranchName,
-            "DevelopmentVersionOverride": developmentVersionOverride}
+            "IsVersionOverridden": isVersionOverridden,
+            "CanUpdate": canUpdate}
 
 def GetVersionList():
     revisionFile = RevisionFileName()
