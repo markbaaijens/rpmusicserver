@@ -84,7 +84,7 @@ Sometimes the pi is not visible in the network, either by hostname `rpms` or eve
 * if there is no response from the ping-command: 
   * check if pi is running and properly connected to the network (watch network-leds on the pi)
 * if there is no response from the ping-command, try:
-  * `nmap $(echo "$(hostname -I | cut -d"." -f1-3).*") -p 22 --open`
+  * `nmap $(echo "$(hostname -I | cut -d"." -f1-3).1")/24 -p 22 --open`
   * find the device with open port 22, that might be the Pi
 * try to ping RPMS by ip-address
   * ping 192.168.x.y
