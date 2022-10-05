@@ -287,10 +287,10 @@ def GetVersionInfo():
         updateBranchName = file.read()
 
     # Always update if override-branch has been given, even if versions don't match   
-    developmentVersionOverride = False
+    isVersionOverriden = False
     if updateBranchName != 'master':
         canUpdate = True
-        developmentVersionOverride = True
+        isVersionOverriden = True
 
     return {"VersionFile": revisionFile,
             "CurrentVersion": currentVersion, 
@@ -298,7 +298,7 @@ def GetVersionInfo():
             "AvailableVersion": availableVersion,
             "CanUpdate": canUpdate,
             "UpdateBranchName": updateBranchName,
-            "DevelopmentVersionOverride": developmentVersionOverride}
+            "DevelopmentVersionOverride": isVersionOverriden}
 
 def GetVersionList():
     revisionFile = RevisionFileName()
