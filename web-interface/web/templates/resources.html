@@ -53,14 +53,6 @@
         </tr>
         {% if disk.IsOnline %}
         <tr>
-            <td align="right">MountPoint</td>
-            <td><b>{{ disk.MountPoint }}</b></td>
-        </tr>
-        <tr>
-            <td align="right">DeviceName</td>
-            <td><b>{{ disk.DeviceName }}</b></td>
-        </tr>
-        <tr>
             <td align="right">Size</td>
             <td>
                 <meter id="size" value="{{ disk.UsedPercentage }}" min="0" max="100"></meter>
