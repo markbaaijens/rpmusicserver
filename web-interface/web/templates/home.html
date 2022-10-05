@@ -49,15 +49,6 @@
             <td><b>{{ versionInfo.AvailableVersion }}</b></td>
         </tr>
         <tr>
-            <td align="right">UpdateBranch</td>
-            <td>
-                <b>{{ versionInfo.UpdateBranchName }}</b>
-                {% if versionInfo.DevelopmentVersionOverride %}
-                    <small>VersionOverride</small>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
             <td align="right">LastUpdate</td>
             <td><b>{{ versionInfo.LastUpdateTimeStamp }}</b></td>
         </tr>
@@ -65,6 +56,22 @@
             <td align="right">VersionFile</td>
             <td><a class="external-link" href="http://rpms:5000/api/GetVersionList" target="_blank">{{ versionInfo.VersionFile }}</a></td>
         </tr>                
+        <tr>
+            <td align="right">UpdateBranch</td>
+            <td>
+                <b>{{ versionInfo.UpdateBranchName }}</b>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">IsVersionOverridden</td>
+            <td>
+                {% if versionInfo.IsVersionOverridden %}
+                    <span class="checkmark-y"> &#10004; </span>
+                {% else %}
+                    <span class="checkmark-n"> &#x2717; </span> 
+                {% endif %}
+            </td>
+        </tr>
         <tr>
             <td align="right">CanUpdate</td>
             <td>
