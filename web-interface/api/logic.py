@@ -206,8 +206,13 @@ def GetGenericResourceInfo():
     process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     averageLoad15 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
 
+    averageLoad1Factor = 0
+    averageLoad1Factor = (averageLoad1 / 4)
+    if averageLoad1Factor > 1:
+        averageLoad1Factor = (averageLoad1Factor -1) * 60       
+
     # cputemp
-    cpuTemp = 70
+    cpuTemp = 0
     if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
         process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
         process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
@@ -222,7 +227,7 @@ def GetGenericResourceInfo():
             "AverageLoad1": averageLoad1,
             "AverageLoad5": averageLoad5,
             "AverageLoad15": averageLoad15,
-            "AverageLoad1Factor": 50,            
+            "AverageLoad1Factor": averageLoad1Factor,            
             "CpuTemp": cpuTemp
             }
 
