@@ -1,41 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Resources</h2>
-    <h3>Memory & Processor</h3>
-    <table>
-        <tr>
-            <td align="right">Memory</td>
-            <td>
-                <b>{{ resourceInfo.MemTotal }}</b> |
-                <small>used</small>
-                <b>{{ resourceInfo.MemUsed }}</b>
-                <small>{{ resourceInfo.MemUsedPercentage }}%</small>
-            </td>
-        </tr>
-        <tr>
-            <td align="right">Swap</td>
-            <td>
-                <b>{{ resourceInfo.SwapTotal }}</b> |
-                <small>used</small>
-                <b>{{ resourceInfo.SwapUsed }}</b>
-                <small>{{ resourceInfo.SwapUsedPercentage }}%</small>
-            </td>
-        </tr>
-        <tr>
-            <td align="right">
-                <abbr title="Average load in 1, 5 and 15 minutes">AverageLoad</abbr>
-            </td>
-            <td><b>{{ resourceInfo.AverageLoad1 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad5 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad15 }}</b></td>
-        </tr>
-    </table> 
-
-    <h3>Disks</h3>
-    <p>
+<h2>Resources</h2>
+<h3>Memory & Processor</h3>
+<table>
+    <tr>
+        <td align="right">Memory</td>
+        <td>
+            <meter id="memory" class="meter1" value="{{ resourceInfo.MemUsedPercentage }}" min="0" max="100"></meter>
+            <span class="small"><label for="memory"><small><b>{{ resourceInfo.MemUsed }}</b> used of <b>{{ resourceInfo.MemTotal }}</b></small></label></span>
+        </td>
+    </tr>
+    <tr>
+        <td align="right">Swap</td>
+        <td>
+            <meter id="swap" class="meter1" value="{{ resourceInfo.SwapUsedPercentage }}" min="0" max="100"></meter>
+            </br />
+            <span class="small"><label for="swap"><small><b>{{ resourceInfo.SwapUsed }}</b> used of <b>{{ resourceInfo.SwapTotal }}</b></small></label></span>
+        </td>
+    </tr>
+    <tr>
+        <td align="right"><abbr title="Average load in 1, 5 and 15 minutes">AverageLoad</abbr></td>
+        <td>
+            <meter id="avload" class="meter1" value="{{ resourceInfo.AverageLoad1 }}" min="0" max="10"></meter>
+            </br />
+            <span class="small"><label for="avload"><small><b>{{ resourceInfo.AverageLoad1 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad5 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad15 }}</b></small></label></span>
+        </td>
+    </tr>
+    <tr>
+        <td align="right">CpuTemp</td>
+        <td>
+            <meter id="swap" class="meter1" value="{{ resourceInfo.CpuTemp }}" min="0" max="100"></meter> 
+        </br />
+        <span class="small"><label for="avload"><small><b>{{ resourceInfo.CpuTemp }} &deg;C</b></small></label></span>           
+        </td>
+    </tr>
+</table>
+<h3>Disks</h3>
+<p>
     {% for disk in diskList %}
     <div>
         <b>
-            {% if '/' in disk.DiskName %} 
+            {% if '/' in disk.DiskName %}
                 system
             {% else %}
                 {{ disk.DiskName }}
@@ -50,23 +56,20 @@
                     <span class="checkmark-y"> &#10004; </span>
                 {% else %}
                     <span class="checkmark-n"> &#x2717; </span>
-                {% endif %}                
+                {% endif %}
             </td>
         </tr>
         {% if disk.IsOnline %}
-            <tr>
-                <td align="right">Size</td>
-                <td><b>{{ disk.Size }}</b></td>
-            </tr>
-            <tr>
-                <td align="right">Used</td>
-                <td>
-                    <b>{{ disk.Used }}</b>
-                    <small>{{ disk.UsedPercentage }}%</small>
-                </td>
-            </tr>
+        <tr>
+            <td align="right">Size</td>
+            <td>
+                <meter id="size" value="{{ disk.UsedPercentage }}" min="0" max="100"></meter>
+                <span class="small"><label for="size"><small><b>{{ disk.Used }}</b> used of <b>{{ disk.Size }}</b></small></label></span>
+            </td>
+        </tr>
         {% endif %}
     </table>
     <p>
-    {% endfor %} 
+    {% endfor %}
+
 {% endblock %}

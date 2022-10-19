@@ -7,10 +7,13 @@ p, li, th, td, ol, ul, dl, a, blockquote, body {
     color: black;
 }
 
-h1, h2, h3 {
+
+h1, h2 {
+	color: rgb(111, 111, 111);
+}
+h3 {
 	color: gray;
 }
-h2 {color: rgb(111, 111, 111);}
 
 a {
 	text-decoration: none;
@@ -52,6 +55,7 @@ ul {
 
 td {
 	padding-right: 5px;
+	vertical-align: top;
 }
 
 .top-header {
@@ -73,5 +77,20 @@ td {
 	padding-left: 10px;
 }
 
-.checkmark-y {color: green;}
-.checkmark-n {color: red;}
+.checkmark-y {
+	color: green;
+}
+.checkmark-n {
+	color: red;
+}
+
+meter {
+	width: 120px;
+	height: 22px;
+	margin-top: -3px;	
+}
+
+.small{
+	display: block;
+	margin-top: -5px;
+}
