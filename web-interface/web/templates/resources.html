@@ -42,9 +42,9 @@
     <div>
         <b>
             {% if '/' in disk.DiskName %}
-            system
+                system
             {% else %}
-            {{ disk.DiskName }}
+                {{ disk.DiskName }}
             {% endif %}
         </b>
     </div>
@@ -53,9 +53,9 @@
             <td align="right">IsOnline</td>
             <td>
                 {% if disk.IsOnline %}
-                <span class="checkmark-y"> &#10004; </span>
+                    <span class="checkmark-y"> &#10004; </span>
                 {% else %}
-                <span class="checkmark-n"> &#x2717; </span>
+                    <span class="checkmark-n"> &#x2717; </span>
                 {% endif %}
             </td>
         </tr>
@@ -70,5 +70,6 @@
         {% endif %}
     </table>
     <p>
-        {% endfor %}
+    {% endfor %}
+
 {% endblock %}
