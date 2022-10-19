@@ -268,8 +268,16 @@ def GetVersionInfo():
             pass
         lastUpdateTimeStampAsString = datetime.fromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
 
+    updateBranchName = 'master'
+    updateBranchFile = '/media/usbdata/rpms/config/update-branch.txt'
+    if os.path.isfile(updateBranchFile):
+        file = open(updateBranchFile, 'r')
+        updateBranchName = file.read().strip('\n')
+
     availableVersion = '0.0'
-    with urllib.request.urlopen("https://raw.githubusercontent.com/markbaaijens/rpmusicserver/master/revision.json") as url:
+    url = "https://raw.githubusercontent.com/markbaaijens/rpmusicserver/" + updateBranchName +  "/revision.json"
+    print(url)
+    with urllib.request.urlopen(url) as url:
         revisionData = json.loads(url.read().decode())
         availableVersion = revisionData['CurrentVersion']
 
@@ -283,17 +291,11 @@ def GetVersionInfo():
             if int(availableVersionSplit[1]) > int(currentVersionSplit[1]):
                 canUpdate = True
 
-    updateBranchName = 'master'
-    updateBranchFile = '/media/usbdata/rpms/config/update-branch.txt'
-    if os.path.isfile(updateBranchFile):
-        file = open(updateBranchFile, 'r')
-        updateBranchName = file.read()
-
     # Always update if override-branch has been given, even if versions don't match   
-    developmentVersionOverride = False
+    isVersionOverridden = False
     if updateBranchName != 'master':
         canUpdate = True
-        developmentVersionOverride = True
+        isVersionOverridden = True
 
     return {"VersionFile": revisionFile,
             "CurrentVersion": currentVersion, 
@@ -301,7 +303,7 @@ def GetVersionInfo():
             "AvailableVersion": availableVersion,
             "CanUpdate": canUpdate,
             "UpdateBranchName": updateBranchName,
-            "DevelopmentVersionOverride": developmentVersionOverride}
+            "IsVersionOverridden": isVersionOverridden}
 
 def GetVersionList():
     revisionFile = RevisionFileName()
