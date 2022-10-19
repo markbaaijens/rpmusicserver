@@ -22,9 +22,17 @@
     <tr>
         <td align="right"><abbr title="Average load in 1, 5 and 15 minutes">AverageLoad</abbr></td>
         <td>
-            <meter id="avload" class="meter1" value="{{ resourceInfo.AverageLoad1Factor }}" min="0" max="100"></meter>
+            <meter id="avload" class="meter1" value="{{ resourceInfo.AverageLoad1 }}" min="0" max="10"></meter>
             </br />
             <span class="small"><label for="avload"><small><b>{{ resourceInfo.AverageLoad1 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad5 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad15 }}</b></small></label></span>
+        </td>
+    </tr>
+    <tr>
+        <td align="right">CpuTemp</td>
+        <td>
+            <meter id="swap" class="meter1" value="{{ resourceInfo.CpuTemp }}" min="0" max="100"></meter> 
+        </br />
+        <span class="small"><label for="avload"><small><b>{{ resourceInfo.CpuTemp }} &deg;C</b></small></label></span>           
         </td>
     </tr>
 </table>

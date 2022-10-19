@@ -49,12 +49,7 @@ def GetMachineInfo():
     rpModelMemoryInGB = CheckRpModelMemoryInGB(ExecuteBashCommand("free --giga | grep Mem: | awk '{print $2}'"))
     if os.path.isfile('/proc/device-tree/model'):    
         rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
-    cpuTemp = '?'
-    if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
-        process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-        cpuTemp = process.stdout.decode("utf-8").strip('\n')
-
+ 
     # upTime => uptime -p | cut -c 4-
     process = subprocess.run(["uptime -p"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["cut -c 4-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
@@ -67,7 +62,6 @@ def GetMachineInfo():
             "OsBitType": osBitType,
             "RpModel": rpModel,
             "RpModelMemoryInGB": rpModelMemoryInGB,
-            "CpuTemp": cpuTemp,
             "UpTime": upTime}
 
 disks = []
@@ -212,25 +206,12 @@ def GetGenericResourceInfo():
     process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     averageLoad15 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
 
-    # topProcessesByCpu => ps --no-headers -eo command --sort -%cpu | head -5
-    topProcessesByCpu = []
-    topProcessesByCpu.clear()
-    process = subprocess.run(["ps --no-headers -eo command --sort -%cpu"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["head -5"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    lines = process.stdout.decode("utf-8").strip('\n')
-    lines = lines.splitlines()
-    for line in lines:
-        topProcessesByCpu.append(line)
-
-    # topProcessesByMemory => ps --no-headers -eo command --sort -%mem | head -10
-    topProcessesByMemory = []
-    topProcessesByMemory.clear()
-    process = subprocess.run(["ps --no-headers -eo command --sort -%mem"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["head -5"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    lines = process.stdout.decode("utf-8").strip('\n')
-    lines = lines.splitlines()
-    for line in lines:
-        topProcessesByMemory.append(line)
+    # cputemp
+    cpuTemp = 0
+    if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
+        process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+        cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
 
     return {'MemTotal': memTotal,
             "MemUsed": memUsed,
@@ -240,11 +221,8 @@ def GetGenericResourceInfo():
             "SwapUsedPercentage": swapUsedPercentage,            
             "AverageLoad1": averageLoad1,
             "AverageLoad5": averageLoad5,
-            "AverageLoad15": averageLoad15,
-            "TopProcessesByCpu": topProcessesByCpu,
-            "TopProcessesByMemory":topProcessesByMemory,
-            "AverageLoad1Factor": 50,            
-            "CpuTemp": 70
+            "AverageLoad15": averageLoad15,           
+            "CpuTemp": cpuTemp
             }
 
 def GetVersionInfo():
