@@ -35,9 +35,9 @@ def GetMachineInfo():
     def GetOsBitType():
         osBitType = ExecuteBashCommand("uname -m")
         if osBitType == "armv7l":
-            return osBitType + ' | 32-bit'
+            return osBitType + ' 32-bit'
         elif osBitType == "armv8":
-            return osBitType + ' | 64-bit'
+            return osBitType + ' 64-bit'
         return osBitType
 
     hostName = ExecuteBashCommand("hostname")
