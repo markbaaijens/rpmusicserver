@@ -7,32 +7,80 @@
     <tr>
         <td align="right">Memory</td>
         <td>
-            <meter id="memory" class="meter1" value="{{ resourceInfo.MemUsedPercentage }}" min="0" max="100"></meter>
-            <span class="small"><label for="memory"><small><b>{{ resourceInfo.MemUsed }}</b> used of <b>{{ resourceInfo.MemTotal }}</b></small></label></span>
+            <meter 
+                id="memory" 
+                class="meter1" 
+                value="{{ resourceInfo.MemUsedPercentage }}" 
+                min="0" 
+                max="100">
+            </meter>
+            <span class="small">
+                <label for="memory">
+                    <small>
+                        <b>{{ resourceInfo.MemUsed }}</b> used of <b>{{ resourceInfo.MemTotal }}</b>
+                    </small>
+                    </label>
+                </span>
         </td>
     </tr>
     <tr>
         <td align="right">Swap</td>
         <td>
-            <meter id="swap" class="meter1" value="{{ resourceInfo.SwapUsedPercentage }}" min="0" max="100"></meter>
+            <meter 
+                id="swap" 
+                class="meter1" 
+                value="{{ resourceInfo.SwapUsedPercentage }}" 
+                min="0" 
+                max="100">
+            </meter>
             </br />
-            <span class="small"><label for="swap"><small><b>{{ resourceInfo.SwapUsed }}</b> used of <b>{{ resourceInfo.SwapTotal }}</b></small></label></span>
+            <span class="small">
+                <label for="swap">
+                    <small>
+                        <b>{{ resourceInfo.SwapUsed }}</b> used of <b>{{ resourceInfo.SwapTotal }}</b>
+                    </small>
+                </label>
+            </span>
         </td>
     </tr>
     <tr>
         <td align="right"><abbr title="Average load in 1, 5 and 15 minutes">AverageLoad</abbr></td>
         <td>
-            <meter id="avload" class="meter1" value="{{ resourceInfo.AverageLoad1 }}" min="0" max="10"></meter>
+            <meter 
+                id="avload" 
+                class="meter1" 
+                value="{{ resourceInfo.AverageLoad1 }}" 
+                min="0" 
+                max="10">
+            </meter>
             </br />
-            <span class="small"><label for="avload"><small><b>{{ resourceInfo.AverageLoad1 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad5 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad15 }}</b></small></label></span>
+            <span class="small">
+                <label for="avload">
+                    <small>
+                        <b>{{ resourceInfo.AverageLoad1 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad5 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad15 }}</b>
+                    </small>
+                </label>
+            </span>
         </td>
     </tr>
     <tr>
         <td align="right">CpuTemp</td>
         <td>
-            <meter id="swap" class="meter1" value="{{ resourceInfo.CpuTemp }}" min="0" max="100"></meter> 
+            <meter 
+                id="swap" 
+                class="meter1" 
+                value="{{ resourceInfo.CpuTemp }}" 
+                min="0" 
+                max="100">
+            </meter> 
         </br />
-        <span class="small"><label for="avload"><small><b>{{ resourceInfo.CpuTemp }} &deg;C</b></small></label></span>           
+        <span class="small">
+            <label for="avload">
+                <small>
+                    <b>{{ resourceInfo.CpuTemp }} &deg;C</b>
+                </small>
+            </label>
+        </span>           
         </td>
     </tr>
 </table>
@@ -49,24 +97,32 @@
         </b>
     </div>
     <table>
-        <tr>
-            <td align="right">IsOnline</td>
-            <td>
-                {% if disk.IsOnline %}
-                    <span class="checkmark-y"> &#10004; </span>
-                {% else %}
-                    <span class="checkmark-n"> &#x2717; </span>
-                {% endif %}
-            </td>
-        </tr>
         {% if disk.IsOnline %}
         <tr>
             <td align="right">Size</td>
             <td>
-                <meter id="size" value="{{ disk.UsedPercentage }}" min="0" max="100"></meter>
-                <span class="small"><label for="size"><small><b>{{ disk.Used }}</b> used of <b>{{ disk.Size }}</b></small></label></span>
+                <meter 
+                    id="size" 
+                    value="{{ disk.UsedPercentage }}" 
+                    min="0" 
+                    max="100">
+                </meter>
+                <span class="small">
+                    <label for="size">
+                        <small>
+                            <b>{{ disk.Used }}</b> used of <b>{{ disk.Size }}</b>
+                        </small>
+                    </label>
+                </span>
             </td>
         </tr>
+        {% else %}
+        <tr>
+            <td align="right">IsOnline</td>
+            <td>
+                <span class="checkmark-n"> &#x2717; </span>
+            </td>
+        </tr>    
         {% endif %}
     </table>
     <p>
