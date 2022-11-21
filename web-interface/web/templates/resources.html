@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2>Resources</h2>
-<h3>Memory & Processor</h3>
+<h3>Generic</h3>
 <table>
     <tr>
         <td align="right">Memory</td>
@@ -10,14 +10,14 @@
             <meter 
                 id="memory" 
                 class="meter1" 
-                value="{{ resourceInfo.MemUsedPercentage }}" 
+                value="{{ memoryInfo.MemUsedPercentage }}" 
                 min="0" 
                 max="100">
             </meter>
             <span class="small">
                 <label for="memory">
                     <small>
-                        <b>{{ resourceInfo.MemUsed }}</b> used of <b>{{ resourceInfo.MemTotal }}</b>
+                        <b>{{ memoryInfo.MemUsed }}</b> used of <b>{{ memoryInfo.MemTotal }}</b>
                     </small>
                     </label>
                 </span>
@@ -29,7 +29,7 @@
             <meter 
                 id="swap" 
                 class="meter1" 
-                value="{{ resourceInfo.SwapUsedPercentage }}" 
+                value="{{ memoryInfo.SwapUsedPercentage }}" 
                 min="0" 
                 max="100">
             </meter>
@@ -37,19 +37,19 @@
             <span class="small">
                 <label for="swap">
                     <small>
-                        <b>{{ resourceInfo.SwapUsed }}</b> used of <b>{{ resourceInfo.SwapTotal }}</b>
+                        <b>{{ memoryInfo.SwapUsed }}</b> used of <b>{{ memoryInfo.SwapTotal }}</b>
                     </small>
                 </label>
             </span>
         </td>
     </tr>
     <tr>
-        <td align="right"><abbr title="Average load in 1, 5 and 15 minutes">AverageLoad</abbr></td>
+        <td align="right">CpuLoad</td>
         <td>
             <meter 
                 id="avload" 
                 class="meter1" 
-                value="{{ resourceInfo.AverageLoad1 }}" 
+                value="{{ cpuInfo.CpuLoad1 }}" 
                 min="0" 
                 max="10">
             </meter>
@@ -57,7 +57,9 @@
             <span class="small">
                 <label for="avload">
                     <small>
-                        <b>{{ resourceInfo.AverageLoad1 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad5 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad15 }}</b>
+                        <b>{{ cpuInfo.CpuLoad1 }}</b>&nbsp;&nbsp;
+                        <b>{{ cpuInfo.CpuLoad5 }}</b>&nbsp;&nbsp;
+                        <b>{{ cpuInfo.CpuLoad15 }}</b>&nbsp;&nbsp;(1, 5, 15 min) 
                     </small>
                 </label>
             </span>
@@ -69,7 +71,7 @@
             <meter 
                 id="swap" 
                 class="meter1" 
-                value="{{ resourceInfo.CpuTemp }}" 
+                value="{{ cpuInfo.CpuTemp }}" 
                 min="0" 
                 max="100">
             </meter> 
@@ -77,7 +79,7 @@
         <span class="small">
             <label for="avload">
                 <small>
-                    <b>{{ resourceInfo.CpuTemp }} &deg;C</b>
+                    <b>{{ cpuInfo.CpuTemp }} &deg;C</b>
                 </small>
             </label>
         </span>           
