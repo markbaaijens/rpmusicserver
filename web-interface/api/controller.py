@@ -295,10 +295,21 @@ def SetTranscoderMp3Bitrate():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
-@app.route('/api/GetGenericResourceInfo', methods=['GET'])
-def GetGenericResourceInfo():
+@app.route('/api/GetMemoryResourceInfo', methods=['GET'])
+def GetMemoryResourceInfo():
     try:
-        info = logic.GetGenericResourceInfo()
+        info = logic.GetMemoryResourceInfo()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+@app.route('/api/GetCpuResourceInfo', methods=['GET'])
+def GetCpuResourceInfo():
+    try:
+        info = logic.GetCpuResourceInfo()
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

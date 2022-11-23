@@ -119,7 +119,14 @@ def ShowServices():
 @app.route('/resources', methods=['GET'])
 def ShowResources():
     try:
-        resourceInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetGenericResourceInfo').content)
+        cpuInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetCpuResourceInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        resourceInfo = []
+
+    try:
+        memoryInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMemoryResourceInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -132,17 +139,18 @@ def ShowResources():
         logger.error(traceback.format_exc())
         diskList = []
     
-    resourceInfo['MemTotal'] = SizeHumanReadable(int(resourceInfo['MemTotal']) * 1024, '')
-    resourceInfo['MemUsed'] = SizeHumanReadable(int(resourceInfo['MemUsed']) * 1024, '')    
-    resourceInfo['SwapTotal'] = SizeHumanReadable(int(resourceInfo['SwapTotal']) * 1024, '')
-    resourceInfo['SwapUsed'] = SizeHumanReadable(int(resourceInfo['SwapUsed']) * 1024, '')    
+    memoryInfo['MemTotal'] = SizeHumanReadable(int(memoryInfo['MemTotal']) * 1024, '')
+    memoryInfo['MemUsed'] = SizeHumanReadable(int(memoryInfo['MemUsed']) * 1024, '')    
+    memoryInfo['SwapTotal'] = SizeHumanReadable(int(memoryInfo['SwapTotal']) * 1024, '')
+    memoryInfo['SwapUsed'] = SizeHumanReadable(int(memoryInfo['SwapUsed']) * 1024, '')    
 
     return render_template(
         'resources.html', 
         appTitle = 'Resources - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         diskList = diskList,
-        resourceInfo = resourceInfo
+        cpuInfo = cpuInfo,
+        memoryInfo = memoryInfo        
     )   
     pass     
 
