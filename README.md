@@ -131,7 +131,8 @@ Note that once VersionOverride is active, CurrentVersion and AvailableVersion do
 To switch version from `master` branch to e.g. `develop` branch:
 * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
 
-Returning to the `master` branch version simply delete the `/media/usbdata/rpms/config/update-branch.txt` text file.
+Returning to the `master` branch version simply delete the `update-branch.txt` text file:
+* `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
 
 ### Build development version with separate hostname
 The `rpmsdev` hostname is used in this build
