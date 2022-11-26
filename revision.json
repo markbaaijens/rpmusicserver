@@ -1,6 +1,29 @@
 {
-    "CurrentVersion": "0.8",
+    "CurrentVersion": "0.9",
     "History": [
+        {
+            "Version":"0.9",
+            "Changes": [
+                "Convert action-links to buttons #159",
+                "Show physical memory of Raspberry Pi-model #109",
+                "Bug: if backup-disk is not present, button for Backup should be disabled in web #122",
+                "Show checkmarks in green and crosses in red #107",
+                "Show OS-number and OS-type (32/64-bit) #135",
+                "Expand readme with info about update-mechanism #157",
+                "Bug: Faster execution of service-detection #138",
+                "Emphasize troubleshooting-section in readme #186",
+                "Shorten menu #149",
+                "Detect (from workstation) if local DNS is working, document in readme #192",
+                "If hostname or ip of rpms does not show up, mention to connect a display and keyboard to the pi (readme) #134",
+                "Bug: In install-rp.sh, minimize setting rights on existing folders #179",
+                "Bug: Update troubleshooting documentation for nmap command #140",
+                "Disks-page, remove device & mountpoint #146",
+                "Show checkmark/cross after VersionOverride #106",
+                "Bug: Invalid update-properties in API-call GetVersionInfo in conjuction to VersionOverride #185",
+                "Add meters for all resources and simplify resources-page #108",
+                "Cleanup Resources-page #215"
+            ]
+        },
         {
             "Version":"0.8",
             "Changes": [
@@ -8,8 +31,8 @@
                 "Bug: No command StartDocker in web #119 (web)",
                 "Renamed Commands to Tasks #105 (web)",
                 "Bug: Link to revision list should open a new tab #104",
-                "Prevented file rights issues #96",
-                "Lowered swappines to 1 #97",
+                "Bug: Prevented file rights issues #96",
+                "Bug: Lowered swappines to 1 #97",
                 "Showed Home next to icon #102 (web)",
                 "Bug: While formatting, the confirmation is always 'usbbackup' #95",
                 "Navigation: moved Services and Docker to the back #103 (web)",

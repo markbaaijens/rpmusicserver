@@ -1,31 +1,133 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Resources</h2>
+<h2>Resources</h2>
+<h3>Generic</h3>
+<table>
+    <tr>
+        <td align="right">Memory</td>
+        <td>
+            <meter 
+                id="memory" 
+                class="meter1" 
+                value="{{ memoryInfo.MemUsedPercentage }}" 
+                min="0" 
+                max="100">
+            </meter>
+            <span class="small">
+                <label for="memory">
+                    <small>
+                        <b>{{ memoryInfo.MemUsed }}</b> used of <b>{{ memoryInfo.MemTotal }}</b>
+                    </small>
+                </label>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td align="right">Swap</td>
+        <td>
+            <meter 
+                id="swap" 
+                class="meter1" 
+                value="{{ memoryInfo.SwapUsedPercentage }}" 
+                min="0" 
+                max="100">
+            </meter>
+            </br />
+            <span class="small">
+                <label for="swap">
+                    <small>
+                        <b>{{ memoryInfo.SwapUsed }}</b> used of <b>{{ memoryInfo.SwapTotal }}</b>
+                    </small>
+                </label>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td align="right">CpuLoad</td>
+        <td>
+            <meter 
+                id="avload" 
+                class="meter1" 
+                value="{{ cpuInfo.CpuLoad1 }}" 
+                min="0" 
+                max="10">
+            </meter>
+            </br />
+            <span class="small">
+                <label for="avload">
+                    <small>
+                        <b>{{ cpuInfo.CpuLoad1 }}</b>&nbsp;
+                        <b>{{ cpuInfo.CpuLoad5 }}</b>&nbsp;
+                        <b>{{ cpuInfo.CpuLoad15 }}</b>&nbsp;(1, 5, 15 min) 
+                    </small>
+                </label>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td align="right">CpuTemp</td>
+        <td>
+            <meter 
+                id="swap" 
+                class="meter1" 
+                value="{{ cpuInfo.CpuTemp }}" 
+                min="0" 
+                max="100">
+            </meter> 
+        </br />
+        <span class="small">
+            <label for="avload">
+                <small>
+                    <b>{{ cpuInfo.CpuTemp }} &deg;C</b>
+                </small>
+            </label>
+        </span>           
+        </td>
+    </tr>
+</table>
+<h3>Disks</h3>
+<p>
+    {% for disk in diskList %}
+    <div>
+        <b>
+            {% if '/' in disk.DiskName %}
+                system
+            {% else %}
+                {{ disk.DiskName }}
+            {% endif %}
+        </b>
+    </div>
     <table>
+        {% if disk.IsOnline %}
         <tr>
-            <td align="right">Memory</td>
+            <td align="right">Size</td>
             <td>
-                <b>{{ resourceInfo.MemTotal }}</b> |
-                <small>used</small>
-                <b>{{ resourceInfo.MemUsed }}</b>
-                <small>{{ resourceInfo.MemUsedPercentage }}%</small>
+                <meter 
+                    id="size" 
+                    value="{{ disk.UsedPercentage }}" 
+                    min="0" 
+                    max="100">
+                </meter>
+                <span class="small">
+                    <label for="size">
+                        <small>
+                            <b>{{ disk.Used }}</b> used of <b>{{ disk.Size }}</b>
+                        </small>
+                    </label>
+                </span>
             </td>
         </tr>
+        {% else %}
         <tr>
-            <td align="right">Swap</td>
+            <td align="right">IsOnline</td>
             <td>
-                <b>{{ resourceInfo.SwapTotal }}</b> |
-                <small>used</small>
-                <b>{{ resourceInfo.SwapUsed }}</b>
-                <small>{{ resourceInfo.SwapUsedPercentage }}%</small>
+                <span class="checkmark-n"> &#x2717; </span>
             </td>
-        </tr>
-        <tr>
-            <td align="right">
-                <abbr title="Average load in 1, 5 and 15 minutes">AverageLoad</abbr>
-            </td>
-            <td><b>{{ resourceInfo.AverageLoad1 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad5 }}&nbsp;&nbsp;{{ resourceInfo.AverageLoad15 }}</b></td>
-        </tr>
-    </table>        
+        </tr>    
+        {% endif %}
+    </table>
+    <p>
+    {% endfor %}
+
 {% endblock %}

@@ -27,18 +27,29 @@ def RevisionFileName():
     return revisionFile
 
 def GetMachineInfo():
+    def CheckRpModelMemoryInGB(rpModelMemoryInGB):
+        if int(rpModelMemoryInGB) < 1:
+            rpModelMemoryInGB = "1"
+        return rpModelMemoryInGB + "GB"
+        
+    def GetOsBitType():
+        osBitType = ExecuteBashCommand("uname -m")
+        if osBitType == "armv7l":
+            return osBitType + ' 32-bit'
+        elif osBitType == "armv8":
+            return osBitType + ' 64-bit'
+        return osBitType
+
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
+    osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
+    osBitType = GetOsBitType()
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
-    rpModel = ''
+    rpModel = '?'
+    rpModelMemoryInGB = CheckRpModelMemoryInGB(ExecuteBashCommand("free --giga | grep Mem: | awk '{print $2}'"))
     if os.path.isfile('/proc/device-tree/model'):    
         rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
-    cpuTemp = ''
-    if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
-        process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-        cpuTemp = process.stdout.decode("utf-8").strip('\n')
-
+ 
     # upTime => uptime -p | cut -c 4-
     process = subprocess.run(["uptime -p"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["cut -c 4-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
@@ -47,12 +58,13 @@ def GetMachineInfo():
     return {"HostName": hostName,
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
+            "OsDescription": osDescription,
+            "OsBitType": osBitType,
             "RpModel": rpModel,
-            "CpuTemp": cpuTemp,
+            "RpModelMemoryInGB": rpModelMemoryInGB,
             "UpTime": upTime}
 
 disks = []
-services = []
 
 def AppendDiskInfo(diskMountPoint):
     # diskDeviceName => mount | grep -w / | awk '{print $1}'
@@ -101,22 +113,6 @@ def AppendDiskInfo(diskMountPoint):
                  })
     pass
 
-def AppendServiceInfo(portNumber, serviceName):
-    # isActive => nmap localhost | grep <port>/tcp | grep open'
-    isActive = False
-    process = subprocess.run(["nmap localhost -p " + str(portNumber) + ""], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep " + str(portNumber) + "/tcp"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep open"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    if process.stdout.decode("utf-8").strip('\n'):
-        isActive = True
-
-    services.append({
-                    "PortNumber": portNumber,
-                    "ServiceName": serviceName,
-                    "IsActive": isActive
-                 })
-    pass
-
 def GetDiskList():
     disks.clear()
     AppendDiskInfo('/')
@@ -124,20 +120,78 @@ def GetDiskList():
     AppendDiskInfo('/media/usbbackup')
     return disks
 
-def GetServiceList():
-    services.clear()
-    AppendServiceInfo(22, 'ssh')
-    AppendServiceInfo(80, 'rpms/web')
-    AppendServiceInfo(139, 'samba/netbios')
-    AppendServiceInfo(445, 'samba/tcp')
-    AppendServiceInfo(5000, 'rpms/api')
-    AppendServiceInfo(8384, 'syncthing/web')
-    AppendServiceInfo(9002, 'lms/web')
-    AppendServiceInfo(9090, 'lms/telnet')
-    AppendServiceInfo(9091, 'transmission/web')
-    return services
-    
-def GetResourceInfo():
+def GetServiceStatusList():
+    class ServiceInfo:
+        def __init__(self, portNumber, serviceName, isActive=False):
+            self.PortNumber = portNumber
+            self.ServiceName = serviceName
+            self.IsActive = isActive
+
+    serviceList = []
+    serviceList.append(ServiceInfo(22, 'ssh'))
+    serviceList.append(ServiceInfo(80, 'rpms/web'))
+    serviceList.append(ServiceInfo(139, 'samba/netbios'))
+    serviceList.append(ServiceInfo(5000, 'rpms/api'))
+    serviceList.append(ServiceInfo(8384, 'syncthing/web'))
+    serviceList.append(ServiceInfo(9002, 'lms/web'))
+    serviceList.append(ServiceInfo(9091, 'transmission/web'))
+
+    portList = ''
+    for serviceInfoObject in serviceList:
+        if portList != '':
+            portList = portList + ','
+        portList = portList + str(serviceInfoObject.PortNumber)
+
+    nmapResult = ExecuteBashCommand('nmap localhost --open -p ' + portList)
+
+    for serviceInfoObject in serviceList:
+        if (str(serviceInfoObject.PortNumber) + '/tcp') in nmapResult:
+            serviceInfoObject.IsActive = True
+
+    serviceListResult = []
+    for serviceInfoObject in serviceList:
+        serviceListResult.append({"PortNumber": serviceInfoObject.PortNumber,
+                                  "ServiceName": serviceInfoObject.ServiceName,
+                                  "IsActive": serviceInfoObject.IsActive
+                                 })
+
+    return serviceListResult
+
+def GetCpuResourceInfo():
+    # cpuLoad1 => uptime | tail -c 17 | awk '{print $1}' | cut -c 1-4
+    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    cpuLoad1 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
+
+    # cpuLoad5 => uptime | tail -c 17 | awk '{print $2}' | cut -c 1-4
+    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
+    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    cpuLoad5 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
+
+    # cpuLoad15 => uptime | tail -c 17 | awk '{print $3}'
+    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
+    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    cpuLoad15 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
+
+    # cputemp
+    cpuTemp = 0
+    if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
+        process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+        cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
+
+    return {"CpuLoad1": cpuLoad1,
+            "CpuLoad5": cpuLoad5,
+            "CpuLoad15": cpuLoad15,           
+            "CpuTemp": cpuTemp
+            }
+
+def GetMemoryResourceInfo():
     # memTotal => free | grep 'Mem:' | awk '{print $2}'
     process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
@@ -166,57 +220,14 @@ def GetResourceInfo():
 
     swapUsedPercentage = math.floor(swapUsed/swapTotal * 100)
 
-    # averageLoad1 => uptime | tail -c 17 | awk '{print $1}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    averageLoad1 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
-
-    # averageLoad5 => uptime | tail -c 17 | awk '{print $2}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    averageLoad5 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
-
-    # averageLoad15 => uptime | tail -c 17 | awk '{print $3}'
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    averageLoad15 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
-
-    # topProcessesByCpu => ps --no-headers -eo command --sort -%cpu | head -5
-    topProcessesByCpu = []
-    topProcessesByCpu.clear()
-    process = subprocess.run(["ps --no-headers -eo command --sort -%cpu"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["head -5"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    lines = process.stdout.decode("utf-8").strip('\n')
-    lines = lines.splitlines()
-    for line in lines:
-        topProcessesByCpu.append(line)
-
-    # topProcessesByMemory => ps --no-headers -eo command --sort -%mem | head -10
-    topProcessesByMemory = []
-    topProcessesByMemory.clear()
-    process = subprocess.run(["ps --no-headers -eo command --sort -%mem"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["head -5"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    lines = process.stdout.decode("utf-8").strip('\n')
-    lines = lines.splitlines()
-    for line in lines:
-        topProcessesByMemory.append(line)
-
     return {'MemTotal': memTotal,
             "MemUsed": memUsed,
             "MemUsedPercentage": memUsedPercentage,
             "SwapTotal": swapTotal,
             "SwapUsed": swapUsed,
-            "SwapUsedPercentage": swapUsedPercentage,            
-            "AverageLoad1": averageLoad1,
-            "AverageLoad5": averageLoad5,
-            "AverageLoad15": averageLoad15,
-            "TopProcessesByCpu": topProcessesByCpu,
-            "TopProcessesByMemory":topProcessesByMemory}
+            "SwapUsedPercentage": swapUsedPercentage
+            }
+
 
 def GetVersionInfo():
     revisionFile = RevisionFileName()
@@ -239,8 +250,16 @@ def GetVersionInfo():
             pass
         lastUpdateTimeStampAsString = datetime.fromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
 
+    updateBranchName = 'master'
+    updateBranchFile = '/media/usbdata/rpms/config/update-branch.txt'
+    if os.path.isfile(updateBranchFile):
+        file = open(updateBranchFile, 'r')
+        updateBranchName = file.read().strip('\n')
+
     availableVersion = '0.0'
-    with urllib.request.urlopen("https://raw.githubusercontent.com/markbaaijens/rpmusicserver/master/revision.json") as url:
+    url = "https://raw.githubusercontent.com/markbaaijens/rpmusicserver/" + updateBranchName +  "/revision.json"
+    print(url)
+    with urllib.request.urlopen(url) as url:
         revisionData = json.loads(url.read().decode())
         availableVersion = revisionData['CurrentVersion']
 
@@ -254,17 +273,11 @@ def GetVersionInfo():
             if int(availableVersionSplit[1]) > int(currentVersionSplit[1]):
                 canUpdate = True
 
-    updateBranchName = 'master'
-    updateBranchFile = '/media/usbdata/rpms/config/update-branch.txt'
-    if os.path.isfile(updateBranchFile):
-        file = open(updateBranchFile, 'r')
-        updateBranchName = file.read()
-
     # Always update if override-branch has been given, even if versions don't match   
-    developmentVersionOverride = False
+    isVersionOverridden = False
     if updateBranchName != 'master':
         canUpdate = True
-        developmentVersionOverride = True
+        isVersionOverridden = True
 
     return {"VersionFile": revisionFile,
             "CurrentVersion": currentVersion, 
@@ -272,7 +285,7 @@ def GetVersionInfo():
             "AvailableVersion": availableVersion,
             "CanUpdate": canUpdate,
             "UpdateBranchName": updateBranchName,
-            "DevelopmentVersionOverride": developmentVersionOverride}
+            "IsVersionOverridden": isVersionOverridden}
 
 def GetVersionList():
     revisionFile = RevisionFileName()
@@ -288,10 +301,17 @@ def GetVersionList():
 
 def GetBackupInfo():
     isBackupInProgress = False
+
     if os.path.isfile('/media/usbdata/rpms/logs/backup-details.log'):
         if ExecuteBashCommand("grep 'speedup is ' /media/usbdata/rpms/logs/backup-details.log").strip() == '':
             isBackupInProgress = True
-    return {"IsBackupInProgress": isBackupInProgress}
+
+    isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup") == "usbbackup"
+    canBackup = isBackupDiskPresent and not isBackupInProgress
+
+    return {"IsBackupInProgress": isBackupInProgress,
+            "IsBackupDiskPresent": isBackupDiskPresent,
+            "CanBackup": canBackup}
 
 def GetApiList():
     dataAsJson = {}

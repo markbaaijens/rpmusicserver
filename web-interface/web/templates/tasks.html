@@ -3,40 +3,77 @@
 {% block content %}
     <h2>Tasks</h2>
     <h3>Server</h3>
-    <div class="indent">
-        <a href="/backup-server">Backup</a>
-    </div>
-    <div class="indent">
+    <div>
+        <a href="/reboot-server" class="link-button">Reboot</a>
+        <a href="/halt-server" class="link-button">Halt</a>          
+
         {% if versionInfo.CanUpdate %}
-            <a href="/update-server">Update</a> 
+            <a href="/update-server" class="link-button">Update</a> 
         {% else %}
-            Update
+            <a class="link-button disabled">Update</a> 
         {% endif %}
-        <small>
-            <abbr title="CurrentVersion {{ versionInfo.CurrentVersion }} AvailableVersion {{ versionInfo.AvailableVersion }} UpdateBranchName {{ versionInfo.UpdateBranchName }} VersionOverride {{ versionInfo.DevelopmentVersionOverride }}">
-                CanUpdate
-            </abbr>
-            <b>
-                {% if versionInfo.CanUpdate %}
-                    &#10004;
-                {% else %}
-                    &#x2717; 
-                {% endif %}
-            </b>        
-        </small>
     </div>
-    <div class="indent">
-        <a href="/reboot-server">Reboot</a>
+    <small>
+        <table>
+            <tr>
+                <td align="right">
+                    <abbr title="CurrentVersion {{ versionInfo.CurrentVersion }} AvailableVersion {{ versionInfo.AvailableVersion }} UpdateBranchName {{ versionInfo.UpdateBranchName }} VersionOverride {{ versionInfo.DevelopmentVersionOverride }}">
+                        CanUpdate
+                    </abbr>
+                </td>
+                <td><b>
+                    {% if versionInfo.CanUpdate %}
+                        <span class="checkmark-y"> &#10004; </span>
+                    {% else %}
+                        <span class="checkmark-n"> &#x2717; </span> 
+                    {% endif %}
+                </b></td>
+            </tr>
+        </table>        
+    </small>
+
+    <h3>Backup</h3>    
+    <div>
+        {% if backupInfo.CanBackup %}
+            <a href="/backup-server" class="link-button">Backup</a>    
+        {% else %}
+            <a class="link-button disabled">Backup</a> 
+        {% endif %}
     </div>    
-    <div class="indent">
-        <a href="/halt-server">Halt</a>        
-    </div>    
+    <small>
+        <table>
+            <tr>
+                <td align="right">
+                    IsBackupDiskPresent
+                </td>
+                <td><b>
+                    {% if backupInfo.IsBackupDiskPresent %}
+                        <span class="checkmark-y"> &#10004; </span>
+                    {% else %}
+                        <span class="checkmark-n"> &#x2717; </span> 
+                    {% endif %}
+                </b></td>
+            </tr>
+            <tr>
+                <td align="right">
+                    IsBackupInProgress
+                </td>
+                <td><b>
+                    {% if backupInfo.IsBackupInProgress %}
+                        <span class="checkmark-y"> &#10004; </span>
+                    {% else %}
+                        <span class="checkmark-n"> &#x2717; </span> 
+                    {% endif %}
+                </b></td>
+            </tr>
+        </table>        
+    </small>
+
 
     <h3>Docker</h3>
-    <div class="indent">
-        <a href="/start-docker">StartDocker</a>       
+    <div>
+        <a href="/start-docker" class="link-button">StartDocker</a>       
+        <a href="/kill-docker" class="link-button">KillDocker</a>
     </div>
-    <div class="indent">
-        <a href="/kill-docker">KillDocker</a>
-    </div>    
+
 {% endblock %}

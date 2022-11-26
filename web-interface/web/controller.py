@@ -51,13 +51,6 @@ def Home():
         machineInfo = []
 
     try:
-        apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        apiInfo = []
-
-    try:
         versionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetVersionInfo').content)
     except Exception as e:
         logger.error(e)
@@ -67,28 +60,10 @@ def Home():
     return render_template(
         'home.html', 
         appTitle = 'Home - ' + configObject.AppTitle, 
-        apiInfo = apiInfo,
         apiRootUrl = configObject.ApiRootUrl,
         machineInfo = machineInfo,
         versionInfo = versionInfo
     )
-    pass
-
-@app.route('/disks', methods=['GET'])
-def ShowDisks():
-    try:
-        diskList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDiskList').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        diskList = []
-
-    return render_template(
-        'disks.html', 
-        appTitle = 'Disks - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        diskList = diskList
-    )    
     pass
 
 @app.route('/transcoder', methods=['GET'])
@@ -108,8 +83,15 @@ def ShowTranscoderSettings():
     )    
     pass
 
-@app.route('/docker', methods=['GET'])
-def ShowDocker():
+@app.route('/services', methods=['GET'])
+def ShowServices():
+    try:
+        serviceList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceStatusList').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        serviceList = []
+    
     try:
         dockerContainerList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDockerContainerList').content)
     except Exception as e:
@@ -117,50 +99,58 @@ def ShowDocker():
         logger.error(traceback.format_exc())
         dockerContainerList = []
 
-    return render_template(
-        'docker.html', 
-        appTitle = 'Docker - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        dockerContainerList = dockerContainerList
-    )   
-    pass     
-
-@app.route('/services', methods=['GET'])
-def ShowServices():
     try:
-        serviceList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceList').content)
+        apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        serviceList = []
+        apiInfo = []
 
     return render_template(
         'services.html', 
         appTitle = 'Services - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        serviceList = serviceList
+        serviceList = serviceList,
+        apiInfo = apiInfo,
+        dockerContainerList = dockerContainerList
     )   
     pass     
 
 @app.route('/resources', methods=['GET'])
 def ShowResources():
     try:
-        resourceInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetResourceInfo').content)
+        cpuInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetCpuResourceInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         resourceInfo = []
+
+    try:
+        memoryInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMemoryResourceInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        resourceInfo = []
+
+    try:
+        diskList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDiskList').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        diskList = []
     
-    resourceInfo['MemTotal'] = SizeHumanReadable(int(resourceInfo['MemTotal']) * 1024, '')
-    resourceInfo['MemUsed'] = SizeHumanReadable(int(resourceInfo['MemUsed']) * 1024, '')    
-    resourceInfo['SwapTotal'] = SizeHumanReadable(int(resourceInfo['SwapTotal']) * 1024, '')
-    resourceInfo['SwapUsed'] = SizeHumanReadable(int(resourceInfo['SwapUsed']) * 1024, '')    
+    memoryInfo['MemTotal'] = SizeHumanReadable(int(memoryInfo['MemTotal']) * 1024, '')
+    memoryInfo['MemUsed'] = SizeHumanReadable(int(memoryInfo['MemUsed']) * 1024, '')    
+    memoryInfo['SwapTotal'] = SizeHumanReadable(int(memoryInfo['SwapTotal']) * 1024, '')
+    memoryInfo['SwapUsed'] = SizeHumanReadable(int(memoryInfo['SwapUsed']) * 1024, '')    
 
     return render_template(
         'resources.html', 
         appTitle = 'Resources - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        resourceInfo = resourceInfo
+        diskList = diskList,
+        cpuInfo = cpuInfo,
+        memoryInfo = memoryInfo        
     )   
     pass     
 
@@ -173,11 +163,19 @@ def ShowCommands():
         logger.error(traceback.format_exc())
         versionInfo = []
 
+    try:
+        backupInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetBackupInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        backupInfo = []
+
     return render_template(
         'tasks.html', 
         appTitle = 'Commands - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        versionInfo = versionInfo
+        versionInfo = versionInfo,
+        backupInfo = backupInfo
     )   
     pass     
 
@@ -233,7 +231,7 @@ def DoStartDocker():
         appTitle = 'StartDocker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         commandTitle = 'StartDocker',
-        commandMessage = '(Re)starting docker-containers is in progress...',
+        commandMessage = 'Starting docker-containers is in progress...',
         showDockerLink = 1
     )
     pass 
