@@ -8,9 +8,9 @@
         <a href="/halt-server" class="link-button">Halt</a>          
 
         {% if versionInfo.CanUpdate %}
-            <a href="/update-server" class="link-button">Update</a> 
+            <a href="/update-rpms" class="link-button">UpdateRpms</a> 
         {% else %}
-            <a class="link-button disabled">Update</a> 
+            <a class="link-button disabled">UpdateRpms</a> 
         {% endif %}
     </div>
     <small>
@@ -18,7 +18,7 @@
             <tr>
                 <td align="right">
                     <abbr title="CurrentVersion {{ versionInfo.CurrentVersion }} AvailableVersion {{ versionInfo.AvailableVersion }} UpdateBranchName {{ versionInfo.UpdateBranchName }} VersionOverride {{ versionInfo.DevelopmentVersionOverride }}">
-                        CanUpdate
+                        CanUpdateRpms
                     </abbr>
                 </td>
                 <td><b>
