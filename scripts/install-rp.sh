@@ -155,6 +155,14 @@ else
     echo " => line is already present."    
 fi
 
+echo "Adding line for updating docker-containers to /etc/crontab..."
+if [ ! "$(grep "update-docker" /etc/crontab)" ]; then
+    /bin/sh -c 'echo "0 3 * * * root update-docker" >> /etc/crontab'
+    echo " => line added."    
+else
+    echo " => line is already present."    
+fi
+
 echo "Change password of user 'pi'..."
 sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 # Note that changing password in su-mode (which is different than sudo-mode)
