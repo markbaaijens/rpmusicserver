@@ -42,6 +42,10 @@ else
     echo " => mountpoint for usbbackup is already present."
 fi
 
+echo "Cleanup /usr/local/bin:"
+rm -rf /usr/local/bin/*
+echo " => cleaned up."
+
 echo "Adding line for usbdata-disk to /etc/fstab:"
 if [ ! "$(grep "LABEL=usbdata" /etc/fstab)" ]; then
     # auto,nofail: server starts even when harddisk is not present
