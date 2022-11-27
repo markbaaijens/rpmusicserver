@@ -7,10 +7,6 @@
             <td align="right">SourceFolder</td>
             <td><b>{{ transcoderSettings.sourcefolder }}</b></td>
         </tr>
-        <div>
-            <p>
-            <a href="/logs/transcoder/20">TranscoderLog</a>
-        </div>   
         <h3>Settings</h3>     
         <tr>
             <td align="right">OggFolder</td>
@@ -39,9 +35,21 @@
                     <b>{{ transcoderSettings.mp3bitrate }}</b>
                 {% endif %}
             </td>
-
         </tr>
     </table>  
     <p>
-    <div><a href="/transcoder/edit" class="link-button"><img src="{{ url_for('static',filename='edit.png') }}" alt="Home" style="width:20px;height:20x;"> Edit</a></div>
-{% endblock %}
+    <div>
+        <a href="/transcoder/edit" class="link-button">
+            <img src="{{ url_for('static',filename='edit.png') }}" alt="Home" style="width:20px;height:20x;">
+            Edit
+        </a>
+    </div>
+
+    <h3>Log(s)</h3>     
+    <div>
+        <p>
+        <a href="/logs/transcoder/20">TranscoderLog</a>
+    </div>           
+
+
+    {% endblock %}

@@ -163,6 +163,16 @@ def ShowCommands():
         logger.error(traceback.format_exc())
         versionInfo = []
 
+    return render_template(
+        'tasks.html', 
+        appTitle = 'Commands - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        versionInfo = versionInfo
+    )   
+    pass     
+
+@app.route('/backup', methods=['GET'])
+def ShowBackup():
     try:
         backupInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetBackupInfo').content)
     except Exception as e:
@@ -171,10 +181,9 @@ def ShowCommands():
         backupInfo = []
 
     return render_template(
-        'tasks.html', 
-        appTitle = 'Commands - ' + configObject.AppTitle, 
+        'backup.html', 
+        appTitle = 'Backup - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        versionInfo = versionInfo,
         backupInfo = backupInfo
     )   
     pass     
