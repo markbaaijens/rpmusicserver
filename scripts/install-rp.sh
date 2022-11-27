@@ -135,37 +135,27 @@ install_bin_file update-docker
 install_bin_file halt-server
 install_bin_file reboot-server
 
+# By always delete existing lines in crontab, we can easily implement
+# a different crontab-strategy later, if needed
 echo "Adding line for auto-upgrade to /etc/crontab:"
-if [ ! "$(grep "apt-get upgrade" /etc/crontab)" ]; then
-    /bin/sh -c 'echo "02 10 * * * root apt-get upgrade -y" >> /etc/crontab'
-    echo " => line added."    
-else
-    echo " => line is already present."    
-fi
+sed -i '/apt-get upgrade/d' /etc/crontab
+/bin/sh -c 'echo "10 02 * * * root apt-get upgrade -y" >> /etc/crontab'
+echo " => line added."    
 
 echo "Adding line for transcoder to /etc/crontab..."
-if [ ! "$(grep "transcode" /etc/crontab)" ]; then
-    /bin/sh -c 'echo "20 * * * * root transcode" >> /etc/crontab'
-    echo " => line added."    
-else
-    echo " => line is already present."    
-fi
+sed -i '/transcode/d' /etc/crontab
+/bin/sh -c 'echo "20 * * * * root transcode" >> /etc/crontab'
+echo " => line added."    
 
 echo "Adding line for setting rights to /etc/crontab..."
-if [ ! "$(grep "chmod 777" /etc/crontab)" ]; then
-    /bin/sh -c 'echo "0 2 * * * root chmod 777 /media/usbdata/user/Publiek -R" >> /etc/crontab'
-    echo " => line added."    
-else
-    echo " => line is already present."    
-fi
+sed -i '/chmod 777/d' /etc/crontab
+/bin/sh -c 'echo "0 2 * * * root chmod 777 /media/usbdata/user/Publiek -R" >> /etc/crontab'
+echo " => line added."    
 
 echo "Adding line for updating docker-containers to /etc/crontab..."
-if [ ! "$(grep "update-docker" /etc/crontab)" ]; then
-    /bin/sh -c 'echo "0 3 * * * root update-docker" >> /etc/crontab'
-    echo " => line added."    
-else
-    echo " => line is already present."    
-fi
+sed -i '/update-docker/d' /etc/crontab
+/bin/sh -c 'echo "0 3 * * * root update-docker" >> /etc/crontab'
+echo " => line added."    
 
 echo "Change password of user 'pi'..."
 sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
