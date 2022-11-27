@@ -127,6 +127,7 @@ install_bin_file backup-server
 install_bin_file transcode
 install_bin_file start-docker
 install_bin_file kill-docker
+install_bin_file update-docker
 install_bin_file halt-server
 install_bin_file reboot-server
 
