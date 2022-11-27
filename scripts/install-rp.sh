@@ -122,7 +122,7 @@ if [ ! -f /media/usbdata/rpms/config/transcoder-settings.json ]; then
 fi 
 echo " => transcoder installed"
 
-install_bin_file update-server
+install_bin_file update-rpms
 install_bin_file backup-server
 install_bin_file transcode
 install_bin_file start-docker

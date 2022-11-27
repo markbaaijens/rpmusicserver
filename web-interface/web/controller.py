@@ -255,10 +255,10 @@ def DoUpdateDocker():
     )
     pass 
 
-@app.route('/update-server', methods=['GET'])
-def DoUpdateServer():
+@app.route('/update-rpms', methods=['GET'])
+def DoUpdateRpms():
     try:
-        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoUpdateServer').content)
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoUpdateRpms').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -266,10 +266,10 @@ def DoUpdateServer():
 
     return render_template(
         'command.html', 
-        appTitle = 'UpdateServer - ' + configObject.AppTitle, 
+        appTitle = 'UpdateRpms - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'UpdateServer',
-        commandMessage = 'Update is in progress... in a few seconds you will be redirected to Home; refresh that page after 1 minute',
+        commandTitle = 'UpdateRpms',
+        commandMessage = 'RPMS-update is in progress... in a few seconds you will be redirected to Home; refresh that page after 1 minute',
         redirect = 1        
     )   
     pass     

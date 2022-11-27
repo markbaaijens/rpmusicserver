@@ -406,8 +406,8 @@ async def DoUpdateDocker():
     await asyncio.create_subprocess_shell("update-docker")
     pass
 
-async def DoUpdateServer():
-    await asyncio.create_subprocess_shell("update-server")
+async def DoUpdateRpms():
+    await asyncio.create_subprocess_shell("update-rpms")
     pass
 
 def GetLmsServerInfo():

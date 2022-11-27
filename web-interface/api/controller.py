@@ -411,10 +411,10 @@ def DoUpdateDocker():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)        
 
-@app.route('/api/DoUpdateServer', methods=['POST'])
-def DoUpdateServer():
+@app.route('/api/DoUpdateRpms', methods=['POST'])
+def DoUpdateRpms():
     try:
-        asyncio.run(logic.DoUpdateServer())
+        asyncio.run(logic.DoUpdateRpms())
         info = { "Message": "Server is updating" }        
     except Exception as e:
         logger.error(e)
