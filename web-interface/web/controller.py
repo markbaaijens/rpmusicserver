@@ -236,6 +236,25 @@ def DoStartDocker():
     )
     pass 
 
+@app.route('/update-docker', methods=['GET'])
+def DoUpdateDocker():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoUpdateDocker').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    return render_template(
+        'command.html', 
+        appTitle = 'UpdateDocker - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        commandTitle = 'UpdateDocker',
+        commandMessage = 'Updating docker-containers is in progress...',
+        showDockerLink = 1
+    )
+    pass 
+
 @app.route('/update-server', methods=['GET'])
 def DoUpdateServer():
     try:

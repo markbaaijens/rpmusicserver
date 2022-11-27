@@ -391,13 +391,25 @@ def DoKillDocker():
 def DoStartDocker():
     try:
         asyncio.run(logic.DoStartDocker())
-        info = { "Message": "Docker-container(s) will be restarted" }
+        info = { "Message": "Docker-container(s) will be started" }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+@app.route('/api/DoUpdateDocker', methods=['POST'])
+def DoUpdateDocker():
+    try:
+        asyncio.run(logic.DoUpdateDocker())
+        info = { "Message": "Docker-container(s) will be updated" }
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)        
 
 @app.route('/api/DoUpdateServer', methods=['POST'])
 def DoUpdateServer():

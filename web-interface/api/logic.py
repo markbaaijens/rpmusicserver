@@ -402,6 +402,10 @@ async def DoStartDocker():
     await asyncio.create_subprocess_shell("start-docker")
     pass
 
+async def DoUpdateDocker():
+    await asyncio.create_subprocess_shell("update-docker")
+    pass
+
 async def DoUpdateServer():
     await asyncio.create_subprocess_shell("update-server")
     pass
