@@ -116,8 +116,10 @@ Reconfiguring is best done:
 
 ## Update
 Update your RPMS-server: 
-* [rpms/tasks](http://rpms:80/tasks)
-* click Update
+* http://rpms/
+* Under Version, click on the Update-button
+
+Note: update is disabled when there is no newer version found.
 
 ## Development
 
