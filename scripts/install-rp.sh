@@ -127,6 +127,7 @@ install_bin_file backup-server
 install_bin_file transcode
 install_bin_file start-docker
 install_bin_file kill-docker
+install_bin_file update-docker
 install_bin_file halt-server
 install_bin_file reboot-server
 
@@ -149,6 +150,14 @@ fi
 echo "Adding line for setting rights to /etc/crontab..."
 if [ ! "$(grep "chmod 777" /etc/crontab)" ]; then
     /bin/sh -c 'echo "0 2 * * * root chmod 777 /media/usbdata/user/Publiek -R" >> /etc/crontab'
+    echo " => line added."    
+else
+    echo " => line is already present."    
+fi
+
+echo "Adding line for updating docker-containers to /etc/crontab..."
+if [ ! "$(grep "update-docker" /etc/crontab)" ]; then
+    /bin/sh -c 'echo "0 3 * * * root update-docker" >> /etc/crontab'
     echo " => line added."    
 else
     echo " => line is already present."    
