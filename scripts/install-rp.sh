@@ -42,6 +42,10 @@ else
     echo " => mountpoint for usbbackup is already present."
 fi
 
+echo "Cleanup /usr/local/bin:"
+rm -rf /usr/local/bin/*
+echo " => cleaned up."
+
 echo "Adding line for usbdata-disk to /etc/fstab:"
 if [ ! "$(grep "LABEL=usbdata" /etc/fstab)" ]; then
     # auto,nofail: server starts even when harddisk is not present
@@ -139,11 +143,12 @@ if [ ! -f /media/usbdata/rpms/config/transcoder-settings.json ]; then
 fi 
 echo " => transcoder installed"
 
-install_bin_file update-server
+install_bin_file update-rpms
 install_bin_file backup-server
 install_bin_file transcode
 install_bin_file start-docker
 install_bin_file kill-docker
+install_bin_file update-docker
 install_bin_file halt-server
 install_bin_file reboot-server
 
@@ -166,6 +171,14 @@ fi
 echo "Adding line for setting rights to /etc/crontab..."
 if [ ! "$(grep "chmod 777" /etc/crontab)" ]; then
     /bin/sh -c 'echo "0 2 * * * root chmod 777 /media/usbdata/user/Publiek -R" >> /etc/crontab'
+    echo " => line added."    
+else
+    echo " => line is already present."    
+fi
+
+echo "Adding line for updating docker-containers to /etc/crontab..."
+if [ ! "$(grep "update-docker" /etc/crontab)" ]; then
+    /bin/sh -c 'echo "0 3 * * * root update-docker" >> /etc/crontab'
     echo " => line added."    
 else
     echo " => line is already present."    

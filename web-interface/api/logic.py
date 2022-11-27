@@ -35,9 +35,9 @@ def GetMachineInfo():
     def GetOsBitType():
         osBitType = ExecuteBashCommand("uname -m")
         if osBitType == "armv7l":
-            return osBitType + ' - 32-bit'
+            return osBitType + ' 32-bit'
         elif osBitType == "armv8":
-            return osBitType + ' - 64-bit'
+            return osBitType + ' 64-bit'
         return osBitType
 
     hostName = ExecuteBashCommand("hostname")
@@ -156,8 +156,42 @@ def GetServiceStatusList():
                                  })
 
     return serviceListResult
-    
-def GetGenericResourceInfo():
+
+def GetCpuResourceInfo():
+    # cpuLoad1 => uptime | tail -c 17 | awk '{print $1}' | cut -c 1-4
+    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    cpuLoad1 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
+
+    # cpuLoad5 => uptime | tail -c 17 | awk '{print $2}' | cut -c 1-4
+    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
+    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    cpuLoad5 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
+
+    # cpuLoad15 => uptime | tail -c 17 | awk '{print $3}'
+    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
+    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    cpuLoad15 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
+
+    # cputemp
+    cpuTemp = 0
+    if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
+        process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+        cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
+
+    return {"CpuLoad1": cpuLoad1,
+            "CpuLoad5": cpuLoad5,
+            "CpuLoad15": cpuLoad15,           
+            "CpuTemp": cpuTemp
+            }
+
+def GetMemoryResourceInfo():
     # memTotal => free | grep 'Mem:' | awk '{print $2}'
     process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
@@ -186,44 +220,14 @@ def GetGenericResourceInfo():
 
     swapUsedPercentage = math.floor(swapUsed/swapTotal * 100)
 
-    # averageLoad1 => uptime | tail -c 17 | awk '{print $1}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    averageLoad1 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
-
-    # averageLoad5 => uptime | tail -c 17 | awk '{print $2}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    averageLoad5 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
-
-    # averageLoad15 => uptime | tail -c 17 | awk '{print $3}'
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    averageLoad15 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
-
-    # cputemp
-    cpuTemp = 0
-    if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
-        process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-        cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
-
     return {'MemTotal': memTotal,
             "MemUsed": memUsed,
             "MemUsedPercentage": memUsedPercentage,
             "SwapTotal": swapTotal,
             "SwapUsed": swapUsed,
-            "SwapUsedPercentage": swapUsedPercentage,            
-            "AverageLoad1": averageLoad1,
-            "AverageLoad5": averageLoad5,
-            "AverageLoad15": averageLoad15,           
-            "CpuTemp": cpuTemp
+            "SwapUsedPercentage": swapUsedPercentage
             }
+
 
 def GetVersionInfo():
     revisionFile = RevisionFileName()
@@ -398,8 +402,12 @@ async def DoStartDocker():
     await asyncio.create_subprocess_shell("start-docker")
     pass
 
-async def DoUpdateServer():
-    await asyncio.create_subprocess_shell("update-server")
+async def DoUpdateDocker():
+    await asyncio.create_subprocess_shell("update-docker")
+    pass
+
+async def DoUpdateRpms():
+    await asyncio.create_subprocess_shell("update-rpms")
     pass
 
 def GetLmsServerInfo():

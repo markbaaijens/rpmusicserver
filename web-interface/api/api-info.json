@@ -35,10 +35,14 @@
         "Description": "Get the last x lines of the backup-details-log; 0 gives the whole file",
         "Example":"curl rpms:5000/api/GetBackupDetailsLog/10"
     },        
-    {   "EndPoint": "GET api/GetGenericResourceInfo",
-        "Description": "Show system-resources like memory- and CPU-usage, system-load",
-        "Example":"curl rpms:5000/api/GetGenericResourceInfo"
+    {   "EndPoint": "GET api/GetCpuResourceInfo",
+        "Description": "Show cpu-resources",
+        "Example":"curl rpms:5000/api/GetCpuResourceInfo"
     },
+    {   "EndPoint": "GET api/GetMemoryResourceInfo",
+        "Description": "Show memory-resources",
+        "Example":"curl rpms:5000/api/GetMemoryResourceInfo"
+    },    
     {   "EndPoint": "GET api/GetLmsServerInfo",
         "Description": "Show LMS server-info",
         "Example":"curl rpms:5000/api/GetLmsServerInfo"
@@ -63,9 +67,9 @@
         "Description": "Show services",
         "Example":"curl rpms:5000/api/GetSrviceList"
     },
-    {   "EndPoint": "POST api/DoUpdateServer",
+    {   "EndPoint": "POST api/DoUpdateRpms",
         "Description": "Update RPMS to the latest version",
-        "Example":"curl rpms:5000/api/DoUpdateServer -X post"
+        "Example":"curl rpms:5000/api/DoUpdateRpms -X post"
     },
     {   "EndPoint": "POST api/DoHaltServer",
         "Description": "Power-off server",
@@ -87,6 +91,10 @@
         "Description": "Start all (stopped) docker-containers",
         "Example":"curl rpms:5000/api/DoStartDocker -X post"
     },    
+    {   "EndPoint": "POST api/DoUpdateDocker",
+        "Description": "Update all docker-containers",
+        "Example":"curl rpms:5000/api/DoUpdateDocker -X post"
+    },        
     {   "EndPoint": "POST api/SetTranscoderSourceFolder",
         "Description": "Set transcoder-setting [sourcefolder]",
         "Example":"curl rpms:5000/api/SetTranscoderSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"Value\":\"NewSourceFolder\"}'"

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+echo "Updating docker-containers..."
+
+kill-docker
+start-docker update

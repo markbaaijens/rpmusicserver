@@ -295,10 +295,21 @@ def SetTranscoderMp3Bitrate():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
-@app.route('/api/GetGenericResourceInfo', methods=['GET'])
-def GetGenericResourceInfo():
+@app.route('/api/GetMemoryResourceInfo', methods=['GET'])
+def GetMemoryResourceInfo():
     try:
-        info = logic.GetGenericResourceInfo()
+        info = logic.GetMemoryResourceInfo()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+@app.route('/api/GetCpuResourceInfo', methods=['GET'])
+def GetCpuResourceInfo():
+    try:
+        info = logic.GetCpuResourceInfo()
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -380,7 +391,7 @@ def DoKillDocker():
 def DoStartDocker():
     try:
         asyncio.run(logic.DoStartDocker())
-        info = { "Message": "Docker-container(s) will be restarted" }
+        info = { "Message": "Docker-container(s) will be started" }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -388,10 +399,22 @@ def DoStartDocker():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
-@app.route('/api/DoUpdateServer', methods=['POST'])
-def DoUpdateServer():
+@app.route('/api/DoUpdateDocker', methods=['POST'])
+def DoUpdateDocker():
     try:
-        asyncio.run(logic.DoUpdateServer())
+        asyncio.run(logic.DoUpdateDocker())
+        info = { "Message": "Docker-container(s) will be updated" }
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)        
+
+@app.route('/api/DoUpdateRpms', methods=['POST'])
+def DoUpdateRpms():
+    try:
+        asyncio.run(logic.DoUpdateRpms())
         info = { "Message": "Server is updating" }        
     except Exception as e:
         logger.error(e)

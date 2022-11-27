@@ -2,7 +2,7 @@
 Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
 ## System requirements
-* [minimum] Raspberry Pi 2 (B or B+), 1 GB
+* [minimum] Raspberry Pi 3 (B or B+), 1 GB
 * [recommended] Raspberry Pi 4 B, 4 GB
 
 ## Installation of RPMS on a Pi
@@ -131,7 +131,8 @@ Note that once VersionOverride is active, CurrentVersion and AvailableVersion do
 To switch version from `master` branch to e.g. `develop` branch:
 * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
 
-Returning to the `master` branch version simply delete the `/media/usbdata/rpms/config/update-branch.txt` text file.
+Returning to the `master` branch version simply delete the `update-branch.txt` text file:
+* `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
 
 ### Build development version with separate hostname
 The `rpmsdev` hostname is used in this build
