@@ -156,18 +156,10 @@ def ShowResources():
 
 @app.route('/tasks', methods=['GET'])
 def ShowCommands():
-    try:
-        versionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetVersionInfo').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        versionInfo = []
-
     return render_template(
         'tasks.html', 
         appTitle = 'Commands - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        versionInfo = versionInfo
+        apiRootUrl = configObject.ApiRootUrl
     )   
     pass     
 
