@@ -5,5 +5,7 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
+echo "Updating docker-containers..."
+
 kill-docker
 start-docker update
