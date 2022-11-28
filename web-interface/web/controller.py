@@ -57,12 +57,20 @@ def Home():
         logger.error(traceback.format_exc())
         versionInfo = []
 
+    try:
+        hostUrl = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetHostUrl').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        hostUrl = []
+
     return render_template(
         'home.html', 
         appTitle = 'Home - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         machineInfo = machineInfo,
-        versionInfo = versionInfo
+        versionInfo = versionInfo,
+        hostUrl = hostUrl['HostUrl']
     )
     pass
 
@@ -106,13 +114,21 @@ def ShowServices():
         logger.error(traceback.format_exc())
         apiInfo = []
 
+    try:
+        hostUrl = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetHostUrl').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        hostUrl = []        
+
     return render_template(
         'services.html', 
         appTitle = 'Services - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         serviceList = serviceList,
         apiInfo = apiInfo,
-        dockerContainerList = dockerContainerList
+        dockerContainerList = dockerContainerList,
+        hostUrl = hostUrl['HostUrl']
     )   
     pass     
 
@@ -123,14 +139,14 @@ def ShowResources():
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        resourceInfo = []
+        cpuInfo = []
 
     try:
         memoryInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMemoryResourceInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        resourceInfo = []
+        memoryInfo = []
 
     try:
         diskList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDiskList').content)

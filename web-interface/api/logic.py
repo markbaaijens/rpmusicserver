@@ -64,6 +64,10 @@ def GetMachineInfo():
             "RpModelMemoryInGB": rpModelMemoryInGB,
             "UpTime": upTime}
 
+def GetHostUrl():
+    hostUrl = 'http://' + ExecuteBashCommand("hostname")
+    return {"HostUrl": hostUrl}
+
 disks = []
 
 def AppendDiskInfo(diskMountPoint):
@@ -297,7 +301,6 @@ def GetVersionList():
             dataAsDict = json.load(file)
         dataAsJson = json.loads(json.dumps(dataAsDict))
     return dataAsJson
-
 
 def GetBackupInfo():
     isBackupNotInProgress = True

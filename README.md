@@ -57,13 +57,14 @@ _If this command has no output_, it is all good and you can proceed installing R
   * watch services to become active:
     * `watch nmap rpms`
       * wait until port 9002 appears; exit with Ctrl-C
-    * [rpms/services](http://rpms:80/services)
+    * http://rpms/services
       * wait until port 9002 is active
-  * RPMS (browser): [rpms](http://rpms:80)
-  * LMS (browser): [rpms:9002](http://rpms:9002)
-  * Transmission (browser): [rpms:9091](http://rpms:9091)
-  * Samba (file explorer): `smb://rpms`
-  * Syncthing: [rpms:8384](http://rpms:8384)
+  * RPMS (browser): http://rpms
+  * LMS (browser): http://rpms:9002
+  * Transmission (browser): http://rpms:9091
+  * Samba (file explorer): 
+    * `smb://rpms`
+  * Syncthing: http://rpms:8384
   * API: 
     * `curl rpms:5000`
   * SSH: 
@@ -115,7 +116,7 @@ Reconfiguring is best done:
 * (or) on the Squeezebox-device itself (all except Duet which has no physical interface)
 
 ## Update
-Update your RPMS-server: 
+Update your RPMS-server by the web-interface: 
 * http://rpms/
 * Under Version, click on the Update-button
 
@@ -152,39 +153,39 @@ The `rpmsdev` hostname is used in this build
 
 ### List of API requests 
   * `curl rpms:5000/api/GetApiList`
-  * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList)
+  * http://rpms:5000/api/GetApiList
 
 ## Transcoder
 For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
 * in your file explorer
   * create a folder `flac` under `smb://rpms/Publiek/Muziek`
   * move your flac-files into that folder `flac`
-* in [LMS](http://rpms:9002) Server Settings, point music-folder to this location:
+* in LMS Server Settings http://rpms:9002, point music-folder to this location:
   * `/music/flac`
-* change [setting](http://rpms/transcoder/edit) `SourceFolder`
+* change setting `SourceFolder` http://rpms/transcoder/edit
   * point to `/media/usbdata/user/Publiek/Muziek/flac`
   * click  Save
 * for transcoding to ogg
   * in your file explorer
     * create a folder `ogg` under `smb://rpms/Publiek/Muziek`
-  * change [setting](http://rpms/transcoder/edit) `OggFolder`
+  * change setting `OggFolder` http://rpms/transcoder/edit
     * point to `/media/usbdata/user/Publiek/Muziek/ogg`
     * click Save
 * for transcoding to mp3
   * in your file explorer
     * create a folder `mp3`under `smb://rpms/Publiek/Muziek`
-  * change [setting](http://rpms/transcoder/edit) `Mp3Folder`
+  * change setting `Mp3Folder` http://rpms/transcoder/edit
     * point to `/media/usbdata/user/Publiek/Muziek/mp3`
     * click Save
 * from now on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
 * see transcoder-progress
-  * [rpms/logs/transcoder/20](http://rpms/logs/transcoder/20)
+  * http://rpms/logs/transcoder/20
   * `curl rpms:5000/api/GetTranscoderLog/20`
 
 ### Notes
 * Transcoding will be done by these default quality-levels: ogg = 1, mp3 = 128. Optionally, you can change these defaults:
-  * for example, change [setting](http://rpms/transcoder/edit) `OggQuality` to 3 (value = 1, 2, 3, 4, or 5):
-  * for example, change [setting](http://rpms/transcoder/edit) `Mp3Bitrate` to 256 (value = 128, 256 or 384):
+  * for example, change `OggQuality` http://rpms/transcoder/edit` to 3 (value = 1, 2, 3, 4, or 5):
+  * for example, change `Mp3Bitrate` http://rpms/transcoder/edit to 256 (value = 128, 256 or 384):
 * Trancoding simultaneously to ogg AND mp3 is possible; just set both `OggFolder` and `Mp3Folder`
 
 ## Backup
@@ -198,15 +199,15 @@ You can make a backup of all the data contained in your RPMS-server. This backup
 * engage the backup:
   * connect your backup-disk to the Pi
   * start the backup
-    * [rpms/tasks](http://rpms/tasks
-    * click BackupServer
+    * http://rpms/backup
+    * click Backup
   * watch overall progress
-    * [rpms/logs/backup/20](http://rpms/logs/backup/20)
+    * http://rpms/logs/backup/20
     * refresh until log states: 'Backup ended'
   * watch detailed progress
-    * [rpms/logs/backup-details/20](http://rpms/logs/backup-details/20)
+    * http://rpms/logs/backup-details/20
   * see full backup-log
-    * [rpms/logs/backup-details/0](http://rpms/logs/backup-details/0)
+    * http://rpms/logs/backup-details/0)
   * disconnect backup-disk
 
 ### Off-line backup-data viewing
