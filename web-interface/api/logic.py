@@ -64,6 +64,10 @@ def GetMachineInfo():
             "RpModelMemoryInGB": rpModelMemoryInGB,
             "UpTime": upTime}
 
+def GetHostUrl():
+    hostUrl = 'http://' + ExecuteBashCommand("hostname")
+    return {"HostName": hostUrl}
+
 disks = []
 
 def AppendDiskInfo(diskMountPoint):
