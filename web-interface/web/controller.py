@@ -57,20 +57,12 @@ def Home():
         logger.error(traceback.format_exc())
         versionInfo = []
 
-    try:
-        hostUrl = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetHostUrl').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        hostUrl = []
-
     return render_template(
         'home.html', 
         appTitle = 'Home - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         machineInfo = machineInfo,
-        versionInfo = versionInfo,
-        hostUrl = hostUrl['HostUrl']
+        versionInfo = versionInfo
     )
     pass
 
@@ -115,11 +107,11 @@ def ShowServices():
         apiInfo = []
 
     try:
-        hostUrl = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetHostUrl').content)
+        machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        hostUrl = []        
+        machineInfo = []        
 
     return render_template(
         'services.html', 
@@ -128,7 +120,7 @@ def ShowServices():
         serviceList = serviceList,
         apiInfo = apiInfo,
         dockerContainerList = dockerContainerList,
-        hostUrl = hostUrl['HostUrl']
+        machineInfo = machineInfo
     )   
     pass     
 

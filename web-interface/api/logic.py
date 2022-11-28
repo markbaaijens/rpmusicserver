@@ -41,6 +41,7 @@ def GetMachineInfo():
         return osBitType
 
     hostName = ExecuteBashCommand("hostname")
+    hostUrl = 'http://' + hostName
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
     osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
     osBitType = GetOsBitType()
@@ -56,6 +57,7 @@ def GetMachineInfo():
     upTime = process.stdout.decode("utf-8").strip('\n')
 
     return {"HostName": hostName,
+            "HostUrl": hostUrl,
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
             "OsDescription": osDescription,
@@ -63,10 +65,6 @@ def GetMachineInfo():
             "RpModel": rpModel,
             "RpModelMemoryInGB": rpModelMemoryInGB,
             "UpTime": upTime}
-
-def GetHostUrl():
-    hostUrl = 'http://' + ExecuteBashCommand("hostname")
-    return {"HostUrl": hostUrl}
 
 disks = []
 
