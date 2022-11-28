@@ -11,10 +11,6 @@
         "Description":"Shows hostname, IP-address and OS-codename",
         "Example":"curl rpms:5000/api/GetMachineInfo"
     },
-    {   "EndPoint": "GET api/GetHostUrl",
-        "Description":"Shows url of hostname",
-        "Example":"curl rpms:5000/api/GetHostUrl"
-    },    
     {   "EndPoint": "GET api/GetVersionInfo",
         "Description": "Shows info about version of RPMS",
         "Example":"curl rpms:5000/api/GetVersionInfo"
