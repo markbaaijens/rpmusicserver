@@ -66,7 +66,7 @@ def GetMachineInfo():
 
 def GetHostUrl():
     hostUrl = 'http://' + ExecuteBashCommand("hostname")
-    return {"HostName": hostUrl}
+    return {"HostUrl": hostUrl}
 
 disks = []
 
@@ -301,7 +301,6 @@ def GetVersionList():
             dataAsDict = json.load(file)
         dataAsJson = json.loads(json.dumps(dataAsDict))
     return dataAsJson
-
 
 def GetBackupInfo():
     isBackupNotInProgress = True
