@@ -40,9 +40,16 @@ def GetMachineInfo():
             return osBitType + ' 64-bit'
         return osBitType
 
+    def GetHostUrl():
+        urlPrefix = 'http://'
+        hostUrl = urlPrefix + hostName
+        if len(ExecuteBashCommand("nslookup " + hostName + "x | grep \"server can't find\"").split()) != 0:
+            hostUrl = urlPrefix + ipAddress
+        return hostUrl
+
     hostName = ExecuteBashCommand("hostname")
-    hostUrl = 'http://' + hostName
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
+    hostUrl = GetHostUrl()  # Must be behind hostName + ipAddress
     osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
     osBitType = GetOsBitType()
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
