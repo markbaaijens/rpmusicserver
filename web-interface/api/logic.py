@@ -43,7 +43,7 @@ def GetMachineInfo():
     def GetHostUrl():
         urlPrefix = 'http://'
         hostUrl = urlPrefix + hostName
-        if len(ExecuteBashCommand("nslookup " + hostName + "x | grep \"server can't find\"").split()) != 0:
+        if len(ExecuteBashCommand("nslookup " + hostName + " | grep \"server can't find\"").split()) != 0:
             hostUrl = urlPrefix + ipAddress
         return hostUrl
 
