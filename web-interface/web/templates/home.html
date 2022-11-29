@@ -3,9 +3,9 @@
 {% block content %}
     <div class="sub-header">
         <small>
-        <a class="external-link" href="http://rpms:9002" target="_blank">LogitechMediaServer</a>&nbsp;&nbsp;
-        <a class="external-link" href="http://rpms:9091" target="_blank">Transmission</a>&nbsp;&nbsp;
-        <a class="external-link" href="http://rpms:8384" target="_blank">SyncThing</a>&nbsp;&nbsp;        
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:9002" target="_blank">LogitechMediaServer</a>&nbsp;&nbsp;
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:9091" target="_blank">Transmission</a>&nbsp;&nbsp;
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:8384" target="_blank">SyncThing</a>&nbsp;&nbsp;        
         <a class="external-link" href="https://github.com/markbaaijens/rpmusicserver" target="_blank">GitHub</a> 
         </small>
     </div>
@@ -50,7 +50,7 @@
         </tr>
         <tr>
             <td align="right">VersionFile</td>
-            <td><a class="external-link" href="http://rpms:5000/api/GetVersionList" target="_blank">{{ versionInfo.VersionFile }}</a></td>
+            <td><a class="external-link" href="{{ machineInfo.HostUrl }}:5000/api/GetVersionList" target="_blank">{{ versionInfo.VersionFile }}</a></td>
         </tr>                
         <tr>
             <td align="right">UpdateBranch</td>

@@ -106,13 +106,21 @@ def ShowServices():
         logger.error(traceback.format_exc())
         apiInfo = []
 
+    try:
+        machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        machineInfo = []        
+
     return render_template(
         'services.html', 
         appTitle = 'Services - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         serviceList = serviceList,
         apiInfo = apiInfo,
-        dockerContainerList = dockerContainerList
+        dockerContainerList = dockerContainerList,
+        machineInfo = machineInfo
     )   
     pass     
 
@@ -123,14 +131,14 @@ def ShowResources():
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        resourceInfo = []
+        cpuInfo = []
 
     try:
         memoryInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMemoryResourceInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        resourceInfo = []
+        memoryInfo = []
 
     try:
         diskList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDiskList').content)
@@ -156,13 +164,15 @@ def ShowResources():
 
 @app.route('/tasks', methods=['GET'])
 def ShowCommands():
-    try:
-        versionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetVersionInfo').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        versionInfo = []
+    return render_template(
+        'tasks.html', 
+        appTitle = 'Commands - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl
+    )   
+    pass     
 
+@app.route('/backup', methods=['GET'])
+def ShowBackup():
     try:
         backupInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetBackupInfo').content)
     except Exception as e:
@@ -171,10 +181,9 @@ def ShowCommands():
         backupInfo = []
 
     return render_template(
-        'tasks.html', 
-        appTitle = 'Commands - ' + configObject.AppTitle, 
+        'backup.html', 
+        appTitle = 'Backup - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        versionInfo = versionInfo,
         backupInfo = backupInfo
     )   
     pass     

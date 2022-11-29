@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Backup</h2>
+    <small>
+        <table>
+            <tr>
+                <td align="right">
+                    IsBackupDiskPresent
+                </td>
+                <td><b>
+                    {% if backupInfo.IsBackupDiskPresent %}
+                        <span class="checkmark-y"> &#10004; </span>
+                    {% else %}
+                        <span class="checkmark-n"> &#x2717; </span> 
+                    {% endif %}
+                </b></td>
+            </tr>
+            <tr>
+                <td align="right">
+                    IsBackupNotInProgress
+                </td>
+                <td><b>
+                    {% if backupInfo.IsBackupNotInProgress %}
+                        <span class="checkmark-y"> &#10004; </span>
+                    {% else %}
+                        <span class="checkmark-n"> &#x2717; </span> 
+                    {% endif %}
+                </b></td>
+            </tr>
+        </table>        
+    </small>    
+    <div>
+        {% if backupInfo.CanBackup %}
+            <a href="/backup-server" class="link-button">Backup</a>    
+        {% else %}
+            <a class="link-button disabled">Backup</a> 
+        {% endif %}
+    </div>    
+
+    <h3>Log(s)</h3>
+    <div class="indent">
+        <a href="/logs/backup/20">Backup</a>
+    </div>
+    <div class="indent">
+        <a href="/logs/backup-details/20">BackupDetails</a>
+    </div>        
+
+{% endblock %}

@@ -40,8 +40,16 @@ def GetMachineInfo():
             return osBitType + ' 64-bit'
         return osBitType
 
+    def GetHostUrl():
+        urlPrefix = 'http://'
+        hostUrl = urlPrefix + hostName
+        if len(ExecuteBashCommand("nslookup " + hostName + " | grep \"server can't find\"").split()) != 0:
+            hostUrl = urlPrefix + ipAddress
+        return hostUrl
+
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
+    hostUrl = GetHostUrl()  # Must be behind hostName + ipAddress
     osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
     osBitType = GetOsBitType()
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
@@ -56,6 +64,7 @@ def GetMachineInfo():
     upTime = process.stdout.decode("utf-8").strip('\n')
 
     return {"HostName": hostName,
+            "HostUrl": hostUrl,
             "IpAddress": ipAddress,
             "OsCodeName": osCodeName,
             "OsDescription": osDescription,
@@ -298,18 +307,17 @@ def GetVersionList():
         dataAsJson = json.loads(json.dumps(dataAsDict))
     return dataAsJson
 
-
 def GetBackupInfo():
-    isBackupInProgress = False
+    isBackupNotInProgress = True
 
     if os.path.isfile('/media/usbdata/rpms/logs/backup-details.log'):
         if ExecuteBashCommand("grep 'speedup is ' /media/usbdata/rpms/logs/backup-details.log").strip() == '':
-            isBackupInProgress = True
+            isBackupNotInProgress = False
 
     isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup") == "usbbackup"
-    canBackup = isBackupDiskPresent and not isBackupInProgress
+    canBackup = isBackupDiskPresent and isBackupNotInProgress
 
-    return {"IsBackupInProgress": isBackupInProgress,
+    return {"IsBackupNotInProgress": isBackupNotInProgress,
             "IsBackupDiskPresent": isBackupDiskPresent,
             "CanBackup": canBackup}
 
