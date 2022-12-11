@@ -134,6 +134,7 @@ install_bin_file kill-docker
 install_bin_file update-docker
 install_bin_file halt-server
 install_bin_file reboot-server
+install_bin_file create-collection-tree
 
 # By always delete existing lines in crontab, we can easily implement
 # a different crontab-strategy later, if needed

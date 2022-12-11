@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+music_folder=/media/usbdata/user/Publiek/Muziek/flac
+
+#curl --silent localhost:5000/api/GetMusicCollectionInfo | jq .CollectionFolder
+
+tree -d $music_folder > ~/tree.txt
+cp ~/tree.txt $music_folder
