@@ -71,6 +71,10 @@
         "Description": "Update RPMS to the latest version",
         "Example":"curl rpms:5000/api/DoUpdateRpms -X post"
     },
+    {   "EndPoint": "GET api/GetMusicCollectionInfo",
+        "Description": "Show information about the music collection",
+        "Example":"curl rpms:5000/api/GetMusicCollectionInfo"
+    },     
     {   "EndPoint": "POST api/DoHaltServer",
         "Description": "Power-off server",
         "Example":"curl rpms:5000/api/DoHaltServer -X post"

@@ -339,6 +339,10 @@ def GetTranscoderSettings():
         dataAsJson = json.loads(json.dumps(dataAsDict))
     return dataAsJson
 
+def GetMusicCollectionInfo():
+    collectionFolder = '/media/usbdata/user/Publiek/Muziek'
+    return {"CollectionFolder": collectionFolder}    
+
 def GetLog(logFile, nrOfLines):
     logLines = []
     if os.path.isfile(logFile):
