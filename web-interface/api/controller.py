@@ -89,17 +89,6 @@ def GetTranscoderSettings():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
-@app.route('/api/GetMusicCollectionInfo', methods=['GET'])
-def GetMusicCollectionInfo():
-    try:
-        info = logic.GetMusicCollectionInfo()
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
-    
-    return BuildResponse(HTTP_OK, jsonify(info), request.url)        
-
 @app.route('/api/GetDockerContainerList', methods=['GET'])
 def GetDockerContainerList():
     try:
