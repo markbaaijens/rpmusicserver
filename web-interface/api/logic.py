@@ -167,23 +167,23 @@ def GetServiceStatusList():
     return serviceListResult
 
 def GetCpuResourceInfo():
-    # cpuLoad1 => uptime | tail -c 17 | awk '{print $1}' | cut -c 1-4
+    # cpuLoad1 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $1}' | cut -c 1-4
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     cpuLoad1 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
 
-    # cpuLoad5 => uptime | tail -c 17 | awk '{print $2}' | cut -c 1-4
+    # cpuLoad5 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $2}' | cut -c 1-4
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
+    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
     process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     cpuLoad5 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
 
-    # cpuLoad15 => uptime | tail -c 17 | awk '{print $3}'
+    # cpuLoad15 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $3}' | cut -c 1-4
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
+    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
     process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     cpuLoad15 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
 
