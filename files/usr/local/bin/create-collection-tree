@@ -7,6 +7,8 @@ fi
 
 music_folder=$(curl --silent localhost:5000/api/GetMusicCollectionInfo | jq .CollectionFolder | tr -d '"')
 
+# Apparanlly, the command 'tree' cannot create a file directly in $music_folder (despite sudo-richt),
+# so we have to do that in two separate steps
 tree -d "$music_folder" > ~/tree.txt
 cp ~/tree.txt "$music_folder"
 
