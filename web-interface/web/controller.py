@@ -447,7 +447,7 @@ def EditTranscoderSettings():
         logger.error(traceback.format_exc())
         musicCollectionInfo = []
 
-    defaultMusicFolder = musicCollectionInfo["DefaultCollectionFolder"]
+    defaultMusicFolder = musicCollectionInfo["DefaultCollectionFolder"] + '/'
 
     form = EditTranscoderForm()
 
