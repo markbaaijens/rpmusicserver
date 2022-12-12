@@ -344,7 +344,14 @@ def GetDefaultMusicCollectionFolder():
 
 def GetMusicCollectionInfo():
     defaultCollectionFolder = GetDefaultMusicCollectionFolder()
-    return {"CollectionFolder": defaultCollectionFolder,
+
+    transcoderSettings = GetTranscoderSettings()
+    actualCollectionFolder = transcoderSettings["sourcefolder"]
+
+    if actualCollectionFolder == '':
+        actualCollectionFolder = defaultCollectionFolder
+
+    return {"CollectionFolder": actualCollectionFolder,
             "DefaultCollectionFolder": defaultCollectionFolder}    
 
 def GetLog(logFile, nrOfLines):
