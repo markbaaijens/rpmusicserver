@@ -434,6 +434,18 @@ def DoUpdateRpms():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
+@app.route('/api/DoCreateCollectionTree', methods=['POST'])
+def DoCreateCollectionTree():
+    try:
+        asyncio.run(logic.DoCreateCollectionTree())
+        info = { "Message": "Collection-tree is created" }        
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetLmsServerInfo', methods=['GET'])
 def GetLmsServerInfo():
     try:

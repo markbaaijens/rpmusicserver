@@ -433,6 +433,10 @@ async def DoUpdateRpms():
     await asyncio.create_subprocess_shell("update-rpms")
     pass
 
+async def DoCreateCollectionTree():
+    await asyncio.create_subprocess_shell("create-collection-tree")
+    pass
+
 def GetLmsServerInfo():
     # LMS API-reference: http://msi:9000/html/docs/cli-api.html 
     url = "http://rpms:9002/jsonrpc.js"    
