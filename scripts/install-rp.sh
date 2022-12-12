@@ -158,6 +158,11 @@ sed -i '/update-docker/d' /etc/crontab
 /bin/sh -c 'echo "0 3 * * * root update-docker" >> /etc/crontab'
 echo " => line added."    
 
+echo "Adding line for creating collection-tree to /etc/crontab..."
+sed -i '/create-collection-tree/d' /etc/crontab
+/bin/sh -c 'echo "5 3 * * * root create-collection-tree" >> /etc/crontab'
+echo " => line added."    
+
 echo "Change password of user 'pi'..."
 sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 # Note that changing password in su-mode (which is different than sudo-mode)
