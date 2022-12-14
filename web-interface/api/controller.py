@@ -390,7 +390,7 @@ def DoHaltServer():
 def DoKillDocker():
     try:
         asyncio.run(logic.DoKillDocker())
-        info = { "Message": "Docker-container will be killed" }
+        info = { "Message": "Docker-container(s) will be killed" }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
