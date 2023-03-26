@@ -438,7 +438,7 @@ def DoUpdateRpms():
 def DoCreateCollectionTree():
     try:
         asyncio.run(logic.DoCreateCollectionTree())
-        info = { "Message": "Collection-tree is created" }        
+        info = { "Message": "Collection has been created" }        
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

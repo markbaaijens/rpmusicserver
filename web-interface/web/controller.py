@@ -164,10 +164,18 @@ def ShowResources():
 
 @app.route('/tasks', methods=['GET'])
 def ShowCommands():
+    try:
+        musicCollectionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMusicCollectionInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        musicCollectionInfo = []
+
     return render_template(
         'tasks.html', 
         appTitle = 'Commands - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl
+        apiRootUrl = configObject.ApiRootUrl,
+        musicCollectionInfo = musicCollectionInfo
     )   
     pass     
 
@@ -261,6 +269,25 @@ def DoUpdateDocker():
         commandTitle = 'UpdateDocker',
         commandMessage = 'Updating docker-containers is in progress...',
         showDockerLink = 1
+    )
+    pass 
+
+@app.route('/export-collection', methods=['GET'])
+def DoExportCollection():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoCreateCollectionTree').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    return render_template(
+        'command.html', 
+        appTitle = 'ExportCollection - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        commandTitle = 'ExportCollection',
+        commandMessage = apiMessage['Message'],
+        showTasksLink = 1
     )
     pass 
 
