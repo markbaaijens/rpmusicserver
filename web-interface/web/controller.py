@@ -275,7 +275,7 @@ def DoUpdateDocker():
 @app.route('/export-collection', methods=['GET'])
 def DoExportCollection():
     try:
-        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoCreateCollectionTree').content)
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoExportCollection').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

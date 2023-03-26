@@ -433,8 +433,8 @@ async def DoUpdateRpms():
     await asyncio.create_subprocess_shell("update-rpms")
     pass
 
-async def DoCreateCollectionTree():
-    await asyncio.create_subprocess_shell("create-collection-tree")
+async def DoExportCollection():
+    await asyncio.create_subprocess_shell("export-collection")
     pass
 
 def GetLmsServerInfo():

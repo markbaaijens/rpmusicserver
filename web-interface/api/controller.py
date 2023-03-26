@@ -434,11 +434,11 @@ def DoUpdateRpms():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-@app.route('/api/DoCreateCollectionTree', methods=['POST'])
-def DoCreateCollectionTree():
+@app.route('/api/DoExportCollection', methods=['POST'])
+def DoExportCollection():
     try:
-        asyncio.run(logic.DoCreateCollectionTree())
-        info = { "Message": "Collection has been created" }        
+        asyncio.run(logic.DoExportCollection())
+        info = { "Message": "Collection has been exported" }        
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

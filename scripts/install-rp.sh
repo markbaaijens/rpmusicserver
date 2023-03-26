@@ -134,7 +134,7 @@ install_bin_file kill-docker
 install_bin_file update-docker
 install_bin_file halt-server
 install_bin_file reboot-server
-install_bin_file create-collection-tree
+install_bin_file export-collection
 
 # By always delete existing lines in crontab, we can easily implement
 # a different crontab-strategy later, if needed
@@ -159,8 +159,8 @@ sed -i '/update-docker/d' /etc/crontab
 echo " => line added."    
 
 echo "Adding line for creating collection-tree to /etc/crontab..."
-sed -i '/create-collection-tree/d' /etc/crontab
-/bin/sh -c 'echo "5 3 * * * root create-collection-tree" >> /etc/crontab'
+sed -i '/export-collection/d' /etc/crontab
+/bin/sh -c 'echo "5 3 * * * root export-collection" >> /etc/crontab'
 echo " => line added."    
 
 echo "Change password of user 'pi'..."
