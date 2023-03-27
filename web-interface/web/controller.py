@@ -173,7 +173,7 @@ def ShowCommands():
 
     return render_template(
         'tasks.html', 
-        appTitle = 'Commands - ' + configObject.AppTitle, 
+        appTitle = 'Tasks - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         musicCollectionInfo = musicCollectionInfo
     )   
