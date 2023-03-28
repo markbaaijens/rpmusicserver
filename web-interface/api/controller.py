@@ -438,7 +438,7 @@ def DoUpdateRpms():
 def DoExportCollection():
     try:
         asyncio.run(logic.DoExportCollection())
-        info = { "Message": "Collection has been exported" }        
+        info = { "Message": "Collection has been exported"}        
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
