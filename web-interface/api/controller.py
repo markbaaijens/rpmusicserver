@@ -436,9 +436,14 @@ def DoUpdateRpms():
 
 @app.route('/api/DoExportCollection', methods=['POST'])
 def DoExportCollection():
+    musicCollectionInfo = logic.GetMusicCollectionInfo()
+    exportFile = musicCollectionInfo["ËxportFile"]
+    collectionFolder = musicCollectionInfo["CollectionFolder"]
+
     try:
         asyncio.run(logic.DoExportCollection())
-        info = { "Message": "Collection has been exported"}        
+        info = { "Message": "Collection has been exported to " + 
+                    exportFile + " in " + collectionFolder}
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
