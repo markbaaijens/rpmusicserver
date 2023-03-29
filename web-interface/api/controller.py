@@ -437,7 +437,7 @@ def DoUpdateRpms():
 @app.route('/api/DoExportCollection', methods=['POST'])
 def DoExportCollection():
     musicCollectionInfo = logic.GetMusicCollectionInfo()
-    exportFile = musicCollectionInfo["ËxportFile"]
+    exportFile = musicCollectionInfo["ExportFile"]
     collectionFolder = musicCollectionInfo["CollectionFolder"]
 
     try:
