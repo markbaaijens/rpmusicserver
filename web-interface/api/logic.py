@@ -339,6 +339,22 @@ def GetTranscoderSettings():
         dataAsJson = json.loads(json.dumps(dataAsDict))
     return dataAsJson
 
+def GetDefaultMusicCollectionFolder():
+    return '/media/usbdata/user/Publiek/Muziek'    
+
+def GetMusicCollectionInfo():
+    defaultCollectionFolder = GetDefaultMusicCollectionFolder()
+
+    transcoderSettings = GetTranscoderSettings()
+    actualCollectionFolder = transcoderSettings["sourcefolder"]
+
+    if actualCollectionFolder == '':
+        actualCollectionFolder = defaultCollectionFolder
+
+    return {"CollectionFolder": actualCollectionFolder,
+            "DefaultCollectionFolder": defaultCollectionFolder,
+            "ExportFile": "tree.txt"}
+
 def GetLog(logFile, nrOfLines):
     logLines = []
     if os.path.isfile(logFile):
@@ -416,6 +432,10 @@ async def DoUpdateDocker():
 
 async def DoUpdateRpms():
     await asyncio.create_subprocess_shell("update-rpms")
+    pass
+
+async def DoExportCollection():
+    await asyncio.create_subprocess_shell("export-collection")
     pass
 
 def GetLmsServerInfo():
