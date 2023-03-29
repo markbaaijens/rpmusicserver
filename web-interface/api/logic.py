@@ -353,7 +353,7 @@ def GetMusicCollectionInfo():
 
     return {"CollectionFolder": actualCollectionFolder,
             "DefaultCollectionFolder": defaultCollectionFolder,
-            "ËxportFile": "tree.txt"}
+            "ExportFile": "tree.txt"}
 
 def GetLog(logFile, nrOfLines):
     logLines = []
