@@ -192,9 +192,9 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
 You can make a backup of all the data contained in your RPMS-server. Within RPMS you have the choice for a full, server-based backup. Or a remote backup, in which you backup basically the data-part of RPMS.
 
 ### Remote backup
-The advantage of the remote backup is that you can use a protocol at wish, be it ssh or syncthing (which is built-in in RPMS) or SMB. Note that system-data is also present on the data-part in the form of a file (rpms-system.zip). Thus, as you backup the data. you also backup the system-files resulting in a full backup. The disadvantage of a remote backup is that in case of a disaster, it is a lot more work to get back up-and-running.
+The advantage of the remote backup is that you can use a protocol at wish, be it ssh/rsync or syncthing (which is built-in in RPMS) or SMB. Note that system-data is also present on the data-part in the form of a file (rpms-system.zip). Thus, as you backup the data. you also backup the system-files resulting in a full backup. The disadvantage of a remote backup is that in case of a disaster, it is a lot more work to get back up-and-running.
 
-For a backup using SSH, here is a eample-script:
+For a backup using rsync over SSH, here is a eample-script:
 `#!/bin/bash`<br/> 
 `rsync --progress --delete -rtv --max-size=4GB --modify-window=2 --exclude Downloads \`<br/> 
 `	pi@rpms:/media/usbdata/user/* \`<br/> 
@@ -202,7 +202,7 @@ For a backup using SSH, here is a eample-script:
 `sync`<br/> 
 
 ### Server-based backup 
-The advantage of the server-based (local) backup is that the resulting backup is a identical copy of the the full data-disk, making it very easy to switch in case of a disaster. The disadvantage is that you have to have local access to the server (Pi) for attaching the backup-disk.
+The advantage of the server-based (local) backup is that the resulting backup is a identical copy of the full data-disk, making it very easy to switch in case of a disaster. The disadvantage is that you have to have local access to the server (Pi) for attaching the backup-disk.
 
 This backup will be done to a dedicated backup-disk, connected to the Pi it self, thus a server-based backup.
 
