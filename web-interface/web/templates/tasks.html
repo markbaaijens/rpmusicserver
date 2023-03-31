@@ -8,10 +8,16 @@
         <a href="/halt-server" class="link-button">Halt</a>          
     </div>
     <h3>Collection</h3>
-    <div>
-        Export collection to <b>{{ musicCollectionInfo.ExportFile }}</b> in the root of your music-folder <br>
-        (note: this is also done automatically)
-    </div>
+    <table>
+        <tr>
+            <td align="right">ExportFile</td>
+            <td><b>{{ musicCollectionInfo.CollectionFolder }}/{{ musicCollectionInfo.ExportFile }}</b></td>
+        </tr>
+        <tr>
+            <td align="right">LastExport</td>
+            <td><b>{{ musicCollectionInfo.LastExport }}</b></td>
+        </tr>        
+    </table> 
     <br>
     <a href="/export-collection" class="link-button">Export</a>    
 

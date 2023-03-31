@@ -347,13 +347,24 @@ def GetMusicCollectionInfo():
 
     transcoderSettings = GetTranscoderSettings()
     actualCollectionFolder = transcoderSettings["sourcefolder"]
+    exportFile = "tree.txt"
 
     if actualCollectionFolder == '':
         actualCollectionFolder = defaultCollectionFolder
 
+    lastExportTimeStampAsString = ''
+    fullExportFile = actualCollectionFolder + "/" + exportFile
+    if os.path.isfile(fullExportFile):
+        try:
+            lastExportTimeStampAsString = os.path.getmtime(fullExportFile)
+        except:
+            pass
+        lastExportTimeStampAsString = datetime.fromtimestamp(lastExportTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
+
     return {"CollectionFolder": actualCollectionFolder,
             "DefaultCollectionFolder": defaultCollectionFolder,
-            "ExportFile": "tree.txt"}
+            "ExportFile": exportFile,
+            "LastExport": lastExportTimeStampAsString}
 
 def GetLog(logFile, nrOfLines):
     logLines = []
