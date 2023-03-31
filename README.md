@@ -240,6 +240,6 @@ Re-burn and re-install RPMS (see above for instructions) on the same card (if th
 ### Data-disk crash
 In case of a server-based backup, you are 'lucky': b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata` with your favourite disk-tool (Disks, gparted, etc.), connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made.
 
-In case of a remote backup, you have more work to do: reformat a (new) usbdata-disk (see instrcutions above), copy all data from the backup to the data-disk under '/user'. Unzip rpms-syste.zip (this file is present in the root of the data-backup) and copy this to /rpms. Re-attach and reboot and you are back in business. 
+In case of a remote backup, you have more work to do: reformat a (new) usbdata-disk (see instructions above), copy all data from the backup to the data-disk under '/user'. Unzip rpms-system.zip (this file is present in the root of the data-backup) and copy this to /rpms. Re-attach and reboot and you are back in business. 
 
 Remember to make a backup to a new backup-disk immediately!
