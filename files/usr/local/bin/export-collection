@@ -10,6 +10,7 @@ export_file=$(curl --silent localhost:5000/api/GetMusicCollectionInfo | jq .Expo
 
 # Apparantly, the command 'tree' cannot create a file directly in $music_folder (despite sudo-rights),
 # so we have to do that in two separate steps
-tree -d "$music_folder" > ~/"$export_file"
-cp ~/"$export_file" "$music_folder"
+tree -d "$music_folder" > /tmp/"$export_file"
+cp /tmp/"$export_file" "$music_folder"
+
 
