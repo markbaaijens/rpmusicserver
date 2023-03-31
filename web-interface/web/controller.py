@@ -164,10 +164,18 @@ def ShowResources():
 
 @app.route('/tasks', methods=['GET'])
 def ShowCommands():
+    try:
+        musicCollectionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMusicCollectionInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        musicCollectionInfo = []
+
     return render_template(
         'tasks.html', 
-        appTitle = 'Commands - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl
+        appTitle = 'Tasks - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        musicCollectionInfo = musicCollectionInfo
     )   
     pass     
 
@@ -261,6 +269,25 @@ def DoUpdateDocker():
         commandTitle = 'UpdateDocker',
         commandMessage = 'Updating docker-containers is in progress...',
         showDockerLink = 1
+    )
+    pass 
+
+@app.route('/export-collection', methods=['GET'])
+def DoExportCollection():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoExportCollection').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    return render_template(
+        'command.html', 
+        appTitle = 'ExportCollection - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        commandTitle = 'ExportCollection',
+        commandMessage = apiMessage['Message'],
+        showTasksLink = 1
     )
     pass 
 
@@ -440,7 +467,14 @@ def ShowUpdateLog(nrOfLines):
 
 @app.route('/transcoder/edit', methods=['GET', 'POST'])
 def EditTranscoderSettings():
-    musicFolder = '/media/usbdata/user/Publiek/Muziek/'
+    try:
+        musicCollectionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMusicCollectionInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        musicCollectionInfo = []
+
+    defaultMusicFolder = musicCollectionInfo["DefaultCollectionFolder"] + '/'
 
     form = EditTranscoderForm()
 
@@ -452,15 +486,15 @@ def EditTranscoderSettings():
         transcoderSettings = []
 
     if request.method == 'GET':
-        form.sourceFolder.data = transcoderSettings['sourcefolder'].replace(musicFolder, '')
-        form.oggFolder.data = transcoderSettings['oggfolder'].replace(musicFolder, '')
+        form.sourceFolder.data = transcoderSettings['sourcefolder'].replace(defaultMusicFolder, '')
+        form.oggFolder.data = transcoderSettings['oggfolder'].replace(defaultMusicFolder, '')
         form.oggQuality.data = transcoderSettings['oggquality']
-        form.mp3Folder.data = transcoderSettings['mp3folder'].replace(musicFolder, '')
+        form.mp3Folder.data = transcoderSettings['mp3folder'].replace(defaultMusicFolder, '')
         form.mp3Bitrate.data = transcoderSettings['mp3bitrate']
 
     if request.method == 'POST' and form.validate(): 
-        newSourceFolder = musicFolder + request.form['sourceFolder'].strip()
-        if not newSourceFolder.replace(musicFolder, ''):
+        newSourceFolder = defaultMusicFolder + request.form['sourceFolder'].strip()
+        if not newSourceFolder.replace(defaultMusicFolder, ''):
             newSourceFolder = ''
         if newSourceFolder != transcoderSettings['sourcefolder'].strip():
             try:
@@ -472,8 +506,8 @@ def EditTranscoderSettings():
                 logger.error(e)
                 logger.error(traceback.format_exc())
 
-        newOggFolder = musicFolder + request.form['oggFolder'].strip()
-        if not newOggFolder.replace(musicFolder, ''):
+        newOggFolder = defaultMusicFolder + request.form['oggFolder'].strip()
+        if not newOggFolder.replace(defaultMusicFolder, ''):
             newOggFolder = ''
         if newOggFolder != transcoderSettings['oggfolder'].strip():
             try:
@@ -495,8 +529,8 @@ def EditTranscoderSettings():
                 logger.error(e)
                 logger.error(traceback.format_exc())
 
-        newMp3Folder = musicFolder + request.form['mp3Folder'].strip()
-        if not newMp3Folder.replace(musicFolder, ''):
+        newMp3Folder = defaultMusicFolder + request.form['mp3Folder'].strip()
+        if not newMp3Folder.replace(defaultMusicFolder, ''):
             newMp3Folder = ''            
         if newMp3Folder != transcoderSettings['mp3folder'].strip():
             try:
@@ -523,7 +557,7 @@ def EditTranscoderSettings():
     return render_template('transcoder-edit.html', 
         appTitle = 'TransCoderEdit - ' + configObject.AppTitle, 
         form = form,
-        musicFolder = musicFolder)
+        musicFolder = defaultMusicFolder)
 
 if __name__ == '__main__':
     import argparse

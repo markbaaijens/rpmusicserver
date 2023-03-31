@@ -71,6 +71,10 @@
         "Description": "Update RPMS to the latest version",
         "Example":"curl rpms:5000/api/DoUpdateRpms -X post"
     },
+    {   "EndPoint": "GET api/GetMusicCollectionInfo",
+        "Description": "Show information about the music collection",
+        "Example":"curl rpms:5000/api/GetMusicCollectionInfo"
+    },     
     {   "EndPoint": "POST api/DoHaltServer",
         "Description": "Power-off server",
         "Example":"curl rpms:5000/api/DoHaltServer -X post"
@@ -95,6 +99,10 @@
         "Description": "Update all docker-containers",
         "Example":"curl rpms:5000/api/DoUpdateDocker -X post"
     },        
+    {   "EndPoint": "POST api/DoExportCollection",
+        "Description": "Export collection from music-folder to a file",
+        "Example":"curl rpms:5000/api/DoExportCollection -X post"
+    },            
     {   "EndPoint": "POST api/SetTranscoderSourceFolder",
         "Description": "Set transcoder-setting [sourcefolder]",
         "Example":"curl rpms:5000/api/SetTranscoderSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"Value\":\"NewSourceFolder\"}'"

@@ -43,7 +43,7 @@ def GetMachineInfo():
     def GetHostUrl():
         urlPrefix = 'http://'
         hostUrl = urlPrefix + hostName
-        if len(ExecuteBashCommand("nslookup " + hostName + " | grep \"server can't find\"").split()) != 0:
+        if ExecuteBashCommand("nslookup " + hostName + " | grep \"server can't find\"").strip() != "":
             hostUrl = urlPrefix + ipAddress
         return hostUrl
 
@@ -167,23 +167,23 @@ def GetServiceStatusList():
     return serviceListResult
 
 def GetCpuResourceInfo():
-    # cpuLoad1 => uptime | tail -c 17 | awk '{print $1}' | cut -c 1-4
+    # cpuLoad1 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $1}' | cut -c 1-4
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     cpuLoad1 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
 
-    # cpuLoad5 => uptime | tail -c 17 | awk '{print $2}' | cut -c 1-4
+    # cpuLoad5 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $2}' | cut -c 1-4
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
+    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
     process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
     cpuLoad5 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
 
-    # cpuLoad15 => uptime | tail -c 17 | awk '{print $3}'
+    # cpuLoad15 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $3}' | cut -c 1-4
     process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["tail -c 17"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
+    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
     process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
     cpuLoad15 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
 
@@ -339,6 +339,33 @@ def GetTranscoderSettings():
         dataAsJson = json.loads(json.dumps(dataAsDict))
     return dataAsJson
 
+def GetDefaultMusicCollectionFolder():
+    return '/media/usbdata/user/Publiek/Muziek'    
+
+def GetMusicCollectionInfo():
+    defaultCollectionFolder = GetDefaultMusicCollectionFolder()
+
+    transcoderSettings = GetTranscoderSettings()
+    actualCollectionFolder = transcoderSettings["sourcefolder"]
+    exportFile = "tree.txt"
+
+    if actualCollectionFolder == '':
+        actualCollectionFolder = defaultCollectionFolder
+
+    lastExportTimeStampAsString = ''
+    fullExportFile = actualCollectionFolder + "/" + exportFile
+    if os.path.isfile(fullExportFile):
+        try:
+            lastExportTimeStampAsString = os.path.getmtime(fullExportFile)
+        except:
+            pass
+        lastExportTimeStampAsString = datetime.fromtimestamp(lastExportTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
+
+    return {"CollectionFolder": actualCollectionFolder,
+            "DefaultCollectionFolder": defaultCollectionFolder,
+            "ExportFile": exportFile,
+            "LastExport": lastExportTimeStampAsString}
+
 def GetLog(logFile, nrOfLines):
     logLines = []
     if os.path.isfile(logFile):
@@ -416,6 +443,10 @@ async def DoUpdateDocker():
 
 async def DoUpdateRpms():
     await asyncio.create_subprocess_shell("update-rpms")
+    pass
+
+async def DoExportCollection():
+    await asyncio.create_subprocess_shell("export-collection")
     pass
 
 def GetLmsServerInfo():
