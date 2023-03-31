@@ -194,7 +194,7 @@ You can make a backup of all the data contained in your RPMS-server. Within RPMS
 ### Remote backup
 The advantage of the remote backup is that you can use a protocol at wish, be it ssh/rsync or syncthing (which is built-in in RPMS) or SMB. Note that system-data is also present on the data-part in the form of a file (rpms-system.zip). Thus, as you backup the data. you also backup the system-files resulting in a full backup. The disadvantage of a remote backup is that in case of a disaster, it is a lot more work to get back up-and-running.
 
-For a backup using rsync over SSH, here is a eample-script:
+For a backup using rsync over SSH, here is a eample-script:<br>
 `#!/bin/bash`<br/> 
 `rsync --progress --delete -rtv --max-size=4GB --modify-window=2 --exclude Downloads \`<br/> 
 `	pi@rpms:/media/usbdata/user/* \`<br/> 
