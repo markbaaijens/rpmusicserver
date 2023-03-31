@@ -189,7 +189,22 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
 * Trancoding simultaneously to ogg AND mp3 is possible; just set both `OggFolder` and `Mp3Folder`
 
 ## Backup
-You can make a backup of all the data contained in your RPMS-server. This backup will be done to a dedicated backup-disk, connected to the Pi it self, a so called server-based backup.
+You can make a backup of all the data contained in your RPMS-server. Within RPMS you have the choice for a full, server-based backup. Or a remote backup, in which you backup basically the data-part of RPMS.
+
+### Remote backup
+The advantage of the remote backup is that you can use a protocol at wish, be it ssh/rsync or syncthing (which is built-in in RPMS) or SMB. Note that system-data is also present on the data-part in the form of a file (rpms-system.zip). Thus, as you backup the data. you also backup the system-files resulting in a full backup. The disadvantage of a remote backup is that in case of a disaster, it is a lot more work to get back up-and-running.
+
+For a backup using rsync over SSH, here is a eample-script:
+`#!/bin/bash`<br/> 
+`rsync --progress --delete -rtv --max-size=4GB --modify-window=2 --exclude Downloads \`<br/> 
+`	pi@rpms:/media/usbdata/user/* \`<br/> 
+`	/media/$USER/<disklabel of backup-disk>/backup/user`<br/> 
+`sync`<br/> 
+
+### Server-based backup 
+The advantage of the server-based (local) backup is that the resulting backup is a identical copy of the full data-disk, making it very easy to switch in case of a disaster. The disadvantage is that you have to have local access to the server (Pi) for attaching the backup-disk.
+
+This backup will be done to a dedicated backup-disk, connected to the Pi it self, thus a server-based backup.
 
 * format a disk dedicated for RPMS-backups (one-time only):
   * connect your (empty) backup-disk to your PC
@@ -215,6 +230,16 @@ Backup-disk is formatted as ext4; for off-line viewing on your own PC, this form
 
 ## Disaster-recovery
 Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple
-* *broken Pi* => just obtain a new Pi which meets the system requirements (see above), swap the SD-card and boot up the Pi (possible need to reconnect player, see Troubleshooting-section)
-* *corrupt SD-card* => re-burn en re-install RPMS (see above for instructions) on the same card (if the hardware is damaged, obtain a new card); then you can reboot the Pi and you are ready to go (possible need to reconnect player, see Troubleshooting-section)
-* *data-disk crash* =>  b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata` with your favourite disk-tool (Disks, gparted, etc.), connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made. Remember to make a backup to a new backup-disk immediately!
+
+### Broken Pi (very unlikely)
+Just obtain a new Pi which meets the system requirements (see above), swap the SD-card and boot up the Pi (possible need to reconnect player, see Troubleshooting-section)
+
+### Corrupt SD-card
+Re-burn and re-install RPMS (see above for instructions) on the same card (if the hardware is damaged, obtain a new card); then you can reboot the Pi and you are ready to go (possible need to reconnect player, see Troubleshooting-section)
+
+### Data-disk crash
+In case of a server-based backup, you are 'lucky': b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata` with your favourite disk-tool (Disks, gparted, etc.), connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made.
+
+In case of a remote backup, you have more work to do: reformat a (new) usbdata-disk (see instructions above), copy all data from the backup to the data-disk under '/user'. Unzip rpms-system.zip (this file is present in the root of the data-backup) and copy this to /rpms. Re-attach and reboot and you are back in business. 
+
+Remember to make a backup to a new backup-disk immediately!

@@ -15,7 +15,7 @@ fi
 
 echo "Start installing packages..."
 apt-get update
-apt-get install docker.io python3-pip tree jq bwm-ng -y nmap  # Generic
+apt-get install docker.io python3-pip tree jq bwm-ng nmap zip -y   # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
 echo " => done installing packages."
 
@@ -128,6 +128,7 @@ echo " => transcoder installed"
 
 install_bin_file update-rpms
 install_bin_file backup-server
+install_bin_file backup-rpms-system
 install_bin_file transcode
 install_bin_file start-docker
 install_bin_file kill-docker
@@ -138,29 +139,34 @@ install_bin_file export-collection
 
 # By always delete existing lines in crontab, we can easily implement
 # a different crontab-strategy later, if needed
-echo "Adding line for auto-upgrade to /etc/crontab:"
-sed -i '/apt-get upgrade/d' /etc/crontab
-/bin/sh -c 'echo "10 02 * * * root apt-get upgrade -y" >> /etc/crontab'
+echo "Adding line for transcode to /etc/crontab..."
+sed -i '/transcode/d' /etc/crontab
+/bin/sh -c 'echo "20  * * * * root transcode" >> /etc/crontab'
 echo " => line added."    
 
-echo "Adding line for transcoder to /etc/crontab..."
-sed -i '/transcode/d' /etc/crontab
-/bin/sh -c 'echo "20 * * * * root transcode" >> /etc/crontab'
+echo "Adding line for auto-upgrade to /etc/crontab:"
+sed -i '/apt-get upgrade/d' /etc/crontab
+/bin/sh -c 'echo "00 02 * * * root apt-get upgrade -y" >> /etc/crontab'
 echo " => line added."    
 
 echo "Adding line for setting rights to /etc/crontab..."
 sed -i '/chmod 777/d' /etc/crontab
-/bin/sh -c 'echo "0 2 * * * root chmod 777 /media/usbdata/user/Publiek -R" >> /etc/crontab'
+/bin/sh -c 'echo "10 02 * * * root chmod 777 /media/usbdata/user/Publiek -R" >> /etc/crontab'
 echo " => line added."    
 
-echo "Adding line for updating docker-containers to /etc/crontab..."
+echo "Adding line for pdate-docker to /etc/crontab..."
 sed -i '/update-docker/d' /etc/crontab
-/bin/sh -c 'echo "0 3 * * * root update-docker" >> /etc/crontab'
+/bin/sh -c 'echo "00 03 * * * root update-docker" >> /etc/crontab'
 echo " => line added."    
 
-echo "Adding line for creating collection-tree to /etc/crontab..."
+echo "Adding line for export-collection to /etc/crontab..."
 sed -i '/export-collection/d' /etc/crontab
-/bin/sh -c 'echo "5 3 * * * root export-collection" >> /etc/crontab'
+/bin/sh -c 'echo "10 03 * * * root export-collection" >> /etc/crontab'
+echo " => line added."    
+
+echo "Adding line for backup-rpms-systen collection-tree to /etc/crontab..."
+sed -i '/backup-rpms-system/d' /etc/crontab
+/bin/sh -c 'echo "20 03 * * * root backup-rpms-system" >> /etc/crontab'
 echo " => line added."    
 
 echo "Change password of user 'pi'..."
