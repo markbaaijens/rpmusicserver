@@ -316,10 +316,12 @@ def GetBackupInfo():
 
     isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup") == "usbbackup"
     canBackup = isBackupDiskPresent and isBackupNotInProgress
+    lastBackup = ExecuteBashCommand("cat /media/usbdata/rpms/logs/backup.log | grep 'executing backup' | tail -n 1 | cut -c1-19")
 
     return {"IsBackupNotInProgress": isBackupNotInProgress,
             "IsBackupDiskPresent": isBackupDiskPresent,
-            "CanBackup": canBackup}
+            "CanBackup": canBackup,
+            "LastBackup": lastBackup}
 
 def GetApiList():
     dataAsJson = {}

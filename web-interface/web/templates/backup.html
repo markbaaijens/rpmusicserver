@@ -2,34 +2,41 @@
 
 {% block content %}
     <h2>Backup</h2>
-    <small>
-        <table>
-            <tr>
-                <td align="right">
-                    IsBackupDiskPresent
-                </td>
-                <td><b>
-                    {% if backupInfo.IsBackupDiskPresent %}
-                        <span class="checkmark-y"> &#10004; </span>
-                    {% else %}
-                        <span class="checkmark-n"> &#x2717; </span> 
-                    {% endif %}
-                </b></td>
-            </tr>
-            <tr>
-                <td align="right">
-                    IsBackupNotInProgress
-                </td>
-                <td><b>
-                    {% if backupInfo.IsBackupNotInProgress %}
-                        <span class="checkmark-y"> &#10004; </span>
-                    {% else %}
-                        <span class="checkmark-n"> &#x2717; </span> 
-                    {% endif %}
-                </b></td>
-            </tr>
-        </table>        
-    </small>    
+    <table>
+        <tr>
+            <td align="right">
+                LastBackup
+            </td>
+            <td>
+                <b>{{ backupInfo.LastBackup }}</b>
+            </td>
+        </tr>            
+        <tr>
+            <td align="right">
+                BackupDisk
+            </td>
+            <td><b>
+                {% if backupInfo.IsBackupDiskPresent %}
+                    <span class="checkmark-y"> &#10004; </span>
+                {% else %}
+                    <span class="checkmark-n"> &#x2717; </span> 
+                {% endif %}
+            </b></td>
+        </tr>
+        <tr>
+            <td align="right">
+                NotInProgress
+            </td>
+            <td><b>
+                {% if backupInfo.IsBackupNotInProgress %}
+                    <span class="checkmark-y"> &#10004; </span>
+                {% else %}
+                    <span class="checkmark-n"> &#x2717; </span> 
+                {% endif %}
+            </b></td>
+        </tr>
+    </table>        
+    <br>
     <div>
         {% if backupInfo.CanBackup %}
             <a href="/backup-server" class="link-button">Backup</a>    
