@@ -69,6 +69,13 @@ def Home():
 @app.route('/transcoder', methods=['GET'])
 def ShowTranscoderSettings():
     try:
+        transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        transcoderInfo = []
+
+    try:
         transcoderSettings = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderSettings').content)
     except Exception as e:
         logger.error(e)
@@ -79,8 +86,8 @@ def ShowTranscoderSettings():
         'transcoder.html', 
         appTitle = 'Transcoder - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        transcoderSettings = transcoderSettings
-    )    
+        transcoderSettings = transcoderSettings,
+        transcoderInfo = transcoderInfo)    
     pass
 
 @app.route('/services', methods=['GET'])

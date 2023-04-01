@@ -63,6 +63,10 @@
         "Description": "Show info about backup",
         "Example":"curl rpms:5000/api/GetBackupInfo"
     },    
+    {   "EndPoint": "GET api/GetTranscoderInfo",
+        "Description": "Show info about transcoding",
+        "Example":"curl rpms:5000/api/GetTranscoderInfo"
+    },        
     {   "EndPoint": "GET api/GetServiceStatusList",
         "Description": "Show services",
         "Example":"curl rpms:5000/api/GetSrviceList"

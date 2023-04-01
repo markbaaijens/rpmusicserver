@@ -323,6 +323,15 @@ def GetBackupInfo():
             "CanBackup": canBackup,
             "LastBackup": lastBackup}
 
+def GetTranscoderInfo():
+    transcoderSettings = GetTranscoderSettings()
+
+    isActive = (transcoderSettings['sourcefolder'] != '') and ((transcoderSettings['oggfolder'] != '') or (transcoderSettings['mp3folder'] != ''))
+    lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'End session' | tail -n 1 | cut -c1-19")
+
+    return {"IsActive": isActive,
+            "LastTranscode": lastTranscode}            
+
 def GetApiList():
     dataAsJson = {}
     apiInfoFile = os.path.dirname(__file__) + '/api-info.json'

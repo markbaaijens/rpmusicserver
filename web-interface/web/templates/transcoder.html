@@ -2,8 +2,35 @@
 
 {% block content %}
     <h2>Transcoder</h2>
+    <table>
+        <tr>
+            <td align="right">
+                TranscoderActive
+            </td>
+            <td><b>
+                {% if transcoderInfo.IsActive %}
+                    <span class="checkmark-y"> &#10004; </span>
+                {% else %}
+                    <span class="checkmark-n"> &#x2717; </span> 
+                {% endif %}
+            </b></td>
+        </tr>
+        <tr>
+            <td align="right">
+                LastTranscode
+            </td>
+            <td>
+                <b>{{ transcoderInfo.LastTranscode }}</b>
+            </td>
+        </tr>                    
+    </table>
+    <br>
     <div>
-        <a href="/transcode" class="link-button">Transcode</a>    
+        {% if transcoderInfo.IsActive %}
+            <a href="/transcode" class="link-button">Transcode</a>  
+        {% else %}
+            <a class="link-button disabled">Transcode</a> 
+        {% endif %}          
     </div> 
     <table>
         <tr>
