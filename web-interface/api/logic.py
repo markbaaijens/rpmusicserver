@@ -336,10 +336,10 @@ def GetTranscoderInfo():
     settingMp3FolderShort = settingMp3Folder.replace(defaultCollectionFolder + '/', '')        
     settingMp3Bitrate = transcoderSettings['mp3bitrate']
 
-    isActive = (transcoderSettings['sourcefolder'] != '') and ((transcoderSettings['oggfolder'] != '') or (transcoderSettings['mp3folder'] != ''))
+    isActivated = (transcoderSettings['sourcefolder'] != '') and ((transcoderSettings['oggfolder'] != '') or (transcoderSettings['mp3folder'] != ''))
     lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'End session' | tail -n 1 | cut -c1-19")
 
-    return {"IsActive": isActive,
+    return {"IsActivated": isActivated,
             "LastTranscode": lastTranscode,
             "DefaultCollectionFolder": defaultCollectionFolder,
             "SettingSourceFolder": settingSourceFolderShort,

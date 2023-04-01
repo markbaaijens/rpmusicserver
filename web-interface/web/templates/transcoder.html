@@ -5,10 +5,10 @@
     <table>
         <tr>
             <td align="right">
-                TranscoderActive
+                Activated
             </td>
             <td><b>
-                {% if transcoderInfo.IsActive %}
+                {% if transcoderInfo.IsActivated %}
                     <span class="checkmark-y"> &#10004; </span>
                 {% else %}
                     <span class="checkmark-n"> &#x2717; </span> 
@@ -26,7 +26,7 @@
     </table>
     <br>
     <div>
-        {% if transcoderInfo.IsActive %}
+        {% if transcoderInfo.IsActivated %}
             <a href="/transcode" class="link-button">Transcode</a>  
         {% else %}
             <a class="link-button disabled">Transcode</a> 
