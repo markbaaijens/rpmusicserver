@@ -291,6 +291,25 @@ def DoExportCollection():
     )
     pass 
 
+@app.route('/transcode', methods=['GET'])
+def DoTranscode():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoTranscode').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    return render_template(
+        'command.html', 
+        appTitle = 'Transcode - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        commandTitle = 'Transcode',
+        commandMessage = apiMessage['Message'],
+        showTranscoderLogLink = 1
+    )
+    pass 
+
 @app.route('/update-rpms', methods=['GET'])
 def DoUpdateRpms():
     try:

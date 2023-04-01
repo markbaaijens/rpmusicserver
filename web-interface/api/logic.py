@@ -451,6 +451,10 @@ async def DoExportCollection():
     await asyncio.create_subprocess_shell("export-collection")
     pass
 
+async def DoTranscode():
+    await asyncio.create_subprocess_shell("transcode")
+    pass
+
 def GetLmsServerInfo():
     # LMS API-reference: http://msi:9000/html/docs/cli-api.html 
     url = "http://rpms:9002/jsonrpc.js"    

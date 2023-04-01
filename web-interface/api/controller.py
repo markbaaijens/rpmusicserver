@@ -451,6 +451,18 @@ def DoExportCollection():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/DoTranscode', methods=['POST'])
+def DoTranscode():
+    try:
+        asyncio.run(logic.DoTranscode())
+        info = { "Message": "Transcoding is in progress..."}
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)        
+
 @app.route('/api/GetLmsServerInfo', methods=['GET'])
 def GetLmsServerInfo():
     try:

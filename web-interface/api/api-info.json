@@ -103,6 +103,10 @@
         "Description": "Export collection from music-folder to a file",
         "Example":"curl rpms:5000/api/DoExportCollection -X post"
     },            
+    {   "EndPoint": "POST api/DoTranscode",
+        "Description": "Trancode music files",
+        "Example":"curl rpms:5000/api/DoTranscode -X post"
+    },                
     {   "EndPoint": "POST api/SetTranscoderSourceFolder",
         "Description": "Set transcoder-setting [sourcefolder]",
         "Example":"curl rpms:5000/api/SetTranscoderSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"Value\":\"NewSourceFolder\"}'"
