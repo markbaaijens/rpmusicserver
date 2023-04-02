@@ -94,3 +94,25 @@ meter {
 	display: block;
 	margin-top: -5px;
 }
+
+.collapsible {
+	color: steelblue;
+	cursor: pointer;
+	background-color: white;
+	border: none;
+	outline: none; 
+	font-size: 16px;	
+  }
+
+.active .collapsible:hover {
+	background-color: #555;
+  }
+  
+.content {
+	padding: 10px 10px;
+	border: 1px;
+	border-style: solid;
+	display: none;
+	overflow: hidden;
+	background-color: lightgrey;
+  }
