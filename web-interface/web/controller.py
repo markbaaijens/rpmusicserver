@@ -67,20 +67,19 @@ def Home():
     pass
 
 @app.route('/transcoder', methods=['GET'])
-def ShowTranscoderSettings():
+def ShowTranscoder():
     try:
-        transcoderSettings = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderSettings').content)
+        transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        transcoderSettings = []
+        transcoderInfo = []
 
     return render_template(
         'transcoder.html', 
         appTitle = 'Transcoder - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        transcoderSettings = transcoderSettings
-    )    
+        transcoderInfo = transcoderInfo)    
     pass
 
 @app.route('/services', methods=['GET'])
@@ -291,6 +290,25 @@ def DoExportCollection():
     )
     pass 
 
+@app.route('/transcode', methods=['GET'])
+def DoTranscode():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoTranscode').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    return render_template(
+        'command.html', 
+        appTitle = 'Transcode - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        commandTitle = 'Transcode',
+        commandMessage = apiMessage['Message'],
+        showTranscoderLogLink = 1
+    )
+    pass 
+
 @app.route('/update-rpms', methods=['GET'])
 def DoUpdateRpms():
     try:
@@ -491,6 +509,9 @@ def EditTranscoderSettings():
         form.oggQuality.data = transcoderSettings['oggquality']
         form.mp3Folder.data = transcoderSettings['mp3folder'].replace(defaultMusicFolder, '')
         form.mp3Bitrate.data = transcoderSettings['mp3bitrate']
+
+    if form.cancel.data: 
+        return redirect('/transcoder')
 
     if request.method == 'POST' and form.validate(): 
         newSourceFolder = defaultMusicFolder + request.form['sourceFolder'].strip()
