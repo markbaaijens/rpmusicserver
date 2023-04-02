@@ -10,15 +10,15 @@ from wtforms import StringField, SubmitField, IntegerField, DecimalField, Boolea
 class EditTranscoderForm(FlaskForm):
     sourceFolder = StringField('SourceFolder')
     oggFolder = StringField('OggFolder')
-    oggQuality = IntegerField('OggQuality')
-#    oggQuality = RadioField(
-#        'OggQuality', 
-#        choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)])
+#    oggQuality = IntegerField('OggQuality')
+    oggQuality = RadioField('OggQuality', 
+        choices=[(0, '1 = default'), (2, '2'), (3, '3'), (4, '4'), (5, '5')], 
+        coerce=int)
     mp3Folder = StringField('Mp3Folder')
-    mp3Bitrate = IntegerField('Mp3Bitrate')
-#    mp3Bitrate = RadioField(
-#        'Mp3Bitrate',
-#        choices=[(128, 128), (256, 256), (384, 384)])
+#    mp3Bitrate = IntegerField('Mp3Bitrate')
+    mp3Bitrate = RadioField('Mp3Bitrate', 
+        choices=[(0, '128 = default'), (256, '256'), (384, 384)],
+        coerce=int)
     submit = SubmitField('Save')
     cancel = SubmitField('Cancel')    
 

@@ -13,8 +13,8 @@
                     </abbr>
                 </td>
                 <td>
-                    <small>{{ musicFolder }}</small>
                     {{ form.sourceFolder(size=10)}}
+                    <small> in {{ musicFolder }}</small>
                     {% for error in form.sourceFolder.errors %}
                         <br><small><em>[{{ error }}]</em></small>
                     {% endfor %}
@@ -27,8 +27,8 @@
                     </abbr>
                 </td>
                 <td>
-                    <small>{{ musicFolder }}</small>                    
                     {{ form.oggFolder(size=10)}}
+                    <small> in {{ musicFolder }}</small>
                     {% for error in form.oggFolder.errors %}
                         <br><small><em>[{{ error }}]</em></small>
                     {% endfor %}
@@ -36,12 +36,15 @@
             </tr>            
             <tr>
                 <td align="left">
-                    <abbr title="Value must be between 0 and 5; leave as 0 to obtain the default = 1">
+                    <abbr title="Default is for the smallest file size but lowest audio quality">
                         {{ form.oggQuality.label }}
                     </abbr>
                 </td>
                 <td>
-                    {{ form.oggQuality(size=5) }}
+                    {% for subfield in form.oggQuality %}
+                        {{ subfield }}
+                        {{ subfield.label }}
+                    {% endfor %}
                     {% for error in form.oggQuality.errors %}
                         <br><small><em>[{{ error }}]</em></small>
                     {% endfor %}
@@ -54,8 +57,8 @@
                     </abbr>
                 </td>
                 <td>
-                    <small>{{ musicFolder }}</small>                    
                     {{ form.mp3Folder(size=10)}}
+                    <small> in {{ musicFolder }}</small>
                     {% for error in form.mp3Folder.errors %}
                         <br><em>[{{ error }}]</em></small>
                     {% endfor %}
@@ -63,12 +66,15 @@
             </tr>                        
             <tr>
                 <td align="left">
-                    <abbr title="Value must be either 0, 128, 256 or 384; leave as 0 to obtain the default = 128">
+                    <abbr title="Default is for the smallest file size but lowest audio quality">
                         {{ form.mp3Bitrate.label }}
                     </abbr>
                 </td>
                 <td>
-                    {{ form.mp3Bitrate(size=5) }}
+                    {% for subfield in form.mp3Bitrate %}
+                        {{ subfield }}
+                        {{ subfield.label }}
+                    {% endfor %}
                     {% for error in form.mp3Bitrate.errors %}
                         <br><small><span style="color: red;">[{{ error }}]</span></small>
                     {% endfor %}
