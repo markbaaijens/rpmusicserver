@@ -20,6 +20,7 @@ class EditTranscoderForm(FlaskForm):
 #        'Mp3Bitrate',
 #        choices=[(128, 128), (256, 256), (384, 384)])
     submit = SubmitField('Save')
+    cancel = SubmitField('Cancel')    
 
     # Not using standard wtf-validators like Required b/c they do not 
     # show custom messages; this is overruled by HTML5

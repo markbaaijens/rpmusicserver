@@ -510,6 +510,9 @@ def EditTranscoderSettings():
         form.mp3Folder.data = transcoderSettings['mp3folder'].replace(defaultMusicFolder, '')
         form.mp3Bitrate.data = transcoderSettings['mp3bitrate']
 
+    if form.cancel.data: 
+        return redirect('/transcoder')
+
     if request.method == 'POST' and form.validate(): 
         newSourceFolder = defaultMusicFolder + request.form['sourceFolder'].strip()
         if not newSourceFolder.replace(defaultMusicFolder, ''):

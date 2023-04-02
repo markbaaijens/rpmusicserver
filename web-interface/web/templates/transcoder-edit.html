@@ -7,7 +7,7 @@
         <p>
         <table>
             <tr>
-                <td align="right">
+                <td align="left">
                     <abbr title="Required for transcoding, point to the lossles-folder">
                         {{ form.sourceFolder.label }}
                     </abbr>
@@ -21,7 +21,7 @@
                 </td>
             </tr>
             <tr>
-                <td align="right">
+                <td left="right">
                     <abbr title="Either OggFolder of Mp3Folder must be given for transcoding">
                         {{ form.oggFolder.label }}
                     </abbr>
@@ -35,7 +35,7 @@
                 </td>
             </tr>            
             <tr>
-                <td align="right">
+                <td align="left">
                     <abbr title="Value must be between 0 and 5; leave as 0 to obtain the default = 1">
                         {{ form.oggQuality.label }}
                     </abbr>
@@ -48,7 +48,7 @@
                 </td>                
             </tr>
             <tr>
-                <td align="right">
+                <td align="left">
                     <abbr title="Either OggFolder of Mp3Folder must be given for transcoding">
                         {{ form.mp3Folder.label }}
                     </abbr>
@@ -62,7 +62,7 @@
                 </td>
             </tr>                        
             <tr>
-                <td align="right">
+                <td align="left">
                     <abbr title="Value must be either 0, 128, 256 or 384; leave as 0 to obtain the default = 128">
                         {{ form.mp3Bitrate.label }}
                     </abbr>
@@ -75,6 +75,6 @@
                 </td>
             </tr>                                    
         </table>
-        <p>{{ form.submit() }}</p>
+        <p>{{ form.submit() }} {{ form.cancel() }}</p>
     </form>
 {% endblock %}
