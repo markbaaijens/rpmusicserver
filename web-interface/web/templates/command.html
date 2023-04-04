@@ -5,19 +5,23 @@
     <p>
     <em>{{ commandMessage }}</em>
     {% if showBackugLogLinks %}
-    <div>
-        <small><a href="/logs/backup/20">BackupLog</a> | <a href="/logs/backup-details/20">BackupDetailsLog</a>
-        </ul>
-    </div>
+        <div>
+            <small><a href="/logs/backup/20">BackupLog</a> | <a href="/logs/backup-details/20">BackupDetailsLog</a>
+        </div>
     {% endif %}
     {% if showDockerLink %}
-    <div>
-        See <a href="/services">Services</a>
-    </div>
+        <div>
+            See <a href="/services">Services</a>
+        </div>
     {% endif %}    
     {% if showTasksLink %}
-    <div>
-        See <a href="/tasks">Tasks</a>
-    </div>
+        <div>
+            See <a href="/tasks">Tasks</a>
+        </div>
     {% endif %}   
+    {% if showTranscoderLogLink %}
+        <div>
+            <small><a href="/logs/transcoder/20">TranscoderLog</a></a>
+        </div>
+    {% endif %}       
 {% endblock %}

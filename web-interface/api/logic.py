@@ -316,10 +316,37 @@ def GetBackupInfo():
 
     isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup") == "usbbackup"
     canBackup = isBackupDiskPresent and isBackupNotInProgress
+    lastBackup = ExecuteBashCommand("cat /media/usbdata/rpms/logs/backup.log | grep 'executing backup' | tail -n 1 | cut -c1-19")
 
     return {"IsBackupNotInProgress": isBackupNotInProgress,
             "IsBackupDiskPresent": isBackupDiskPresent,
-            "CanBackup": canBackup}
+            "CanBackup": canBackup,
+            "LastBackup": lastBackup}
+
+def GetTranscoderInfo():
+    defaultCollectionFolder = GetDefaultMusicCollectionFolder()
+
+    transcoderSettings = GetTranscoderSettings()
+    settingSourceFolder = transcoderSettings['sourcefolder']
+    settingSourceFolderShort = settingSourceFolder.replace(defaultCollectionFolder + '/', '')
+    settingOggFolder = transcoderSettings['oggfolder']
+    settingOggFolderShort = settingOggFolder.replace(defaultCollectionFolder + '/', '')    
+    settingOggQuality = transcoderSettings['oggquality']
+    settingMp3Folder = transcoderSettings['mp3folder']
+    settingMp3FolderShort = settingMp3Folder.replace(defaultCollectionFolder + '/', '')        
+    settingMp3Bitrate = transcoderSettings['mp3bitrate']
+
+    isActivated = (transcoderSettings['sourcefolder'] != '') and ((transcoderSettings['oggfolder'] != '') or (transcoderSettings['mp3folder'] != ''))
+    lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'End session' | tail -n 1 | cut -c1-19")
+
+    return {"IsActivated": isActivated,
+            "LastTranscode": lastTranscode,
+            "DefaultCollectionFolder": defaultCollectionFolder,
+            "SettingSourceFolder": settingSourceFolderShort,
+            "SettingOggFolder": settingOggFolderShort,
+            "SettingOggQuality": settingOggQuality,
+            "SettingMp3Folder": settingMp3FolderShort,
+            "SettingMp3Bitrate": settingMp3Bitrate}            
 
 def GetApiList():
     dataAsJson = {}
@@ -447,6 +474,10 @@ async def DoUpdateRpms():
 
 async def DoExportCollection():
     await asyncio.create_subprocess_shell("export-collection")
+    pass
+
+async def DoTranscode():
+    await asyncio.create_subprocess_shell("transcode")
     pass
 
 def GetLmsServerInfo():
