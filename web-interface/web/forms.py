@@ -1,24 +1,17 @@
-# TODO Use RadioField(s)
-# Problems: 
-# - initial value is not propagated to radio-control
-# - when using a second radio-field on mp3Bitrate, field.data in validate_oggQuality
-#   returns 'none', thus the validation returns false
-
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, DecimalField, BooleanField, SelectField, RadioField, ValidationError
 
 class EditTranscoderForm(FlaskForm):
     sourceFolder = StringField('SourceFolder')
     oggFolder = StringField('OggFolder')
-#    oggQuality = IntegerField('OggQuality')
     oggQuality = RadioField('OggQuality', 
         choices=[(0, '1 = default'), (2, '2'), (3, '3'), (4, '4'), (5, '5')], 
         coerce=int)
     mp3Folder = StringField('Mp3Folder')
-#    mp3Bitrate = IntegerField('Mp3Bitrate')
     mp3Bitrate = RadioField('Mp3Bitrate', 
         choices=[(0, '128 = default'), (256, '256'), (384, 384)],
         coerce=int)
+    resetToDefaults = BooleanField('Reset to defaults')
     submit = SubmitField('Save')
     cancel = SubmitField('Cancel')    
 
@@ -38,3 +31,13 @@ class EditTranscoderForm(FlaskForm):
         if not int(field.data) in [0, 128, 256, 384]:  
             raise ValidationError('Value must be 0, 128, 256 or 384')
         pass
+
+    def validate_sourceFolder(self, field):
+        if not self.resetToDefaults.data: 
+            if field.data == '':
+                raise ValidationError('To activate trancoder, SourceFolder should have a value')
+
+            if not((self.oggFolder.data != '') or (self.mp3Folder.data != '')):
+                raise ValidationError('To activate trancoder, either OggFolder or Mp3Folder should have a value')
+        pass
+
