@@ -101,7 +101,10 @@ meter {
 	background-color: white;
 	border: none;
 	outline: none; 
-	font-size: 16px;	
+	font-size: 25px;	
+	font-weight: bolder;
+	margin-left: -5px;
+	padding-top: 15px;
   }
 
 .active .collapsible:hover {
