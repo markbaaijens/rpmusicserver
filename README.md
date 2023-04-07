@@ -134,15 +134,14 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
   * in your file explorer, create a folder `ogg` under `smb://rpms/Publiek/Muziek`
   * in the web-interface, under Transcoder, Edit, change setting `OggFolder`
     * point to `/media/usbdata/user/Publiek/Muziek/ogg`
-    * click Save
 * for transcoding to mp3
   * in your file explorer, create a folder `mp3`under `smb://rpms/Publiek/Muziek`
   * in the web-interface, under Transcoder, Edit, change setting `Mp3Folder`
     * point to `/media/usbdata/user/Publiek/Muziek/mp3`
 
 ### Notes
-* Transcoding will be done by these default quality-levels: ogg = 1, mp3 = 128. Optionally, you can change these defaults
-* Simultaneously rancoding  to ogg AND mp3 is possible; just set both `OggFolder` and `Mp3Folder`
+* when transcoding, these default quality-levels are used: ogg = 1, mp3 = 128; optionally, you can change these defaults
+* you can simultaneously trancode to ogg AND mp3; just set both `OggFolder` and `Mp3Folder`
 
 ## Backup
 You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS.
