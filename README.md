@@ -1,14 +1,14 @@
 # RP Music Server
 Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
-* [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)
-* [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#installation-of-rpms-on-a-pi)
-* [Troubleshooting](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#troubleshooting)
-* [Update](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#update)
-* [Transcoder](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#transcoder)
-* [Backup](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#backup)
-* [Disaster-recovery](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#disaster-recovery)
-* [Development](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#development)
+[System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)<br/> 
+[Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
+[Troubleshooting](https://github.com/markbaaijens/rpmusicserver#troubleshooting)<br/> 
+[Update RPMS](https://github.com/markbaaijens/rpmusicserver#update-rpms)<br/> 
+[Transcoder](https://github.com/markbaaijens/rpmusicserver#transcoder)<br/> 
+[Backup](https://github.com/markbaaijens/rpmusicserver#backup)<br/> 
+[Disaster-recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery)<br/> 
+[Development](https://github.com/markbaaijens/rpmusicserver#development)<br/> 
 
 ## System requirements
 * [minimum] Raspberry Pi 3 (B or B+), 1 GB
@@ -124,7 +124,7 @@ Reconfiguring is best done:
 * (or) by the Squeezebox Controller (per player, change 'Music Collection')
 * (or) on the Squeezebox-device itself (all except Duet which has no physical interface)
 
-## Update
+## Update RPMS
 Update your RPMS-server by the web-interface: 
 * Under Version, click on the Update-button
 
