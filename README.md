@@ -1,11 +1,18 @@
 # RP Music Server
 Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
+[System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)
+[Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#installation-of-rpms-on-a-pi)
+[Troubleshooting](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#troubleshooting)
+[Update](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#update)
+[Transcoder](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#transcoder)
+[Backup](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#backup)
+[Disaster-recovery](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#disaster-recovery)
+[Development](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#development)
+
 ## System requirements
 * [minimum] Raspberry Pi 3 (B or B+), 1 GB
 * [recommended] Raspberry Pi 4 B, 4 GB
-
-[Test](https://github.com/markbaaijens/rpmusicserver#system-requirements)
 
 ## Installation of RPMS on a Pi
 Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
@@ -177,7 +184,6 @@ For a backup using rsync over SSH, here is a example-script:<br>
 `	pi@rpms:/media/usbdata/user/* \`<br/> 
 `	/media/$USER/<disklabel of backup-disk>/backup/user`<br/> 
 `sync`<br/> 
-
 
 ## Disaster-recovery
 Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple
