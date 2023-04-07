@@ -122,37 +122,27 @@ Update your RPMS-server by the web-interface:
 Note: update is disabled when there is no newer version found.
 
 ## Transcoder
-For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
+For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps. From then on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
 * in your file explorer
   * create a folder `flac` under `smb://rpms/Publiek/Muziek`
   * move your flac-files into that folder `flac`
-* in LMS Server Settings http://rpms:9002, point music-folder to this location:
+* in LMS Server Settings, point music-folder to this location:
   * `/music/flac`
-* change setting `SourceFolder` http://rpms/transcoder/edit
+* in the web-interface, under Transcoder, Edit, change setting `SourceFolder`
   * point to `/media/usbdata/user/Publiek/Muziek/flac`
-  * click  Save
 * for transcoding to ogg
-  * in your file explorer
-    * create a folder `ogg` under `smb://rpms/Publiek/Muziek`
-  * change setting `OggFolder` http://rpms/transcoder/edit
+  * in your file explorer, create a folder `ogg` under `smb://rpms/Publiek/Muziek`
+  * in the web-interface, under Transcoder, Edit, change setting `OggFolder`
     * point to `/media/usbdata/user/Publiek/Muziek/ogg`
     * click Save
 * for transcoding to mp3
-  * in your file explorer
-    * create a folder `mp3`under `smb://rpms/Publiek/Muziek`
-  * change setting `Mp3Folder` http://rpms/transcoder/edit
+  * in your file explorer, create a folder `mp3`under `smb://rpms/Publiek/Muziek`
+  * in the web-interface, under Transcoder, Edit, change setting `Mp3Folder`
     * point to `/media/usbdata/user/Publiek/Muziek/mp3`
-    * click Save
-* from now on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
-* see transcoder-progress
-  * http://rpms/logs/transcoder/20
-  * `curl rpms:5000/api/GetTranscoderLog/20`
 
 ### Notes
-* Transcoding will be done by these default quality-levels: ogg = 1, mp3 = 128. Optionally, you can change these defaults:
-  * for example, change `OggQuality` http://rpms/transcoder/edit` to 3 (value = 1, 2, 3, 4, or 5):
-  * for example, change `Mp3Bitrate` http://rpms/transcoder/edit to 256 (value = 128, 256 or 384):
-* Trancoding simultaneously to ogg AND mp3 is possible; just set both `OggFolder` and `Mp3Folder`
+* Transcoding will be done by these default quality-levels: ogg = 1, mp3 = 128. Optionally, you can change these defaults
+* Simultaneously rancoding  to ogg AND mp3 is possible; just set both `OggFolder` and `Mp3Folder`
 
 ## Backup
 You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS.
