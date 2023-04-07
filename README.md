@@ -5,6 +5,8 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
 * [minimum] Raspberry Pi 3 (B or B+), 1 GB
 * [recommended] Raspberry Pi 4 B, 4 GB
 
+[Test](https://github.com/markbaaijens/rpmusicserver#system-requirements)
+
 ## Installation of RPMS on a Pi
 Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
 
