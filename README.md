@@ -117,43 +117,9 @@ Reconfiguring is best done:
 
 ## Update
 Update your RPMS-server by the web-interface: 
-* http://rpms/
 * Under Version, click on the Update-button
 
 Note: update is disabled when there is no newer version found.
-
-## Development
-
-### Update from another git branch
-RPMS can be updated from a github branch, where the rpms-code is stored. The update depends on version-numbering in the file `revision.json` (locally stored on rpms) on one hand and on `revision.json` in the github-repo in the other hand. 
-
-By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. As a result, an indicator VersionOverride pops up in the web-interface.
-
-Note that once VersionOverride is active, CurrentVersion and AvailableVersion do not play a role anymore.
-
-To switch version from `master` branch to e.g. `develop` branch:
-* `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
-
-Returning to the `master` branch version simply delete the `update-branch.txt` text file:
-* `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
-
-### Build development version with separate hostname
-The `rpmsdev` hostname is used in this build
-* `cd <source-folder of rpmusicserver>`
-* `sudo scripts/burn-image.sh`
-  * choose type `d = development`
-* `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
-  * password = raspberry  
-* `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
-  * password = raspberry 
-* after reboot, password is changed to `rpms`
-* from now on, you can reach the development-server on `rpmsdev`
-* in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
-  * `sudo systemd-resolve --flush-caches`
-
-### List of API requests 
-  * `curl rpms:5000/api/GetApiList`
-  * http://rpms:5000/api/GetApiList
 
 ## Transcoder
 For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
@@ -192,7 +158,7 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
 You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS.
 
 ### Server-based backup 
-The advantage of the server-based (local) backup is that the resulting backup is a identical copy of the full data-disk, making it very easy to switch in case of a disaster. The disadvantage is that you have to have local access to the server (Pi) for attaching the backup-disk.
+The advantage of the server-based (local) backup is that the resulting backup is a identical copy of the data-disk, making it very easy to switch in case of a disaster. The disadvantage is that you have to have local access to the server (Pi) for attaching the backup-disk.
 
 This backup will be done to a dedicated backup-disk, connected to the Pi it self, thus a server-based backup.
 
@@ -210,9 +176,9 @@ This backup will be done to a dedicated backup-disk, connected to the Pi it self
 Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
 ### Remote backup
-The advantage of the remote backup is that you can use a protocol at wish, be it ssh/rsync or syncthing (which is built-in in RPMS) or SMB. 
+The advantage of the remote backup is that you can use a protocol at wish, be it ssh/rsync or syncthing (which is built-in in RPMS) or SMB. The disadvantage of a remote backup is that in case of a disaster, it is a lot more work to get up-and-running again.
 
-Note that system-data is also present on the data-part ('Public') in the form of a file rpms-system.zip. Thus, as you backup the user-data, you also backup the system-files resulting in a full backup. The disadvantage of a remote backup is that in case of a disaster, it is a lot more work to get up-and-running again.
+Note that system-data is also present on the data-part ('Public') in the form of a file rpms-system.zip. Thus, as you backup the user-data, you also backup the system-files resulting in a full backup. 
 
 For a backup using rsync over SSH, here is a example-script:<br>
 `#!/bin/bash`<br/> 
@@ -237,3 +203,36 @@ In case of a server-based backup, you are 'lucky': b/c the backup-disk is an exa
 In case of a remote backup, you have more work to do: reformat a (new) usbdata-disk (see instructions above), copy all data from the backup to the data-disk under '/user'. Unzip rpms-system.zip (this file is present in the root of the data-backup) and copy this to /rpms. Re-attach and reboot and you are back in business. 
 
 Remember to make a backup to a new backup-disk immediately!
+
+## Development
+
+### Update from another git branch
+RPMS can be updated from a github branch, where the rpms-code is stored. The update depends on version-numbering in the file `revision.json` (locally stored on rpms) on one hand and on `revision.json` in the github-repo in the other hand. 
+
+By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. As a result, an indicator VersionOverride pops up in the web-interface.
+
+Note that once VersionOverride is active, CurrentVersion and AvailableVersion do not play a role anymore.
+
+To switch version from `master` branch to e.g. `develop` branch:
+* `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
+
+Returning to the `master` branch version simply delete the `update-branch.txt` text file:
+* `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
+
+### Build development version with separate hostname
+The `rpmsdev` hostname is used in this build
+* `cd <source-folder of rpmusicserver>`
+* `sudo scripts/burn-image.sh`
+  * choose type `d = development`
+* `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
+  * password = raspberry  
+* `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
+  * password = raspberry 
+* after reboot, password is changed to `rpms`
+* from now on, you can reach the development-server on `rpmsdev`
+* in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
+  * `sudo systemd-resolve --flush-caches`
+
+### List of API requests 
+  * `curl rpms:5000/api/GetApiList`
+  * http://rpms:5000/api/GetApiList
