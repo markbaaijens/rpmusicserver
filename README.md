@@ -10,6 +10,8 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
 [Disaster-recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery)<br/> 
 [Development](https://github.com/markbaaijens/rpmusicserver#development)<br/> 
 
+Note. In LMS, `/music` is mapped to `/media/usbdata/user/Publiek/Muziek` due to the usage of Docker; this is also the case for Transmission and SyncThing which happen to be also Docker-containers.
+
 ## System requirements
 * [minimum] Raspberry Pi 3 (B or B+), 1 GB
 * [recommended] Raspberry Pi 4 B, 4 GB
