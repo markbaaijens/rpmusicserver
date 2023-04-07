@@ -1,14 +1,14 @@
 # RP Music Server
 Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
-[System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)
-[Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#installation-of-rpms-on-a-pi)
-[Troubleshooting](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#troubleshooting)
-[Update](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#update)
-[Transcoder](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#transcoder)
-[Backup](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#backup)
-[Disaster-recovery](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#disaster-recovery)
-[Development](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#development)
+* [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)
+* [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#installation-of-rpms-on-a-pi)
+* [Troubleshooting](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#troubleshooting)
+* [Update](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#update)
+* [Transcoder](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#transcoder)
+* [Backup](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#backup)
+* [Disaster-recovery](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#disaster-recovery)
+* [Development](https://github.com/markbaaijens/rpmusicserver/tree/132-explain-connection-between-samba-location-and-lms-setting-due-to-docker#development)
 
 ## System requirements
 * [minimum] Raspberry Pi 3 (B or B+), 1 GB
