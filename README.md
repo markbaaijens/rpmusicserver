@@ -13,8 +13,12 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
 Note. In LMS, `/music` is mapped to `/media/usbdata/user/Publiek/Muziek` due to the usage of Docker; this is also the case for Transmission and SyncThing which happen to be also Docker-containers.
 
 ## System requirements
-* [minimum] Raspberry Pi 3 (B or B+), 1 GB
-* [recommended] Raspberry Pi 4 B, 4 GB
+* Raspberry Pi
+  * [minimum] Raspberry Pi 3 (B or B+), 1 GB
+  * [recommended] Raspberry Pi 4 B, 4 GB
+* SD Card
+  * [minimum] 16 GB
+  * [recommended] 32 GB
 
 ## Installation of RPMS on a Pi
 Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
