@@ -310,9 +310,8 @@ def GetVersionList():
 def GetBackupInfo():
     isBackupNotInProgress = True
 
-    if os.path.isfile('/media/usbdata/rpms/logs/backup-details.log'):
-        if ExecuteBashCommand("grep 'speedup is ' /media/usbdata/rpms/logs/backup-details.log").strip() == '':
-            isBackupNotInProgress = False
+    if ExecuteBashCommand("ps -ef | grep backup-server | grep -v grep").strip() != '':
+        isBackupNotInProgress = False
 
     isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup") == "usbbackup"
     canBackup = isBackupDiskPresent and isBackupNotInProgress
