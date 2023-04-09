@@ -13,33 +13,27 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
 Note. In LMS, `/music` is mapped to `/media/usbdata/user/Publiek/Muziek` due to the usage of Docker; this is also the case for Transmission and SyncThing which happen to be also Docker-containers.
 
 ## System requirements
-* Raspberry Pi
-  * [minimum] Raspberry Pi 3 (B or B+), 1 GB
-  * [recommended] Raspberry Pi 4 B, 4 GB
-* SD Card
-  * [minimum] 16 GB
-  * [recommended] 32 GB
+* Raspberry Pi: [minimum] Pi 3 (B or B+), 1 GB; [recommended] Pi 4 B, 4 GB
+* SD Card: [minimum] 16 GB; [recommended] 32 GB
+* Linux PC: for installation purposes, a Linux PC is required; once installed, any OS will do, be it Windows, Linux or MacOS
 
 ## Installation of RPMS on a Pi
 Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
-
-Note. As for now, the installation requires you to have a Linux PC.
 
 ### Check your network if local DNS works
 To detect if your network supports local DNS, execute the following command in a terminal:
 * `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
 
-_If this command produces output_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific _Pi/rpms can only reached by ip-address_.
-
-_If this command has no output_, it is all good and you can proceed installing RPMS on your Pi.
+Check for output:
+* _If this command has NO output_, it is all good and you can proceed installing RPMS on your Pi.
+* _If this command DOES produce output_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific _Pi/rpms can only reached by ip-address_.
 
 ### Steps to install RPMS on your Pi
 * Install package(s) on your Linux PC:
   * `sudo apt-get install nmap`
     * enter your (personal) password of your PC  
 * Download code:
-  * `wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip`
-  * `unzip -d /tmp -o /tmp/rpmusicserver.zip`
+  * `wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip && unzip -d /tmp -o /tmp/rpmusicserver.zip`
 * Burn SD-card:
   * insert SD-card into your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/burn-image.sh`
@@ -72,8 +66,6 @@ _If this command has no output_, it is all good and you can proceed installing R
   * watch services to become active:
     * `watch nmap rpms`
       * wait until port 9002 appears; exit with Ctrl-C
-    * http://rpms/services
-      * wait until port 9002 is active
   * RPMS (browser): http://rpms
   * LMS (browser): http://rpms:9002
   * Transmission (browser): http://rpms:9091
