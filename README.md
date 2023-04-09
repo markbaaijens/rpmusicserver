@@ -66,8 +66,6 @@ Check for output:
   * watch services to become active:
     * `watch nmap rpms`
       * wait until port 9002 appears; exit with Ctrl-C
-    * http://rpms/services
-      * wait until port 9002 is active
   * RPMS (browser): http://rpms
   * LMS (browser): http://rpms:9002
   * Transmission (browser): http://rpms:9091
