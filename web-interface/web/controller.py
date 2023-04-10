@@ -386,10 +386,10 @@ def ShowApiLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'API-log - ' + configObject.AppTitle, 
+        appTitle = 'API Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'ApiLog'
+        logTitle = 'Api Log'
     )   
     pass     
 
@@ -404,10 +404,10 @@ def ShowWebLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Web-log - ' + configObject.AppTitle, 
+        appTitle = 'Web Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'WebLog'
+        logTitle = 'Web Log'
     )   
     pass     
 
@@ -422,10 +422,10 @@ def ShowBackupLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Backup-log - ' + configObject.AppTitle, 
+        appTitle = 'Backup Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'BackupLog'
+        logTitle = 'Backup Log'
     )   
     pass     
 
@@ -440,10 +440,10 @@ def ShowBackupDetailsLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'BackupDetails-log - ' + configObject.AppTitle, 
+        appTitle = 'Backup Details Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'BackupDetailsLog'
+        logTitle = 'Backup Details Log'
     )   
     pass     
 
@@ -458,10 +458,10 @@ def ShowTranscoderLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Transcoder-log - ' + configObject.AppTitle, 
+        appTitle = 'Transcoder Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'TranscoderLog'
+        logTitle = 'Transcoder Log'
     )   
     pass     
 
@@ -476,10 +476,10 @@ def ShowUpdateLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Update-log - ' + configObject.AppTitle, 
+        appTitle = 'Update Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'UpdateLog'
+        logTitle = 'Update Log'
     )   
     pass     
 
