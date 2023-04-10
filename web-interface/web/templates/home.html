@@ -13,23 +13,23 @@
     <h2>Machine</h2>
     <table>
         <tr>
-            <td align="right">Hostname</td>
+            <td>Hostname</td>
             <td><b>{{ machineInfo.HostName }}</b></td>
         </tr>
         <tr>
-            <td align="right">IP Address</td>
+            <td>IP Address</td>
             <td><b>{{ machineInfo.IpAddress }}</b></td>
         </tr>
         <tr>
-            <td align="right">Raspberry Pi</td>
+            <td>Raspberry Pi</td>
             <td><b>{{ machineInfo.RpModel }}</b> | <b>{{ machineInfo.RpModelMemoryInGB }}</b></td>
         </tr>
         <tr>
-            <td align="right">OS</td>
+            <td>OS</td>
             <td><b>{{ machineInfo.OsDescription }}</b> | <b>{{ machineInfo.OsBitType }}</b></td>
         </tr>        
         <tr>
-            <td align="right">Uptime</td>
+            <td>Uptime</td>
             <td><b>{{ machineInfo.UpTime }}</b></td>
         </tr>
     </table>    
@@ -37,29 +37,29 @@
     <h2>Version</h2>
     <table>
         <tr>
-            <td align="right">Current Version</td>
+            <td>Current Version</td>
             <td><b>{{ versionInfo.CurrentVersion }}</b></td>
         </tr>
         <tr>
-            <td align="right">Available Version</td>
+            <td>Available Version</td>
             <td><b>{{ versionInfo.AvailableVersion }}</b></td>
         </tr>
         <tr>
-            <td align="right">Last Update</td>
+            <td>Last Update</td>
             <td><b>{{ versionInfo.LastUpdateTimeStamp }}</b></td>
         </tr>
         <tr>
-            <td align="right">Versions</td>
+            <td>Versions</td>
             <td><a class="external-link" href="{{ machineInfo.HostUrl }}:5000/api/GetVersionList" target="_blank">{{ versionInfo.VersionFile }}</a></td>
         </tr>                
         <tr>
-            <td align="right">Update Branch</td>
+            <td>Update Branch</td>
             <td>
                 <b>{{ versionInfo.UpdateBranchName }}</b>
             </td>
         </tr>
         <tr>
-            <td align="right">Version overridden?</td>
+            <td>Version overridden?</td>
             <td>
                 {% if versionInfo.IsVersionOverridden %}
                     <span class="checkmark-y"> &#10004; </span>
@@ -69,7 +69,7 @@
             </td>
         </tr>
         <tr>
-            <td align="right">Can update?</td>
+            <td>Can update?</td>
             <td>
                 {% if versionInfo.CanUpdate %}
                     <span class="checkmark-y"> &#10004; </span>

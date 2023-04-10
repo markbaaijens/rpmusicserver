@@ -4,7 +4,7 @@
     <h2>Transcoder</h2>
     <table>
         <tr>
-            <td align="right">
+            <td>
                 Activated
             </td>
             <td><b>
@@ -16,7 +16,7 @@
             </b></td>
         </tr>
         <tr>
-            <td align="right">
+            <td>
                 Last Transcode
             </td>
             <td>
@@ -34,7 +34,7 @@
     </div> 
     <table>
         <tr>
-            <td align="right">Source Folder</td>
+            <td>Source Folder</td>
             <td>
                 <small>{{ transcoderInfo.DefaultCollectionFolder }}/</small>
                 <b>{{ transcoderInfo.SettingSourceFolder }}</b>
@@ -42,14 +42,14 @@
         </tr>
         <h3>Settings</h3>     
         <tr>
-            <td align="right">Ogg Folder</td>
+            <td>Ogg Folder</td>
             <td>
                 <small>{{ transcoderInfo.DefaultCollectionFolder }}/</small>
                 <b>{{ transcoderInfo.SettingOggFolder }}</b>
             </td>
         </tr>
         <tr>
-            <td align="right">Ogg Quality</td>
+            <td>Ogg Quality</td>
             <td>
                 {% if transcoderInfo.SettingOggQuality == 0 %}
                     <small>(default = 1)</small>
@@ -59,14 +59,14 @@
             </td>
         </tr>
         <tr>
-            <td align="right">Mp3 Folder</td>
+            <td>Mp3 Folder</td>
             <td>
                 <small>{{ transcoderInfo.DefaultCollectionFolder }}/</small>
                 <b>{{ transcoderInfo.SettingMp3Folder }}</b>
             </td>
         </tr>
         <tr>
-            <td align="right">Mp3 Bitrate</td>
+            <td>Mp3 Bitrate</td>
             <td>
                 {% if transcoderInfo.SettingMp3Bitrate == 0 %}
                     <small>(default = 128)</small>
