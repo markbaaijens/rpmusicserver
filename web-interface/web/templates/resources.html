@@ -2,7 +2,6 @@
 
 {% block content %}
 <h2>Resources</h2>
-<h3>Generic</h3>
 <table>
     <tr>
         <td>Memory</td>
@@ -17,7 +16,7 @@
             <span class="small">
                 <label for="memory">
                     <small>
-                        <b>{{ memoryInfo.MemUsed }}</b> used of <b>{{ memoryInfo.MemTotal }}</b>
+                        <b>{{ memoryInfo.MemUsed }}</b> {{ memoryInfo.MemUsedPercentage }}% used of <b>{{ memoryInfo.MemTotal }}</b>
                     </small>
                 </label>
             </span>
@@ -37,7 +36,7 @@
             <span class="small">
                 <label for="swap">
                     <small>
-                        <b>{{ memoryInfo.SwapUsed }}</b> used of <b>{{ memoryInfo.SwapTotal }}</b>
+                        <b>{{ memoryInfo.SwapUsed }}</b> {{ memoryInfo.SwapUsedPercentage }}% used of <b>{{ memoryInfo.SwapTotal }}</b>
                     </small>
                 </label>
             </span>
@@ -112,7 +111,7 @@
                 <span class="small">
                     <label for="size">
                         <small>
-                            <b>{{ disk.Used }}</b> used of <b>{{ disk.Size }}</b>
+                            <b>{{ disk.Used }}</b> {{ disk.UsedPercentage }}% used of <b>{{ disk.Size }}</b>
                         </small>
                     </label>
                 </span>
