@@ -6,13 +6,6 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
-working_dir=/tmp/raspbian
-image=https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-11-08/2021-10-30-raspios-bullseye-armhf-lite.zip
-image_hash="008d7377b8c8b853a6663448a3f7688ba98e2805949127a1d9e8859ff96ee1a9"
-archive=raspbian-os-lite.zip
-number_pattern="[0-9]+"
-mount_point=/mnt/temp
-
 setup_environment() {
     if [ ! -d $working_dir ]; then 
         mkdir $working_dir
@@ -25,7 +18,8 @@ cleanup_environment() {
 }
 
 mount_partition () {
-    echo "Mounting partition /dev/$partition."
+    partition=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
+
     if [ ! -d $mount_point ]; then 
         mkdir $mount_point
     fi
@@ -38,19 +32,23 @@ mount_partition () {
     fi
 
     mount "/dev/$partition" $mount_point
-    hdparm -z /dev/$chosen_disk
-    echo "Partition /dev/$partition mounted."
 }
 
 unmount_partition () {
+    partition=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")    
     umount "/dev/$partition"
-    hdparm -z /dev/$chosen_disk
     if [ -d $mount_point ]; then 
         rm -rf $mount_point
     fi
     sleep 3 # Give the OS time to reread
-    echo "Partition /dev/$partition unmounted."
 }
+
+working_dir=/tmp/raspbian
+image=https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-11-08/2021-10-30-raspios-bullseye-armhf-lite.zip
+image_hash="008d7377b8c8b853a6663448a3f7688ba98e2805949127a1d9e8859ff96ee1a9"
+archive=raspbian-os-lite.zip
+number_pattern="[0-9]+"
+mount_point=/mnt/temp
 
 setup_environment
 
@@ -145,6 +143,33 @@ if [ ${type_choice,,} != "p" ] && [ ${type_choice,,} != "d" ]; then
 fi
 echo "You have chosen: $type_choice $([ ${type_choice,,} == "p" ] && echo "=> production" || echo "=> development")"
 
+echo "Language:"
+echo "E: English"
+echo "D: Dutch"
+echo "Q: quit"
+
+read -p "Select a language: " lang_choice
+
+if [ "${lang_choice,,}" == "q" ]; then
+    cleanup_environment    
+    echo "Script ended by user."
+    exit
+fi
+
+if [ "$lang_choice" == "" ]; then
+    echo "No language selected."
+    cleanup_environment    
+    echo "Script ended."
+    exit
+fi
+if [ ${lang_choice,,} != "e" ] && [ ${lang_choice,,} != "d" ]; then
+    echo "No language selected."
+    cleanup_environment    
+    echo "Script ended."
+    exit
+fi
+echo "You have chosen: $lang_choice $([ ${lang_choice,,} == "e" ] && echo "=> English" || echo "=> Dutch")"
+
 read -r -p "Do you want to continue burning on $chosen_disk? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
     cleanup_environment
@@ -216,10 +241,9 @@ if [ ! -d /dev/disk/by-label ]; then
 fi
 
 echo "Activate SSH..."
-partition=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$chosen_disk.*$")
-mount_partition
+mount_partition "boot"
 touch $mount_point/ssh
-unmount_partition
+unmount_partition "boot"
 echo " => SSH has been activated on $chosen_disk."
 
 if [ ${type_choice,,} == "p" ]; then
@@ -228,12 +252,25 @@ else
     hostname="rpmsdev"
 fi
 echo "Change hostname to $hostname..."
-partition=$(ls -l /dev/disk/by-label | grep "rootfs" | grep -oE "$chosen_disk.*$")
-mount_partition
+mount_partition "rootfs"
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hostname
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hosts
-unmount_partition
+unmount_partition "rootfs"
 echo " => done changing hostname."
+
+case ${lang_choice,,} in
+"e")
+    langcode="EN"
+    ;;
+"d")
+    langcode="NL"
+    ;;
+esac
+echo "Set language..."
+mount_partition "rootfs"
+echo $langcode > $mount_point/etc/language.txt
+unmount_partition "rootfs"
+echo " => language has been set to $lang_choice."
 
 cleanup_environment
 echo "Script ended successfully."

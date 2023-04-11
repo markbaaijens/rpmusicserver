@@ -1,0 +1,20 @@
+{
+    "Languages": [
+        {
+            "Code":"NL",
+            "Description":"Dutch",            
+            "Translations": [
+                {"Id": "PublicFolderName", "Text":"Publiek"},
+                {"Id": "MusicFolderName", "Text":"Muziek"}   
+            ]
+        },
+        {
+            "Code":"EN",
+            "Description":"English",                        
+            "Translations": [
+                {"Id": "PublicFolderName", "Text":"Public"},
+                {"Id": "MusicFolderName", "Text":"Music"}                
+            ]
+        }
+    ]
+}
