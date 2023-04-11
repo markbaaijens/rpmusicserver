@@ -4,6 +4,7 @@ import json
 import os
 from globals import configObject
 from datetime import datetime
+from datetime import timedelta
 import math
 import asyncio
 import urllib.request
@@ -25,6 +26,54 @@ def RevisionFileName():
     if not os.path.isfile(revisionFile):
         revisionFile = os.path.dirname(__file__) + '/../../revision.json'
     return revisionFile
+
+def GetElapsedTimeHumanReadable(fromDate):
+    timeElapsed = datetime.today() - fromDate
+
+    elapsedSeconds = int(timeElapsed.total_seconds())
+    elapsedMinutes = int(divmod(timeElapsed.total_seconds(), 60)[0])
+    elapsedHours = int(divmod(timeElapsed.total_seconds(), 60 * 60)[0])
+    elapsedDays = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24)[0])
+    elapsedWeeks = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 7)[0])
+    elapsedMonths = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 30)[0])
+    elapsedYears = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 365)[0])
+
+    elapsedTimeAsString = ''
+    if elapsedYears > 0:
+        elapsedTimeAsString = str(elapsedYears) + ' year'
+        if elapsedYears > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+    elif elapsedMonths > 0:
+        elapsedTimeAsString = str(elapsedMonths) + ' month'
+        if elapsedMonths > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+    elif elapsedWeeks > 0:
+        elapsedTimeAsString = str(elapsedWeeks) + ' week'
+        if elapsedWeeks > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+    elif elapsedDays > 0:
+        elapsedTimeAsString = str(elapsedDays) + ' day'
+        if elapsedDays > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+    elif elapsedHours > 0:
+        elapsedTimeAsString = str(elapsedHours) + ' hour'             
+        if elapsedHours > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+    elif elapsedMinutes > 0:
+        elapsedTimeAsString = str(elapsedMinutes) + ' minute'
+        if elapsedMinutes > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+    elif elapsedSeconds > 0:
+        elapsedTimeAsString = str(elapsedSeconds) + ' second'
+        if elapsedSeconds > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+
+    if elapsedTimeAsString != '':
+        elapsedTimeAsString = elapsedTimeAsString + ' ago'
+    else:
+        elapsedTimeAsString = 'now'        
+
+    return elapsedTimeAsString
 
 def GetMachineInfo():
     def CheckRpModelMemoryInGB(rpModelMemoryInGB):
@@ -237,7 +286,6 @@ def GetMemoryResourceInfo():
             "SwapUsedPercentage": swapUsedPercentage
             }
 
-
 def GetVersionInfo():
     revisionFile = RevisionFileName()
 
@@ -258,6 +306,7 @@ def GetVersionInfo():
         except:
             pass
         lastUpdateTimeStampAsString = datetime.fromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
+        lastUpdateTimeStampAsString = lastUpdateTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastUpdateTimeStampAsString, '%Y-%m-%d %H:%M:%S'))
 
     updateBranchName = 'master'
     updateBranchFile = '/media/usbdata/rpms/config/update-branch.txt'
@@ -315,7 +364,9 @@ def GetBackupInfo():
 
     isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup") == "usbbackup"
     canBackup = isBackupDiskPresent and isBackupNotInProgress
+
     lastBackup = ExecuteBashCommand("cat /media/usbdata/rpms/logs/backup.log | grep 'executing backup' | tail -n 1 | cut -c1-19")
+    lastBackup = lastBackup + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastBackup, '%Y-%m-%d %H:%M:%S'))    
 
     return {"IsBackupNotInProgress": isBackupNotInProgress,
             "IsBackupDiskPresent": isBackupDiskPresent,
@@ -336,7 +387,9 @@ def GetTranscoderInfo():
     settingMp3Bitrate = transcoderSettings['mp3bitrate']
 
     isActivated = (transcoderSettings['sourcefolder'] != '') and ((transcoderSettings['oggfolder'] != '') or (transcoderSettings['mp3folder'] != ''))
+
     lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'End session' | tail -n 1 | cut -c1-19")
+    lastTranscode = lastTranscode + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
 
     return {"IsActivated": isActivated,
             "LastTranscode": lastTranscode,
@@ -386,6 +439,7 @@ def GetMusicCollectionInfo():
         except:
             pass
         lastExportTimeStampAsString = datetime.fromtimestamp(lastExportTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
+        lastExportTimeStampAsString = lastExportTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastExportTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
 
     return {"CollectionFolder": actualCollectionFolder,
             "DefaultCollectionFolder": defaultCollectionFolder,
