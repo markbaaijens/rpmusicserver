@@ -514,9 +514,16 @@ def EditTranscoderSettings():
         return redirect('/transcoder')
 
     if request.method == 'POST' and form.validate(): 
+        try:
+            resetToDefaults = request.form['resetToDefaults']
+        except Exception as e:
+            resetToDefaults = False
+
         newSourceFolder = defaultMusicFolder + request.form['sourceFolder'].strip()
         if not newSourceFolder.replace(defaultMusicFolder, ''):
             newSourceFolder = ''
+        if resetToDefaults:
+            newSourceFolder = ''            
         if newSourceFolder != transcoderSettings['sourcefolder'].strip():
             try:
                 requests.post(
@@ -530,6 +537,8 @@ def EditTranscoderSettings():
         newOggFolder = defaultMusicFolder + request.form['oggFolder'].strip()
         if not newOggFolder.replace(defaultMusicFolder, ''):
             newOggFolder = ''
+        if resetToDefaults:
+            newOggFolder = ''                        
         if newOggFolder != transcoderSettings['oggfolder'].strip():
             try:
                 requests.post(
@@ -540,19 +549,24 @@ def EditTranscoderSettings():
                 logger.error(e)
                 logger.error(traceback.format_exc())
 
-        if int(request.form['oggQuality']) != int(transcoderSettings['oggquality']):
+        newOggQuality = int(request.form['oggQuality'])
+        if resetToDefaults:
+            newOggQuality = 0        
+        if newOggQuality != int(transcoderSettings['oggquality']):
             try:
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderOggQuality', 
-                    json = {"Value": int(request.form['oggQuality'])})
-                flash('Saved \'' + request.form['oggQuality'] + '\' to OggQuality')
+                    json = {"Value": newOggQuality})
+                flash('Saved \'' + str(newOggQuality) + '\' to OggQuality')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
 
         newMp3Folder = defaultMusicFolder + request.form['mp3Folder'].strip()
         if not newMp3Folder.replace(defaultMusicFolder, ''):
-            newMp3Folder = ''            
+            newMp3Folder = ''  
+        if resetToDefaults:
+            newMp3Folder = ''                        
         if newMp3Folder != transcoderSettings['mp3folder'].strip():
             try:
                 requests.post(
@@ -563,12 +577,15 @@ def EditTranscoderSettings():
                 logger.error(e)
                 logger.error(traceback.format_exc())
 
-        if int(request.form['mp3Bitrate']) != int(transcoderSettings['mp3bitrate']):
+        newMp3Bitrate = int(request.form['mp3Bitrate'])
+        if resetToDefaults:
+            newMp3Bitrate = 0
+        if newMp3Bitrate != int(transcoderSettings['mp3bitrate']):
             try:
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderMp3Bitrate', 
-                    json = {"Value": int(request.form['mp3Bitrate'])})
-                flash('Saved \'' + request.form['mp3Bitrate'] + '\' to Mp3Bitrate')
+                    json = {"Value": newMp3Bitrate})
+                flash('Saved \'' + str(newMp3Bitrate) + '\' to Mp3Bitrate')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())

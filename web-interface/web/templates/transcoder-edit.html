@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>EditTranscoder</h2>
+    <h2>Transcoder-settings</h2>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>
@@ -14,7 +14,7 @@
                 </td>
                 <td>
                     {{ form.sourceFolder(size=10)}}
-                    <small> in {{ musicFolder }}</small>
+                    *
                     {% for error in form.sourceFolder.errors %}
                         <br><small><em>[{{ error }}]</em></small>
                     {% endfor %}
@@ -28,7 +28,7 @@
                 </td>
                 <td>
                     {{ form.oggFolder(size=10)}}
-                    <small> in {{ musicFolder }}</small>
+                    *
                     {% for error in form.oggFolder.errors %}
                         <br><small><em>[{{ error }}]</em></small>
                     {% endfor %}
@@ -58,12 +58,12 @@
                 </td>
                 <td>
                     {{ form.mp3Folder(size=10)}}
-                    <small> in {{ musicFolder }}</small>
+                    *
                     {% for error in form.mp3Folder.errors %}
                         <br><em>[{{ error }}]</em></small>
                     {% endfor %}
                 </td>
-            </tr>                        
+            </tr>   
             <tr>
                 <td align="left">
                     <abbr title="Default is for the smallest file size but lowest audio quality">
@@ -79,8 +79,12 @@
                         <br><small><span style="color: red;">[{{ error }}]</span></small>
                     {% endfor %}
                 </td>
-            </tr>                                    
+            </tr>   
         </table>
+        <div><small>* Folders are relative to {{ musicFolder }}</small></div>
+        <br>
+        {{ form.resetToDefaults()}} {{ form.resetToDefaults.label}}
+
         <p>{{ form.submit() }} {{ form.cancel() }}</p>
     </form>
 {% endblock %}
