@@ -82,7 +82,7 @@ Check for output:
     * `ssh pi@rpms`
     * password: rpms
 * Engage:
-  * copy music files to `smb://rpms/Publiek/Muziek`
+  * copy music files to `smb://rpms/<music folder>`
   * hookup a Squeezebox player to your network
   * install a Android App like [Squeezer](https://play.google.com/store/apps/details?id=uk.org.ngo.squeezer)
   * enjoy!
@@ -110,9 +110,7 @@ If everything fails (no hostname shown for pi, multiple ip-addresses for hostnam
 ### *Pi/rpms can only reached by ip-address*
 On some local networks, there might be a problem present that the hostname of all connected devices, including RPMS cannot be resolved. In practice, `ping rpms` does not return anything. So any command directly targeted at RPMS such as `ssh pi@rpms` does not work. This is a problem within the router/network, the origin of this problem is unknown to date.
 
-The good news however is that a device is *always* accesible by ip-address. So once you know the ip-address of your RPMS-instance, you can install, configure and use RPMS. 
-
-All you have to do is the following: in any command in the section *Installation of RPMS on a Pi* (and following sections), replace RPMS with the discovered ip-address.
+The good news however is that a device is *always* accesible by ip-address. So once you know the ip-address of your RPMS-instance, you can install, configure and use RPMS. All you have to do is the following: in any command in the section *Installation of RPMS on a Pi* (and following sections), replace RPMS with the discovered ip-address.
 
 So for example, if the ip-address of RPMS is 192.68.1.20: `ping rpms` will become `ping 192.68.1.20`. And `ssh pi@rpms` will become `ssh pi@192.68.1.20`. In your browser, LMS `rpms:9002` wil become `192.68.1.20:9002` Etc. 
 
@@ -142,11 +140,11 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
 * in the web-interface, under Transcoder, Edit, change setting `Source Folder`
   * point to `flac`
 * for transcoding to ogg
-  * in your file explorer, create a folder `ogg` under `smb://<music folder>`
+  * in your file explorer, create a folder `ogg` under `smb://rpms/<music folder>`
   * in the web-interface, under Transcoder, Edit, change setting `Ogg Folder`
     * point to `ogg`
 * for transcoding to mp3
-  * in your file explorer, create a folder `mp3`under `smb://<music folder>`
+  * in your file explorer, create a folder `mp3`under `smb://rpms/<music folder>`
   * in the web-interface, under Transcoder, Edit, change setting `Mp3 Folder`
     * point to `mp3`
 
@@ -172,8 +170,12 @@ This backup will be done to a dedicated backup-disk, connected to the Pi it self
   * in the web-interface, under Backup, click Backup
   * disconnect backup-disk
 
-#### Off-line backup-data viewing
-Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
+#### Viewing backup-data on the usbbackup-disk
+In case of a server-based backup, your backup will be made to a separate backup-disk. You can view the data on this disk, either online or offline.
+
+For viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file esplorer to smb://rpms/Backup and than you can view all the files on that disk/
+
+For viewing _offline_, the backup-disk has to be attached to your own PC or laptop. The backup-disk is formatted as ext4 so this format is natively supported on Linux, thus being plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
 ### Remote backup
 The advantage of the remote backup is that you can use a protocol at wish, be it ssh/rsync or syncthing (which is built-in in RPMS) or SMB. The disadvantage of a remote backup is that in case of a disaster, it is a lot more work to get up-and-running again.
