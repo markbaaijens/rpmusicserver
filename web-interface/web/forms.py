@@ -35,9 +35,9 @@ class EditTranscoderForm(FlaskForm):
     def validate_sourceFolder(self, field):
         if not self.resetToDefaults.data: 
             if field.data == '':
-                raise ValidationError('To activate trancoder, SourceFolder should have a value')
+                raise ValidationError('Source Folder should have a value to activate Transcoder')
 
             if not((self.oggFolder.data != '') or (self.mp3Folder.data != '')):
-                raise ValidationError('To activate trancoder, either OggFolder or Mp3Folder should have a value')
+                raise ValidationError('Either Ogg Folder or Mp3 Folder should have a value to activate Transcoder')
         pass
 
