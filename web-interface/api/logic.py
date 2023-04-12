@@ -6,6 +6,7 @@ from globals import configObject
 from datetime import datetime
 from datetime import timedelta
 import math
+from math import ceil
 import asyncio
 import urllib.request
 
@@ -110,34 +111,22 @@ def GetElapsedTimeHumanReadable(fromDate):
     return elapsedTimeAsString
 
 def GetMachineInfo():
-    def CheckRpModelMemoryInGB(rpModelMemoryInGB):
-        if int(rpModelMemoryInGB) < 1:
-            rpModelMemoryInGB = "1"
-        return rpModelMemoryInGB + "GB"
-        
-    def GetOsBitType():
-        osBitType = ExecuteBashCommand("uname -m")
-        if osBitType == "armv7l":
-            return osBitType + ' 32-bit'
-        elif osBitType == "armv8":
-            return osBitType + ' 64-bit'
-        return osBitType
-
-    def GetHostUrl():
-        urlPrefix = 'http://'
-        hostUrl = urlPrefix + hostName
-        if ExecuteBashCommand("nslookup " + hostName + " | grep \"server can't find\"").strip() != "":
-            hostUrl = urlPrefix + ipAddress
-        return hostUrl
-
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
-    hostUrl = GetHostUrl()  # Must be behind hostName + ipAddress
+
+    urlPrefix = 'http://'
+    hostUrl = urlPrefix + hostName
+    if ExecuteBashCommand("nslookup " + hostName + " | grep \"server can't find\"").strip() != "":
+        hostUrl = urlPrefix + ipAddress
+
     osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
-    osBitType = GetOsBitType()
+    osBitType = ExecuteBashCommand("uname -m")
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
+    kernelVersion = ExecuteBashCommand("uname -r")
+
+    rpModelMemoryInGB = str(ceil(float(ExecuteBashCommand("free --mega | grep Mem: | awk '{print $2}'")) / 1024)) + ' GB'
+
     rpModel = '?'
-    rpModelMemoryInGB = CheckRpModelMemoryInGB(ExecuteBashCommand("free --giga | grep Mem: | awk '{print $2}'"))
     if os.path.isfile('/proc/device-tree/model'):    
         rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
  
@@ -152,6 +141,7 @@ def GetMachineInfo():
             "OsCodeName": osCodeName,
             "OsDescription": osDescription,
             "OsBitType": osBitType,
+            "KernelVersion": kernelVersion,
             "RpModel": rpModel,
             "RpModelMemoryInGB": rpModelMemoryInGB,
             "UpTime": upTime}
