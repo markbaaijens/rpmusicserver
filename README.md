@@ -1,30 +1,39 @@
 # RP Music Server
 Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
+[System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)<br/> 
+[Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
+[Troubleshooting](https://github.com/markbaaijens/rpmusicserver#troubleshooting)<br/> 
+[Update RPMS](https://github.com/markbaaijens/rpmusicserver#update-rpms)<br/> 
+[Transcoder](https://github.com/markbaaijens/rpmusicserver#transcoder)<br/> 
+[Backup](https://github.com/markbaaijens/rpmusicserver#backup)<br/> 
+[Disaster-recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery)<br/> 
+[Development](https://github.com/markbaaijens/rpmusicserver#development)<br/> 
+
+Note. In LMS, `/music` is mapped to `/media/usbdata/user/Publiek/Muziek` due to the usage of Docker; this is also the case for Transmission and SyncThing which happen to be also Docker-containers.
+
 ## System requirements
-* [minimum] Raspberry Pi 3 (B or B+), 1 GB
-* [recommended] Raspberry Pi 4 B, 4 GB
+* Raspberry Pi: [minimum] Pi 3 (B or B+), 1 GB; [recommended] Pi 4 B, 4 GB
+* SD Card: [minimum] 16 GB; [recommended] 32 GB
+* Linux PC: for installation purposes, a Linux PC is required; once installed, any OS will do, be it Windows, Linux or MacOS
 
 ## Installation of RPMS on a Pi
 Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
-
-Note. As for now, the installation requires you to have a Linux PC.
 
 ### Check your network if local DNS works
 To detect if your network supports local DNS, execute the following command in a terminal:
 * `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
 
-_If this command produces output_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific _Pi/rpms can only reached by ip-address_.
-
-_If this command has no output_, it is all good and you can proceed installing RPMS on your Pi.
+Check for output:
+* _If this command has NO output_, it is all good and you can proceed installing RPMS on your Pi.
+* _If this command DOES produce output_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific _Pi/rpms can only reached by ip-address_.
 
 ### Steps to install RPMS on your Pi
 * Install package(s) on your Linux PC:
   * `sudo apt-get install nmap`
     * enter your (personal) password of your PC  
 * Download code:
-  * `wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip`
-  * `unzip -d /tmp -o /tmp/rpmusicserver.zip`
+  * `wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip && unzip -d /tmp -o /tmp/rpmusicserver.zip`
 * Burn SD-card:
   * insert SD-card into your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/burn-image.sh`
@@ -57,8 +66,6 @@ _If this command has no output_, it is all good and you can proceed installing R
   * watch services to become active:
     * `watch nmap rpms`
       * wait until port 9002 appears; exit with Ctrl-C
-    * http://rpms/services
-      * wait until port 9002 is active
   * RPMS (browser): http://rpms
   * LMS (browser): http://rpms:9002
   * Transmission (browser): http://rpms:9091
@@ -115,12 +122,82 @@ Reconfiguring is best done:
 * (or) by the Squeezebox Controller (per player, change 'Music Collection')
 * (or) on the Squeezebox-device itself (all except Duet which has no physical interface)
 
-## Update
+## Update RPMS
 Update your RPMS-server by the web-interface: 
-* http://rpms/
 * Under Version, click on the Update-button
 
 Note: update is disabled when there is no newer version found.
+
+## Transcoder
+For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps. From then on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
+* in your file explorer
+  * create a folder `flac` under `smb://rpms/Publiek/Muziek`
+  * move your flac-files into that folder `flac`
+* in LMS Server Settings, point music-folder to this location:
+  * `/music/flac`
+* in the web-interface, under Transcoder, Edit, change setting `SourceFolder`
+  * point to `/media/usbdata/user/Publiek/Muziek/flac`
+* for transcoding to ogg
+  * in your file explorer, create a folder `ogg` under `smb://rpms/Publiek/Muziek`
+  * in the web-interface, under Transcoder, Edit, change setting `OggFolder`
+    * point to `/media/usbdata/user/Publiek/Muziek/ogg`
+* for transcoding to mp3
+  * in your file explorer, create a folder `mp3`under `smb://rpms/Publiek/Muziek`
+  * in the web-interface, under Transcoder, Edit, change setting `Mp3Folder`
+    * point to `/media/usbdata/user/Publiek/Muziek/mp3`
+
+### Notes
+* when transcoding, these default quality-levels are used: ogg = 1, mp3 = 128; optionally, you can change these defaults
+* you can simultaneously trancode to ogg AND mp3; just set both `OggFolder` and `Mp3Folder`
+
+## Backup
+You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS.
+
+### Server-based backup 
+The advantage of the server-based (local) backup is that the resulting backup is a identical copy of the data-disk, making it very easy to switch in case of a disaster. The disadvantage is that you have to have local access to the server (Pi) for attaching the backup-disk.
+
+This backup will be done to a dedicated backup-disk, connected to the Pi it self, thus a server-based backup.
+
+* format a disk dedicated for RPMS-backups (one-time only):
+  * connect your (empty) backup-disk to your PC
+  * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/format-usbdisk.sh -O /tmp/format-usbdisk.sh && chmod +x /tmp/format-usbdisk.sh && sudo /tmp/format-usbdisk.sh`
+    * enter your (personal) password of the client-machine
+  * follow the instructions to format as a BACKUP-disk
+* engage the backup:
+  * connect your backup-disk to the Pi
+  * in the web-interface, under Backup, click Backup
+  * disconnect backup-disk
+
+#### Off-line backup-data viewing
+Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
+
+### Remote backup
+The advantage of the remote backup is that you can use a protocol at wish, be it ssh/rsync or syncthing (which is built-in in RPMS) or SMB. The disadvantage of a remote backup is that in case of a disaster, it is a lot more work to get up-and-running again.
+
+Note that system-data is also present on the data-part ('Public') in the form of a file rpms-system.zip. Thus, as you backup the user-data, you also backup the system-files resulting in a full backup. 
+
+For a backup using rsync over SSH, here is a example-script:<br>
+`#!/bin/bash`<br/> 
+`rsync --progress --delete -rtv --max-size=4GB --modify-window=2 --exclude Downloads \`<br/> 
+`	pi@rpms:/media/usbdata/user/* \`<br/> 
+`	/media/$USER/<disklabel of backup-disk>/backup/user`<br/> 
+`sync`<br/> 
+
+## Disaster-recovery
+Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple
+
+### Broken Pi (very unlikely)
+Just obtain a new Pi which meets the system requirements (see above), swap the SD-card and boot up the Pi (possible need to reconnect player, see Troubleshooting-section)
+
+### Corrupt SD-card
+Re-burn and re-install RPMS (see above for instructions) on the same card (if the hardware is damaged, obtain a new card); then you can reboot the Pi and you are ready to go (possible need to reconnect player, see Troubleshooting-section)
+
+### Data-disk crash
+In case of a server-based backup, you are 'lucky': b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata` with your favourite disk-tool (Disks, gparted, etc.), connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made.
+
+In case of a remote backup, you have more work to do: reformat a (new) usbdata-disk (see instructions above), copy all data from the backup to the data-disk under '/user'. Unzip rpms-system.zip (this file is present in the root of the data-backup) and copy this to /rpms. Re-attach and reboot and you are back in business. 
+
+Remember to make a backup to a new backup-disk immediately!
 
 ## Development
 
@@ -154,92 +231,3 @@ The `rpmsdev` hostname is used in this build
 ### List of API requests 
   * `curl rpms:5000/api/GetApiList`
   * http://rpms:5000/api/GetApiList
-
-## Transcoder
-For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
-* in your file explorer
-  * create a folder `flac` under `smb://rpms/Publiek/Muziek`
-  * move your flac-files into that folder `flac`
-* in LMS Server Settings http://rpms:9002, point music-folder to this location:
-  * `/music/flac`
-* change setting `SourceFolder` http://rpms/transcoder/edit
-  * point to `/media/usbdata/user/Publiek/Muziek/flac`
-  * click  Save
-* for transcoding to ogg
-  * in your file explorer
-    * create a folder `ogg` under `smb://rpms/Publiek/Muziek`
-  * change setting `OggFolder` http://rpms/transcoder/edit
-    * point to `/media/usbdata/user/Publiek/Muziek/ogg`
-    * click Save
-* for transcoding to mp3
-  * in your file explorer
-    * create a folder `mp3`under `smb://rpms/Publiek/Muziek`
-  * change setting `Mp3Folder` http://rpms/transcoder/edit
-    * point to `/media/usbdata/user/Publiek/Muziek/mp3`
-    * click Save
-* from now on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
-* see transcoder-progress
-  * http://rpms/logs/transcoder/20
-  * `curl rpms:5000/api/GetTranscoderLog/20`
-
-### Notes
-* Transcoding will be done by these default quality-levels: ogg = 1, mp3 = 128. Optionally, you can change these defaults:
-  * for example, change `OggQuality` http://rpms/transcoder/edit` to 3 (value = 1, 2, 3, 4, or 5):
-  * for example, change `Mp3Bitrate` http://rpms/transcoder/edit to 256 (value = 128, 256 or 384):
-* Trancoding simultaneously to ogg AND mp3 is possible; just set both `OggFolder` and `Mp3Folder`
-
-## Backup
-You can make a backup of all the data contained in your RPMS-server. Within RPMS you have the choice for a full, server-based backup. Or a remote backup, in which you backup basically the data-part of RPMS.
-
-### Remote backup
-The advantage of the remote backup is that you can use a protocol at wish, be it ssh/rsync or syncthing (which is built-in in RPMS) or SMB. Note that system-data is also present on the data-part in the form of a file (rpms-system.zip). Thus, as you backup the data. you also backup the system-files resulting in a full backup. The disadvantage of a remote backup is that in case of a disaster, it is a lot more work to get back up-and-running.
-
-For a backup using rsync over SSH, here is a eample-script:<br>
-`#!/bin/bash`<br/> 
-`rsync --progress --delete -rtv --max-size=4GB --modify-window=2 --exclude Downloads \`<br/> 
-`	pi@rpms:/media/usbdata/user/* \`<br/> 
-`	/media/$USER/<disklabel of backup-disk>/backup/user`<br/> 
-`sync`<br/> 
-
-### Server-based backup 
-The advantage of the server-based (local) backup is that the resulting backup is a identical copy of the full data-disk, making it very easy to switch in case of a disaster. The disadvantage is that you have to have local access to the server (Pi) for attaching the backup-disk.
-
-This backup will be done to a dedicated backup-disk, connected to the Pi it self, thus a server-based backup.
-
-* format a disk dedicated for RPMS-backups (one-time only):
-  * connect your (empty) backup-disk to your PC
-  * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/format-usbdisk.sh -O /tmp/format-usbdisk.sh && chmod +x /tmp/format-usbdisk.sh && sudo /tmp/format-usbdisk.sh`
-    * enter your (personal) password of the client-machine
-  * follow the instructions to format as a BACKUP-disk
-* engage the backup:
-  * connect your backup-disk to the Pi
-  * start the backup
-    * http://rpms/backup
-    * click Backup
-  * watch overall progress
-    * http://rpms/logs/backup/20
-    * refresh until log states: 'Backup ended'
-  * watch detailed progress
-    * http://rpms/logs/backup-details/20
-  * see full backup-log
-    * http://rpms/logs/backup-details/0)
-  * disconnect backup-disk
-
-### Off-line backup-data viewing
-Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
-
-## Disaster-recovery
-Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple
-
-### Broken Pi (very unlikely)
-Just obtain a new Pi which meets the system requirements (see above), swap the SD-card and boot up the Pi (possible need to reconnect player, see Troubleshooting-section)
-
-### Corrupt SD-card
-Re-burn and re-install RPMS (see above for instructions) on the same card (if the hardware is damaged, obtain a new card); then you can reboot the Pi and you are ready to go (possible need to reconnect player, see Troubleshooting-section)
-
-### Data-disk crash
-In case of a server-based backup, you are 'lucky': b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata` with your favourite disk-tool (Disks, gparted, etc.), connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made.
-
-In case of a remote backup, you have more work to do: reformat a (new) usbdata-disk (see instructions above), copy all data from the backup to the data-disk under '/user'. Unzip rpms-system.zip (this file is present in the root of the data-backup) and copy this to /rpms. Re-attach and reboot and you are back in business. 
-
-Remember to make a backup to a new backup-disk immediately!
