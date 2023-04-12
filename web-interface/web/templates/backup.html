@@ -4,16 +4,16 @@
     <h2>Backup</h2>
     <table>
         <tr>
-            <td align="right">
-                LastBackup
+            <td>
+                Last Backup
             </td>
             <td>
                 <b>{{ backupInfo.LastBackup }}</b>
             </td>
         </tr>            
         <tr>
-            <td align="right">
-                BackupDisk
+            <td>
+                Backup Disk?
             </td>
             <td><b>
                 {% if backupInfo.IsBackupDiskPresent %}
@@ -24,8 +24,8 @@
             </b></td>
         </tr>
         <tr>
-            <td align="right">
-                NotInProgress
+            <td>
+                Not in Progress?
             </td>
             <td><b>
                 {% if backupInfo.IsBackupNotInProgress %}
@@ -50,7 +50,7 @@
         <a href="/logs/backup/20">Backup</a>
     </div>
     <div class="indent">
-        <a href="/logs/backup-details/20">BackupDetails</a>
+        <a href="/logs/backup-details/20">Backup Details</a>
     </div>        
 
 {% endblock %}

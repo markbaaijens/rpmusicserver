@@ -449,12 +449,12 @@ def DoUpdateRpms():
 def DoExportCollection():
     musicCollectionInfo = logic.GetMusicCollectionInfo()
     exportFile = musicCollectionInfo["ExportFile"]
-    collectionFolder = musicCollectionInfo["CollectionFolder"]
+    collectionFolderFunctional = musicCollectionInfo["CollectionFolderFunctional"]
 
     try:
         asyncio.run(logic.DoExportCollection())
         info = { "Message": "Collection has been exported to " + 
-                    exportFile + " in " + collectionFolder}
+                    exportFile + " in " + collectionFolderFunctional}
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

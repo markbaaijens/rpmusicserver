@@ -4,7 +4,9 @@ import json
 import os
 from globals import configObject
 from datetime import datetime
+from datetime import timedelta
 import math
+from math import ceil
 import asyncio
 import urllib.request
 
@@ -26,35 +28,105 @@ def RevisionFileName():
         revisionFile = os.path.dirname(__file__) + '/../../revision.json'
     return revisionFile
 
+
+def ConvertToFunctionalFolder(folderName):
+    return folderName.replace(GetUserBaseFolder(), 'server:/')
+
+def GetElapsedTimeHumanReadable(fromDate):
+    timeElapsed = datetime.today() - fromDate
+
+    elapsedSeconds = int(timeElapsed.total_seconds())
+    elapsedMinutes = int(divmod(timeElapsed.total_seconds(), 60)[0])
+    elapsedMinutesSeconds = int(divmod(timeElapsed.total_seconds(), 60)[1])    
+    elapsedHours = int(divmod(timeElapsed.total_seconds(), 60 * 60)[0])
+    elapsedHoursMinutes = int(divmod(timeElapsed.total_seconds(), 60 * 60)[1] / 60)
+    elapsedDays = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24)[0])
+    elapsedDaysHours = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24)[1] / (60 * 60))
+    elapsedWeeks = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 7)[0])
+    elapsedWeeksDays = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 7)[1] / (60 * 60 * 24))    
+    elapsedMonths = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 30)[0])
+    elapsedMonthsDays = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 30)[1] / (60 * 60 * 24))
+    elapsedYears = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 365)[0])
+    elapsedYearsMonths = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 365)[1] / (60 * 60 * 24 * 30))
+
+    elapsedTimeAsString = ''
+    if elapsedYears > 0:
+        elapsedTimeAsString = str(elapsedYears) + ' year'
+        if elapsedYears > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+        if elapsedYearsMonths > 0:
+            elapsedTimeAsString = elapsedTimeAsString + ', ' + str(elapsedYearsMonths) + ' month'
+            if elapsedYearsMonths > 1:
+                elapsedTimeAsString = elapsedTimeAsString + 's'            
+    elif elapsedMonths > 0:
+        elapsedTimeAsString = str(elapsedMonths) + ' month'
+        if elapsedMonths > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+        if elapsedMonthsDays > 0:
+            elapsedTimeAsString = elapsedTimeAsString + ', ' + str(elapsedMonthsDays) + ' day'
+            if elapsedMonthsDays > 1:
+                elapsedTimeAsString = elapsedTimeAsString + 's'
+    elif elapsedWeeks > 0:
+        elapsedTimeAsString = str(elapsedWeeks) + ' week'
+        if elapsedWeeks > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+        if elapsedWeeksDays > 0:
+            elapsedTimeAsString = elapsedTimeAsString + ', ' + str(elapsedWeeksDays) + ' day'
+            if elapsedWeeksDays > 1:
+                elapsedTimeAsString = elapsedTimeAsString + 's'
+    elif elapsedDays > 0:
+        elapsedTimeAsString = str(elapsedDays) + ' day'
+        if elapsedDays > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+        if elapsedDaysHours > 0:
+            elapsedTimeAsString = elapsedTimeAsString + ', ' + str(elapsedDaysHours) + ' hour'
+            if elapsedDaysHours > 1:
+                elapsedTimeAsString = elapsedTimeAsString + 's'
+    elif elapsedHours > 0:
+        elapsedTimeAsString = str(elapsedHours) + ' hour'             
+        if elapsedHours > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+        if elapsedHoursMinutes > 0:
+            elapsedTimeAsString = elapsedTimeAsString + ', ' + str(elapsedHoursMinutes) + ' minute'
+            if elapsedHoursMinutes > 1:
+                elapsedTimeAsString = elapsedTimeAsString + 's'
+    elif elapsedMinutes > 0:
+        elapsedTimeAsString = str(elapsedMinutes) + ' minute'
+        if elapsedMinutes > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+        if elapsedMinutesSeconds > 0:
+            elapsedTimeAsString = elapsedTimeAsString + ', ' + str(elapsedMinutesSeconds) + ' second'
+            if elapsedMinutesSeconds > 1:
+                elapsedTimeAsString = elapsedTimeAsString + 's'
+    elif elapsedSeconds > 0:
+        elapsedTimeAsString = str(elapsedSeconds) + ' second'
+        if elapsedSeconds > 1:
+            elapsedTimeAsString = elapsedTimeAsString + 's'
+
+    if elapsedTimeAsString != '':
+        elapsedTimeAsString = elapsedTimeAsString + ' ago'
+    else:
+        elapsedTimeAsString = 'now'        
+
+    return elapsedTimeAsString
+
 def GetMachineInfo():
-    def CheckRpModelMemoryInGB(rpModelMemoryInGB):
-        if int(rpModelMemoryInGB) < 1:
-            rpModelMemoryInGB = "1"
-        return rpModelMemoryInGB + "GB"
-        
-    def GetOsBitType():
-        osBitType = ExecuteBashCommand("uname -m")
-        if osBitType == "armv7l":
-            return osBitType + ' 32-bit'
-        elif osBitType == "armv8":
-            return osBitType + ' 64-bit'
-        return osBitType
-
-    def GetHostUrl():
-        urlPrefix = 'http://'
-        hostUrl = urlPrefix + hostName
-        if ExecuteBashCommand("nslookup " + hostName + " | grep \"server can't find\"").strip() != "":
-            hostUrl = urlPrefix + ipAddress
-        return hostUrl
-
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
-    hostUrl = GetHostUrl()  # Must be behind hostName + ipAddress
+
+    urlPrefix = 'http://'
+    hostUrl = urlPrefix + hostName
+    if ExecuteBashCommand("nslookup " + hostName + " | grep \"server can't find\"").strip() != "":
+        hostUrl = urlPrefix + ipAddress
+
     osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
-    osBitType = GetOsBitType()
+    osBitType = ExecuteBashCommand("uname -m")
     osCodeName = ExecuteBashCommand("lsb_release -c").split()[1]
+    kernelVersion = ExecuteBashCommand("uname -r")
+
+    rpModelMemoryInGB = str(ceil(float(ExecuteBashCommand("free --mega | grep Mem: | awk '{print $2}'")) / 1024)) + ' GB'
+
     rpModel = '?'
-    rpModelMemoryInGB = CheckRpModelMemoryInGB(ExecuteBashCommand("free --giga | grep Mem: | awk '{print $2}'"))
     if os.path.isfile('/proc/device-tree/model'):    
         rpModel = ExecuteBashCommand("cat /proc/device-tree/model").replace('\u0000', '')
  
@@ -69,6 +141,7 @@ def GetMachineInfo():
             "OsCodeName": osCodeName,
             "OsDescription": osDescription,
             "OsBitType": osBitType,
+            "KernelVersion": kernelVersion,
             "RpModel": rpModel,
             "RpModelMemoryInGB": rpModelMemoryInGB,
             "UpTime": upTime}
@@ -237,7 +310,6 @@ def GetMemoryResourceInfo():
             "SwapUsedPercentage": swapUsedPercentage
             }
 
-
 def GetVersionInfo():
     revisionFile = RevisionFileName()
 
@@ -258,6 +330,7 @@ def GetVersionInfo():
         except:
             pass
         lastUpdateTimeStampAsString = datetime.fromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
+        lastUpdateTimeStampAsString = lastUpdateTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastUpdateTimeStampAsString, '%Y-%m-%d %H:%M:%S'))
 
     updateBranchName = 'master'
     updateBranchFile = '/media/usbdata/rpms/config/update-branch.txt'
@@ -315,7 +388,9 @@ def GetBackupInfo():
 
     isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup") == "usbbackup"
     canBackup = isBackupDiskPresent and isBackupNotInProgress
+
     lastBackup = ExecuteBashCommand("cat /media/usbdata/rpms/logs/backup.log | grep 'executing backup' | tail -n 1 | cut -c1-19")
+    lastBackup = lastBackup + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastBackup, '%Y-%m-%d %H:%M:%S'))    
 
     return {"IsBackupNotInProgress": isBackupNotInProgress,
             "IsBackupDiskPresent": isBackupDiskPresent,
@@ -324,6 +399,7 @@ def GetBackupInfo():
 
 def GetTranscoderInfo():
     defaultCollectionFolder = GetDefaultMusicCollectionFolder()
+    defaultCollectionFolderFunctional = ConvertToFunctionalFolder(defaultCollectionFolder)
 
     transcoderSettings = GetTranscoderSettings()
     settingSourceFolder = transcoderSettings['sourcefolder']
@@ -336,15 +412,18 @@ def GetTranscoderInfo():
     settingMp3Bitrate = transcoderSettings['mp3bitrate']
 
     isActivated = (transcoderSettings['sourcefolder'] != '') and ((transcoderSettings['oggfolder'] != '') or (transcoderSettings['mp3folder'] != ''))
+
     lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'End session' | tail -n 1 | cut -c1-19")
+    lastTranscode = lastTranscode + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
 
     return {"IsActivated": isActivated,
             "LastTranscode": lastTranscode,
             "DefaultCollectionFolder": defaultCollectionFolder,
-            "SettingSourceFolder": settingSourceFolderShort,
-            "SettingOggFolder": settingOggFolderShort,
+            "DefaultCollectionFolderFunctional": defaultCollectionFolderFunctional,
+            "SettingSourceFolderShort": settingSourceFolderShort,
+            "SettingOggFolderShort": settingOggFolderShort,
             "SettingOggQuality": settingOggQuality,
-            "SettingMp3Folder": settingMp3FolderShort,
+            "SettingMp3FolderShort": settingMp3FolderShort,
             "SettingMp3Bitrate": settingMp3Bitrate}            
 
 def GetApiList():
@@ -365,14 +444,22 @@ def GetTranscoderSettings():
         dataAsJson = json.loads(json.dumps(dataAsDict))
     return dataAsJson
 
+def GetUserBaseFolder():
+    return '/media/usbdata/user'
+
+def GetPublicFolder():
+    return 'Publiek'
+
+def GetMusicFolder():
+    return 'Muziek'    
+
 def GetDefaultMusicCollectionFolder():
-    return '/media/usbdata/user/Publiek/Muziek'    
+    return GetUserBaseFolder() + '/' + GetPublicFolder() + '/' + GetMusicFolder()
 
-def GetMusicCollectionInfo():
-    defaultCollectionFolder = GetDefaultMusicCollectionFolder()
-
+def GetMusicCollectionInfo():   
     transcoderSettings = GetTranscoderSettings()
     actualCollectionFolder = transcoderSettings["sourcefolder"]
+    actualCollectionFolderFunctional = ConvertToFunctionalFolder(actualCollectionFolder)
     exportFile = "tree.txt"
 
     if actualCollectionFolder == '':
@@ -386,9 +473,10 @@ def GetMusicCollectionInfo():
         except:
             pass
         lastExportTimeStampAsString = datetime.fromtimestamp(lastExportTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
+        lastExportTimeStampAsString = lastExportTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastExportTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
 
     return {"CollectionFolder": actualCollectionFolder,
-            "DefaultCollectionFolder": defaultCollectionFolder,
+            "CollectionFolderFunctional": actualCollectionFolderFunctional,
             "ExportFile": exportFile,
             "LastExport": lastExportTimeStampAsString}
 

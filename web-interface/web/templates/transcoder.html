@@ -4,7 +4,7 @@
     <h2>Transcoder</h2>
     <table>
         <tr>
-            <td align="right">
+            <td>
                 Activated
             </td>
             <td><b>
@@ -16,8 +16,8 @@
             </b></td>
         </tr>
         <tr>
-            <td align="right">
-                LastTranscode
+            <td>
+                Last Transcode
             </td>
             <td>
                 <b>{{ transcoderInfo.LastTranscode }}</b>
@@ -34,22 +34,22 @@
     </div> 
     <table>
         <tr>
-            <td align="right">SourceFolder</td>
+            <td>Source Folder</td>
             <td>
-                <small>{{ transcoderInfo.DefaultCollectionFolder }}/</small>
-                <b>{{ transcoderInfo.SettingSourceFolder }}</b>
+                <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
+                <b>{{ transcoderInfo.SettingSourceFolderShort }}</b>
             </td>
         </tr>
         <h3>Settings</h3>     
         <tr>
-            <td align="right">OggFolder</td>
+            <td>Ogg Folder</td>
             <td>
-                <small>{{ transcoderInfo.DefaultCollectionFolder }}/</small>
-                <b>{{ transcoderInfo.SettingOggFolder }}</b>
+                <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
+                <b>{{ transcoderInfo.SettingOggFolderShort }}</b>
             </td>
         </tr>
         <tr>
-            <td align="right">OggQuality</td>
+            <td>Ogg Quality</td>
             <td>
                 {% if transcoderInfo.SettingOggQuality == 0 %}
                     <small>(default = 1)</small>
@@ -59,14 +59,14 @@
             </td>
         </tr>
         <tr>
-            <td align="right">Mp3Folder</td>
+            <td>Mp3 Folder</td>
             <td>
-                <small>{{ transcoderInfo.DefaultCollectionFolder }}/</small>
-                <b>{{ transcoderInfo.SettingMp3Folder }}</b>
+                <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
+                <b>{{ transcoderInfo.SettingMp3FolderShort }}</b>
             </td>
         </tr>
         <tr>
-            <td align="right">Mp3Bitrate</td>
+            <td>Mp3 Bitrate</td>
             <td>
                 {% if transcoderInfo.SettingMp3Bitrate == 0 %}
                     <small>(default = 128)</small>
@@ -87,7 +87,7 @@
     <h3>Log(s)</h3>     
     <div>
         <p>
-        <a href="/logs/transcoder/20">TranscoderLog</a>
+        <a href="/logs/transcoder/20">Transcoder Log</a>
     </div>           
 
 

@@ -45,6 +45,8 @@ if [ ! "$(docker ps -f name=samba -q)" ]; then
         -p 138:138/udp \
         -v /media/usbdata/user/Publiek:/mnt_public \
         -v /media/usbbackup/user/Publiek:/mnt_backup \
+        -e USERID=1000 \
+        -e GROUPID=1000 \
         dperson/samba:latest -n -p -r \
         -s "Publiek;/mnt_public;yes;no;yes;all;;;Publiek" \
         -s "Backup;/mnt_backup;yes;yes;yes;all;;;Backup"
