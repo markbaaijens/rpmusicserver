@@ -7,7 +7,7 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
 [Update RPMS](https://github.com/markbaaijens/rpmusicserver#update-rpms)<br/> 
 [Transcoder](https://github.com/markbaaijens/rpmusicserver#transcoder)<br/> 
 [Backup](https://github.com/markbaaijens/rpmusicserver#backup)<br/> 
-[Disaster-recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery)<br/> 
+[Disaster Recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery)<br/> 
 [Development](https://github.com/markbaaijens/rpmusicserver#development)<br/> 
 
 Note. In LMS, `/music` is mapped to `/media/usbdata/user/Publiek/Muziek` due to the usage of Docker; this is also the case for Transmission and SyncThing which happen to be also Docker-containers.
@@ -25,8 +25,8 @@ To detect if your network supports local DNS, execute the following command in a
 * `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
 
 Check for output:
-* _If this command has NO output_, it is all good and you can proceed installing RPMS on your Pi.
-* _If this command DOES produce output_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific _Pi/rpms can only reached by ip-address_.
+* _no output_, it is all good and you can proceed installing RPMS on your Pi.
+* _output produced_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific [Pi/rpms can only reached by ip-address](https://github.com/markbaaijens/rpmusicserver#pirpms-can-only-reached-by-ip-address)
 
 ### Steps to install RPMS on your Pi
 * Install package(s) on your Linux PC:
@@ -106,7 +106,7 @@ If everything fails (no hostname shown for pi, multiple ip-addresses for hostnam
 ### *Pi/rpms can only reached by ip-address*
 On some local networks, there might be a problem present that the hostname of all connected devices, including RPMS cannot be resolved. In practice, `ping rpms` does not return anything. So any command directly targeted at RPMS such as `ssh pi@rpms` does not work. This is a problem within the router/network, the origin of this problem is unknown to date.
 
-The good news however is that a device is *always* accesible by ip-address. So once you know the ip-address of your RPMS-instance, you can install, configure and use RPMS. For more details about discovering de Pi-address, see _Pi/rpms cannot be reached on the network_
+The good news however is that a device is *always* accesible by ip-address. So once you know the ip-address of your RPMS-instance, you can install, configure and use RPMS. 
 
 All you have to do is the following: in any command in the section *Installation of RPMS on a Pi* (and following sections), replace RPMS with the discovered ip-address.
 
@@ -131,24 +131,24 @@ Note: update is disabled when there is no newer version found.
 ## Transcoder
 For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps. From then on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
 * in your file explorer
-  * create a folder `flac` under `smb://rpms/Publiek/Muziek`
+  * create a folder `flac` under `smb://<music folder>`
   * move your flac-files into that folder `flac`
 * in LMS Server Settings, point music-folder to this location:
   * `/music/flac`
-* in the web-interface, under Transcoder, Edit, change setting `SourceFolder`
-  * point to `/media/usbdata/user/Publiek/Muziek/flac`
+* in the web-interface, under Transcoder, Edit, change setting `Source Folder`
+  * point to `flac`
 * for transcoding to ogg
-  * in your file explorer, create a folder `ogg` under `smb://rpms/Publiek/Muziek`
-  * in the web-interface, under Transcoder, Edit, change setting `OggFolder`
-    * point to `/media/usbdata/user/Publiek/Muziek/ogg`
+  * in your file explorer, create a folder `ogg` under `smb://<music folder>`
+  * in the web-interface, under Transcoder, Edit, change setting `Ogg Folder`
+    * point to `ogg`
 * for transcoding to mp3
-  * in your file explorer, create a folder `mp3`under `smb://rpms/Publiek/Muziek`
-  * in the web-interface, under Transcoder, Edit, change setting `Mp3Folder`
-    * point to `/media/usbdata/user/Publiek/Muziek/mp3`
+  * in your file explorer, create a folder `mp3`under `smb://<music folder>`
+  * in the web-interface, under Transcoder, Edit, change setting `Mp3 Folder`
+    * point to `mp3`
 
 ### Notes
-* when transcoding, these default quality-levels are used: ogg = 1, mp3 = 128; optionally, you can change these defaults
-* you can simultaneously trancode to ogg AND mp3; just set both `OggFolder` and `Mp3Folder`
+* some default quality-levels are used for transcoding: ogg = 1, mp3 = 128; optionally, you can change these defaults through the web-interface under Transcoder
+* you can simultaneously transcode to ogg AND mp3; just set both `Ogg Folder` and `Mp3 Folder`
 
 ## Backup
 You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS.
@@ -183,27 +183,50 @@ For a backup using rsync over SSH, here is a example-script:<br>
 `	/media/$USER/<disklabel of backup-disk>/backup/user`<br/> 
 `sync`<br/> 
 
-## Disaster-recovery
+## Disaster Recovery
 Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple
 
 ### Broken Pi (very unlikely)
-Just obtain a new Pi which meets the system requirements (see above), swap the SD-card and boot up the Pi (possible need to reconnect player, see Troubleshooting-section)
+Steps to get back on track:
+* obtain a new Pi which meets the system requirements (see above)
+* swap the SD-card from the defect Pi
+* connect your data-disk
+* boot up the new Pi and you are ready to go
+
+You may possibly need to [reconnect player(s)](https://github.com/markbaaijens/rpmusicserver#reconnect-players-after-lms-migration)
 
 ### Corrupt SD-card
-Re-burn and re-install RPMS (see above for instructions) on the same card (if the hardware is damaged, obtain a new card); then you can reboot the Pi and you are ready to go (possible need to reconnect player, see Troubleshooting-section)
+Steps to get back on track:
+* if the hardware is damaged, obtain a new card, otherwise, use the same card
+* burn and install RPMS onto the card (see above for instructions)
+
+* reboot the Pi and you are ready to go
+
+You may possibly need to [reconnect player(s)](https://github.com/markbaaijens/rpmusicserver#reconnect-players-after-lms-migration)
 
 ### Data-disk crash
-In case of a server-based backup, you are 'lucky': b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata` with your favourite disk-tool (Disks, gparted, etc.), connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made.
+_In case of a server-based backup_, you are 'lucky': b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. 
 
-In case of a remote backup, you have more work to do: reformat a (new) usbdata-disk (see instructions above), copy all data from the backup to the data-disk under '/user'. Unzip rpms-system.zip (this file is present in the root of the data-backup) and copy this to /rpms. Re-attach and reboot and you are back in business. 
+Steps to get back on track:
+* rename the label of the backup-disk from `usbbackup` to `usbdata` 
+  * use your favourite disk-tool (Disks, gparted, etc.)
+* connect the disk to the Pi and boot up
+
+By now, the backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made.
+
+_In case of a remote backup_, you have more work to do: 
+* reformat a (new) disk for usbdata-usage (see instructions above)
+* copy all data from the remote backup location to the data-disk under '/user'
+* unzip rpms-system.zip (this file is present in the root of the data-backup)
+* copy the contents of rpms-system.zip to /rpms
+* attach the newly formatted and populated data-disk to the Pi
+* reboot and you are back in business
 
 Remember to make a backup to a new backup-disk immediately!
 
 ## Development
 
 ### Update from another git branch
-RPMS can be updated from a github branch, where the rpms-code is stored. The update depends on version-numbering in the file `revision.json` (locally stored on rpms) on one hand and on `revision.json` in the github-repo in the other hand. 
-
 By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. As a result, an indicator VersionOverride pops up in the web-interface.
 
 Note that once VersionOverride is active, CurrentVersion and AvailableVersion do not play a role anymore.
