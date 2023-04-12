@@ -13,9 +13,13 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
 Note. In LMS, `/music` is mapped to `/media/usbdata/user/Publiek/Muziek` due to the usage of Docker; this is also the case for Transmission and SyncThing which happen to be also Docker-containers.
 
 ## System requirements
-* Raspberry Pi: [minimum] Pi 3 (B or B+), 1 GB; [recommended] Pi 4 B, 4 GB
-* SD Card: [minimum] 16 GB; [recommended] 32 GB
-* Linux PC: for installation purposes, a Linux PC is required; once installed, any OS will do, be it Windows, Linux or MacOS
+* Raspberry Pi: 
+  * [minimum] Pi 3 (B or B+), 1 GB; [recommended] Pi 4 B, 4 GB
+* SD Card: 
+  * [minimum] 16 GB; [recommended] 32 GB
+* Linux PC: 
+  * for installation purposes, a Linux PC is required
+  * once installed, any OS will do, be it Windows, Linux or MacOS
 
 ## Installation of RPMS on a Pi
 Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
@@ -65,7 +69,7 @@ Check for output:
 * Test access:
   * watch services to become active:
     * `watch nmap rpms`
-      * wait until port 9002 appears; exit with Ctrl-C
+    * wait until port 9002 appears; exit with Ctrl-C
   * RPMS (browser): http://rpms
   * LMS (browser): http://rpms:9002
   * Transmission (browser): http://rpms:9091
@@ -158,7 +162,7 @@ The advantage of the server-based (local) backup is that the resulting backup is
 
 This backup will be done to a dedicated backup-disk, connected to the Pi it self, thus a server-based backup.
 
-* format a disk dedicated for RPMS-backups (one-time only):
+* format a disk dedicated for RPMS-backups (you only have to do this once):
   * connect your (empty) backup-disk to your PC
   * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/format-usbdisk.sh -O /tmp/format-usbdisk.sh && chmod +x /tmp/format-usbdisk.sh && sudo /tmp/format-usbdisk.sh`
     * enter your (personal) password of the client-machine
