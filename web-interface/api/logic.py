@@ -27,6 +27,10 @@ def RevisionFileName():
         revisionFile = os.path.dirname(__file__) + '/../../revision.json'
     return revisionFile
 
+
+def ConvertToFunctionalFolder(folderName):
+    return folderName.replace(GetUserBaseFolder(), 'server:/')
+
 def GetElapsedTimeHumanReadable(fromDate):
     timeElapsed = datetime.today() - fromDate
 
@@ -405,6 +409,7 @@ def GetBackupInfo():
 
 def GetTranscoderInfo():
     defaultCollectionFolder = GetDefaultMusicCollectionFolder()
+    defaultCollectionFolderFunctional = ConvertToFunctionalFolder(defaultCollectionFolder)
 
     transcoderSettings = GetTranscoderSettings()
     settingSourceFolder = transcoderSettings['sourcefolder']
@@ -424,10 +429,11 @@ def GetTranscoderInfo():
     return {"IsActivated": isActivated,
             "LastTranscode": lastTranscode,
             "DefaultCollectionFolder": defaultCollectionFolder,
-            "SettingSourceFolder": settingSourceFolderShort,
-            "SettingOggFolder": settingOggFolderShort,
+            "DefaultCollectionFolderFunctional": defaultCollectionFolderFunctional,
+            "SettingSourceFolderShort": settingSourceFolderShort,
+            "SettingOggFolderShort": settingOggFolderShort,
             "SettingOggQuality": settingOggQuality,
-            "SettingMp3Folder": settingMp3FolderShort,
+            "SettingMp3FolderShort": settingMp3FolderShort,
             "SettingMp3Bitrate": settingMp3Bitrate}            
 
 def GetApiList():
@@ -448,14 +454,22 @@ def GetTranscoderSettings():
         dataAsJson = json.loads(json.dumps(dataAsDict))
     return dataAsJson
 
+def GetUserBaseFolder():
+    return '/media/usbdata/user'
+
+def GetPublicFolder():
+    return 'Publiek'
+
+def GetMusicFolder():
+    return 'Muziek'    
+
 def GetDefaultMusicCollectionFolder():
-    return '/media/usbdata/user/Publiek/Muziek'    
+    return GetUserBaseFolder() + '/' + GetPublicFolder() + '/' + GetMusicFolder()
 
-def GetMusicCollectionInfo():
-    defaultCollectionFolder = GetDefaultMusicCollectionFolder()
-
+def GetMusicCollectionInfo():   
     transcoderSettings = GetTranscoderSettings()
     actualCollectionFolder = transcoderSettings["sourcefolder"]
+    actualCollectionFolderFunctional = ConvertToFunctionalFolder(actualCollectionFolder)
     exportFile = "tree.txt"
 
     if actualCollectionFolder == '':
@@ -472,7 +486,7 @@ def GetMusicCollectionInfo():
         lastExportTimeStampAsString = lastExportTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastExportTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
 
     return {"CollectionFolder": actualCollectionFolder,
-            "DefaultCollectionFolder": defaultCollectionFolder,
+            "CollectionFolderFunctional": actualCollectionFolderFunctional,
             "ExportFile": exportFile,
             "LastExport": lastExportTimeStampAsString}
 

@@ -162,7 +162,7 @@ def ShowResources():
     pass     
 
 @app.route('/tasks', methods=['GET'])
-def ShowCommands():
+def ShowTasks():
     try:
         musicCollectionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMusicCollectionInfo').content)
     except Exception as e:
@@ -486,13 +486,14 @@ def ShowUpdateLog(nrOfLines):
 @app.route('/transcoder/edit', methods=['GET', 'POST'])
 def EditTranscoderSettings():
     try:
-        musicCollectionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMusicCollectionInfo').content)
+        transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        musicCollectionInfo = []
+        transcoderInfo = []
 
-    defaultMusicFolder = musicCollectionInfo["DefaultCollectionFolder"] + '/'
+    defaultMusicFolder = transcoderInfo["DefaultCollectionFolder"] + '/'
+    defaultMusicFolderFunctional = transcoderInfo["DefaultCollectionFolderFunctional"]
 
     form = EditTranscoderForm()
 
@@ -595,7 +596,7 @@ def EditTranscoderSettings():
     return render_template('transcoder-edit.html', 
         appTitle = 'Transcoder Settings - ' + configObject.AppTitle, 
         form = form,
-        musicFolder = defaultMusicFolder)
+        musicFolder = defaultMusicFolderFunctional)
 
 if __name__ == '__main__':
     import argparse
