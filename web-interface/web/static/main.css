@@ -21,7 +21,7 @@ a {
 }
 a:link { color: steelblue;}
 a:visited {color: steelblue;}
-a:hover { background-color: lightgray;}
+a:hover { text-decoration: underline;}
 
 a.link-button {
 	background-color: whitesmoke;
