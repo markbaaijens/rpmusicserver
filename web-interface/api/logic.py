@@ -32,37 +32,67 @@ def GetElapsedTimeHumanReadable(fromDate):
 
     elapsedSeconds = int(timeElapsed.total_seconds())
     elapsedMinutes = int(divmod(timeElapsed.total_seconds(), 60)[0])
+    elapsedMinutesSeconds = int(divmod(timeElapsed.total_seconds(), 60)[1])    
     elapsedHours = int(divmod(timeElapsed.total_seconds(), 60 * 60)[0])
+    elapsedHoursMinutes = int(divmod(timeElapsed.total_seconds(), 60 * 60)[1] / 60)
     elapsedDays = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24)[0])
+    elapsedDaysHours = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24)[1] / (60 * 60))
     elapsedWeeks = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 7)[0])
+    elapsedWeeksDays = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 7)[1] / (60 * 60 * 24))    
     elapsedMonths = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 30)[0])
+    elapsedMonthsDays = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 30)[1] / (60 * 60 * 24))
     elapsedYears = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 365)[0])
+    elapsedYearsMonths = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 365)[1] / (60 * 60 * 24 * 30))
 
     elapsedTimeAsString = ''
     if elapsedYears > 0:
         elapsedTimeAsString = str(elapsedYears) + ' year'
         if elapsedYears > 1:
             elapsedTimeAsString = elapsedTimeAsString + 's'
+        if elapsedYearsMonths > 0:
+            elapsedTimeAsString = elapsedTimeAsString + ', ' + str(elapsedYearsMonths) + ' month'
+            if elapsedYearsMonths > 1:
+                elapsedTimeAsString = elapsedTimeAsString + 's'            
     elif elapsedMonths > 0:
         elapsedTimeAsString = str(elapsedMonths) + ' month'
         if elapsedMonths > 1:
             elapsedTimeAsString = elapsedTimeAsString + 's'
+        if elapsedMonthsDays > 0:
+            elapsedTimeAsString = elapsedTimeAsString + ', ' + str(elapsedMonthsDays) + ' day'
+            if elapsedMonthsDays > 1:
+                elapsedTimeAsString = elapsedTimeAsString + 's'
     elif elapsedWeeks > 0:
         elapsedTimeAsString = str(elapsedWeeks) + ' week'
         if elapsedWeeks > 1:
             elapsedTimeAsString = elapsedTimeAsString + 's'
+        if elapsedWeeksDays > 0:
+            elapsedTimeAsString = elapsedTimeAsString + ', ' + str(elapsedWeeksDays) + ' day'
+            if elapsedWeeksDays > 1:
+                elapsedTimeAsString = elapsedTimeAsString + 's'
     elif elapsedDays > 0:
         elapsedTimeAsString = str(elapsedDays) + ' day'
         if elapsedDays > 1:
             elapsedTimeAsString = elapsedTimeAsString + 's'
+        if elapsedDaysHours > 0:
+            elapsedTimeAsString = elapsedTimeAsString + ', ' + str(elapsedDaysHours) + ' hour'
+            if elapsedDaysHours > 1:
+                elapsedTimeAsString = elapsedTimeAsString + 's'
     elif elapsedHours > 0:
         elapsedTimeAsString = str(elapsedHours) + ' hour'             
         if elapsedHours > 1:
             elapsedTimeAsString = elapsedTimeAsString + 's'
+        if elapsedHoursMinutes > 0:
+            elapsedTimeAsString = elapsedTimeAsString + ', ' + str(elapsedHoursMinutes) + ' minute'
+            if elapsedHoursMinutes > 1:
+                elapsedTimeAsString = elapsedTimeAsString + 's'
     elif elapsedMinutes > 0:
         elapsedTimeAsString = str(elapsedMinutes) + ' minute'
         if elapsedMinutes > 1:
             elapsedTimeAsString = elapsedTimeAsString + 's'
+        if elapsedMinutesSeconds > 0:
+            elapsedTimeAsString = elapsedTimeAsString + ', ' + str(elapsedMinutesSeconds) + ' second'
+            if elapsedMinutesSeconds > 1:
+                elapsedTimeAsString = elapsedTimeAsString + 's'
     elif elapsedSeconds > 0:
         elapsedTimeAsString = str(elapsedSeconds) + ' second'
         if elapsedSeconds > 1:
