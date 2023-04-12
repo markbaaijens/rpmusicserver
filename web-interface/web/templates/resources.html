@@ -2,10 +2,9 @@
 
 {% block content %}
 <h2>Resources</h2>
-<h3>Generic</h3>
 <table>
     <tr>
-        <td align="right">Memory</td>
+        <td>Memory</td>
         <td>
             <meter 
                 id="memory" 
@@ -17,14 +16,14 @@
             <span class="small">
                 <label for="memory">
                     <small>
-                        <b>{{ memoryInfo.MemUsed }}</b> used of <b>{{ memoryInfo.MemTotal }}</b>
+                        <b>{{ memoryInfo.MemUsed }}</b> {{ memoryInfo.MemUsedPercentage }}% used of <b>{{ memoryInfo.MemTotal }}</b>
                     </small>
                 </label>
             </span>
         </td>
     </tr>
     <tr>
-        <td align="right">Swap</td>
+        <td>Swap</td>
         <td>
             <meter 
                 id="swap" 
@@ -37,14 +36,14 @@
             <span class="small">
                 <label for="swap">
                     <small>
-                        <b>{{ memoryInfo.SwapUsed }}</b> used of <b>{{ memoryInfo.SwapTotal }}</b>
+                        <b>{{ memoryInfo.SwapUsed }}</b> {{ memoryInfo.SwapUsedPercentage }}% used of <b>{{ memoryInfo.SwapTotal }}</b>
                     </small>
                 </label>
             </span>
         </td>
     </tr>
     <tr>
-        <td align="right">CpuLoad</td>
+        <td>Cpu Load</td>
         <td>
             <meter 
                 id="avload" 
@@ -66,7 +65,7 @@
         </td>
     </tr>
     <tr>
-        <td align="right">CpuTemp</td>
+        <td>Cpu Temp</td>
         <td>
             <meter 
                 id="swap" 
@@ -101,7 +100,7 @@
     <table>
         {% if disk.IsOnline %}
         <tr>
-            <td align="right">Size</td>
+            <td>Size</td>
             <td>
                 <meter 
                     id="size" 
@@ -112,7 +111,7 @@
                 <span class="small">
                     <label for="size">
                         <small>
-                            <b>{{ disk.Used }}</b> used of <b>{{ disk.Size }}</b>
+                            <b>{{ disk.Used }}</b> {{ disk.UsedPercentage }}% used of <b>{{ disk.Size }}</b>
                         </small>
                     </label>
                 </span>
@@ -120,7 +119,7 @@
         </tr>
         {% else %}
         <tr>
-            <td align="right">IsOnline</td>
+            <td>Online?</td>
             <td>
                 <span class="checkmark-n"> &#x2717; </span>
             </td>

@@ -2,13 +2,13 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, DecimalField, BooleanField, SelectField, RadioField, ValidationError
 
 class EditTranscoderForm(FlaskForm):
-    sourceFolder = StringField('SourceFolder')
-    oggFolder = StringField('OggFolder')
-    oggQuality = RadioField('OggQuality', 
+    sourceFolder = StringField('Source Folder')
+    oggFolder = StringField('Ogg Folder')
+    oggQuality = RadioField('Ogg Quality', 
         choices=[(0, '1 = default'), (2, '2'), (3, '3'), (4, '4'), (5, '5')], 
         coerce=int)
-    mp3Folder = StringField('Mp3Folder')
-    mp3Bitrate = RadioField('Mp3Bitrate', 
+    mp3Folder = StringField('Mp3 Folder')
+    mp3Bitrate = RadioField('Mp3 Bitrate', 
         choices=[(0, '128 = default'), (256, '256'), (384, 384)],
         coerce=int)
     resetToDefaults = BooleanField('Reset to defaults')
@@ -35,9 +35,9 @@ class EditTranscoderForm(FlaskForm):
     def validate_sourceFolder(self, field):
         if not self.resetToDefaults.data: 
             if field.data == '':
-                raise ValidationError('To activate trancoder, SourceFolder should have a value')
+                raise ValidationError('Source Folder should have a value to activate Transcoder')
 
             if not((self.oggFolder.data != '') or (self.mp3Folder.data != '')):
-                raise ValidationError('To activate trancoder, either OggFolder or Mp3Folder should have a value')
+                raise ValidationError('Either Ogg Folder or Mp3 Folder should have a value to activate Transcoder')
         pass
 

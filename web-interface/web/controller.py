@@ -162,7 +162,7 @@ def ShowResources():
     pass     
 
 @app.route('/tasks', methods=['GET'])
-def ShowCommands():
+def ShowTasks():
     try:
         musicCollectionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMusicCollectionInfo').content)
     except Exception as e:
@@ -206,9 +206,9 @@ def DoBackupServer():
 
     return render_template(
         'command.html', 
-        appTitle = 'BackupServer - ' + configObject.AppTitle, 
+        appTitle = 'Backup Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'BackupServer',
+        commandTitle = 'Backup Server',
         commandMessage = 'Backup is in progress...',
         showBackugLogLinks = 1
     )
@@ -225,10 +225,10 @@ def DoKillDocker():
 
     return render_template(
         'command.html', 
-        appTitle = 'KillDocker - ' + configObject.AppTitle, 
+        appTitle = 'Kill Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'KillDocker',
-        commandMessage = 'Killing docker-containers is in progress...',
+        commandTitle = 'Kill Docker',
+        commandMessage = 'Killing docker containers is in progress...',
         showDockerLink = 1
     )
     pass     
@@ -244,9 +244,9 @@ def DoStartDocker():
 
     return render_template(
         'command.html', 
-        appTitle = 'StartDocker - ' + configObject.AppTitle, 
+        appTitle = 'Start Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'StartDocker',
+        commandTitle = 'Start Docker',
         commandMessage = 'Starting docker-containers is in progress...',
         showDockerLink = 1
     )
@@ -263,9 +263,9 @@ def DoUpdateDocker():
 
     return render_template(
         'command.html', 
-        appTitle = 'UpdateDocker - ' + configObject.AppTitle, 
+        appTitle = 'Update Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'UpdateDocker',
+        commandTitle = 'Update Docker',
         commandMessage = 'Updating docker-containers is in progress...',
         showDockerLink = 1
     )
@@ -282,9 +282,9 @@ def DoExportCollection():
 
     return render_template(
         'command.html', 
-        appTitle = 'ExportCollection - ' + configObject.AppTitle, 
+        appTitle = 'Export Collection - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'ExportCollection',
+        commandTitle = 'Export Collection',
         commandMessage = apiMessage['Message'],
         showTasksLink = 1
     )
@@ -320,10 +320,10 @@ def DoUpdateRpms():
 
     return render_template(
         'command.html', 
-        appTitle = 'UpdateRpms - ' + configObject.AppTitle, 
+        appTitle = 'Update RPMS - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'UpdateRpms',
-        commandMessage = 'RPMS-update is in progress... in a few seconds you will be redirected to Home; refresh that page after 1 minute',
+        commandTitle = 'Update RPMS',
+        commandMessage = 'RPMS update is in progress... in a few seconds you will be redirected to Home; refresh that page after 1 minute',
         redirect = 1        
     )   
     pass     
@@ -339,9 +339,9 @@ def DoHaltServer():
 
     return render_template(
         'command.html', 
-        appTitle = 'HaltServer - ' + configObject.AppTitle, 
+        appTitle = 'Halt Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'HaltServer',
+        commandTitle = 'Halt Server',
         commandMessage = 'Halt is in progress... in a few seconds this page will be redirected to Home and stops working',
         redirect = 1
     )   
@@ -358,9 +358,9 @@ def DoRebootServer():
 
     return render_template(
         'command.html', 
-        appTitle = 'RebootServer - ' + configObject.AppTitle, 
+        appTitle = 'Reboot Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'RebootServer',
+        commandTitle = 'Reboot Server',
         commandMessage = 'Reboot is in progress... in a few seconds you will be redirected to Home; refresh that page after 1 minute',
         redirect = 1
     )   
@@ -386,10 +386,10 @@ def ShowApiLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'API-log - ' + configObject.AppTitle, 
+        appTitle = 'API Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'ApiLog'
+        logTitle = 'Api Log'
     )   
     pass     
 
@@ -404,10 +404,10 @@ def ShowWebLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Web-log - ' + configObject.AppTitle, 
+        appTitle = 'Web Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'WebLog'
+        logTitle = 'Web Log'
     )   
     pass     
 
@@ -422,10 +422,10 @@ def ShowBackupLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Backup-log - ' + configObject.AppTitle, 
+        appTitle = 'Backup Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'BackupLog'
+        logTitle = 'Backup Log'
     )   
     pass     
 
@@ -440,10 +440,10 @@ def ShowBackupDetailsLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'BackupDetails-log - ' + configObject.AppTitle, 
+        appTitle = 'Backup Details Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'BackupDetailsLog'
+        logTitle = 'Backup Details Log'
     )   
     pass     
 
@@ -458,10 +458,10 @@ def ShowTranscoderLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Transcoder-log - ' + configObject.AppTitle, 
+        appTitle = 'Transcoder Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'TranscoderLog'
+        logTitle = 'Transcoder Log'
     )   
     pass     
 
@@ -476,23 +476,24 @@ def ShowUpdateLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Update-log - ' + configObject.AppTitle, 
+        appTitle = 'Update Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'UpdateLog'
+        logTitle = 'Update Log'
     )   
     pass     
 
 @app.route('/transcoder/edit', methods=['GET', 'POST'])
 def EditTranscoderSettings():
     try:
-        musicCollectionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMusicCollectionInfo').content)
+        transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        musicCollectionInfo = []
+        transcoderInfo = []
 
-    defaultMusicFolder = musicCollectionInfo["DefaultCollectionFolder"] + '/'
+    defaultMusicFolder = transcoderInfo["DefaultCollectionFolder"] + '/'
+    defaultMusicFolderFunctional = transcoderInfo["DefaultCollectionFolderFunctional"]
 
     form = EditTranscoderForm()
 
@@ -593,9 +594,9 @@ def EditTranscoderSettings():
         return redirect('/transcoder')
 
     return render_template('transcoder-edit.html', 
-        appTitle = 'TransCoderEdit - ' + configObject.AppTitle, 
+        appTitle = 'Transcoder Settings - ' + configObject.AppTitle, 
         form = form,
-        musicFolder = defaultMusicFolder)
+        musicFolder = defaultMusicFolderFunctional)
 
 if __name__ == '__main__':
     import argparse
