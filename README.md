@@ -173,7 +173,7 @@ This backup will be done to a dedicated backup-disk, connected to the Pi it self
 #### Viewing backup-data on the usbbackup-disk
 In case of a server-based backup, your backup will be made to a separate backup-disk. You can view the data on this disk, either online or offline.
 
-For viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file esplorer to smb://rpms/Backup and than you can view all the files on that disk.
+For viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file esplorer to `smb://rpms/Backup` and than you can view all the files on that disk.
 
 For viewing _offline_, the backup-disk has to be attached to your own PC or laptop. The backup-disk is formatted as ext4 so this format is natively supported on Linux, thus being plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
