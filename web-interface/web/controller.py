@@ -62,9 +62,7 @@ def Home():
         appTitle = 'Home - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         machineInfo = machineInfo,
-        versionInfo = versionInfo
-    )
-    pass
+        versionInfo = versionInfo)
 
 @app.route('/transcoder', methods=['GET'])
 def ShowTranscoder():
@@ -80,7 +78,6 @@ def ShowTranscoder():
         appTitle = 'Transcoder - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         transcoderInfo = transcoderInfo)    
-    pass
 
 @app.route('/services', methods=['GET'])
 def ShowServices():
@@ -119,9 +116,7 @@ def ShowServices():
         serviceList = serviceList,
         apiInfo = apiInfo,
         dockerContainerList = dockerContainerList,
-        machineInfo = machineInfo
-    )   
-    pass     
+        machineInfo = machineInfo)   
 
 @app.route('/resources', methods=['GET'])
 def ShowResources():
@@ -157,9 +152,7 @@ def ShowResources():
         apiRootUrl = configObject.ApiRootUrl,
         diskList = diskList,
         cpuInfo = cpuInfo,
-        memoryInfo = memoryInfo        
-    )   
-    pass     
+        memoryInfo = memoryInfo)   
 
 @app.route('/tasks', methods=['GET'])
 def ShowTasks():
@@ -174,9 +167,7 @@ def ShowTasks():
         'tasks.html', 
         appTitle = 'Tasks - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        musicCollectionInfo = musicCollectionInfo
-    )   
-    pass     
+        musicCollectionInfo = musicCollectionInfo)   
 
 @app.route('/backup', methods=['GET'])
 def ShowBackup():
@@ -191,9 +182,7 @@ def ShowBackup():
         'backup.html', 
         appTitle = 'Backup - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backupInfo = backupInfo
-    )   
-    pass     
+        backupInfo = backupInfo)   
 
 @app.route('/backup-server', methods=['GET'])
 def DoBackupServer():
@@ -204,15 +193,13 @@ def DoBackupServer():
         logger.error(traceback.format_exc())
         apiMessage = []
 
+    flash(apiMessage['Message'])
+
     return render_template(
         'command.html', 
         appTitle = 'Backup Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'Backup Server',
-        commandMessage = 'Backup is in progress...',
-        showBackugLogLinks = 1
-    )
-    pass     
+        backUrl = '/backup')
 
 @app.route('/kill-docker', methods=['GET'])
 def DoKillDocker():
@@ -223,15 +210,13 @@ def DoKillDocker():
         logger.error(traceback.format_exc())
         apiMessage = []
 
+    flash(apiMessage['Message'])
+
     return render_template(
         'command.html', 
         appTitle = 'Kill Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'Kill Docker',
-        commandMessage = 'Killing docker containers is in progress...',
-        showDockerLink = 1
-    )
-    pass     
+        backUrl = '/services')
 
 @app.route('/start-docker', methods=['GET'])
 def DoStartDocker():
@@ -242,15 +227,13 @@ def DoStartDocker():
         logger.error(traceback.format_exc())
         apiMessage = []
 
+    flash(apiMessage['Message'])        
+
     return render_template(
         'command.html', 
         appTitle = 'Start Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'Start Docker',
-        commandMessage = 'Starting docker-containers is in progress...',
-        showDockerLink = 1
-    )
-    pass 
+        backUrl = '/services')
 
 @app.route('/update-docker', methods=['GET'])
 def DoUpdateDocker():
@@ -261,15 +244,13 @@ def DoUpdateDocker():
         logger.error(traceback.format_exc())
         apiMessage = []
 
+    flash(apiMessage['Message'])
+
     return render_template(
         'command.html', 
         appTitle = 'Update Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'Update Docker',
-        commandMessage = 'Updating docker-containers is in progress...',
-        showDockerLink = 1
-    )
-    pass 
+        backUrl = '/services')
 
 @app.route('/export-collection', methods=['GET'])
 def DoExportCollection():
@@ -280,15 +261,13 @@ def DoExportCollection():
         logger.error(traceback.format_exc())
         apiMessage = []
 
+    flash(apiMessage['Message'])        
+
     return render_template(
         'command.html', 
         appTitle = 'Export Collection - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'Export Collection',
-        commandMessage = apiMessage['Message'],
-        showTasksLink = 1
-    )
-    pass 
+        backUrl = '/tasks')
 
 @app.route('/transcode', methods=['GET'])
 def DoTranscode():
@@ -299,15 +278,13 @@ def DoTranscode():
         logger.error(traceback.format_exc())
         apiMessage = []
 
+    flash(apiMessage['Message'])        
+
     return render_template(
         'command.html', 
         appTitle = 'Transcode - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'Transcode',
-        commandMessage = apiMessage['Message'],
-        showTranscoderLogLink = 1
-    )
-    pass 
+        backUrl = '/transcoder')
 
 @app.route('/update-rpms', methods=['GET'])
 def DoUpdateRpms():
@@ -318,15 +295,9 @@ def DoUpdateRpms():
         logger.error(traceback.format_exc())
         apiMessage = []
 
-    return render_template(
-        'command.html', 
-        appTitle = 'Update RPMS - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'Update RPMS',
-        commandMessage = 'RPMS update is in progress... in a few seconds you will be redirected to Home; refresh that page after 1 minute',
-        redirect = 1        
-    )   
-    pass     
+    flash('Update is in progress. Refresh his page after 1 minute.')
+
+    return redirect('/')
 
 @app.route('/halt-server', methods=['GET'])
 def DoHaltServer():
@@ -337,15 +308,9 @@ def DoHaltServer():
         logger.error(traceback.format_exc())
         apiMessage = []
 
-    return render_template(
-        'command.html', 
-        appTitle = 'Halt Server - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'Halt Server',
-        commandMessage = 'Halt is in progress... in a few seconds this page will be redirected to Home and stops working',
-        redirect = 1
-    )   
-    pass     
+    flash('Halt is in progress. In a few seconds the server stops working.')
+
+    return redirect('/')
 
 @app.route('/reboot-server', methods=['GET'])
 def DoRebootServer():
@@ -355,25 +320,17 @@ def DoRebootServer():
         logger.error(e)
         logger.error(traceback.format_exc())
         apiMessage = []
+    
+    flash('Reboot is in progress. Refresh this page after 1 minute.')
 
-    return render_template(
-        'command.html', 
-        appTitle = 'Reboot Server - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'Reboot Server',
-        commandMessage = 'Reboot is in progress... in a few seconds you will be redirected to Home; refresh that page after 1 minute',
-        redirect = 1
-    )   
-    pass     
+    return redirect('/')
 
 @app.route('/logs', methods=['GET'])
 def ShowLogs():
     return render_template(
         'logs.html', 
         appTitle = 'Logs - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl
-    )   
-    pass     
+        apiRootUrl = configObject.ApiRootUrl)   
 
 @app.route('/logs/api/<int:nrOfLines>', methods=['GET'])
 def ShowApiLog(nrOfLines):
@@ -389,9 +346,7 @@ def ShowApiLog(nrOfLines):
         appTitle = 'API Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Api Log'
-    )   
-    pass     
+        logTitle = 'Api Log')   
 
 @app.route('/logs/web/<int:nrOfLines>', methods=['GET'])
 def ShowWebLog(nrOfLines):
@@ -407,9 +362,7 @@ def ShowWebLog(nrOfLines):
         appTitle = 'Web Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Web Log'
-    )   
-    pass     
+        logTitle = 'Web Log')   
 
 @app.route('/logs/backup/<int:nrOfLines>', methods=['GET'])
 def ShowBackupLog(nrOfLines):
@@ -425,9 +378,7 @@ def ShowBackupLog(nrOfLines):
         appTitle = 'Backup Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Backup Log'
-    )   
-    pass     
+        logTitle = 'Backup Log')   
 
 @app.route('/logs/backup-details/<int:nrOfLines>', methods=['GET'])
 def ShowBackupDetailsLog(nrOfLines):
@@ -443,9 +394,7 @@ def ShowBackupDetailsLog(nrOfLines):
         appTitle = 'Backup Details Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Backup Details Log'
-    )   
-    pass     
+        logTitle = 'Backup Details Log')   
 
 @app.route('/logs/transcoder/<int:nrOfLines>', methods=['GET'])
 def ShowTranscoderLog(nrOfLines):
@@ -461,9 +410,7 @@ def ShowTranscoderLog(nrOfLines):
         appTitle = 'Transcoder Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Transcoder Log'
-    )   
-    pass     
+        logTitle = 'Transcoder Log')   
 
 @app.route('/logs/update/<int:nrOfLines>', methods=['GET'])
 def ShowUpdateLog(nrOfLines):
@@ -479,9 +426,7 @@ def ShowUpdateLog(nrOfLines):
         appTitle = 'Update Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Update Log'
-    )   
-    pass     
+        logTitle = 'Update Log')   
 
 @app.route('/transcoder/edit', methods=['GET', 'POST'])
 def EditTranscoderSettings():
