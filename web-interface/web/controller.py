@@ -530,7 +530,7 @@ def EditTranscoderSettings():
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderSourceFolder', 
                     json = {"Value": newSourceFolder})
-                flash('Saved \'' + newSourceFolder + '\' to SourceFolder')
+                flash('Saved \'' + newSourceFolder + '\' to Source Folder')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
@@ -545,7 +545,7 @@ def EditTranscoderSettings():
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderOggFolder', 
                     json = {"Value": newOggFolder})
-                flash('Saved \'' + newOggFolder + '\' to OggFolder')
+                flash('Saved \'' + newOggFolder + '\' to Ogg Folder')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
@@ -558,7 +558,7 @@ def EditTranscoderSettings():
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderOggQuality', 
                     json = {"Value": newOggQuality})
-                flash('Saved \'' + str(newOggQuality) + '\' to OggQuality')
+                flash('Saved \'' + str(newOggQuality) + '\' to Ogg Quality')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
@@ -573,7 +573,7 @@ def EditTranscoderSettings():
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderMp3Folder', 
                     json = {"Value": newMp3Folder})
-                flash('Saved \'' + newMp3Folder + '\' to Mp3Folder')
+                flash('Saved \'' + newMp3Folder + '\' to Mp3 Folder')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
@@ -586,7 +586,7 @@ def EditTranscoderSettings():
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderMp3Bitrate', 
                     json = {"Value": newMp3Bitrate})
-                flash('Saved \'' + str(newMp3Bitrate) + '\' to Mp3Bitrate')
+                flash('Saved \'' + str(newMp3Bitrate) + '\' to Mp3 Bitrate')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())

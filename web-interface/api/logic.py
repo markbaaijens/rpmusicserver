@@ -462,9 +462,6 @@ def GetMusicCollectionInfo():
     actualCollectionFolderFunctional = ConvertToFunctionalFolder(actualCollectionFolder)
     exportFile = "tree.txt"
 
-    if actualCollectionFolder == '':
-        actualCollectionFolder = defaultCollectionFolder
-
     lastExportTimeStampAsString = ''
     fullExportFile = actualCollectionFolder + "/" + exportFile
     if os.path.isfile(fullExportFile):
