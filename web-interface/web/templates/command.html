@@ -1,27 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>{{ commandTitle }}</h2>
-    <p>
-    <em>{{ commandMessage }}</em>
-    {% if showBackugLogLinks %}
+    {% if backUrl %}
+        <br>
         <div>
-            <small><a href="/logs/backup/20">Backup Log</a> | <a href="/logs/backup-details/20">Backup Details Log</a>
+            <a href="{{ backUrl }}">Back</a>
         </div>
-    {% endif %}
-    {% if showDockerLink %}
-        <div>
-            See <a href="/services">Services</a>
-        </div>
-    {% endif %}    
-    {% if showTasksLink %}
-        <div>
-            See <a href="/tasks">Tasks</a>
-        </div>
-    {% endif %}   
-    {% if showTranscoderLogLink %}
-        <div>
-            <small><a href="/logs/transcoder/20">Transcoder Log</a></a>
-        </div>
-    {% endif %}       
+    {% endif %}           
 {% endblock %}
