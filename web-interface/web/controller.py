@@ -199,7 +199,7 @@ def DoBackupServer():
         'command.html', 
         appTitle = 'Backup Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/backup')
+        backUrl = request.referrer)
 
 @app.route('/kill-docker', methods=['GET'])
 def DoKillDocker():
@@ -216,7 +216,7 @@ def DoKillDocker():
         'command.html', 
         appTitle = 'Kill Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/services')
+        backUrl = request.referrer)
 
 @app.route('/start-docker', methods=['GET'])
 def DoStartDocker():
@@ -233,7 +233,7 @@ def DoStartDocker():
         'command.html', 
         appTitle = 'Start Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/services')
+        backUrl = request.referrer)
 
 @app.route('/update-docker', methods=['GET'])
 def DoUpdateDocker():
@@ -250,7 +250,7 @@ def DoUpdateDocker():
         'command.html', 
         appTitle = 'Update Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/services')
+        backUrl = request.referrer)
 
 @app.route('/export-collection', methods=['GET'])
 def DoExportCollection():
@@ -267,7 +267,7 @@ def DoExportCollection():
         'command.html', 
         appTitle = 'Export Collection - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/tasks')
+        backUrl = request.referrer)
 
 @app.route('/transcode', methods=['GET'])
 def DoTranscode():
@@ -284,7 +284,7 @@ def DoTranscode():
         'command.html', 
         appTitle = 'Transcode - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/transcoder')
+        backUrl = request.referrer)
 
 @app.route('/update-rpms', methods=['GET'])
 def DoUpdateRpms():
@@ -308,7 +308,7 @@ def DoHaltServer():
         logger.error(traceback.format_exc())
         apiMessage = []
 
-    flash('Halt is in progress. In a few seconds the server stops working.')
+    flash('Halt is in progress. In a few moments the server stops working.')
 
     return redirect('/')
 
