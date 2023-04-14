@@ -8,10 +8,10 @@
         <td>
             <meter 
                 id="memory" 
-                class="meter1" 
                 value="{{ memoryInfo.MemUsedPercentage }}" 
                 min="0" 
-                max="100">
+                max="100"
+                high="80">
             </meter>
             <span class="small">
                 <label for="memory">
@@ -27,10 +27,10 @@
         <td>
             <meter 
                 id="swap" 
-                class="meter1" 
                 value="{{ memoryInfo.SwapUsedPercentage }}" 
                 min="0" 
-                max="100">
+                max="100"
+                high="80">
             </meter>
             </br />
             <span class="small">
@@ -47,10 +47,10 @@
         <td>
             <meter 
                 id="avload" 
-                class="meter1" 
                 value="{{ cpuInfo.CpuLoad1 }}" 
                 min="0" 
-                max="10">
+                max="10"
+                high="8">
             </meter>
             </br />
             <span class="small">
@@ -69,10 +69,10 @@
         <td>
             <meter 
                 id="swap" 
-                class="meter1" 
                 value="{{ cpuInfo.CpuTemp }}" 
                 min="0" 
-                max="100">
+                max="100"
+                high="80">
             </meter> 
         </br />
         <span class="small">
@@ -106,7 +106,8 @@
                     id="size" 
                     value="{{ disk.UsedPercentage }}" 
                     min="0" 
-                    max="100">
+                    max="100"
+                    high="80">
                 </meter>
                 <span class="small">
                     <label for="size">
