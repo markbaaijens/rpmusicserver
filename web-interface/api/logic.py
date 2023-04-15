@@ -122,7 +122,7 @@ def GetMachineInfo():
 
     urlPrefix = 'http://'
     hostUrl = urlPrefix + hostName
-    if ExecuteBashCommand("nslookup " + hostName + " | grep \"SERVFAIL\"").strip() != "":
+    if ExecuteBashCommand('nslookup ' + hostName + ' | grep "SERVFAIL"').strip() != "":
         hostUrl = urlPrefix + ipAddress
 
     osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
