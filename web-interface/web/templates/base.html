@@ -1,11 +1,11 @@
 <!doctype html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        
         <title>{{ appTitle }}</title>
-        {% if redirect %}
-            <meta http-equiv="refresh" content="2;url=/" />
-        {% endif %}
         <link 
             rel= "stylesheet" 
             type= "text/css" 
@@ -15,6 +15,9 @@
             type="image/x-icon" 
             href="{{ url_for('static',filename='favicon.ico') }}">
         <script src="{{url_for('static', filename='main.js')}}"></script>        
+        <link 
+            rel="manifest" 
+            href="{{ url_for('static',filename='app.webmanifest') }}">            
     </head>
     <body>
         <div class="top-header">                        

@@ -1,0 +1,11 @@
+{
+    "name": "RP Music Server",
+    "start_url": "/",
+    "icons": [
+        {
+           "src": "/static/headphones.png",
+           "type": "image/png",
+           "sizes": "96x96"
+        }
+     ]    
+}
