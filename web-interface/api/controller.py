@@ -365,7 +365,7 @@ def GetServiceStatusList():
 def DoRebootServer():
     try:
         asyncio.run(logic.DoRebootServer())
-        info = { "Message": "Server is rebooting" }
+        info = { "Message": "Server is rebooting." }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -377,7 +377,7 @@ def DoRebootServer():
 def DoBackupServer():
     try:
         asyncio.run(logic.DoBackupServer())
-        info = { "Message": "Backup has been started" }        
+        info = { "Message": "Backup started." }        
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -401,7 +401,7 @@ def DoHaltServer():
 def DoKillDocker():
     try:
         asyncio.run(logic.DoKillDocker())
-        info = { "Message": "Docker-container(s) will be killed" }
+        info = { "Message": "Killing docker container(s)." }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -413,7 +413,7 @@ def DoKillDocker():
 def DoStartDocker():
     try:
         asyncio.run(logic.DoStartDocker())
-        info = { "Message": "Docker-container(s) will be started" }
+        info = { "Message": "Starting docker container(s)." }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -425,7 +425,7 @@ def DoStartDocker():
 def DoUpdateDocker():
     try:
         asyncio.run(logic.DoUpdateDocker())
-        info = { "Message": "Docker-container(s) will be updated" }
+        info = { "Message": "Updating docker container(s)." }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -437,7 +437,7 @@ def DoUpdateDocker():
 def DoUpdateRpms():
     try:
         asyncio.run(logic.DoUpdateRpms())
-        info = { "Message": "Server is updating" }        
+        info = { "Message": "RPMS is updating." }        
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -449,12 +449,12 @@ def DoUpdateRpms():
 def DoExportCollection():
     musicCollectionInfo = logic.GetMusicCollectionInfo()
     exportFile = musicCollectionInfo["ExportFile"]
-    collectionFolder = musicCollectionInfo["CollectionFolder"]
+    collectionFolderFunctional = musicCollectionInfo["CollectionFolderFunctional"]
 
     try:
         asyncio.run(logic.DoExportCollection())
-        info = { "Message": "Collection has been exported to " + 
-                    exportFile + " in " + collectionFolder}
+        info = { "Message": "Collection is exported to " + 
+                    exportFile + " in " + collectionFolderFunctional + '.'}
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -466,7 +466,7 @@ def DoExportCollection():
 def DoTranscode():
     try:
         asyncio.run(logic.DoTranscode())
-        info = { "Message": "Transcoding is in progress..."}
+        info = { "Message": "Transcoding started."}
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

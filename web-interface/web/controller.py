@@ -62,9 +62,7 @@ def Home():
         appTitle = 'Home - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         machineInfo = machineInfo,
-        versionInfo = versionInfo
-    )
-    pass
+        versionInfo = versionInfo)
 
 @app.route('/transcoder', methods=['GET'])
 def ShowTranscoder():
@@ -80,7 +78,6 @@ def ShowTranscoder():
         appTitle = 'Transcoder - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         transcoderInfo = transcoderInfo)    
-    pass
 
 @app.route('/services', methods=['GET'])
 def ShowServices():
@@ -119,9 +116,7 @@ def ShowServices():
         serviceList = serviceList,
         apiInfo = apiInfo,
         dockerContainerList = dockerContainerList,
-        machineInfo = machineInfo
-    )   
-    pass     
+        machineInfo = machineInfo)   
 
 @app.route('/resources', methods=['GET'])
 def ShowResources():
@@ -157,12 +152,10 @@ def ShowResources():
         apiRootUrl = configObject.ApiRootUrl,
         diskList = diskList,
         cpuInfo = cpuInfo,
-        memoryInfo = memoryInfo        
-    )   
-    pass     
+        memoryInfo = memoryInfo)   
 
 @app.route('/tasks', methods=['GET'])
-def ShowCommands():
+def ShowTasks():
     try:
         musicCollectionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMusicCollectionInfo').content)
     except Exception as e:
@@ -174,9 +167,7 @@ def ShowCommands():
         'tasks.html', 
         appTitle = 'Tasks - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        musicCollectionInfo = musicCollectionInfo
-    )   
-    pass     
+        musicCollectionInfo = musicCollectionInfo)   
 
 @app.route('/backup', methods=['GET'])
 def ShowBackup():
@@ -191,9 +182,7 @@ def ShowBackup():
         'backup.html', 
         appTitle = 'Backup - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backupInfo = backupInfo
-    )   
-    pass     
+        backupInfo = backupInfo)   
 
 @app.route('/backup-server', methods=['GET'])
 def DoBackupServer():
@@ -204,15 +193,13 @@ def DoBackupServer():
         logger.error(traceback.format_exc())
         apiMessage = []
 
+    flash(apiMessage['Message'])
+
     return render_template(
         'command.html', 
-        appTitle = 'BackupServer - ' + configObject.AppTitle, 
+        appTitle = 'Backup Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'BackupServer',
-        commandMessage = 'Backup is in progress...',
-        showBackugLogLinks = 1
-    )
-    pass     
+        backUrl = request.referrer)
 
 @app.route('/kill-docker', methods=['GET'])
 def DoKillDocker():
@@ -223,15 +210,13 @@ def DoKillDocker():
         logger.error(traceback.format_exc())
         apiMessage = []
 
+    flash(apiMessage['Message'])
+
     return render_template(
         'command.html', 
-        appTitle = 'KillDocker - ' + configObject.AppTitle, 
+        appTitle = 'Kill Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'KillDocker',
-        commandMessage = 'Killing docker-containers is in progress...',
-        showDockerLink = 1
-    )
-    pass     
+        backUrl = request.referrer)
 
 @app.route('/start-docker', methods=['GET'])
 def DoStartDocker():
@@ -242,15 +227,13 @@ def DoStartDocker():
         logger.error(traceback.format_exc())
         apiMessage = []
 
+    flash(apiMessage['Message'])        
+
     return render_template(
         'command.html', 
-        appTitle = 'StartDocker - ' + configObject.AppTitle, 
+        appTitle = 'Start Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'StartDocker',
-        commandMessage = 'Starting docker-containers is in progress...',
-        showDockerLink = 1
-    )
-    pass 
+        backUrl = request.referrer)
 
 @app.route('/update-docker', methods=['GET'])
 def DoUpdateDocker():
@@ -261,15 +244,13 @@ def DoUpdateDocker():
         logger.error(traceback.format_exc())
         apiMessage = []
 
+    flash(apiMessage['Message'])
+
     return render_template(
         'command.html', 
-        appTitle = 'UpdateDocker - ' + configObject.AppTitle, 
+        appTitle = 'Update Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'UpdateDocker',
-        commandMessage = 'Updating docker-containers is in progress...',
-        showDockerLink = 1
-    )
-    pass 
+        backUrl = request.referrer)
 
 @app.route('/export-collection', methods=['GET'])
 def DoExportCollection():
@@ -280,15 +261,13 @@ def DoExportCollection():
         logger.error(traceback.format_exc())
         apiMessage = []
 
+    flash(apiMessage['Message'])        
+
     return render_template(
         'command.html', 
-        appTitle = 'ExportCollection - ' + configObject.AppTitle, 
+        appTitle = 'Export Collection - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'ExportCollection',
-        commandMessage = apiMessage['Message'],
-        showTasksLink = 1
-    )
-    pass 
+        backUrl = request.referrer)
 
 @app.route('/transcode', methods=['GET'])
 def DoTranscode():
@@ -299,15 +278,13 @@ def DoTranscode():
         logger.error(traceback.format_exc())
         apiMessage = []
 
+    flash(apiMessage['Message'])        
+
     return render_template(
         'command.html', 
         appTitle = 'Transcode - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'Transcode',
-        commandMessage = apiMessage['Message'],
-        showTranscoderLogLink = 1
-    )
-    pass 
+        backUrl = request.referrer)
 
 @app.route('/update-rpms', methods=['GET'])
 def DoUpdateRpms():
@@ -318,15 +295,9 @@ def DoUpdateRpms():
         logger.error(traceback.format_exc())
         apiMessage = []
 
-    return render_template(
-        'command.html', 
-        appTitle = 'UpdateRpms - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'UpdateRpms',
-        commandMessage = 'RPMS-update is in progress... in a few seconds you will be redirected to Home; refresh that page after 1 minute',
-        redirect = 1        
-    )   
-    pass     
+    flash('Update is in progress. Refresh his page after 2 minutes.')
+
+    return redirect('/')
 
 @app.route('/halt-server', methods=['GET'])
 def DoHaltServer():
@@ -337,15 +308,9 @@ def DoHaltServer():
         logger.error(traceback.format_exc())
         apiMessage = []
 
-    return render_template(
-        'command.html', 
-        appTitle = 'HaltServer - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'HaltServer',
-        commandMessage = 'Halt is in progress... in a few seconds this page will be redirected to Home and stops working',
-        redirect = 1
-    )   
-    pass     
+    flash('Halt is in progress. In a few moments the server stops working.')
+
+    return redirect('/')
 
 @app.route('/reboot-server', methods=['GET'])
 def DoRebootServer():
@@ -355,25 +320,17 @@ def DoRebootServer():
         logger.error(e)
         logger.error(traceback.format_exc())
         apiMessage = []
+    
+    flash('Reboot is in progress. Refresh this page after 1 minute.')
 
-    return render_template(
-        'command.html', 
-        appTitle = 'RebootServer - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        commandTitle = 'RebootServer',
-        commandMessage = 'Reboot is in progress... in a few seconds you will be redirected to Home; refresh that page after 1 minute',
-        redirect = 1
-    )   
-    pass     
+    return redirect('/')
 
 @app.route('/logs', methods=['GET'])
 def ShowLogs():
     return render_template(
         'logs.html', 
         appTitle = 'Logs - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl
-    )   
-    pass     
+        apiRootUrl = configObject.ApiRootUrl)   
 
 @app.route('/logs/api/<int:nrOfLines>', methods=['GET'])
 def ShowApiLog(nrOfLines):
@@ -386,12 +343,10 @@ def ShowApiLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'API-log - ' + configObject.AppTitle, 
+        appTitle = 'API Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'ApiLog'
-    )   
-    pass     
+        logTitle = 'Api Log')   
 
 @app.route('/logs/web/<int:nrOfLines>', methods=['GET'])
 def ShowWebLog(nrOfLines):
@@ -404,12 +359,10 @@ def ShowWebLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Web-log - ' + configObject.AppTitle, 
+        appTitle = 'Web Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'WebLog'
-    )   
-    pass     
+        logTitle = 'Web Log')   
 
 @app.route('/logs/backup/<int:nrOfLines>', methods=['GET'])
 def ShowBackupLog(nrOfLines):
@@ -422,12 +375,10 @@ def ShowBackupLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Backup-log - ' + configObject.AppTitle, 
+        appTitle = 'Backup Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'BackupLog'
-    )   
-    pass     
+        logTitle = 'Backup Log')   
 
 @app.route('/logs/backup-details/<int:nrOfLines>', methods=['GET'])
 def ShowBackupDetailsLog(nrOfLines):
@@ -440,12 +391,10 @@ def ShowBackupDetailsLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'BackupDetails-log - ' + configObject.AppTitle, 
+        appTitle = 'Backup Details Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'BackupDetailsLog'
-    )   
-    pass     
+        logTitle = 'Backup Details Log')   
 
 @app.route('/logs/transcoder/<int:nrOfLines>', methods=['GET'])
 def ShowTranscoderLog(nrOfLines):
@@ -458,12 +407,10 @@ def ShowTranscoderLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Transcoder-log - ' + configObject.AppTitle, 
+        appTitle = 'Transcoder Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'TranscoderLog'
-    )   
-    pass     
+        logTitle = 'Transcoder Log')   
 
 @app.route('/logs/update/<int:nrOfLines>', methods=['GET'])
 def ShowUpdateLog(nrOfLines):
@@ -476,23 +423,22 @@ def ShowUpdateLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Update-log - ' + configObject.AppTitle, 
+        appTitle = 'Update Log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'UpdateLog'
-    )   
-    pass     
+        logTitle = 'Update Log')   
 
 @app.route('/transcoder/edit', methods=['GET', 'POST'])
 def EditTranscoderSettings():
     try:
-        musicCollectionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMusicCollectionInfo').content)
+        transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        musicCollectionInfo = []
+        transcoderInfo = []
 
-    defaultMusicFolder = musicCollectionInfo["DefaultCollectionFolder"] + '/'
+    defaultMusicFolder = transcoderInfo["DefaultCollectionFolder"] + '/'
+    defaultMusicFolderFunctional = transcoderInfo["DefaultCollectionFolderFunctional"]
 
     form = EditTranscoderForm()
 
@@ -529,7 +475,7 @@ def EditTranscoderSettings():
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderSourceFolder', 
                     json = {"Value": newSourceFolder})
-                flash('Saved \'' + newSourceFolder + '\' to SourceFolder')
+                flash('Saved \'' + newSourceFolder + '\' to Source Folder')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
@@ -544,7 +490,7 @@ def EditTranscoderSettings():
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderOggFolder', 
                     json = {"Value": newOggFolder})
-                flash('Saved \'' + newOggFolder + '\' to OggFolder')
+                flash('Saved \'' + newOggFolder + '\' to Ogg Folder')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
@@ -557,7 +503,7 @@ def EditTranscoderSettings():
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderOggQuality', 
                     json = {"Value": newOggQuality})
-                flash('Saved \'' + str(newOggQuality) + '\' to OggQuality')
+                flash('Saved \'' + str(newOggQuality) + '\' to Ogg Quality')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
@@ -572,7 +518,7 @@ def EditTranscoderSettings():
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderMp3Folder', 
                     json = {"Value": newMp3Folder})
-                flash('Saved \'' + newMp3Folder + '\' to Mp3Folder')
+                flash('Saved \'' + newMp3Folder + '\' to Mp3 Folder')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
@@ -585,7 +531,7 @@ def EditTranscoderSettings():
                 requests.post(
                     configObject.ApiRootUrl + '/api/SetTranscoderMp3Bitrate', 
                     json = {"Value": newMp3Bitrate})
-                flash('Saved \'' + str(newMp3Bitrate) + '\' to Mp3Bitrate')
+                flash('Saved \'' + str(newMp3Bitrate) + '\' to Mp3 Bitrate')
             except Exception as e:
                 logger.error(e)
                 logger.error(traceback.format_exc())
@@ -593,9 +539,9 @@ def EditTranscoderSettings():
         return redirect('/transcoder')
 
     return render_template('transcoder-edit.html', 
-        appTitle = 'TransCoderEdit - ' + configObject.AppTitle, 
+        appTitle = 'Transcoder Settings - ' + configObject.AppTitle, 
         form = form,
-        musicFolder = defaultMusicFolder)
+        musicFolder = defaultMusicFolderFunctional)
 
 if __name__ == '__main__':
     import argparse
