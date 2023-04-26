@@ -30,7 +30,7 @@ def RevisionFileName():
 
 
 def ConvertToFunctionalFolder(folderName):
-    return folderName.replace(GetUserBaseFolder(), 'server:/')
+    return folderName.replace(GetUserBaseFolder(), '(server) ')
 
 def GetElapsedTimeHumanReadable(fromDate):
     timeElapsed = datetime.today() - fromDate
