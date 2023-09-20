@@ -576,7 +576,7 @@ def GetLmsServerStatus():
     data = '{"method": "slim.request", "params": ["-", ["serverstatus","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
     response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
-    return(response)
+    return(response['result'])
 
 def GetLmsArtists():
     # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
@@ -584,7 +584,7 @@ def GetLmsArtists():
     data = '{"method": "slim.request", "params": ["-", ["artists","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
     response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
-    return(response)
+    return(response['result']['artists_loop'])
 
 def GetLmsGenres():
     # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
@@ -592,7 +592,7 @@ def GetLmsGenres():
     data = '{"method": "slim.request", "params": ["-", ["genres","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
     response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
-    return(response)
+    return(response['result']['genres_loop'])
 
 def GetLmsArtistsByGenre(genre):
     # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
@@ -600,4 +600,4 @@ def GetLmsArtistsByGenre(genre):
     data = '{"method": "slim.request", "params": ["-", ["artists","0","-1","genre_id:' + str(genre) + '"]]}'
     headers = {'Content-Type': 'application/json'}
     response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
-    return(response)
+    return(response['result']['artists_loop'])
