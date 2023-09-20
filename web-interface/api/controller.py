@@ -451,9 +451,9 @@ def DoExportCollection():
     collectionFolderFunctional = musicCollectionInfo["CollectionFolderFunctional"]
 
     try:
-        asyncio.run(logic.DoExportCollection())
-        logic.ExportCollectionArtistAlbumByTags()
-        logic.ExportCollectionGenreArtistAlbumByTags()
+        logic.ExportCollectionArtistAlbumByFolder()        
+        logic.ExportCollectionArtistAlbumByTag()
+        logic.ExportCollectionGenreArtistAlbumByTag()
 
         info = { "Message": "Collection is exported to " + collectionFolderFunctional + '.'}
     except Exception as e:

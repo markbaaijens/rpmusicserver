@@ -572,7 +572,16 @@ async def DoTranscode():
     await asyncio.create_subprocess_shell("transcode")
     pass
 
-def ExportCollectionArtistAlbumByTags():
+def ExportCollectionArtistAlbumByFolder():
+    collection = ''
+
+    musicCollectionInfo = GetMusicCollectionInfo()
+    with open(musicCollectionInfo['CollectionFolder'] + '/collection-artist-album-by-folder.txt', 'w') as file:
+        file.write(collection)            
+
+    pass
+
+def ExportCollectionArtistAlbumByTag():
     collection = ''
     artists = GetLmsArtists()
     for artist in artists:
@@ -582,12 +591,12 @@ def ExportCollectionArtistAlbumByTags():
             collection += (' ' * 4) + album['album'] + '\n'                
 
     musicCollectionInfo = GetMusicCollectionInfo()
-    with open(musicCollectionInfo['CollectionFolder'] + '/collection-artist-album-by-tags.txt', 'w') as file:
+    with open(musicCollectionInfo['CollectionFolder'] + '/collection-artist-album-by-tag.txt', 'w') as file:
         file.write(collection)            
 
     pass
         
-def ExportCollectionGenreArtistAlbumByTags():
+def ExportCollectionGenreArtistAlbumByTag():
     collection = ''
     genres = GetLmsGenres()
     for genre in genres:
@@ -600,7 +609,7 @@ def ExportCollectionGenreArtistAlbumByTags():
                 collection += (' ' * 4 * 2) + album['album'] + '\n'
 
     musicCollectionInfo = GetMusicCollectionInfo()
-    with open(musicCollectionInfo['CollectionFolder'] + '/collection-genre-artist-album-by-tags.txt', 'w') as file:
+    with open(musicCollectionInfo['CollectionFolder'] + '/collection-genre-artist-album-by-tag.txt', 'w') as file:
         file.write(collection)            
 
     pass
