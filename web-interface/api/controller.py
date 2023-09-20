@@ -474,10 +474,40 @@ def DoTranscode():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)        
 
-@app.route('/api/GetLmsServerInfo', methods=['GET'])
-def GetLmsServerInfo():
+@app.route('/api/GetLmsServerStatus', methods=['GET'])
+def GetLmsServerStatus():
     try:
-        info = logic.GetLmsServerInfo()
+        info = logic.GetLmsServerStatus()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsArtists', methods=['GET'])
+def GetLmsArtists():
+    try:
+        info = logic.GetLmsArtists()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsGenres', methods=['GET'])
+def GetLmsGenres():
+    try:
+        info = logic.GetLmsGenres()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsArtistsByGenre/<int:genre>', methods=['GET'])
+def GetLmsArtistsByGenre(genre):
+    try:
+        info = logic.GetLmsArtistsByGenre(genre)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

@@ -570,10 +570,34 @@ async def DoTranscode():
     await asyncio.create_subprocess_shell("transcode")
     pass
 
-def GetLmsServerInfo():
+def GetLmsServerStatus():
     # LMS API-reference: http://rpms:9002/html/docs/cli-api.html 
     url = "http://rpms:9002/jsonrpc.js"    
     data = '{"method": "slim.request", "params": ["-", ["serverstatus","0","-1"]]}'
+    headers = {'Content-Type': 'application/json'}
+    response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    return(response)
+
+def GetLmsArtists():
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    url = "http://rpms:9002/jsonrpc.js"    
+    data = '{"method": "slim.request", "params": ["-", ["artists","0","-1"]]}'
+    headers = {'Content-Type': 'application/json'}
+    response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    return(response)
+
+def GetLmsGenres():
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    url = "http://rpms:9002/jsonrpc.js"    
+    data = '{"method": "slim.request", "params": ["-", ["genres","0","-1"]]}'
+    headers = {'Content-Type': 'application/json'}
+    response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    return(response)
+
+def GetLmsArtistsByGenre(genre):
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    url = "http://rpms:9002/jsonrpc.js"    
+    data = '{"method": "slim.request", "params": ["-", ["artists","0","-1","genre_id:' + str(genre) + '"]]}'
     headers = {'Content-Type': 'application/json'}
     response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
     return(response)
