@@ -571,7 +571,7 @@ async def DoTranscode():
     pass
 
 def GetLmsServerStatus():
-    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html 
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
     url = "http://rpms:9002/jsonrpc.js"    
     data = '{"method": "slim.request", "params": ["-", ["serverstatus","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
