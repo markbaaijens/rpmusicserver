@@ -10,7 +10,7 @@ from math import ceil
 import asyncio
 import urllib.request
 
-const_LmsApiUrl = 'http://rpms:9002/jsonrpc.js'
+const_LmsApiUrl = 'http://rpms:9002/jsonrpc.js' # TODO rpms => localhost
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
