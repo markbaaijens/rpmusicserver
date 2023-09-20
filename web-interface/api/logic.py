@@ -10,6 +10,8 @@ from math import ceil
 import asyncio
 import urllib.request
 
+const_LmsApiUrl = 'http://rpms:9002/jsonrpc.js'
+
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     return process.stdout.decode("utf-8").strip('\n')
@@ -595,7 +597,7 @@ async def DoTranscode():
 
 def GetLmsServerStatus():
     # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
-    url = "http://rpms:9002/jsonrpc.js"    
+    url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["serverstatus","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
     response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
@@ -603,7 +605,7 @@ def GetLmsServerStatus():
 
 def GetLmsArtists():
     # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
-    url = "http://rpms:9002/jsonrpc.js"    
+    url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["artists","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
     response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
@@ -611,7 +613,7 @@ def GetLmsArtists():
 
 def GetLmsAlbumsByArtist(artist):
     # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
-    url = "http://rpms:9002/jsonrpc.js"    
+    url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["albums","0","-1","artist_id:' + str(artist) + '"]]}'
     headers = {'Content-Type': 'application/json'}
     response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
@@ -619,7 +621,7 @@ def GetLmsAlbumsByArtist(artist):
 
 def GetLmsAlbumsByGenreArtist(genre, artist):
     # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
-    url = "http://rpms:9002/jsonrpc.js"    
+    url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["albums","0","-1","genre_id:' + str(genre) + '","artist_id:' + str(artist) + '"]]}'
     headers = {'Content-Type': 'application/json'}
     response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
@@ -627,7 +629,7 @@ def GetLmsAlbumsByGenreArtist(genre, artist):
 
 def GetLmsGenres():
     # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
-    url = "http://rpms:9002/jsonrpc.js"    
+    url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["genres","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
     response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
@@ -635,7 +637,7 @@ def GetLmsGenres():
 
 def GetLmsArtistsByGenre(genre):
     # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
-    url = "http://rpms:9002/jsonrpc.js"    
+    url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["artists","0","-1","genre_id:' + str(genre) + '"]]}'
     headers = {'Content-Type': 'application/json'}
     response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
