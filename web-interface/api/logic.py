@@ -118,29 +118,6 @@ def GetElapsedTimeHumanReadable(fromDate):
 
     return elapsedTimeAsString
 
-def ExportCollectionArtistAlbumByTags():
-    collection = ''
-    artists = GetLmsArtists()
-    for artist in artists:
-        albums = GetLmsAlbumsByArtist(artist['id'])
-        collection += artist['artist'] + ' ' + str(len(albums)) + '\n'            
-        for album in albums:
-            collection += (' ' * 4) + album['album'] + '\n'                
-    pass
-        
-def ExportCollectionGenreArtistAlbumByTags():
-    collection = ''
-    genres = GetLmsGenres()
-    for genre in genres:
-        artists = GetLmsArtistsByGenre(genre['id'])
-        collection += genre['genre'] + ' ' + str(len(artists)) + '\n'        
-        for artist in artists:
-            albums = GetLmsAlbumsByGenreArtist(genre['id'], artist['id'])
-            collection += (' ' * 4) + artist['artist'] + ' ' + str(len(albums)) + '\n'            
-            for album in albums:
-                collection += (' ' * 4 * 2) + album['album'] + '\n'
-    pass
-
 def GetMachineInfo():
     hostName = ExecuteBashCommand("hostname")
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
@@ -593,6 +570,39 @@ async def DoExportCollection():
 
 async def DoTranscode():
     await asyncio.create_subprocess_shell("transcode")
+    pass
+
+def ExportCollectionArtistAlbumByTags():
+    collection = ''
+    artists = GetLmsArtists()
+    for artist in artists:
+        albums = GetLmsAlbumsByArtist(artist['id'])
+        collection += artist['artist'] + ' ' + str(len(albums)) + '\n'            
+        for album in albums:
+            collection += (' ' * 4) + album['album'] + '\n'                
+
+    musicCollectionInfo = GetMusicCollectionInfo()
+    with open(musicCollectionInfo['CollectionFolder'] + '/collection-artist-album-by-tags.txt', 'w') as file:
+        file.write(collection)            
+
+    pass
+        
+def ExportCollectionGenreArtistAlbumByTags():
+    collection = ''
+    genres = GetLmsGenres()
+    for genre in genres:
+        artists = GetLmsArtistsByGenre(genre['id'])
+        collection += genre['genre'] + ' ' + str(len(artists)) + '\n'        
+        for artist in artists:
+            albums = GetLmsAlbumsByGenreArtist(genre['id'], artist['id'])
+            collection += (' ' * 4) + artist['artist'] + ' ' + str(len(albums)) + '\n'            
+            for album in albums:
+                collection += (' ' * 4 * 2) + album['album'] + '\n'
+
+    musicCollectionInfo = GetMusicCollectionInfo()
+    with open(musicCollectionInfo['CollectionFolder'] + '/collection-genre-artist-album-by-tags.txt', 'w') as file:
+        file.write(collection)            
+
     pass
 
 def GetLmsServerStatus():
