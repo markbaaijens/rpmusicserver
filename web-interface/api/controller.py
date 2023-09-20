@@ -494,6 +494,26 @@ def GetLmsArtists():
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
+@app.route('/api/GetLmsAlbumsByArtist/<int:artist>', methods=['GET'])
+def GetLmsAlbumsByArtist(artist):
+    try:
+        info = logic.GetLmsAlbumsByArtist(artist)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsAlbumsByGenreArtist/<int:genre>/<int:artist>', methods=['GET'])
+def GetLmsAlbumsByGenreArtist(genre, artist):
+    try:
+        info = logic.GetLmsAlbumsByGenreArtist(genre, artist)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
 @app.route('/api/GetLmsGenres', methods=['GET'])
 def GetLmsGenres():
     try:

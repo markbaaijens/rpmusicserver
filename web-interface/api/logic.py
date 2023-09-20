@@ -586,6 +586,22 @@ def GetLmsArtists():
     response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
     return(response['result']['artists_loop'])
 
+def GetLmsAlbumsByArtist(artist):
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    url = "http://rpms:9002/jsonrpc.js"    
+    data = '{"method": "slim.request", "params": ["-", ["albums","0","-1","artist_id:' + str(artist) + '"]]}'
+    headers = {'Content-Type': 'application/json'}
+    response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    return(response['result']['albums_loop'])
+
+def GetLmsAlbumsByGenreArtist(genre, artist):
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    url = "http://rpms:9002/jsonrpc.js"    
+    data = '{"method": "slim.request", "params": ["-", ["albums","0","-1","genre_id:' + str(genre) + '","artist_id:' + str(artist) + '"]]}'
+    headers = {'Content-Type': 'application/json'}
+    response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    return(response['result']['albums_loop'])
+
 def GetLmsGenres():
     # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
     url = "http://rpms:9002/jsonrpc.js"    
