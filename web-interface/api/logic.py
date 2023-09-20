@@ -571,9 +571,9 @@ async def DoTranscode():
     pass
 
 def GetLmsServerInfo():
-    # LMS API-reference: http://msi:9000/html/docs/cli-api.html 
+    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html 
     url = "http://rpms:9002/jsonrpc.js"    
-    payload = "{\"method\": \"slim.request\", \"params\": [\"-\", [\"serverstatus\",\"0\",\"100\"]]}\n"
+    data = '{"method": "slim.request", "params": ["-", ["serverstatus","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
-    response = requests.request("POST", url, headers=headers, data=payload)
-    return(response.text)
+    response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    return(response)
