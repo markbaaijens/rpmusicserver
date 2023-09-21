@@ -448,14 +448,15 @@ def DoUpdateRpms():
 @app.route('/api/DoExportCollection', methods=['POST'])
 def DoExportCollection():
     musicCollectionInfo = logic.GetMusicCollectionInfo()
+    collectionFolder = musicCollectionInfo["CollectionFolder"]    
     collectionFolderFunctional = musicCollectionInfo["CollectionFolderFunctional"]
 
     try:
-        logic.ExportCollectionArtistAlbumByFolder()        
-        logic.ExportCollectionArtistAlbumByTag()
-        logic.ExportCollectionGenreArtistAlbumByTag()
+        logic.ExportCollectionArtistAlbumByFolder(collectionFolder)        
+        logic.ExportCollectionArtistAlbumByTag(collectionFolder)
+        logic.ExportCollectionGenreArtistAlbumByTag(collectionFolder)
 
-        info = { "Message": "Collection is exported to " + collectionFolderFunctional + '.'}
+        info = { "Message": "Collection is exported to " + collectionFolderFunctional}
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
