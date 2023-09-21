@@ -576,7 +576,17 @@ def ExportCollectionArtistAlbumByFolder(collectionFolder):
         level = dir.count(os.sep) - startLevel
         dirName = dir.split(os.path.sep)[-1]
         if level > 0:
-            collection += (' ' * 4 * (level -1)) + dirName + '\n'
+            drFileName = os.path.join(dir, 'dr14.txt')
+            drValue = ''
+            if os.path.isfile(drFileName):
+                try:
+                    drValue = os.popen('cat "' + drFileName + '" | grep "Official DR value:" | cut -c24-27 &> /dev/null').read().strip()
+                    if drValue != '':
+                        drValue = ' | DR' +  drValue
+                except:
+                    pass
+
+            collection += (' ' * 4 * (level -1)) + dirName + drValue + '\n'
 
     with open(collectionFolder + '/collection-artist-album-by-folder.txt', 'w') as file:
         file.write(collection)            
