@@ -10,7 +10,7 @@ from math import ceil
 import asyncio
 import urllib.request
 
-const_LmsApiUrl = 'http://rpms:9002/jsonrpc.js' # TODO rpms => localhost
+const_LmsApiUrl = 'http://localhost:9002/jsonrpc.js'
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -629,7 +629,12 @@ def GetLmsServerStatus():
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["serverstatus","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
-    response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return         
+
     return(response['result'])
 
 def GetLmsArtists():
@@ -637,7 +642,12 @@ def GetLmsArtists():
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["artists","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
-    response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return ''       
+
     return(response['result']['artists_loop'])
 
 def GetLmsAlbumsByArtist(artist):
@@ -645,7 +655,12 @@ def GetLmsAlbumsByArtist(artist):
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["albums","0","-1","artist_id:' + str(artist) + '"]]}'
     headers = {'Content-Type': 'application/json'}
-    response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return ''       
+
     return(response['result']['albums_loop'])
 
 def GetLmsAlbumsByGenreArtist(genre, artist):
@@ -653,7 +668,12 @@ def GetLmsAlbumsByGenreArtist(genre, artist):
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["albums","0","-1","genre_id:' + str(genre) + '","artist_id:' + str(artist) + '"]]}'
     headers = {'Content-Type': 'application/json'}
-    response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return ''       
+
     return(response['result']['albums_loop'])
 
 def GetLmsGenres():
@@ -661,7 +681,12 @@ def GetLmsGenres():
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["genres","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
-    response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return ''               
+
     return(response['result']['genres_loop'])
 
 def GetLmsArtistsByGenre(genre):
@@ -669,5 +694,10 @@ def GetLmsArtistsByGenre(genre):
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["artists","0","-1","genre_id:' + str(genre) + '"]]}'
     headers = {'Content-Type': 'application/json'}
-    response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return ''
+
     return(response['result']['artists_loop'])
