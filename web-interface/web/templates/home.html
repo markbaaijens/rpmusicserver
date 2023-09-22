@@ -42,31 +42,20 @@
         </tr>
         <tr>
             <td>Available Version</td>
-            <td><b>{{ versionInfo.AvailableVersion }}</b></td>
+            <td><b>{{ versionInfo.AvailableVersion }}</b>
+                {% if versionInfo.IsVersionOverridden %}   
+                    *
+                {% endif %}             
+            </td>
         </tr>
         <tr>
             <td>Last Update</td>
             <td><b>{{ versionInfo.LastUpdateTimeStamp }}</b></td>
         </tr>
-        {% if versionInfo.IsVersionOverridden %}
-            <tr>
-                <td>Update Branch</td>
-                <td>
-                    <b>{{ versionInfo.UpdateBranchName }}</b>
-                </td>
-            </tr>
-            <tr>
-                <td>Version overridden?</td>
-                <td>
-                    {% if versionInfo.IsVersionOverridden %}
-                        <span class="checkmark-y"> &#10004; </span>
-                    {% else %}
-                        <span class="checkmark-n"> &#x2717; </span> 
-                    {% endif %}
-                </td>
-            </tr>         
-        {% endif %}        
-    </table>  
+    </table> 
+    {% if versionInfo.IsVersionOverridden %}
+    <div><small>* overridden by update branch <b>{{ versionInfo.UpdateBranchName }}</b></small></div>
+    {% endif %}             
     <p>
     {% if versionInfo.CanUpdate %}
         <a href="/update-rpms" class="link-button">Update</a> 
