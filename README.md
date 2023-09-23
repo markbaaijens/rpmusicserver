@@ -251,11 +251,11 @@ The `rpmsdev` hostname is used in this build
 * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
   * password:
     * raspberry (on first install) 
-    * pi (on existing install) 
+    * rpms (on existing install) 
 * `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
   * password:
     * raspberry (on first install) 
-    * pi (on existing install) 
+    * rpms (on existing install) 
 * after reboot, password is changed to `rpms`
 * from now on, you can reach the development-server on `rpmsdev`
 * in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
