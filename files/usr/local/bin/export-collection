@@ -1,16 +1,3 @@
 #bin/bash
 
-if [ -z "$(whoami | grep root)" ]; then
-    echo "Not running as root."
-    exit
-fi
-
-music_folder=$(curl --silent localhost:5000/api/GetMusicCollectionInfo | jq .CollectionFolder | tr -d '"')
-export_file=$(curl --silent localhost:5000/api/GetMusicCollectionInfo | jq .ExportFile | tr -d '"')
-
-# Apparantly, the command 'tree' cannot create a file directly in $music_folder (despite sudo-rights),
-# so we have to do that in two separate steps
-tree -d "$music_folder" > /tmp/"$export_file"
-cp /tmp/"$export_file" "$music_folder"
-
-
+curl --silent localhost:5000/api/DoExportCollection -X post

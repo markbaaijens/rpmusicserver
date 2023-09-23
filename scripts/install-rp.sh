@@ -154,7 +154,7 @@ sed -i '/chmod 777/d' /etc/crontab
 /bin/sh -c 'echo "10 02 * * * root chmod 777 /media/usbdata/user/Publiek -R" >> /etc/crontab'
 echo " => line added."    
 
-echo "Adding line for pdate-docker to /etc/crontab..."
+echo "Adding line for update-docker to /etc/crontab..."
 sed -i '/update-docker/d' /etc/crontab
 /bin/sh -c 'echo "00 03 * * * root update-docker" >> /etc/crontab'
 echo " => line added."    

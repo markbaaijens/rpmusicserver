@@ -10,6 +10,8 @@ from math import ceil
 import asyncio
 import urllib.request
 
+const_LmsApiUrl = 'http://localhost:9002/jsonrpc.js'
+
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     return process.stdout.decode("utf-8").strip('\n')
@@ -30,7 +32,7 @@ def RevisionFileName():
 
 
 def ConvertToFunctionalFolder(folderName):
-    return folderName.replace(GetUserBaseFolder(), '(server) ')
+    return folderName.replace(GetUserBaseFolder(), 'server:/')
 
 def GetElapsedTimeHumanReadable(fromDate):
     timeElapsed = datetime.today() - fromDate
@@ -464,12 +466,12 @@ def GetDefaultMusicCollectionFolder():
 
 def GetMusicCollectionInfo():   
     transcoderSettings = GetTranscoderSettings()
-    actualCollectionFolder = transcoderSettings["sourcefolder"]
-    actualCollectionFolderFunctional = ConvertToFunctionalFolder(actualCollectionFolder)
-    exportFile = "tree.txt"
+    collectionFolder = transcoderSettings["sourcefolder"]
+    collectionFolderFunctional = ConvertToFunctionalFolder(collectionFolder)
+    exportFile = "collection-artist-album-by-folder.txt"
 
     lastExportTimeStampAsString = ''
-    fullExportFile = actualCollectionFolder + "/" + exportFile
+    fullExportFile = collectionFolder + "/" + exportFile
     if os.path.isfile(fullExportFile):
         try:
             lastExportTimeStampAsString = os.path.getmtime(fullExportFile)
@@ -478,9 +480,8 @@ def GetMusicCollectionInfo():
         lastExportTimeStampAsString = datetime.fromtimestamp(lastExportTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
         lastExportTimeStampAsString = lastExportTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastExportTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
 
-    return {"CollectionFolder": actualCollectionFolder,
-            "CollectionFolderFunctional": actualCollectionFolderFunctional,
-            "ExportFile": exportFile,
+    return {"CollectionFolder": collectionFolder,
+            "CollectionFolderFunctional": collectionFolderFunctional,
             "LastExport": lastExportTimeStampAsString}
 
 def GetLog(logFile, nrOfLines):
@@ -562,18 +563,141 @@ async def DoUpdateRpms():
     await asyncio.create_subprocess_shell("update-rpms")
     pass
 
-async def DoExportCollection():
-    await asyncio.create_subprocess_shell("export-collection")
-    pass
-
 async def DoTranscode():
     await asyncio.create_subprocess_shell("transcode")
     pass
 
-def GetLmsServerInfo():
-    # LMS API-reference: http://msi:9000/html/docs/cli-api.html 
-    url = "http://rpms:9002/jsonrpc.js"    
-    payload = "{\"method\": \"slim.request\", \"params\": [\"-\", [\"serverstatus\",\"0\",\"100\"]]}\n"
+def ExportCollectionArtistAlbumByFolder(collectionFolder):
+    collection = ''
+
+    startLevel = collectionFolder.count(os.sep)
+    for (dir, dirs, files) in os.walk(collectionFolder):
+        dirs.sort()
+        level = dir.count(os.sep) - startLevel
+        dirName = dir.split(os.path.sep)[-1]
+        if level > 0:
+            drFileName = os.path.join(dir, 'dr14.txt')
+            drValue = ''
+            if os.path.isfile(drFileName):
+                try:
+                    drValue = os.popen('cat "' + drFileName + '" | grep "Official DR value:" | cut -c24-27 &> /dev/null').read().strip()
+                    if drValue != '':
+                        drValue = ' | DR' +  drValue
+                except:
+                    pass
+
+            collection += (' ' * 4 * (level -1)) + dirName + drValue + '\n'
+
+    with open(collectionFolder + '/collection-artist-album-by-folder.txt', 'w') as file:
+        file.write(collection)            
+
+    pass
+
+def ExportCollectionArtistAlbumByTag(collectionFolder):
+    collection = ''
+    artists = GetLmsArtists()
+    for artist in artists:
+        albums = GetLmsAlbumsByArtist(artist['id'])
+        collection += artist['artist'] + ' (' + str(len(albums)) + ')\n'            
+        for album in albums:
+            collection += (' ' * 4) + album['album'] + '\n'                
+
+    with open(collectionFolder + '/collection-artist-album-by-tag.txt', 'w') as file:
+        file.write(collection)            
+
+    pass
+        
+def ExportCollectionGenreArtistAlbumByTag(collectionFolder):
+    collection = ''
+    genres = GetLmsGenres()
+    for genre in genres:
+        artists = GetLmsArtistsByGenre(genre['id'])
+        collection += genre['genre'] + ' (' + str(len(artists)) + ')\n'        
+        for artist in artists:
+            albums = GetLmsAlbumsByGenreArtist(genre['id'], artist['id'])
+            collection += (' ' * 4) + artist['artist'] + ' (' + str(len(albums)) + ')\n'            
+            for album in albums:
+                collection += (' ' * 4 * 2) + album['album'] + '\n'
+
+    with open(collectionFolder + '/collection-genre-artist-album-by-tag.txt', 'w') as file:
+        file.write(collection)            
+
+    pass
+
+def GetLmsServerStatus():
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    url = const_LmsApiUrl
+    data = '{"method": "slim.request", "params": ["-", ["serverstatus","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
-    response = requests.request("POST", url, headers=headers, data=payload)
-    return(response.text)
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return         
+
+    return(response['result'])
+
+def GetLmsArtists():
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    url = const_LmsApiUrl
+    data = '{"method": "slim.request", "params": ["-", ["artists","0","-1"]]}'
+    headers = {'Content-Type': 'application/json'}
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return ''       
+
+    return(response['result']['artists_loop'])
+
+def GetLmsAlbumsByArtist(artist):
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    url = const_LmsApiUrl
+    data = '{"method": "slim.request", "params": ["-", ["albums","0","-1","artist_id:' + str(artist) + '"]]}'
+    headers = {'Content-Type': 'application/json'}
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return ''       
+
+    return(response['result']['albums_loop'])
+
+def GetLmsAlbumsByGenreArtist(genre, artist):
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    url = const_LmsApiUrl
+    data = '{"method": "slim.request", "params": ["-", ["albums","0","-1","genre_id:' + str(genre) + '","artist_id:' + str(artist) + '"]]}'
+    headers = {'Content-Type': 'application/json'}
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return ''       
+
+    return(response['result']['albums_loop'])
+
+def GetLmsGenres():
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    url = const_LmsApiUrl
+    data = '{"method": "slim.request", "params": ["-", ["genres","0","-1"]]}'
+    headers = {'Content-Type': 'application/json'}
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return ''               
+
+    return(response['result']['genres_loop'])
+
+def GetLmsArtistsByGenre(genre):
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    url = const_LmsApiUrl
+    data = '{"method": "slim.request", "params": ["-", ["artists","0","-1","genre_id:' + str(genre) + '"]]}'
+    headers = {'Content-Type': 'application/json'}
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return ''
+
+    return(response['result']['artists_loop'])

@@ -448,13 +448,15 @@ def DoUpdateRpms():
 @app.route('/api/DoExportCollection', methods=['POST'])
 def DoExportCollection():
     musicCollectionInfo = logic.GetMusicCollectionInfo()
-    exportFile = musicCollectionInfo["ExportFile"]
+    collectionFolder = musicCollectionInfo["CollectionFolder"]    
     collectionFolderFunctional = musicCollectionInfo["CollectionFolderFunctional"]
 
     try:
-        asyncio.run(logic.DoExportCollection())
-        info = { "Message": "Collection is exported to " + 
-                    exportFile + " in " + collectionFolderFunctional + '.'}
+        logic.ExportCollectionArtistAlbumByFolder(collectionFolder)        
+        logic.ExportCollectionArtistAlbumByTag(collectionFolder)
+        logic.ExportCollectionGenreArtistAlbumByTag(collectionFolder)
+
+        info = { "Message": "Collection is exported to " + collectionFolderFunctional}
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -474,10 +476,60 @@ def DoTranscode():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)        
 
-@app.route('/api/GetLmsServerInfo', methods=['GET'])
-def GetLmsServerInfo():
+@app.route('/api/GetLmsServerStatus', methods=['GET'])
+def GetLmsServerStatus():
     try:
-        info = logic.GetLmsServerInfo()
+        info = logic.GetLmsServerStatus()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsArtists', methods=['GET'])
+def GetLmsArtists():
+    try:
+        info = logic.GetLmsArtists()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsAlbumsByArtist/<int:artist>', methods=['GET'])
+def GetLmsAlbumsByArtist(artist):
+    try:
+        info = logic.GetLmsAlbumsByArtist(artist)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsAlbumsByGenreArtist/<int:genre>/<int:artist>', methods=['GET'])
+def GetLmsAlbumsByGenreArtist(genre, artist):
+    try:
+        info = logic.GetLmsAlbumsByGenreArtist(genre, artist)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsGenres', methods=['GET'])
+def GetLmsGenres():
+    try:
+        info = logic.GetLmsGenres()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsArtistsByGenre/<int:genre>', methods=['GET'])
+def GetLmsArtistsByGenre(genre):
+    try:
+        info = logic.GetLmsArtistsByGenre(genre)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
