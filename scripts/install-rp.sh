@@ -139,32 +139,32 @@ install_bin_file export-collection
 
 # By always delete existing lines in crontab, we can easily implement
 # a different crontab-strategy later, if needed
-echo "Adding line for transcode to /etc/crontab..."
+echo "Adding line to transcode to /etc/crontab..."
 sed -i '/transcode/d' /etc/crontab
 /bin/sh -c 'echo "20  * * * * root transcode" >> /etc/crontab'
 echo " => line added."    
 
-echo "Adding line for auto-upgrade to /etc/crontab:"
+echo "Adding line to apt-upgrade to /etc/crontab:"
 sed -i '/apt-get upgrade/d' /etc/crontab
-/bin/sh -c 'echo "00 02 * * * root apt-get upgrade -y" >> /etc/crontab'
+/bin/sh -c 'echo "00 02 * * * root apt-get upgrade -y && apt-get clean -y && apt-get autoremove -y && apt-get autoclean -y" >> /etc/crontab'
 echo " => line added."    
 
-echo "Adding line for setting rights to /etc/crontab..."
+echo "Adding line to setting rights to /etc/crontab..."
 sed -i '/chmod 777/d' /etc/crontab
 /bin/sh -c 'echo "10 02 * * * root chmod 777 /media/usbdata/user/Publiek -R" >> /etc/crontab'
 echo " => line added."    
 
-echo "Adding line for update-docker to /etc/crontab..."
+echo "Adding line to update-docker to /etc/crontab..."
 sed -i '/update-docker/d' /etc/crontab
 /bin/sh -c 'echo "00 03 * * * root update-docker" >> /etc/crontab'
 echo " => line added."    
 
-echo "Adding line for export-collection to /etc/crontab..."
+echo "Adding line to export-collection to /etc/crontab..."
 sed -i '/export-collection/d' /etc/crontab
 /bin/sh -c 'echo "10 03 * * * root export-collection" >> /etc/crontab'
 echo " => line added."    
 
-echo "Adding line for backup-rpms-systen collection-tree to /etc/crontab..."
+echo "Adding line to backup rpms-system to /etc/crontab..."
 sed -i '/backup-rpms-system/d' /etc/crontab
 /bin/sh -c 'echo "20 03 * * * root backup-rpms-system" >> /etc/crontab'
 echo " => line added."    
@@ -176,10 +176,14 @@ sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 echo -e "rpms\nrpms" | passwd pi
 echo " => done changing password of user 'pi'."
 
-echo "Change swappiness to 1..."
+echo "Change swappiness to 1"
 if ([ $(grep -c 'vm.swappiness=1' /etc/sysctl.conf) -eq 0 ]); then
-    sudo /bin/sh -c 'echo "vm.swappiness=1" >> /etc/sysctl.conf'
+    /bin/sh -c 'echo "vm.swappiness=1" >> /etc/sysctl.conf'
 fi
+
+echo "Limit size of /var/log/journal"
+sed -i '/SystemMaxUse/d' /etc/systemd/journald.conf
+/bin/sh -c 'echo "SystemMaxUse=50M" >> /etc/systemd/journald.conf'
 
 # Start docker for preloading containers
 start-docker
