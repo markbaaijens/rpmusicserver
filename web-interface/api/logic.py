@@ -10,7 +10,8 @@ from math import ceil
 import asyncio
 import urllib.request
 
-const_LmsApiUrl = 'http://localhost:9002/jsonrpc.js'
+#const_LmsApiUrl = 'http://localhost:9002/jsonrpc.js'
+const_LmsApiUrl = 'http://rpms:9002/jsonrpc.js'
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -701,3 +702,16 @@ def GetLmsArtistsByGenre(genre):
         return ''
 
     return(response['result']['artists_loop'])
+
+def GetLmsPlayers():
+    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    url = const_LmsApiUrl
+    data = '{"method": "slim.request", "params": ["-", ["players","0","10"]]}'
+    headers = {'Content-Type': 'application/json'}
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return ''
+
+    return(response['result']['players_loop'])
