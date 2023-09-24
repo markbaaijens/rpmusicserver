@@ -163,11 +163,19 @@ def ShowTasks():
         logger.error(traceback.format_exc())
         musicCollectionInfo = []
 
+    try:
+        lmsServerStatus = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetLmsServerStatus').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        lmsServerStatus = []        
+
     return render_template(
         'tasks.html', 
         appTitle = 'Tasks - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        musicCollectionInfo = musicCollectionInfo)   
+        musicCollectionInfo = musicCollectionInfo,
+        lmsServerStatus = lmsServerStatus)
 
 @app.route('/backup', methods=['GET'])
 def ShowBackup():
