@@ -536,6 +536,16 @@ def GetLmsArtistsByGenre(genre):
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
+@app.route('/api/GetLmsPlayers', methods=['GET'])
+def GetLmsPlayers():
+    try:
+        info = logic.GetLmsPlayers()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='Controller for RP Music Server API')

@@ -625,7 +625,8 @@ def ExportCollectionGenreArtistAlbumByTag(collectionFolder):
     pass
 
 def GetLmsServerStatus():
-    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
+    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["serverstatus","0","-1"]]}'
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["serverstatus","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
@@ -638,7 +639,8 @@ def GetLmsServerStatus():
     return(response['result'])
 
 def GetLmsArtists():
-    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
+    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["artists","0","-1"]]}'
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["artists","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
@@ -651,7 +653,8 @@ def GetLmsArtists():
     return(response['result']['artists_loop'])
 
 def GetLmsAlbumsByArtist(artist):
-    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
+    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["albums","0","-1","artist_id:207087"]]}'
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["albums","0","-1","artist_id:' + str(artist) + '"]]}'
     headers = {'Content-Type': 'application/json'}
@@ -664,7 +667,9 @@ def GetLmsAlbumsByArtist(artist):
     return(response['result']['albums_loop'])
 
 def GetLmsAlbumsByGenreArtist(genre, artist):
-    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
+    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["albums","0","-1","genre_id:37841","artist_id:207087"]]}'
+    37841
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["albums","0","-1","genre_id:' + str(genre) + '","artist_id:' + str(artist) + '"]]}'
     headers = {'Content-Type': 'application/json'}
@@ -677,7 +682,8 @@ def GetLmsAlbumsByGenreArtist(genre, artist):
     return(response['result']['albums_loop'])
 
 def GetLmsGenres():
-    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
+    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["genres","0","-1"]]}'
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["genres","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
@@ -690,7 +696,8 @@ def GetLmsGenres():
     return(response['result']['genres_loop'])
 
 def GetLmsArtistsByGenre(genre):
-    # LMS API-reference: <lms-server>:<port>/html/docs/cli-api.html 
+    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
+    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["artists","0","-1","genre_id:37866"]]}'    
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["artists","0","-1","genre_id:' + str(genre) + '"]]}'
     headers = {'Content-Type': 'application/json'}
@@ -701,3 +708,40 @@ def GetLmsArtistsByGenre(genre):
         return ''
 
     return(response['result']['artists_loop'])
+
+def GetLmsPlayers():
+    def GetUpperNameFromPlayer(x):
+        return (x['Name'].upper())
+
+    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
+    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["players","0","10"]]}'
+    url = const_LmsApiUrl
+    data = '{"method": "slim.request", "params": ["-", ["players","0","10"]]}'
+    headers = {'Content-Type': 'application/json'}
+
+    try:
+        response = json.loads(requests.request("GET", url, headers=headers, data=data).content)
+    except Exception as e:
+        return ''
+
+    players = []
+    for player in response['result']['players_loop']:
+        name = player['name']
+        model = player['model']
+        ipAddress = player['ip'].split(':', 1)[0]
+
+        isWebServer = False
+        if ExecuteBashCommand('nmap ' + ipAddress + ' --open -p 80 | grep 80/tcp') != '':
+            isWebServer = True
+        
+        players.append({
+                        "Name": name,
+                        "Model": model,
+                        "IpAddress": ipAddress,
+                        "IsWebServer": isWebServer
+                    })  
+        players = sorted(players, key=GetUpperNameFromPlayer)
+
+    return(players)
+
+
