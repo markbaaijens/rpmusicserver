@@ -2,6 +2,16 @@
 
 {% block content %}
     <h2>Services</h2>
+    <h3>Players</h3>
+    <p>
+        {% for lmsPlayer in lmsPlayers %}
+        <div>
+            <b>{{ lmsPlayer.Name }}</b> | {{ lmsPlayer.Model }}
+            {% if lmsPlayer.IsWebServer %}
+                | <a class="external-link" href="http://{{ lmsPlayer.IpAddress }}" target="_blank">web</a>
+            {% endif %}                    
+        </div>
+        {% endfor %} 
     <h3>Port Status</h3>
     <p>
     {% for service in serviceList %}

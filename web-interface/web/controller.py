@@ -109,6 +109,13 @@ def ShowServices():
         logger.error(traceback.format_exc())
         machineInfo = []        
 
+    try:
+        lmsPlayers = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetLmsPlayers').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        lmsPlayers = []                
+
     return render_template(
         'services.html', 
         appTitle = 'Services - ' + configObject.AppTitle, 
@@ -116,7 +123,8 @@ def ShowServices():
         serviceList = serviceList,
         apiInfo = apiInfo,
         dockerContainerList = dockerContainerList,
-        machineInfo = machineInfo)   
+        machineInfo = machineInfo,
+        lmsPlayers = lmsPlayers)   
 
 @app.route('/resources', methods=['GET'])
 def ShowResources():

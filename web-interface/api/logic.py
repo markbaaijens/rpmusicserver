@@ -10,8 +10,7 @@ from math import ceil
 import asyncio
 import urllib.request
 
-#const_LmsApiUrl = 'http://localhost:9002/jsonrpc.js'
-const_LmsApiUrl = 'http://rpms:9002/jsonrpc.js'
+const_LmsApiUrl = 'http://localhost:9002/jsonrpc.js'
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -711,6 +710,9 @@ def GetLmsArtistsByGenre(genre):
     return(response['result']['artists_loop'])
 
 def GetLmsPlayers():
+    def GetUpperNameFromPlayer(x):
+        return (x['Name'].upper())
+
     # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
     # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["players","0","10"]]}'
     url = const_LmsApiUrl
@@ -722,4 +724,24 @@ def GetLmsPlayers():
     except Exception as e:
         return ''
 
-    return(response['result']['players_loop'])
+    players = []
+    for player in response['result']['players_loop']:
+        name = player['name']
+        model = player['model']
+        ipAddress = player['ip'].split(':', 1)[0]
+
+        isWebServer = False
+        if ExecuteBashCommand('nmap ' + ipAddress + ' --open -p 80 | grep 80/tcp') != '':
+            isWebServer = True
+        
+        players.append({
+                        "Name": name,
+                        "Model": model,
+                        "IpAddress": ipAddress,
+                        "IsWebServer": isWebServer
+                    })  
+        players = sorted(players, key=GetUpperNameFromPlayer)
+
+    return(players)
+
+
