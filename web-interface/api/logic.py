@@ -747,7 +747,11 @@ def GetLmsPlayers():
                 type = 'sb-boom'
             elif model == 'baby':
                 type = 'sb-radio'
-        
+            elif model == 'receiver':
+                type = 'sb-receiver'
+            elif model == 'fab4':
+                type = 'sb-touch'
+
         players.append({
                         "Name": name,
                         "Model": model,
