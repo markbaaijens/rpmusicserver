@@ -4,7 +4,7 @@
     <h2>Services</h2>
     <h3>Players</h3>
     <p>
-        {% for lmsPlayer in lmsPlayers %}
+    {% for lmsPlayer in lmsPlayers %}
         <div>
             {% if lmsPlayer.Type == 'pc' %}
                 <img src="{{ url_for('static',filename='players/pc.svg') }}">
@@ -36,7 +36,8 @@
                 | <a class="external-link" href="http://{{ lmsPlayer.IpAddress }}" target="_blank">web</a>
             {% endif %}                    
         </div>
-        {% endfor %} 
+    {% endfor %} 
+
     <h3>Port Status</h3>
     <p>
     {% for service in serviceList %}
