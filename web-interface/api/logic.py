@@ -738,17 +738,15 @@ def GetLmsPlayers():
 
         type = ''
         if model == 'squeezelite':
+            type = 'pc'
             if 'PCP' in firmWare.upper():
                 type = 'pi'
-            else:
-                type = 'pc'
         else:
+            type = 'sb'            
             if model == 'boom':
                 type = 'sb-boom'
             elif model == 'baby':
                 type = 'sb-radio'
-            else:
-                type = 'sb-other'
         
         players.append({
                         "Name": name,
