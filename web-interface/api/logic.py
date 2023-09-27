@@ -10,7 +10,8 @@ from math import ceil
 import asyncio
 import urllib.request
 
-const_LmsApiUrl = 'http://localhost:9002/jsonrpc.js'
+#const_LmsApiUrl = 'http://localhost:9002/jsonrpc.js'
+const_LmsApiUrl = 'http://rpms:9002/jsonrpc.js'
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -729,16 +730,33 @@ def GetLmsPlayers():
         name = player['name']
         model = player['model']
         ipAddress = player['ip'].split(':', 1)[0]
+        firmWare = player['firmware']
 
         isWebServer = False
         if ExecuteBashCommand('nmap ' + ipAddress + ' --open -p 80 | grep 80/tcp') != '':
             isWebServer = True
+
+        type = ''
+        if model == 'squeezelite':
+            if 'PCP' in firmWare.upper():
+                type = 'pi'
+            else:
+                type = 'pc'
+        else:
+            if model == 'boom':
+                type = 'sb-boom'
+            elif model == 'baby':
+                type = 'sb-radio'
+            else:
+                type = 'sb-other'
         
         players.append({
                         "Name": name,
                         "Model": model,
                         "IpAddress": ipAddress,
-                        "IsWebServer": isWebServer
+                        "IsWebServer": isWebServer,
+                        "FirmWare": firmWare,
+                        "Type": type
                     })  
         players = sorted(players, key=GetUpperNameFromPlayer)
 
