@@ -736,7 +736,7 @@ def GetLmsPlayers():
         if ExecuteBashCommand('nmap ' + ipAddress + ' --open -p 80 | grep 80/tcp') != '':
             isWebServer = True
 
-        type = ''
+        type = 'unknown'
         if model == 'squeezelite':
             type = 'pc'
             if 'PCP' in firmWare.upper():
