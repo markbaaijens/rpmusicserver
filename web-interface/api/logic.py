@@ -212,19 +212,20 @@ def GetDiskList():
 
 def GetServiceStatusList():
     class ServiceInfo:
-        def __init__(self, portNumber, serviceName, isActive=False):
+        def __init__(self, portNumber, serviceName, serviceType='', isActive=False):
             self.PortNumber = portNumber
             self.ServiceName = serviceName
+            self.ServiceType = serviceType
             self.IsActive = isActive
 
     serviceList = []
     serviceList.append(ServiceInfo(22, 'ssh'))
-    serviceList.append(ServiceInfo(80, 'rpms/web'))
-    serviceList.append(ServiceInfo(139, 'samba/netbios'))
-    serviceList.append(ServiceInfo(5000, 'rpms/api'))
-    serviceList.append(ServiceInfo(8384, 'syncthing/web'))
-    serviceList.append(ServiceInfo(9002, 'lms/web'))
-    serviceList.append(ServiceInfo(9091, 'transmission/web'))
+    serviceList.append(ServiceInfo(80, 'rpms', 'web'))
+    serviceList.append(ServiceInfo(139, 'samba', 'netbios'))
+    serviceList.append(ServiceInfo(5000, 'rpms', 'api'))
+    serviceList.append(ServiceInfo(8384, 'syncthing', 'web'))
+    serviceList.append(ServiceInfo(9002, 'lms', 'web'))
+    serviceList.append(ServiceInfo(9091, 'transmission', 'web'))
 
     portList = ''
     for serviceInfoObject in serviceList:
@@ -242,6 +243,7 @@ def GetServiceStatusList():
     for serviceInfoObject in serviceList:
         serviceListResult.append({"PortNumber": serviceInfoObject.PortNumber,
                                   "ServiceName": serviceInfoObject.ServiceName,
+                                  "ServiceType": serviceInfoObject.ServiceType,
                                   "IsActive": serviceInfoObject.IsActive
                                  })
 
