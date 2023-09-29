@@ -5,30 +5,38 @@
     <h3>Players</h3>
     <p>
     {% for lmsPlayer in lmsPlayers %}
-        <div>
+        <div style="vertical-align:top">
             {% if lmsPlayer.Type == 'pc' %}
-                <img src="{{ url_for('static',filename='players/pc.svg') }}">
+                <img src="{{ url_for('static',filename='players/pc.svg') }}" height="24" width="24">
             {% else %}
                 {% if lmsPlayer.Type == 'pi' %}
-                    <img src="{{ url_for('static',filename='players/pi.svg') }}">
+                    <img src="{{ url_for('static',filename='players/pi.svg') }}" height="24" width="24">
                 {% else %}
                     {% if lmsPlayer.Type == 'sb-boom' %}
-                        <img src="{{ url_for('static',filename='players/sb-boom.svg') }}">
+                        <img src="{{ url_for('static',filename='players/sb-boom.svg') }}" height="24" width="24">
                     {% else %}
                         {% if lmsPlayer.Type == 'sb-radio' %}
-                            <img src="{{ url_for('static',filename='players/sb-radio.svg') }}">
+                            <img src="{{ url_for('static',filename='players/sb-radio.svg') }}" height="24" width="24">
                         {% else %}                        
                             {% if lmsPlayer.Type == 'sb-receiver' %}
-                                <img src="{{ url_for('static',filename='players/sb-sb-receiver.svg') }}">
+                                <img src="{{ url_for('static',filename='players/sb-receiver.svg') }}" height="24" width="24">
                             {% else %}
                                 {% if lmsPlayer.Type == 'sb-touch' %}
-                                    <img src="{{ url_for('static',filename='players/sb-receiver.svg') }}">
+                                    <img src="{{ url_for('static',filename='players/sb-touch.svg') }}" height="24" width="24">
                                 {% else %}                                    
-                                    <img src="{{ url_for('static',filename='players/sb-receiver.svg') }}">
+                                    {% if lmsPlayer.Type == 'sb-classic' %}
+                                        <img src="{{ url_for('static',filename='players/sb-classic.svg') }}" height="24" width="24">
+                                    {% else %}
+                                        {% if lmsPlayer.Type == 'sb-transporter' %}
+                                            <img src="{{ url_for('static',filename='players/sb-transporter.svg') }}" height="24" width="24">
+                                        {% else %}
+                                            <img src="{{ url_for('static',filename='players/sb-receiver.svg') }}" height="24" width="24">
+                                        {% endif %}
+                                    {% endif %}
                                 {% endif %} 
                             {% endif %} 
                         {% endif %} 
-                    {% endif %}                     
+                    {% endif %}
                 {% endif %} 
             {% endif %} 
             <b>{{ lmsPlayer.Name }}</b> | {{ lmsPlayer.Model }}

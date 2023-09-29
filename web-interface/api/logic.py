@@ -742,7 +742,6 @@ def GetLmsPlayers():
             if 'PCP' in firmWare.upper():
                 type = 'pi'
         else:
-            type = 'sb'            
             if model == 'boom':
                 type = 'sb-boom'
             elif model == 'baby':
@@ -751,6 +750,10 @@ def GetLmsPlayers():
                 type = 'sb-receiver'
             elif model == 'fab4':
                 type = 'sb-touch'
+            elif model == 'squeezebox3':
+                type = 'sb-classic'
+            elif model == 'transporter':
+                type = 'sb-transporter'
 
         players.append({
                         "Name": name,
