@@ -27,7 +27,7 @@
    inkscape:pagecheckerboard="0"
    showgrid="false"
    inkscape:zoom="0.82421875"
-   inkscape:cx="199.58294"
+   inkscape:cx="200.79621"
    inkscape:cy="256"
    inkscape:window-width="1280"
    inkscape:window-height="693"
@@ -43,31 +43,31 @@
    id="g14">
 			<polygon
    style="fill:#000000"
-   points="56,356 96,356 416,356 456,356 486,356 486,116 26,116 26,356 "
+   points="486,356 486,116 26,116 26,356 56,356 96,356 416,356 456,356 "
    id="polygon2"
-   transform="translate(5.5450237,26.170616)" />
+   transform="translate(0.03317536,1.7014217)" />
 			<path
    style="display:inline;fill:#ffffff"
-   d="m 269.49289,300.32702 c 11.05,0 20,8.95 20,20 0,11.05 -8.95,20 -20,20 -11.05,0 -20,-8.95 -20,-20 0,-11.05 8.95,-20 20,-20 z"
+   d="m 263.98104,275.85783 c 11.05,0 20,8.95 20,20 0,11.05 -8.95,20 -20,20 -11.05,0 -20,-8.95 -20,-20 0,-11.05 8.95,-20 20,-20 z"
    id="path4"
    inkscape:highlight-color="1912537091" />
 			<rect
-   x="58.257435"
-   y="166.09718"
+   x="52.745586"
+   y="141.62799"
    style="opacity:1;fill:#ffffff;stroke-width:1.3438"
    width="408.46295"
    height="100.79855"
    id="rect6" />
 			<rect
-   x="61.545025"
-   y="382.17062"
+   x="56.033176"
+   y="357.70142"
    style="fill:#262626;stroke-width:0.672232"
    width="40"
    height="18.075829"
    id="rect8" />
 			<rect
-   x="421.54501"
-   y="382.17062"
+   x="416.03317"
+   y="357.70142"
    style="fill:#262626;stroke-width:0.654641"
    width="40"
    height="17.142179"
