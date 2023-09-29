@@ -60,11 +60,12 @@
     <div>
         {% if service.IsActive %}
             <span class="checkmark-y"> &#10004; </span>
-            {{ service.PortNumber }} {{ service.ServiceName }}
         {% else %}
             <span class="checkmark-n"> &#x2717; </span>
-            {{ service.PortNumber }} {{ service.ServiceName }}        
         {% endif %}        
+        {{ service.PortNumber }}
+        <b>{{ service.ServiceName }}</b>
+        <small>{{ service.ServiceType }}</small>
     </div>
     {% endfor %} 
     <p>
