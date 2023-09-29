@@ -90,12 +90,18 @@ meter {
 	margin-top: -3px;	
 }
 
-.small{
+.small {
 	display: block;
 	margin-top: -5px;
 }
 
-#submit{
+.icon-player {
+	height: 24px;
+	width: 24px;
+	vertical-align: middle;
+}
+
+#submit {
 	padding: 7px 10px;
 	font-size: 16px;
 	border-radius: 8px;
@@ -111,7 +117,7 @@ meter {
 	color: white;
 }
 
-#cancel{
+#cancel {
 	padding: 7px 10px;
 	font-size: 16px;
 	border-radius: 8px;
