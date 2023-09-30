@@ -350,10 +350,10 @@ def GetDiskList():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-@app.route('/api/GetServiceStatusList', methods=['GET'])
-def GetServiceStatusList():
+@app.route('/api/GetPortStatusList', methods=['GET'])
+def GetPortStatusList():
     try:
-        info = logic.GetServiceStatusList()
+        info = logic.GetPortStatusList()
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

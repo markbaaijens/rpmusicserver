@@ -50,8 +50,8 @@
     {   "EndPoint": "GET api/GetTranscoderInfo",
         "Example":"curl rpms:5000/api/GetTranscoderInfo"
     },        
-    {   "EndPoint": "GET api/GetServiceStatusList",
-        "Example":"curl rpms:5000/api/GetSrviceList"
+    {   "EndPoint": "GET api/GetPortStatusList",
+        "Example":"curl rpms:5000/api/GetPortStatusList"
     },
     {   "EndPoint": "POST api/DoUpdateRpms",
         "Example":"curl rpms:5000/api/DoUpdateRpms -X post"

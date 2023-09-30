@@ -210,46 +210,46 @@ def GetDiskList():
     AppendDiskInfo('/media/usbbackup')
     return disks
 
-def GetServiceStatusList():
-    class ServiceInfo:
+def GetPortStatusList():
+    class PortInfo:
         def __init__(self, portNumber, serviceName, serviceType='', isActive=False):
             self.PortNumber = portNumber
             self.ServiceName = serviceName
             self.ServiceType = serviceType
             self.IsActive = isActive
 
-    serviceList = []
-    serviceList.append(ServiceInfo(22, 'ssh'))
-    serviceList.append(ServiceInfo(80, 'rpms', 'web'))
-    serviceList.append(ServiceInfo(139, 'samba', 'netbios'))
-    serviceList.append(ServiceInfo(445, 'samba', 'microsoft-ds'))
-    serviceList.append(ServiceInfo(5000, 'rpms', 'api'))
-    serviceList.append(ServiceInfo(8384, 'syncthing', 'web'))
-    serviceList.append(ServiceInfo(9002, 'lms', 'web'))
-    serviceList.append(ServiceInfo(9090, 'lms', 'telnet'))    
-    serviceList.append(ServiceInfo(9091, 'transmission', 'web'))
+    portStatusList = []
+    portStatusList.append(PortInfo(22, 'ssh'))
+    portStatusList.append(PortInfo(80, 'rpms', 'web'))
+    portStatusList.append(PortInfo(139, 'samba', 'netbios'))
+    portStatusList.append(PortInfo(445, 'samba', 'microsoft-ds'))
+    portStatusList.append(PortInfo(5000, 'rpms', 'api'))
+    portStatusList.append(PortInfo(8384, 'syncthing', 'web'))
+    portStatusList.append(PortInfo(9002, 'lms', 'web'))
+    portStatusList.append(PortInfo(9090, 'lms', 'telnet'))    
+    portStatusList.append(PortInfo(9091, 'transmission', 'web'))
 
     portList = ''
-    for serviceInfoObject in serviceList:
+    for portStatus in portStatusList:
         if portList != '':
             portList = portList + ','
-        portList = portList + str(serviceInfoObject.PortNumber)
+        portList = portList + str(portStatus.PortNumber)
 
     nmapResult = ExecuteBashCommand('nmap localhost --open -p ' + portList)
 
-    for serviceInfoObject in serviceList:
-        if (str(serviceInfoObject.PortNumber) + '/tcp') in nmapResult:
-            serviceInfoObject.IsActive = True
+    for portStatus in portStatusList:
+        if (str(portStatus.PortNumber) + '/tcp') in nmapResult:
+            portStatus.IsActive = True
 
-    serviceListResult = []
-    for serviceInfoObject in serviceList:
-        serviceListResult.append({"PortNumber": serviceInfoObject.PortNumber,
-                                  "ServiceName": serviceInfoObject.ServiceName,
-                                  "ServiceType": serviceInfoObject.ServiceType,
-                                  "IsActive": serviceInfoObject.IsActive
-                                 })
+    portStatusListResult = []
+    for portStatus in portStatusList:
+        portStatusListResult.append({"PortNumber": portStatus.PortNumber,
+                                     "ServiceName": portStatus.ServiceName,
+                                     "ServiceType": portStatus.ServiceType,
+                                     "IsActive": portStatus.IsActive
+                                    })
 
-    return serviceListResult
+    return portStatusListResult
 
 def GetCpuResourceInfo():
     # cpuLoad1 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $1}' | cut -c 1-4

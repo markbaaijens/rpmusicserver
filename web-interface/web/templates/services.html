@@ -56,21 +56,21 @@
 
     <h3>Port Status</h3>
     <table>
-        {% for service in serviceList %}
+        {% for portStatus in portStatusList %}
             <tr>
                 <td>
-                    {% if service.IsActive %}
+                    {% if portStatus.IsActive %}
                         <span class="checkmark-y"> &#10004; </span>
                     {% else %}
                         <span class="checkmark-n"> &#x2717; </span>
                     {% endif %}        
                 </td>
                 <td>
-                    {{ service.PortNumber }}
+                    {{ portStatus.PortNumber }}
                 </td>
                 <td>
-                    <b>{{ service.ServiceName }}</b>
-                    <small>{{ service.ServiceType }}</small>
+                    <b>{{ portStatus.ServiceName }}</b>
+                    <small>{{ portStatus.ServiceType }}</small>
                 </td>
             </tr>
         {% endfor %} 

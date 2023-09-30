@@ -82,11 +82,11 @@ def ShowTranscoder():
 @app.route('/services', methods=['GET'])
 def ShowServices():
     try:
-        serviceList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceStatusList').content)
+        portStatusList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetPortStatusList').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        serviceList = []
+        portStatusList = []
     
     try:
         dockerContainerList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetDockerContainerList').content)
@@ -120,7 +120,7 @@ def ShowServices():
         'services.html', 
         appTitle = 'Services - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        serviceList = serviceList,
+        portStatusList = portStatusList,
         apiInfo = apiInfo,
         dockerContainerList = dockerContainerList,
         machineInfo = machineInfo,
