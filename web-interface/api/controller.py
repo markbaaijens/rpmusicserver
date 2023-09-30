@@ -377,7 +377,7 @@ def DoRebootServer():
 def DoBackupServer():
     try:
         asyncio.run(logic.DoBackupServer())
-        info = { "Message": "Backup started." }        
+        info = { "Message": "Backup started. Check logs for progress." }        
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
