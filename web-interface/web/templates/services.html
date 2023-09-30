@@ -55,36 +55,48 @@
     {% endfor %} 
 
     <h3>Port Status</h3>
-    <p>
-    {% for service in serviceList %}
-    <div>
-        {% if service.IsActive %}
-            <span class="checkmark-y"> &#10004; </span>
-        {% else %}
-            <span class="checkmark-n"> &#x2717; </span>
-        {% endif %}        
-        {{ service.PortNumber }}
-        <b>{{ service.ServiceName }}</b>
-        <small>{{ service.ServiceType }}</small>
-    </div>
-    {% endfor %} 
+    <table>
+        {% for service in serviceList %}
+            <tr>
+                <td>
+                    {% if service.IsActive %}
+                        <span class="checkmark-y"> &#10004; </span>
+                    {% else %}
+                        <span class="checkmark-n"> &#x2717; </span>
+                    {% endif %}        
+                </td>
+                <td>
+                    {{ service.PortNumber }}
+                </td>
+                <td>
+                    <b>{{ service.ServiceName }}</b>
+                    <small>{{ service.ServiceType }}</small>
+                </td>
+            </tr>
+        {% endfor %} 
+    </table>
     <p>
     <div><em>Services may take a few moments to become visible to the outside.</em></div>
     <div><em>Use <code>watch nmap rpms</code> on your client for a correct result.</em></div>  
 
     <h3>Docker</h3>
-    <p>
-    {% for dockerContainer in dockerContainerList %}
-    <div>
-        {% if dockerContainer.IsActive %}
-            <span class="checkmark-y"> &#10004; </span>
-            {{ dockerContainer.ContainerName }}
-        {% else %}
-            <span class="checkmark-n"> &#x2717; </span>
-            {{ dockerContainer.ContainerName }}        
-        {% endif %}        
-    </div>
-    {% endfor %} 
+    <table>
+        {% for dockerContainer in dockerContainerList %}
+            <tr>
+                <td>
+                    {% if dockerContainer.IsActive %}
+                        <span class="checkmark-y"> &#10004; </span>
+                    {% else %}
+                        <span class="checkmark-n"> &#x2717; </span>
+                    {% endif %}        
+                </td>
+                <td>
+                    <b>{{ dockerContainer.ContainerName }}</b>
+                </td>
+            </tr>
+        {% endfor %} 
+    </table>
+
     <div>
         <p>
         <a href="/start-docker" class="link-button">Start</a> 
