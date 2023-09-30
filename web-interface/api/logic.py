@@ -222,9 +222,11 @@ def GetServiceStatusList():
     serviceList.append(ServiceInfo(22, 'ssh'))
     serviceList.append(ServiceInfo(80, 'rpms', 'web'))
     serviceList.append(ServiceInfo(139, 'samba', 'netbios'))
+    serviceList.append(ServiceInfo(445, 'samba', 'microsoft-ds'))
     serviceList.append(ServiceInfo(5000, 'rpms', 'api'))
     serviceList.append(ServiceInfo(8384, 'syncthing', 'web'))
     serviceList.append(ServiceInfo(9002, 'lms', 'web'))
+    serviceList.append(ServiceInfo(9090, 'lms', 'telnet'))    
     serviceList.append(ServiceInfo(9091, 'transmission', 'web'))
 
     portList = ''
