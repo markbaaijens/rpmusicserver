@@ -1,7 +1,7 @@
 #!/bin/bash
 
 log () {
-    if [ -d "/media/usbdata/rpms/config" ]; then
+    if [ -d "/media/usbdata/rpms/logs" ]; then
         log_dir="/media/usbdata/rpms/logs"
     else
         log_dir="."    

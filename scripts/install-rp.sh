@@ -144,7 +144,7 @@ sed -i '/transcode/d' /etc/crontab
 /bin/sh -c 'echo "20  * * * * root transcode" >> /etc/crontab'
 echo " => line added."    
 
-echo "Adding line to apt-upgrade to /etc/crontab:"
+echo "Adding line to apt-upgrade to /etc/crontab..."
 sed -i '/apt-get upgrade/d' /etc/crontab
 /bin/sh -c 'echo "00 02 * * * root apt-get upgrade -y && apt-get clean -y && apt-get autoremove -y && apt-get autoclean -y" >> /etc/crontab'
 echo " => line added."    
