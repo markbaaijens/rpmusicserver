@@ -35,6 +35,9 @@ def ConvertToFunctionalFolder(folderName):
     return folderName.replace(GetUserBaseFolder(), 'server:/')
 
 def GetElapsedTimeHumanReadable(fromDate):
+    if fromDate == '':
+        return ''
+
     timeElapsed = datetime.today() - fromDate
 
     elapsedSeconds = int(timeElapsed.total_seconds())
@@ -50,7 +53,7 @@ def GetElapsedTimeHumanReadable(fromDate):
     elapsedMonthsDays = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 30)[1] / (60 * 60 * 24))
     elapsedYears = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 365)[0])
     elapsedYearsMonths = int(divmod(timeElapsed.total_seconds(), 60 * 60 * 24 * 365)[1] / (60 * 60 * 24 * 30))
-
+    
     elapsedTimeAsString = ''
     if elapsedYears > 0:
         elapsedTimeAsString = str(elapsedYears) + ' year'
@@ -426,7 +429,8 @@ def GetTranscoderInfo():
     isActivated = (transcoderSettings['sourcefolder'] != '') and ((transcoderSettings['oggfolder'] != '') or (transcoderSettings['mp3folder'] != ''))
 
     lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'End session' | tail -n 1 | cut -c1-19")
-    lastTranscode = lastTranscode + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
+    if lastTranscode != '':
+        lastTranscode = lastTranscode + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
 
     return {"IsActivated": isActivated,
             "LastTranscode": lastTranscode,
