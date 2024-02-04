@@ -7,8 +7,8 @@ if [ -z "$(whoami | grep root)" ]; then
 fi
 
 working_dir=/tmp/raspbian
-image=https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-11-08/2021-10-30-raspios-bullseye-armhf-lite.zip
-image_hash="008d7377b8c8b853a6663448a3f7688ba98e2805949127a1d9e8859ff96ee1a9"
+image=https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2021-11-08/2021-10-30-raspios-bullseye-arm64-lite.zip
+image_hash="c88109027eac44b9ff37a7f3eb1873cdf6d7ca61a0264ec0e95870ca96afd242"
 archive=raspbian-os-lite.zip
 number_pattern="[0-9]+"
 mount_point=/mnt/temp
