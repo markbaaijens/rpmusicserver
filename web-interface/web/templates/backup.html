@@ -13,7 +13,7 @@
         </tr>            
         <tr>
             <td>
-                Backup Disk?
+                Backup Disk Present?
             </td>
             <td><b>
                 {% if backupInfo.IsBackupDiskPresent %}
@@ -25,10 +25,10 @@
         </tr>
         <tr>
             <td>
-                Not in Progress?
+                System Free for Backup?
             </td>
             <td><b>
-                {% if backupInfo.IsBackupNotInProgress %}
+                {% if backupInfo.IsSystemFreeForBackup %}
                     <span class="checkmark-y"> &#10004; </span>
                 {% else %}
                     <span class="checkmark-n"> &#x2717; </span> 
