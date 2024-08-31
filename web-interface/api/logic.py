@@ -396,18 +396,18 @@ def GetVersionList():
     return dataAsJson
 
 def GetBackupInfo():
-    isBackupNotInProgress = True
+    isSystemFreeForBackup = True
 
     if ExecuteBashCommand("ps -ef | grep backup-server | grep -v grep").strip() != '':
-        isBackupNotInProgress = False
+        isSystemFreeForBackup = False
 
     isBackupDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep usbbackup") == "usbbackup"
-    canBackup = isBackupDiskPresent and isBackupNotInProgress
+    canBackup = isBackupDiskPresent and isSystemFreeForBackup
 
     lastBackup = ExecuteBashCommand("cat /media/usbdata/rpms/logs/backup.log | grep 'executing backup' | tail -n 1 | cut -c1-19")
     lastBackup = lastBackup + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastBackup, '%Y-%m-%d %H:%M:%S'))    
 
-    return {"IsBackupNotInProgress": isBackupNotInProgress,
+    return {"IsSystemFreeForBackup": isSystemFreeForBackup,
             "IsBackupDiskPresent": isBackupDiskPresent,
             "CanBackup": canBackup,
             "LastBackup": lastBackup}
