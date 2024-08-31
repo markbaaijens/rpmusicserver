@@ -87,7 +87,7 @@ Check for output:
   * enjoy!
 
 ## Folder mapping
-For several services within RPMS, container-technology docker is used. Within docker, there is no direct link to the file-system, but this is achieved through a virtual folder which is set during the installation-proces. Normally, an end-user does not have to know about these virtual folders, but there are a few exceptions primarily around LMS and SyncThing. These specific case have to be documented.
+For several services within RPMS, container-technology docker is used. Within docker, there is no direct link to the file-system, but this is achieved through a virtual folder which is set during installation. Normally, an end-user does not have to know about these virtual folders, but there are a few exceptions primarily around LMS and SyncThing. These specific case have to be documented.
 
 Mapping from virtual folder to fysical folders:
 * LMS: /music => smb://rpms/[public]/[music]
