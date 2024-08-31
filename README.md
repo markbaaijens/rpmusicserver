@@ -91,7 +91,7 @@ For several services within RPMS, container-technology docker is used. Within do
 
 Mapping from virtual folder to fysical folders:
 * LMS: /music => smb://rpms/[public]/[music]
-* SyncThing: => /data => smb://rpms/[public]/[music]
+* SyncThing: => /data => smb://rpms/[public]
 
 So when working the inside of the docker-infrastructure, either LMS or SyncThing, refer to the virtual folders.
 
