@@ -4,13 +4,12 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
 [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)<br/> 
 [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
 [Troubleshooting](https://github.com/markbaaijens/rpmusicserver#troubleshooting)<br/> 
+[Folder mapping](https://github.com/markbaaijens/rpmusicserver#folder-mapping)<br/> 
 [Update RPMS](https://github.com/markbaaijens/rpmusicserver#update-rpms)<br/> 
 [Transcoder](https://github.com/markbaaijens/rpmusicserver#transcoder)<br/> 
 [Backup](https://github.com/markbaaijens/rpmusicserver#backup)<br/> 
 [Disaster Recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery)<br/> 
 [Development](https://github.com/markbaaijens/rpmusicserver#development)<br/> 
-
-Note. In LMS, `/music` is mapped to `/media/usbdata/user/Publiek/Muziek` due to the usage of Docker; this is also the case for Transmission and SyncThing which happen to be also Docker-containers.
 
 ## System requirements
 * Raspberry Pi: 
@@ -86,6 +85,15 @@ Check for output:
   * hookup a Squeezebox player to your network
   * install a Android App like [Squeezer](https://play.google.com/store/apps/details?id=uk.org.ngo.squeezer)
   * enjoy!
+
+## Folder mapping
+For several services within RPMS, container-technology docker is used. Within docker, there is no direct link to the file-system, but this is achieved through a virtual folder which is set during installation. Normally, an end-user does not have to know about these virtual folders, but there are a few exceptions primarily around LMS and SyncThing. These specific case have to be documented.
+
+Mapping from virtual folder to fysical folders:
+* LMS: /music => smb://rpms/[public]/[music]
+* SyncThing: => /data => smb://rpms/[public]/[music]
+
+So when working the inside of the docker-infrastructure, either LMS or SyncThing, refer to the virtual folders.
 
 ## Troubleshooting
 ### *Pi/rpms cannot be reached on the network*
