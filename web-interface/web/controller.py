@@ -325,6 +325,16 @@ def DoExportCollection():
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/tasks')
 
+@app.route('/ask-transcode', methods=['GET'])
+def AskTranscode():
+    return render_template(
+        'command-dialog.html', 
+        appTitle = 'Transcode - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Start transcoding?',
+        proceedUrl = '/transcode',
+        backUrl = request.referrer)
+
 @app.route('/transcode', methods=['GET'])
 def DoTranscode():
     try:
@@ -340,7 +350,7 @@ def DoTranscode():
         'command-exec.html', 
         appTitle = 'Transcode - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = request.referrer)
+        backUrl = '/transcoder')
 
 @app.route('/update-rpms', methods=['GET'])
 def DoUpdateRpms():
