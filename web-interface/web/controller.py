@@ -203,7 +203,7 @@ def ShowBackup():
 @app.route('/ask-backup-server', methods=['GET'])
 def AskBackupServer():
     return render_template(
-        'command-dialog.html', 
+        'dialog.html', 
         appTitle = 'Backup Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         labelText = 'Backup server?',
@@ -222,7 +222,7 @@ def DoBackupServer():
     flash(apiMessage['Message'])
 
     return render_template(
-        'command-exec.html', 
+        'message.html', 
         appTitle = 'Backup Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/backup')
@@ -230,7 +230,7 @@ def DoBackupServer():
 @app.route('/ask-kill-docker', methods=['GET'])
 def AskKillDocker():
     return render_template(
-        'command-dialog.html', 
+        'dialog.html', 
         appTitle = 'Kill Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         labelText = 'Kill docker containers?',
@@ -249,7 +249,7 @@ def DoKillDocker():
     flash(apiMessage['Message'])
 
     return render_template(
-        'command-exec.html', 
+        'message.html', 
         appTitle = 'Kill Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/services')
@@ -257,7 +257,7 @@ def DoKillDocker():
 @app.route('/ask-start-docker', methods=['GET'])
 def AskStartDocker():
     return render_template(
-        'command-dialog.html', 
+        'dialog.html', 
         appTitle = 'Start Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         labelText = 'Start docker containers?',
@@ -276,7 +276,7 @@ def DoStartDocker():
     flash(apiMessage['Message'])        
 
     return render_template(
-        'command-exec.html', 
+        'message.html', 
         appTitle = 'Start Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/services')
@@ -284,7 +284,7 @@ def DoStartDocker():
 @app.route('/ask-update-docker', methods=['GET'])
 def AskUpdateDocker():
     return render_template(
-        'command-dialog.html', 
+        'dialog.html', 
         appTitle = 'Update Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         labelText = 'Update docker containers?',
@@ -303,7 +303,7 @@ def DoUpdateDocker():
     flash(apiMessage['Message'])
 
     return render_template(
-        'command-exec.html', 
+        'message.html', 
         appTitle = 'Update Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/services')
@@ -311,7 +311,7 @@ def DoUpdateDocker():
 @app.route('/ask-export-collection', methods=['GET'])
 def AskExportCollection():
     return render_template(
-        'command-dialog.html', 
+        'dialog.html', 
         appTitle = 'Export Collection - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         labelText = 'Export collection?',
@@ -330,7 +330,7 @@ def DoExportCollection():
     flash(apiMessage['Message'])        
 
     return render_template(
-        'command-exec.html', 
+        'message.html', 
         appTitle = 'Export Collection - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/tasks')
@@ -338,7 +338,7 @@ def DoExportCollection():
 @app.route('/ask-transcode', methods=['GET'])
 def AskTranscode():
     return render_template(
-        'command-dialog.html', 
+        'dialog.html', 
         appTitle = 'Transcode - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         labelText = 'Start transcoding?',
@@ -357,7 +357,7 @@ def DoTranscode():
     flash(apiMessage['Message'])        
 
     return render_template(
-        'command-exec.html', 
+        'message.html', 
         appTitle = 'Transcode - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/transcoder')
@@ -365,7 +365,7 @@ def DoTranscode():
 @app.route('/ask-update-rpms', methods=['GET'])
 def AskUpdateRpms():
     return render_template(
-        'command-dialog.html', 
+        'dialog.html', 
         appTitle = 'Update RPMS - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         labelText = 'Update RPMS?',
@@ -388,7 +388,7 @@ def DoUpdateRpms():
 @app.route('/ask-halt-server', methods=['GET'])
 def AskHaltServer():
     return render_template(
-        'command-dialog.html', 
+        'dialog.html', 
         appTitle = 'Halt Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         labelText = 'Halt server?',
@@ -411,7 +411,7 @@ def DoHaltServer():
 @app.route('/ask-reboot-server', methods=['GET'])
 def AskRebootServer():
     return render_template(
-        'command-dialog.html', 
+        'dialog.html', 
         appTitle = 'Reboot Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         labelText = 'Reboot server?',
