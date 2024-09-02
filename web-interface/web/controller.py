@@ -217,6 +217,16 @@ def DoBackupServer():
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = request.referrer)
 
+@app.route('/ask-kill-docker', methods=['GET'])
+def AskKillDocker():
+    return render_template(
+        'command-dialog.html', 
+        appTitle = 'Kill Docker - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Kill docker containers?',
+        proceedUrl = '/kill-docker',
+        backUrl = request.referrer)
+
 @app.route('/kill-docker', methods=['GET'])
 def DoKillDocker():
     try:
@@ -232,6 +242,16 @@ def DoKillDocker():
         'command-exec.html', 
         appTitle = 'Kill Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/services')
+
+@app.route('/ask-start-docker', methods=['GET'])
+def AskStartDocker():
+    return render_template(
+        'command-dialog.html', 
+        appTitle = 'Start Docker - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Start docker containers?',
+        proceedUrl = '/start-docker',
         backUrl = request.referrer)
 
 @app.route('/start-docker', methods=['GET'])
@@ -249,6 +269,16 @@ def DoStartDocker():
         'command-exec.html', 
         appTitle = 'Start Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/services')
+
+@app.route('/ask-update-docker', methods=['GET'])
+def AskUpdateDocker():
+    return render_template(
+        'command-dialog.html', 
+        appTitle = 'Update Docker - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Update docker containers?',
+        proceedUrl = '/update-docker',
         backUrl = request.referrer)
 
 @app.route('/update-docker', methods=['GET'])
@@ -266,7 +296,7 @@ def DoUpdateDocker():
         'command-exec.html', 
         appTitle = 'Update Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = request.referrer)
+        backUrl = '/services')
 
 @app.route('/ask-export-collection', methods=['GET'])
 def AskExportCollection():
