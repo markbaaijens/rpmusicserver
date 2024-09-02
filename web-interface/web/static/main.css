@@ -136,35 +136,3 @@ meter {
 	vertical-align: middle;
 }
 
-#submit {
-	padding: 7px 10px;
-	font-size: 16px;
-	border-radius: 8px;
-	border: 1px solid lightgray;
-	cursor: pointer;
-	background-color: green;		
-	color: white;
-}
-
-#submit:hover {
-	border: 1px solid grey;
-	background-color: darkgreen;
-	color: white;
-}
-
-#cancel {
-	padding: 7px 10px;
-	font-size: 16px;
-	border-radius: 8px;
-	border: 1px solid lightgray;
-	cursor: pointer;
-	background-color: whitesmoke;		
-	color: red;	
-}
-
-#cancel:hover {
-	border: 1px solid grey;
-	background-color: red;
-	color: white;
-}
-
