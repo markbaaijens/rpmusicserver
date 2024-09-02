@@ -200,6 +200,16 @@ def ShowBackup():
         apiRootUrl = configObject.ApiRootUrl,
         backupInfo = backupInfo)   
 
+@app.route('/ask-backup-server', methods=['GET'])
+def AskBackupServer():
+    return render_template(
+        'command-dialog.html', 
+        appTitle = 'Backup Server - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Backup server?',
+        proceedUrl = '/backup-server',
+        backUrl = request.referrer)
+
 @app.route('/backup-server', methods=['GET'])
 def DoBackupServer():
     try:
@@ -215,7 +225,7 @@ def DoBackupServer():
         'command-exec.html', 
         appTitle = 'Backup Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = request.referrer)
+        backUrl = '/backup')
 
 @app.route('/ask-kill-docker', methods=['GET'])
 def AskKillDocker():
