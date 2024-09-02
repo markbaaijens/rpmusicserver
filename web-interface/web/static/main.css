@@ -40,6 +40,27 @@ a.link-button:hover {
 	background-color: lightgray;
 }
 
+a.proceed {
+	background-color: green;
+	color: white;
+}
+  
+a.proceed:hover {
+	border: 1px solid grey;
+	background-color: darkgreen;
+}
+
+a.cancel {
+	background-color: whitesmoke;
+	color: red;
+}
+  
+a.cancel:hover {
+	border: 1px solid grey;
+	background-color: red;
+	color: white;	
+}
+
 .disabled {
 	opacity: 0.4;
 	cursor: not-allowed;
@@ -99,37 +120,5 @@ meter {
 	height: 24px;
 	width: 24px;
 	vertical-align: middle;
-}
-
-#submit {
-	padding: 7px 10px;
-	font-size: 16px;
-	border-radius: 8px;
-	border: 1px solid lightgray;
-	cursor: pointer;
-	background-color: green;		
-	color: white;
-}
-
-#submit:hover {
-	border: 1px solid grey;
-	background-color: darkgreen;
-	color: white;
-}
-
-#cancel {
-	padding: 7px 10px;
-	font-size: 16px;
-	border-radius: 8px;
-	border: 1px solid lightgray;
-	cursor: pointer;
-	background-color: whitesmoke;		
-	color: red;	
-}
-
-#cancel:hover {
-	border: 1px solid grey;
-	background-color: red;
-	color: white;
 }
 

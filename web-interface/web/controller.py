@@ -200,6 +200,16 @@ def ShowBackup():
         apiRootUrl = configObject.ApiRootUrl,
         backupInfo = backupInfo)   
 
+@app.route('/ask-backup-server', methods=['GET'])
+def AskBackupServer():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Backup Server - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Backup server?',
+        proceedUrl = '/backup-server',
+        backUrl = request.referrer)
+
 @app.route('/backup-server', methods=['GET'])
 def DoBackupServer():
     try:
@@ -212,9 +222,19 @@ def DoBackupServer():
     flash(apiMessage['Message'])
 
     return render_template(
-        'command.html', 
+        'message.html', 
         appTitle = 'Backup Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/backup')
+
+@app.route('/ask-kill-docker', methods=['GET'])
+def AskKillDocker():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Kill Docker - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Kill docker containers?',
+        proceedUrl = '/kill-docker',
         backUrl = request.referrer)
 
 @app.route('/kill-docker', methods=['GET'])
@@ -229,9 +249,19 @@ def DoKillDocker():
     flash(apiMessage['Message'])
 
     return render_template(
-        'command.html', 
+        'message.html', 
         appTitle = 'Kill Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/services')
+
+@app.route('/ask-start-docker', methods=['GET'])
+def AskStartDocker():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Start Docker - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Start docker containers?',
+        proceedUrl = '/start-docker',
         backUrl = request.referrer)
 
 @app.route('/start-docker', methods=['GET'])
@@ -246,9 +276,19 @@ def DoStartDocker():
     flash(apiMessage['Message'])        
 
     return render_template(
-        'command.html', 
+        'message.html', 
         appTitle = 'Start Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/services')
+
+@app.route('/ask-update-docker', methods=['GET'])
+def AskUpdateDocker():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Update Docker - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Update docker containers?',
+        proceedUrl = '/update-docker',
         backUrl = request.referrer)
 
 @app.route('/update-docker', methods=['GET'])
@@ -263,9 +303,19 @@ def DoUpdateDocker():
     flash(apiMessage['Message'])
 
     return render_template(
-        'command.html', 
+        'message.html', 
         appTitle = 'Update Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/services')
+
+@app.route('/ask-export-collection', methods=['GET'])
+def AskExportCollection():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Export Collection - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Export collection?',
+        proceedUrl = '/export-collection',
         backUrl = request.referrer)
 
 @app.route('/export-collection', methods=['GET'])
@@ -280,9 +330,19 @@ def DoExportCollection():
     flash(apiMessage['Message'])        
 
     return render_template(
-        'command.html', 
+        'message.html', 
         appTitle = 'Export Collection - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/tasks')
+
+@app.route('/ask-transcode', methods=['GET'])
+def AskTranscode():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Transcode - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Start transcoding?',
+        proceedUrl = '/transcode',
         backUrl = request.referrer)
 
 @app.route('/transcode', methods=['GET'])
@@ -297,9 +357,19 @@ def DoTranscode():
     flash(apiMessage['Message'])        
 
     return render_template(
-        'command.html', 
+        'message.html', 
         appTitle = 'Transcode - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/transcoder')
+
+@app.route('/ask-update-rpms', methods=['GET'])
+def AskUpdateRpms():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Update RPMS - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Update RPMS?',
+        proceedUrl = '/update-rpms',
         backUrl = request.referrer)
 
 @app.route('/update-rpms', methods=['GET'])
@@ -315,6 +385,16 @@ def DoUpdateRpms():
 
     return redirect('/')
 
+@app.route('/ask-halt-server', methods=['GET'])
+def AskHaltServer():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Halt Server - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Halt server?',
+        proceedUrl = '/halt-server',
+        backUrl = request.referrer)
+
 @app.route('/halt-server', methods=['GET'])
 def DoHaltServer():
     try:
@@ -327,6 +407,16 @@ def DoHaltServer():
     flash('Halt is in progress. In a few moments the server stops working.')
 
     return redirect('/')
+
+@app.route('/ask-reboot-server', methods=['GET'])
+def AskRebootServer():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Reboot Server - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Reboot server?',
+        proceedUrl = '/reboot-server',
+        backUrl = request.referrer)
 
 @app.route('/reboot-server', methods=['GET'])
 def DoRebootServer():
