@@ -275,6 +275,7 @@ def AskExportCollection():
         appTitle = 'Export Collection - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         labelText = 'Export collection?',
+        proceedUrl = '/export-collection',
         backUrl = request.referrer)
 
 @app.route('/export-collection', methods=['GET'])
@@ -324,6 +325,16 @@ def DoUpdateRpms():
 
     return redirect('/')
 
+@app.route('/ask-halt-server', methods=['GET'])
+def AskHaltServer():
+    return render_template(
+        'command-dialog.html', 
+        appTitle = 'Halt Server - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Halt server?',
+        proceedUrl = '/halt-server',
+        backUrl = request.referrer)
+
 @app.route('/halt-server', methods=['GET'])
 def DoHaltServer():
     try:
@@ -336,6 +347,16 @@ def DoHaltServer():
     flash('Halt is in progress. In a few moments the server stops working.')
 
     return redirect('/')
+
+@app.route('/ask-reboot-server', methods=['GET'])
+def AskRebootServer():
+    return render_template(
+        'command-dialog.html', 
+        appTitle = 'Reboot Server - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Reboot server?',
+        proceedUrl = '/reboot-server',
+        backUrl = request.referrer)
 
 @app.route('/reboot-server', methods=['GET'])
 def DoRebootServer():
