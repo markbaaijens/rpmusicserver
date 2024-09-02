@@ -40,6 +40,41 @@ a.link-button:hover {
 	background-color: lightgray;
 }
 
+a.link-button-submit {
+	background-color: green;
+	color: white;
+	padding: 5px 8px;
+	text-decoration: none;
+	border-radius: 8px;
+	border: 1px solid lightgray;
+	display: inline-block;
+	font-weight: normal;
+	margin-bottom: 5px;
+}
+  
+a.link-button-submit:hover {
+	border: 1px solid grey;
+	background-color: darkgreen;
+}
+
+a.link-button-cancel {
+	background-color: whitesmoke;
+	color: red;
+	padding: 5px 8px;
+	text-decoration: none;
+	border-radius: 8px;
+	border: 1px solid lightgray;
+	display: inline-block;
+	font-weight: normal;
+	margin-bottom: 5px;
+}
+  
+a.link-button-cancel:hover {
+	border: 1px solid grey;
+	background-color: red;
+	color: white;	
+}
+
 .disabled {
 	opacity: 0.4;
 	cursor: not-allowed;

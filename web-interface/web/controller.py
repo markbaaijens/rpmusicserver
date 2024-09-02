@@ -212,7 +212,7 @@ def DoBackupServer():
     flash(apiMessage['Message'])
 
     return render_template(
-        'command.html', 
+        'command-exec.html', 
         appTitle = 'Backup Server - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = request.referrer)
@@ -229,7 +229,7 @@ def DoKillDocker():
     flash(apiMessage['Message'])
 
     return render_template(
-        'command.html', 
+        'command-exec.html', 
         appTitle = 'Kill Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = request.referrer)
@@ -246,7 +246,7 @@ def DoStartDocker():
     flash(apiMessage['Message'])        
 
     return render_template(
-        'command.html', 
+        'command-exec.html', 
         appTitle = 'Start Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = request.referrer)
@@ -263,9 +263,18 @@ def DoUpdateDocker():
     flash(apiMessage['Message'])
 
     return render_template(
-        'command.html', 
+        'command-exec.html', 
         appTitle = 'Update Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
+        backUrl = request.referrer)
+
+@app.route('/ask-export-collection', methods=['GET'])
+def AskExportCollection():
+    return render_template(
+        'command-dialog.html', 
+        appTitle = 'Export Collection - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Export collection?',
         backUrl = request.referrer)
 
 @app.route('/export-collection', methods=['GET'])
@@ -280,10 +289,10 @@ def DoExportCollection():
     flash(apiMessage['Message'])        
 
     return render_template(
-        'command.html', 
+        'command-exec.html', 
         appTitle = 'Export Collection - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = request.referrer)
+        backUrl = '/tasks')
 
 @app.route('/transcode', methods=['GET'])
 def DoTranscode():
@@ -297,7 +306,7 @@ def DoTranscode():
     flash(apiMessage['Message'])        
 
     return render_template(
-        'command.html', 
+        'command-exec.html', 
         appTitle = 'Transcode - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = request.referrer)

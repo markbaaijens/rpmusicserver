@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if backUrl %}
+        <br>
+        <b>{{ labelText }}</b>
+        <br><br>
+        <div>
+            <a href="/export-collection" class="link-button-submit">Proceed</a>    
+            <a href="{{ backUrl }}"" class="link-button-cancel">Cancel</a>    
+        </div>   
+    {% endif %}           
+{% endblock %}
