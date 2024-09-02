@@ -362,6 +362,16 @@ def DoTranscode():
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/transcoder')
 
+@app.route('/ask-update-rpms', methods=['GET'])
+def AskUpdateRpms():
+    return render_template(
+        'command-dialog.html', 
+        appTitle = 'Update RPMS - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Update RPMS?',
+        proceedUrl = '/update-rpms',
+        backUrl = request.referrer)
+
 @app.route('/update-rpms', methods=['GET'])
 def DoUpdateRpms():
     try:
