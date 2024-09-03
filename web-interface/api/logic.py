@@ -745,44 +745,45 @@ def GetLmsPlayers():
         return ''
 
     players = []
-    for player in response['result']['players_loop']:
-        name = player['name']
-        model = player['model']
-        ipAddress = player['ip'].split(':', 1)[0]
-        firmWare = player['firmware']
+    if response['result']['count'] > 0:
+        for player in response['result']['players_loop']:
+            name = player['name']
+            model = player['model']
+            ipAddress = player['ip'].split(':', 1)[0]
+            firmWare = player['firmware']
 
-        isWebServer = False
-        if ExecuteBashCommand('nmap ' + ipAddress + ' --open -p 80 | grep 80/tcp') != '':
-            isWebServer = True
+            isWebServer = False
+            if ExecuteBashCommand('nmap ' + ipAddress + ' --open -p 80 | grep 80/tcp') != '':
+                isWebServer = True
 
-        type = 'unknown'
-        if model == 'squeezelite':
-            type = 'pc'
-            if 'PCP' in firmWare.upper():
-                type = 'pi'
-        else:
-            if model == 'boom':
-                type = 'sb-boom'
-            elif model == 'baby':
-                type = 'sb-radio'
-            elif model == 'receiver':
-                type = 'sb-receiver'
-            elif model == 'fab4':
-                type = 'sb-touch'
-            elif model == 'squeezebox3':
-                type = 'sb-classic'
-            elif model == 'transporter':
-                type = 'sb-transporter'
+            type = 'unknown'
+            if model == 'squeezelite':
+                type = 'pc'
+                if 'PCP' in firmWare.upper():
+                    type = 'pi'
+            else:
+                if model == 'boom':
+                    type = 'sb-boom'
+                elif model == 'baby':
+                    type = 'sb-radio'
+                elif model == 'receiver':
+                    type = 'sb-receiver'
+                elif model == 'fab4':
+                    type = 'sb-touch'
+                elif model == 'squeezebox3':
+                    type = 'sb-classic'
+                elif model == 'transporter':
+                    type = 'sb-transporter'
 
-        players.append({
-                        "Name": name,
-                        "Model": model,
-                        "IpAddress": ipAddress,
-                        "IsWebServer": isWebServer,
-                        "FirmWare": firmWare,
-                        "Type": type
-                    })  
-        players = sorted(players, key=GetUpperNameFromPlayer)
+            players.append({
+                            "Name": name,
+                            "Model": model,
+                            "IpAddress": ipAddress,
+                            "IsWebServer": isWebServer,
+                            "FirmWare": firmWare,
+                            "Type": type
+                        })  
+            players = sorted(players, key=GetUpperNameFromPlayer)
 
     return(players)
 
