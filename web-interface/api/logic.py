@@ -417,11 +417,14 @@ def GetTranscoderInfo():
     defaultCollectionFolderFunctional = ConvertToFunctionalFolder(defaultCollectionFolder)
 
     transcoderSettings = GetTranscoderSettings()
+
     settingSourceFolder = transcoderSettings['sourcefolder']
     settingSourceFolderShort = settingSourceFolder.replace(defaultCollectionFolder + '/', '')
+
     settingOggFolder = transcoderSettings['oggfolder']
     settingOggFolderShort = settingOggFolder.replace(defaultCollectionFolder + '/', '')    
     settingOggQuality = transcoderSettings['oggquality']
+
     settingMp3Folder = transcoderSettings['mp3folder']
     settingMp3FolderShort = settingMp3Folder.replace(defaultCollectionFolder + '/', '')        
     settingMp3Bitrate = transcoderSettings['mp3bitrate']
@@ -436,9 +439,12 @@ def GetTranscoderInfo():
             "LastTranscode": lastTranscode,
             "DefaultCollectionFolder": defaultCollectionFolder,
             "DefaultCollectionFolderFunctional": defaultCollectionFolderFunctional,
+            "SettingSourceFolder": settingSourceFolder,            
             "SettingSourceFolderShort": settingSourceFolderShort,
+            "SettingOggFolder": settingOggFolder,            
             "SettingOggFolderShort": settingOggFolderShort,
             "SettingOggQuality": settingOggQuality,
+            "SettingMp3Folder": settingMp3Folder,            
             "SettingMp3FolderShort": settingMp3FolderShort,
             "SettingMp3Bitrate": settingMp3Bitrate}            
 
@@ -473,12 +479,18 @@ def GetDefaultMusicCollectionFolder():
     return GetUserBaseFolder() + '/' + GetPublicFolder() + '/' + GetMusicFolder()
 
 def GetMusicCollectionInfo():   
-    transcoderSettings = GetTranscoderSettings()
-    collectionFolder = transcoderSettings["sourcefolder"]
+    transcoderInfo = GetTranscoderInfo()
+    defaultCollectionFolder = transcoderInfo["DefaultCollectionFolder"]    
+    settingCollectionFolder = transcoderInfo["SettingSourceFolder"]
+
+    collectionFolder = defaultCollectionFolder
+    if settingCollectionFolder != "":
+        collectionFolder = settingCollectionFolder
+
     collectionFolderFunctional = ConvertToFunctionalFolder(collectionFolder)
-    exportFile = "collection-artist-album-by-folder.txt"
 
     lastExportTimeStampAsString = ''
+    exportFile = "collection-artist-album-by-folder.txt"    
     fullExportFile = collectionFolder + "/" + exportFile
     if os.path.isfile(fullExportFile):
         try:
