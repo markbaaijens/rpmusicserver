@@ -136,6 +136,7 @@ install_bin_file update-docker
 install_bin_file halt-server
 install_bin_file reboot-server
 install_bin_file export-collection
+install_bin_file start-web
 
 # By always delete existing lines in crontab, we can easily implement
 # a different crontab-strategy later, if needed
@@ -185,8 +186,13 @@ echo "Limit size of /var/log/journal"
 sed -i '/SystemMaxUse/d' /etc/systemd/journald.conf
 /bin/sh -c 'echo "SystemMaxUse=50M" >> /etc/systemd/journald.conf'
 
-# Start docker for preloading containers
+echo "Start docker for preloading containers"
 start-docker
+echo " => done starting docker-containers"
 
-echo "Installation complete, system will be rebooted."
-reboot-server
+echo "Start web-services"
+start-web
+echo " => done starting web-services"
+
+echo "Installation complete"
+
