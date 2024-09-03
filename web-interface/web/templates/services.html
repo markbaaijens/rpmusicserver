@@ -4,55 +4,59 @@
     <h2>Services</h2>
     <h3>Players</h3>
     <p>
-    {% for lmsPlayer in lmsPlayers %}
-        <div>
-            {% if lmsPlayer.Type == 'pc' %}
-                <img src="{{ url_for('static',filename='players/pc.svg') }}" class="icon-player">
-            {% else %}
-                {% if lmsPlayer.Type == 'pi' %}
-                    <img src="{{ url_for('static',filename='players/pi.svg') }}" class="icon-player">
+    {% if lmsPlayers %}
+        {% for lmsPlayer in lmsPlayers %}
+            <div>
+                {% if lmsPlayer.Type == 'pc' %}
+                    <img src="{{ url_for('static',filename='players/pc.svg') }}" class="icon-player">
                 {% else %}
-                    {% if lmsPlayer.Type == 'sb-boom' %}
-                        <img src="{{ url_for('static',filename='players/sb-boom.svg') }}" class="icon-player">
+                    {% if lmsPlayer.Type == 'pi' %}
+                        <img src="{{ url_for('static',filename='players/pi.svg') }}" class="icon-player">
                     {% else %}
-                        {% if lmsPlayer.Type == 'sb-radio' %}
-                            <img src="{{ url_for('static',filename='players/sb-radio.svg') }}" class="icon-player">
-                        {% else %}                        
-                            {% if lmsPlayer.Type == 'sb-receiver' %}
-                                <img src="{{ url_for('static',filename='players/sb-receiver.svg') }}" class="icon-player">
-                            {% else %}
-                                {% if lmsPlayer.Type == 'sb-touch' %}
-                                    <img src="{{ url_for('static',filename='players/sb-touch.svg') }}" class="icon-player">
-                                {% else %}                                    
-                                    {% if lmsPlayer.Type == 'sb-classic' %}
-                                        <img src="{{ url_for('static',filename='players/sb-classic.svg') }}" class="icon-player">
-                                    {% else %}
-                                        {% if lmsPlayer.Type == 'sb-transporter' %}
-                                            <img src="{{ url_for('static',filename='players/sb-transporter.svg') }}" class="icon-player">
+                        {% if lmsPlayer.Type == 'sb-boom' %}
+                            <img src="{{ url_for('static',filename='players/sb-boom.svg') }}" class="icon-player">
+                        {% else %}
+                            {% if lmsPlayer.Type == 'sb-radio' %}
+                                <img src="{{ url_for('static',filename='players/sb-radio.svg') }}" class="icon-player">
+                            {% else %}                        
+                                {% if lmsPlayer.Type == 'sb-receiver' %}
+                                    <img src="{{ url_for('static',filename='players/sb-receiver.svg') }}" class="icon-player">
+                                {% else %}
+                                    {% if lmsPlayer.Type == 'sb-touch' %}
+                                        <img src="{{ url_for('static',filename='players/sb-touch.svg') }}" class="icon-player">
+                                    {% else %}                                    
+                                        {% if lmsPlayer.Type == 'sb-classic' %}
+                                            <img src="{{ url_for('static',filename='players/sb-classic.svg') }}" class="icon-player">
                                         {% else %}
-                                            <img src="{{ url_for('static',filename='players/sb-receiver.svg') }}" class="icon-player">
+                                            {% if lmsPlayer.Type == 'sb-transporter' %}
+                                                <img src="{{ url_for('static',filename='players/sb-transporter.svg') }}" class="icon-player">
+                                            {% else %}
+                                                <img src="{{ url_for('static',filename='players/sb-receiver.svg') }}" class="icon-player">
+                                            {% endif %}
                                         {% endif %}
-                                    {% endif %}
+                                    {% endif %} 
                                 {% endif %} 
                             {% endif %} 
-                        {% endif %} 
-                    {% endif %}
+                        {% endif %}
+                    {% endif %} 
                 {% endif %} 
-            {% endif %} 
-            {% if lmsPlayer.IsWebServer %}            
-                <a class="external-link" href="http://{{ lmsPlayer.IpAddress }}" target="_blank">
-                    <b>{{ lmsPlayer.Name }}</b>
-                </a>
-            {% else %}
-                <b>{{ lmsPlayer.Name }}</b>            
-            {% endif %}    
-            {% if lmsPlayer.Model == 'squeezelite' %}
-                <small>
-                    &nbsp;{{ lmsPlayer.Model }}                
-                </small>
-            {% endif %}                
-        </div>
-    {% endfor %} 
+                {% if lmsPlayer.IsWebServer %}            
+                    <a class="external-link" href="http://{{ lmsPlayer.IpAddress }}" target="_blank">
+                        <b>{{ lmsPlayer.Name }}</b>
+                    </a>
+                {% else %}
+                    <b>{{ lmsPlayer.Name }}</b>            
+                {% endif %}    
+                {% if lmsPlayer.Model == 'squeezelite' %}
+                    <small>
+                        &nbsp;{{ lmsPlayer.Model }}                
+                    </small>
+                {% endif %}                
+            </div>
+        {% endfor %} 
+    {% else %}
+        No players connected
+    {% endif %}                    
 
     <h3>Port Status</h3>
     <table>
