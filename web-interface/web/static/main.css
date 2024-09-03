@@ -123,7 +123,8 @@ meter {
 }
 
 /* 
-	Classes duplicated from a.link for FlaskForm
+	Classes duplicated from a.link for FlaskForm, as it is not clear 
+	how to apply the a.link-classes to Flask-objects.
 */
 #submit {
 	padding: 7px 10px;
