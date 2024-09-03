@@ -5,13 +5,10 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
-echo "Starting docker-containers..."
-
 if [ ! "$(docker ps -f name=lms -q)" ]; then
     if [ "$1" = "update" ]; then
         docker pull lmscommunity/logitechmediaserver:stable
     fi
-    echo "lms =>"
     docker run \
         -d \
         --rm \
@@ -34,7 +31,6 @@ if [ ! "$(docker ps -f name=samba -q)" ]; then
     if [ "$1" = "update" ]; then
         docker pull dperson/samba:latest
     fi
-    echo "samba =>"
     docker run \
         -d \
         --rm \
@@ -56,7 +52,6 @@ if [ ! "$(docker ps -f name=transmission -q)" ]; then
     if [ "$1" = "update" ]; then
         docker pull linuxserver/transmission:latest
     fi
-    echo "transmission =>"
     docker run \
         -d \
         --rm \
@@ -75,7 +70,6 @@ if [ ! "$(docker ps -f name=syncthing -q)" ]; then
     fi
 
     # Note: parameter hostname is optional
-    echo "syncthing =>"    
     docker run \
         -d \
         --rm \
@@ -92,4 +86,3 @@ if [ ! "$(docker ps -f name=syncthing -q)" ]; then
         lscr.io/linuxserver/syncthing:latest
 fi
 
-echo " => done starting docker-containers"
