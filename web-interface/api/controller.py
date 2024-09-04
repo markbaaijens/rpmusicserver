@@ -564,8 +564,8 @@ if __name__ == '__main__':
 
     if configObject.Debug:
         logger.info('API started - debug')
-        app.run(port=5000, debug=True)  # auto-reload on file change, only localhost
+        app.run(port=5000, debug=True) # auto-reload on file change, only localhost
     else:
         logger.info('API started - production')
-        app.run(host='0.0.0.0', port=5000)  # public server, reachable from remote
+        app.run(host='0.0.0.0', port=5000, debug=True) # public server, reachable from remote, auto-reload on file change
     logger.info('API stopped')

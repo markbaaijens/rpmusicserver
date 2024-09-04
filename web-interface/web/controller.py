@@ -381,7 +381,7 @@ def DoUpdateRpms():
         logger.error(traceback.format_exc())
         apiMessage = []
 
-    flash('Update is in progress. Refresh this page after 2 minutes.')
+    flash('Update is in progress. Refresh this page after 1 minute.')
 
     return redirect('/')
 
@@ -667,9 +667,9 @@ if __name__ == '__main__':
 
     if configObject.Debug:
         logger.info('Web started - debug')
-        app.run(port=1080, debug=True)  # auto-reload on file change, only localhost
+        app.run(port=1080, debug=True) # auto-reload on file change, only localhost
     else:
         logger.info('Web started - production')
-        app.run(host='0.0.0.0', port=80)  # public server, reachable from remote
+        app.run(host='0.0.0.0', port=80, debug=True) # public server, reachable from remote, auto-reload on file change
     logger.info('Web stopped')
 
