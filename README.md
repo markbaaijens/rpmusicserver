@@ -63,8 +63,7 @@ Check for output:
   * `ssh pi@rpms "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`
 	  * password = raspberry
   * notes:
-    * system will be rebooted automatically after installation
-    * after reboot, password of user `pi` is changed to `rpms`
+    * after installation, password of user `pi` is changed to `rpms`
 * Test access:
   * watch services to become active:
     * `watch nmap rpms`
@@ -214,7 +213,7 @@ Steps to get back on track:
 * if the hardware is damaged, obtain a new card, otherwise, use the same card
 * burn and install RPMS onto the card (see above for instructions)
 
-* reboot the Pi and you are ready to go
+* now you are ready to go
 
 You may possibly need to [reconnect player(s)](https://github.com/markbaaijens/rpmusicserver#reconnect-players-after-lms-migration)
 
@@ -264,7 +263,7 @@ The `rpmsdev` hostname is used in this build
   * password:
     * raspberry (on first install) 
     * rpms (on existing install) 
-* after reboot, password is changed to `rpms`
+* after installation, password is changed to `rpms`
 * from now on, you can reach the development-server on `rpmsdev`
 * in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
   * `sudo systemd-resolve --flush-caches`

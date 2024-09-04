@@ -69,10 +69,8 @@ fi
 if [ $update -eq 1 ]; then
     log "- updating from $major_actual.$minor_actual to $major_new.$minor_new"
     chmod +x /tmp/rpmusicserver/scripts/* 
-    # B/c install-rp.sh ends with a reboot, nothing *after* executing install-rp.sh
-    # will be reached. To have a nice log file, we just pretend the update has ended
+    # To have a nice log file, we just pretend the update has ended
     # so we print it *before* the actual update (install).
-    log "- system will be rebooted in a few moments"
     log "Update ended."
     /tmp/rpmusicserver/scripts/install-rp.sh
     exit 0
