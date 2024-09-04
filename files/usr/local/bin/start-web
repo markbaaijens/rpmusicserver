@@ -1,26 +1,11 @@
 #!/bin/bash
 
-if [ -z "$(whoami | grep root)" ]; then
-    echo "Not running as root."
-    exit
-fi
-
-# Kill API if running
-id=$(ps -aux | grep [w]eb-interface/api/controller.py | awk '{print $2}')
-
-if [ "$id" ]; then
-  kill $id
-fi
-
 # Start API in detached mode
-nohup python3 /usr/local/bin/rpmusicserver/web-interface/api/controller.py --logfile /media/usbdata/rpms/logs/api.log --production &
-
-# Kill Web if running
-id=$(ps -aux | grep [w]eb-interface/web/controller.py | awk '{print $2}')
-
-if [ "$id" ]; then
-  kill $id
+if [ ! "$(ps -aux | grep [w]eb-interface/api/controller.py)" ]; then
+  nohup python3 /usr/local/bin/rpmusicserver/web-interface/api/controller.py --logfile /media/usbdata/rpms/logs/api.log --production &
 fi
 
 # Start Web in detached mode
-nohup python3 /usr/local/bin/rpmusicserver/web-interface/web/controller.py --logfile /media/usbdata/rpms/logs/web.log --production &
+if [ ! "$(ps -aux | grep [w]eb-interface/web/controller.py)" ]; then
+  nohup python3 /usr/local/bin/rpmusicserver/web-interface/web/controller.py --logfile /media/usbdata/rpms/logs/web.log --production &
+fi
