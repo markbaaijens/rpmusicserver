@@ -17,21 +17,23 @@ app = Flask(__name__)
 CORS(app)  # To enable http over different domains
 logger = logging.getLogger()
 
-def SetupLogger():
+def SetupLogger(isDevelopment):
     if not logger.handlers:
         logger.setLevel(logging.DEBUG)
+        logger.disabled = True
 
         fileHandler = logging.FileHandler(configObject.LogFileName, 'a')
-        fileHandler.setLevel(logging.DEBUG)
+        fileHandler.setLevel(logging.ERROR)
         fileHandler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
         logger.addHandler(fileHandler)
 
         # By default, console logging is disabled once logger is activated; to still see console messages, 
         # a consoleHandler must be created
-        consoleHandler = logging.StreamHandler()
-        consoleHandler.setLevel(logging.DEBUG)
-        consoleHandler.setFormatter(logging.Formatter('%(message)s'))
-        logger.addHandler(consoleHandler)
+        if isDevelopment:
+            consoleHandler = logging.StreamHandler()
+            consoleHandler.setLevel(logging.DEBUG)
+            consoleHandler.setFormatter(logging.Formatter('%(message)s'))
+            logger.addHandler(consoleHandler)
     pass
 
 @app.errorhandler(HTTP_NOT_FOUND)
@@ -547,6 +549,13 @@ def GetLmsPlayers():
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
 if __name__ == '__main__':
+
+    def secho(text, file=None, nl=None, err=None, color=None, **styles):
+        pass
+
+    def echo(text, file=None, nl=None, err=None, color=None, **styles):
+        pass
+
     import argparse
     parser = argparse.ArgumentParser(description='Controller for RP Music Server API')
     parser.add_argument('--logfile', type=str,  help="file where log is stored", nargs=1) 
@@ -554,15 +563,16 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    configObject.Debug = not args.production
+    isDevelopment = not args.production
+    configObject.Debug = isDevelopment
 
     if (args.logfile != None) and (args.logfile[0] != ''):
         configObject.LogFileName = args.logfile[0]
 
-    SetupLogger()       
+    SetupLogger(isDevelopment)       
     logger.info('Log to: ' + configObject.LogFileName)
 
-    if configObject.Debug:
+    if isDevelopment:
         logger.info('API started - debug')
         app.run(port=5000, debug=True)  # auto-reload on file change, only localhost
     else:

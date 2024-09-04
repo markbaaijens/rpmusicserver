@@ -17,7 +17,7 @@ csrf.init_app(app)
 
 logger = logging.getLogger()
 
-def SetupLogger():
+def SetupLogger(isDevelopment):
     if not logger.handlers:
         logger.setLevel(logging.DEBUG)
 
@@ -28,10 +28,11 @@ def SetupLogger():
 
         # By default, console logging is disabled once logger is activated; to still see console messages, 
         # a consoleHandler must be created
-        consoleHandler = logging.StreamHandler()
-        consoleHandler.setLevel(logging.DEBUG)
-        consoleHandler.setFormatter(logging.Formatter('%(message)s'))
-        logger.addHandler(consoleHandler)
+        if isDevelopment:
+            consoleHandler = logging.StreamHandler()
+            consoleHandler.setLevel(logging.DEBUG)
+            consoleHandler.setFormatter(logging.Formatter('%(message)s'))
+            logger.addHandler(consoleHandler)
     pass
 
 def SizeHumanReadable(num, suffix="B"):
@@ -381,7 +382,7 @@ def DoUpdateRpms():
         logger.error(traceback.format_exc())
         apiMessage = []
 
-    flash('Update is in progress. Refresh this page after 2 minutes.')
+    flash('Update is in progress. Refresh this page after 1 minute.')
 
     return redirect('/')
 
@@ -657,15 +658,16 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    configObject.Debug = not args.production
+    isDevelopment = not args.production
+    configObject.Debug = isDevelopment
 
     if (args.logfile != None) and (args.logfile[0] != ''):
         configObject.LogFileName = args.logfile[0]
 
-    SetupLogger()       
+    SetupLogger(isDevelopment)       
     logger.info('Log to: ' + configObject.LogFileName)
 
-    if configObject.Debug:
+    if isDevelopment:
         logger.info('Web started - debug')
         app.run(port=1080, debug=True)  # auto-reload on file change, only localhost
     else:
