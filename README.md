@@ -264,6 +264,7 @@ The `rpmsdev` hostname is used in this build
   * password:
     * raspberry (on first install) 
     * rpms (on existing install) 
+  * after completion, press Ctrl-C to stop logging from web-services
 * after reboot, password is changed to `rpms`
 * from now on, you can reach the development-server on `rpmsdev`
 * in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
