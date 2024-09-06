@@ -10,7 +10,7 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
 [Backup](https://github.com/markbaaijens/rpmusicserver#backup)<br/> 
 [Disaster Recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery)<br/> 
 [Development](https://github.com/markbaaijens/rpmusicserver#development)<br/> 
-[Migrating to 1.0](https://github.com/markbaaijens/rpmusicserver#migrating-to-1.0)<br/> 
+[Migrating to 1.0](https://github.com/markbaaijens/rpmusicserver#migrating-to-10)<br/> 
 
 ## System requirements
 * Raspberry Pi: 
