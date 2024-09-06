@@ -10,12 +10,13 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
 [Backup](https://github.com/markbaaijens/rpmusicserver#backup)<br/> 
 [Disaster Recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery)<br/> 
 [Development](https://github.com/markbaaijens/rpmusicserver#development)<br/> 
+[Migrating to 1.0](https://github.com/markbaaijens/rpmusicserver#migrating-to-1.0)<br/> 
 
 ## System requirements
 * Raspberry Pi: 
-  * [minimum] Pi 3 (B or B+), 1 GB; [recommended] Pi 4 B, 4 GB
+  * minimum: Pi 3 (B or B+), 1 GB; recommended: Pi 4 B, 4 GB
 * SD Card: 
-  * [minimum] 16 GB; [recommended] 32 GB
+  * minimum: 16 GB; recommended: 32 GB
 * Linux PC: 
   * for installation purposes, a Linux PC is required
   * once installed, any OS will do, be it Windows, Linux or MacOS
@@ -271,3 +272,14 @@ The `rpmsdev` hostname is used in this build
 ### List of API requests 
   * `curl rpms:5000/api/GetApiList`
   * http://rpms:5000/api/GetApiList
+
+## Migrating to 1.0
+Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade contains breaking changes which turn your system into a broken one.
+
+### Steps to migrate to 1.0
+- backup your system
+- burn a SD-card, put the SD-card into the Pi and do an install, just like doing a new install of RPMS; see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) above
+  - you can take a new card or just re-use the existing card
+  - skip the step 'Format USB-drive for data'; this ensures that all data and all settings remain intact, you can go on where you left the system
+
+
