@@ -56,7 +56,11 @@
             </div>
         {% endfor %} 
     {% else %}
-        No players connected
+        {% if lmsServerStatus['info total artists'] %}
+            No players connected
+        {% else %}
+            Music-server is not active
+        {% endif %}    
     {% endif %}   
 
     <h3>Collection</h3>   
@@ -90,6 +94,11 @@
         </tr>
     </table> 
     <br>
-    <a href="/ask-export-collection" class="link-button">Export</a>    
+
+    {% if lmsServerStatus['info total artists'] %}
+        <a href="/ask-export-collection" class="link-button">Export</a>   
+    {% else %}
+        <a class="link-button disabled">Export</a> 
+    {% endif %}    
 
 {% endblock %}
