@@ -79,8 +79,8 @@ def ShowTranscoder():
         apiRootUrl = configObject.ApiRootUrl,
         transcoderInfo = transcoderInfo)    
 
-@app.route('/services', methods=['GET'])
-def ShowServices():
+@app.route('/system', methods=['GET'])
+def ShowSystem():
     try:
         portStatusList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetPortStatusList').content)
     except Exception as e:
@@ -109,22 +109,14 @@ def ShowServices():
         logger.error(traceback.format_exc())
         machineInfo = []        
 
-    try:
-        lmsPlayers = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetLmsPlayers').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        lmsPlayers = []                
-
     return render_template(
-        'services.html', 
-        appTitle = 'Services - ' + configObject.AppTitle, 
+        'system.html', 
+        appTitle = 'System - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         portStatusList = portStatusList,
         apiInfo = apiInfo,
         dockerContainerList = dockerContainerList,
-        machineInfo = machineInfo,
-        lmsPlayers = lmsPlayers)   
+        machineInfo = machineInfo)   
 
 @app.route('/resources', methods=['GET'])
 def ShowResources():
@@ -162,8 +154,8 @@ def ShowResources():
         cpuInfo = cpuInfo,
         memoryInfo = memoryInfo)   
 
-@app.route('/tasks', methods=['GET'])
-def ShowTasks():
+@app.route('/music', methods=['GET'])
+def ShowMusic():
     try:
         musicCollectionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMusicCollectionInfo').content)
     except Exception as e:
@@ -178,12 +170,20 @@ def ShowTasks():
         logger.error(traceback.format_exc())
         lmsServerStatus = []        
 
+    try:
+        lmsPlayers = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetLmsPlayers').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        lmsPlayers = []                
+
     return render_template(
-        'tasks.html', 
-        appTitle = 'Tasks - ' + configObject.AppTitle, 
+        'music.html', 
+        appTitle = 'Music - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         musicCollectionInfo = musicCollectionInfo,
-        lmsServerStatus = lmsServerStatus)
+        lmsServerStatus = lmsServerStatus,
+        lmsPlayers = lmsPlayers)
 
 @app.route('/backup', methods=['GET'])
 def ShowBackup():
@@ -252,7 +252,7 @@ def DoKillDocker():
         'message.html', 
         appTitle = 'Kill Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/services')
+        backUrl = '/system')
 
 @app.route('/ask-start-docker', methods=['GET'])
 def AskStartDocker():
@@ -279,7 +279,7 @@ def DoStartDocker():
         'message.html', 
         appTitle = 'Start Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/services')
+        backUrl = '/system')
 
 @app.route('/ask-update-docker', methods=['GET'])
 def AskUpdateDocker():
@@ -306,7 +306,7 @@ def DoUpdateDocker():
         'message.html', 
         appTitle = 'Update Docker - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/services')
+        backUrl = '/system')
 
 @app.route('/ask-export-collection', methods=['GET'])
 def AskExportCollection():
@@ -333,7 +333,7 @@ def DoExportCollection():
         'message.html', 
         appTitle = 'Export Collection - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/tasks')
+        backUrl = '/music')
 
 @app.route('/ask-transcode', methods=['GET'])
 def AskTranscode():

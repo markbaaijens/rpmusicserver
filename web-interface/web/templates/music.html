@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Services</h2>
+    <h2>Music</h2>
+
     <h3>Players</h3>
     <p>
     {% if lmsPlayers %}
@@ -56,76 +57,39 @@
         {% endfor %} 
     {% else %}
         No players connected
-    {% endif %}                    
+    {% endif %}   
 
-    <h3>Port Status</h3>
-    <table>
-        {% for portStatus in portStatusList %}
-            <tr>
-                <td>
-                    {% if portStatus.IsActive %}
-                        <span class="checkmark-y"> &#10004; </span>
-                    {% else %}
-                        <span class="checkmark-n"> &#x2717; </span>
-                    {% endif %}        
-                </td>
-                <td>
-                    {{ portStatus.PortNumber }}
-                </td>
-                <td>
-                    <b>{{ portStatus.ServiceName }}</b>
-                    <small>{{ portStatus.ServiceType }}</small>
-                </td>
-            </tr>
-        {% endfor %} 
-    </table>
-    <p>
-    <div><em>Services may take a few moments to become visible to the outside.</em></div>
-    <div><em>Use <code>watch nmap rpms</code> on your client for a correct result.</em></div>  
-
-    <h3>Docker</h3>
-    <table>
-        {% for dockerContainer in dockerContainerList %}
-            <tr>
-                <td>
-                    {% if dockerContainer.IsActive %}
-                        <span class="checkmark-y"> &#10004; </span>
-                    {% else %}
-                        <span class="checkmark-n"> &#x2717; </span>
-                    {% endif %}        
-                </td>
-                <td>
-                    <b>{{ dockerContainer.ContainerName }}</b>
-                </td>
-            </tr>
-        {% endfor %} 
-    </table>
-
-    <div>
-        <p>
-        <a href="/ask-start-docker" class="link-button">Start</a> 
-        <a href="/ask-kill-docker" class="link-button">Kill</a>
-        <a href="/ask-update-docker" class="link-button">Update</a>        
-    </div> 
-
-    <h3>Api</h3>
+    <h3>Collection</h3>   
     <table>
         <tr>
-            <td>Documentation</td>
-            <td>
-                <b>
-                <a class="external-link" href="{{ machineInfo.HostUrl }}:5000/api/GetApiList" target="_blank">{{ apiInfo.Documentation }}</a>
-                </b>
-            </td>
+            <td>Artists</td>
+            <td><b>{{ lmsServerStatus['info total artists'] }}</b></td>
         </tr>
         <tr>
-            <td>Url</td>
-            <td><b>{{ apiRootUrl }}</b></td>
+            <td>Albums</td>
+            <td><b>{{ lmsServerStatus['info total albums'] }}</b></td>
         </tr>
         <tr>
-            <td>Name</td>
-            <td><b>{{ apiInfo.ApiName }}</b></td>
+            <td>Songs</td>
+            <td><b>{{ lmsServerStatus['info total songs'] }}</b></td>
         </tr>                
-    </table>  
+        <tr>
+            <td>Genres</td>
+            <td><b>{{ lmsServerStatus['info total genres'] }}</b></td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <td>Export Folder</td>
+            <td><b>{{ musicCollectionInfo.CollectionFolderFunctional }}</b></td>
+        </tr>
+        <tr>
+            <td>Last Export</td>
+            <td><b>{{ musicCollectionInfo.LastExport }}</b></td>
+        </tr>
+    </table> 
+    <br>
+    <a href="/ask-export-collection" class="link-button">Export</a>    
 
 {% endblock %}
