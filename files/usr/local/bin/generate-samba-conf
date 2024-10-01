@@ -5,47 +5,35 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
+generate_share () {
+    echo "[$1]" >> $temp_conf
+    echo "comment = $1" >> $temp_conf
+    echo "path = $2" >> $temp_conf
+    echo "available = yes" >> $temp_conf
+    echo "guest ok = yes" >> $temp_conf
+    echo "browseable = yes" >> $temp_conf
+    echo "writable = $3" >> $temp_conf
+    echo "create mask = 0666" >> $temp_conf
+    echo "directory mask = 0777" >> $temp_conf
+    echo "" >> $temp_conf    
+}
+
 samba_conf=/etc/samba/smb.conf
 temp_conf=/tmp/smb.conf
 
-rm $samba_conf -f 
 rm $temp_conf -f
 
 echo "[global]" >> $temp_conf
 echo "workgroup = workgroup" >> $temp_conf
-echo "server string =  %h (Samba, Linux)" >> $temp_conf
+echo "server string = %h (Samba, Linux)" >> $temp_conf
 echo "server role = standalone" >> $temp_conf
 echo "security = user" >> $temp_conf
 echo "unix extensions = no" >> $temp_conf
 echo "multicast dns register = yes" >> $temp_conf
 echo "" >> $temp_conf
 
-share_name_public=Publiek
-share_folder_public=/media/usbdata/user/Publiek
-
-echo "[$share_name_public]" >> $temp_conf
-echo "comment = $share_name_public" >> $temp_conf
-echo "path = $share_folder_public" >> $temp_conf
-echo "available = yes" >> $temp_conf
-echo "guest ok = yes" >> $temp_conf
-echo "browseable = yes" >> $temp_conf
-echo "writable = yes" >> $temp_conf
-echo "create mask = 0666" >> $temp_conf
-echo "directory mask = 0777" >> $temp_conf
-echo "" >> $temp_conf
-
-share_name_backup=Backup
-share_folder_backup=/media/usbbackup/user
-
-echo "[$share_name_backup]" >> $temp_conf
-echo "comment = $share_name_backup" >> $temp_conf
-echo "path = $share_folder_backup" >> $temp_conf
-echo "available = yes" >> $temp_conf
-echo "guest ok = yes" >> $temp_conf
-echo "browseable = yes" >> $temp_conf
-echo "writable = no" >> $temp_conf
-echo "create mask = 0666" >> $temp_conf
-echo "directory mask = 0777" >> $temp_conf
+generate_share "Publiek" "/media/usbdata/user/Publiek" "yes"
+generate_share "Backup" "/media/usbbackup/user" "no"
 
 rm $samba_conf -f
 cp $temp_conf $samba_conf
