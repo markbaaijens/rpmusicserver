@@ -17,6 +17,7 @@ echo "Start installing packages..."
 apt-get update
 apt-get install docker.io python3-pip tree jq bwm-ng nmap zip -y   # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
+apt-get install samba -y
 echo " => done installing packages."
 
 echo "Setting timezone to Europe/Amsterdam..."
@@ -137,6 +138,10 @@ install_bin_file halt-server
 install_bin_file reboot-server
 install_bin_file export-collection
 install_bin_file start-web
+install_bin_file generate-samba-conf
+
+echo "Generate samba-configuration..."
+generate-samba-conf
 
 # By always delete existing lines in crontab, we can easily implement
 # a different crontab-strategy later, if needed
