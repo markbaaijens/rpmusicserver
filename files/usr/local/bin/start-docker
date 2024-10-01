@@ -27,27 +27,6 @@ if [ ! "$(docker ps -f name=lms -q)" ]; then
         lmscommunity/logitechmediaserver:stable
 fi
 
-if [ ! "$(docker ps -f name=samba -q)" ]; then
-    if [ "$1" = "update" ]; then
-        docker pull dperson/samba:latest
-    fi
-    docker run \
-        -d \
-        --rm \
-        --name samba \
-        -p 139:139 \
-        -p 445:445 \
-        -p 137:137/udp \
-        -p 138:138/udp \
-        -v /media/usbdata/user/Publiek:/mnt_public \
-        -v /media/usbbackup/user/Publiek:/mnt_backup \
-        -e USERID=1000 \
-        -e GROUPID=1000 \
-        dperson/samba:latest -n -p -r \
-        -s "Publiek;/mnt_public;yes;no;yes;all;;;Publiek" \
-        -s "Backup;/mnt_backup;yes;yes;yes;all;;;Backup"
-fi
-
 if [ ! "$(docker ps -f name=transmission -q)" ]; then
     if [ "$1" = "update" ]; then
         docker pull linuxserver/transmission:latest

@@ -529,11 +529,6 @@ def GetDockerContainerList():
                     "ContainerName": 'transmission',
                     "IsActive": isActive
                  })    
-    isActive = 'samba' in activeContainers                 
-    dockerContainerList.append({
-                    "ContainerName": 'samba',
-                    "IsActive": isActive
-                 })    
     isActive = 'syncthing' in activeContainers                 
     dockerContainerList.append({
                     "ContainerName": 'syncthing',
