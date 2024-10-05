@@ -6,7 +6,7 @@
    viewBox="0 0 24 24"
    id="svg4"
    sodipodi:docname="sb-radio.svg"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -23,17 +23,19 @@
      inkscape:pagecheckerboard="0"
      showgrid="false"
      inkscape:zoom="17.583333"
-     inkscape:cx="11.971564"
-     inkscape:cy="12"
-     inkscape:window-width="1280"
-     inkscape:window-height="693"
+     inkscape:cx="11.943128"
+     inkscape:cy="12.028436"
+     inkscape:window-width="1536"
+     inkscape:window-height="795"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="32"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg4" />
+     inkscape:current-layer="svg4"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1" />
   <path
      d="m 20,4.9065485 a 2,1.5626194 0 0 1 2,1.5626193 v 9.3757162 a 2,1.5626194 0 0 1 -2,1.56262 H 4 A 2,1.5626194 0 0 1 2,15.844884 V 6.4691678 C 2,5.8050546 2.53,5.2346985 3.28,5.0081188 L 15.71,1 16.47,2.4297967 8.83,4.9065485 H 20 m 0,1.5626193 H 4 V 9.5944065 H 16 V 8.0317872 h 2 v 1.5626193 h 2 V 6.4691678 M 7,11.157026 a 3,2.343929 0 0 0 -3,2.343929 3,2.343929 0 0 0 3,2.343929 3,2.343929 0 0 0 3,-2.343929 3,2.343929 0 0 0 -3,-2.343929 z"
      fill="#000000"
      id="path2"
-     style="stroke-width:0.883918" />
+     style="stroke-width:0.883918;fill:#e6e6e6" />
 </svg>
