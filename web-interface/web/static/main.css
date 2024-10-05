@@ -26,9 +26,9 @@ a:hover { text-decoration: underline;}
 a.link-button {
 	background-color: rgb(46, 54, 52);
 	color: lightgray;
-	padding: 5px 8px;
+	padding: 8px 10px;
 	text-decoration: none;
-	border-radius: 8px;
+	border-radius: 6px;
 	border: 1px solid gray;
 	display: inline-block;
 	font-weight: normal;
@@ -42,7 +42,7 @@ a.link-button:hover {
 a.proceed {
 	background-color: darkgreen;
 	color: white;
-	border: green
+	border: 1px solid gray;
 }
   
 a.proceed:hover {
@@ -61,7 +61,7 @@ a.cancel:hover {
 }
 
 .disabled {
-	opacity: 0.3;
+	opacity: 0.4;
 	cursor: not-allowed;
 }    
 
@@ -127,10 +127,10 @@ meter {
 	how to apply the a.link-classes to Flask-objects.
 */
 #submit {
-	padding: 7px 10px;
+	padding: 8px 10px;
 	font-size: 16px;
-	border-radius: 8px;
-	border: 1px solid green;
+	border-radius: 6px;
+	border: 1px solid gray;
 	cursor: pointer;
 	background-color: darkgreen;		
 	color: white;
@@ -141,9 +141,9 @@ meter {
 }
 
 #cancel {
-	padding: 7px 10px;
+	padding: 8px 10px;
 	font-size: 16px;
-	border-radius: 8px;
+	border-radius: 6px;
 	border: 1px solid gray;
 	cursor: pointer;
 	background-color: rgb(46, 54, 52);
