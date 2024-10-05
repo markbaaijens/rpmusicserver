@@ -8,11 +8,11 @@ p, li, th, td, ol, ul, dl, a, blockquote, body {
     color: silver;
 }
 
-h1, h2 {
+h1, h2, h3 {
 	color: whitesmoke;
 }
-h3 {
-	color: whitesmoke;
+h2 {
+	margin-top: 10px;
 }
 
 a {
@@ -80,10 +80,17 @@ td {
 
 .top-header {
 	padding-top: 3px;
+	padding-bottom: 8px;	
+	background-color: rgb(19, 22, 21);
 }
 
 .sub-header {
 	margin-top: 8px;
+}
+
+.divider {
+	border-bottom: 1px solid gray;
+	opacity: 0.4;	
 }
 
 .external-link {
