@@ -42,7 +42,7 @@ def SizeHumanReadable(num, suffix="B"):
     return f"{num:.1f}Yi{suffix}"
 
 @app.route('/', methods=['GET'])
-def Home():
+def ShowHomePage():
     try:
         machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
     except Exception as e:
@@ -65,7 +65,7 @@ def Home():
         versionInfo = versionInfo)
 
 @app.route('/transcoder', methods=['GET'])
-def ShowTranscoder():
+def ShowTranscoderPage():
     try:
         transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
     except Exception as e:
@@ -80,7 +80,7 @@ def ShowTranscoder():
         transcoderInfo = transcoderInfo)    
 
 @app.route('/system', methods=['GET'])
-def ShowSystem():
+def ShowSystemPage():
     try:
         portStatusList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetPortStatusList').content)
     except Exception as e:
@@ -119,7 +119,7 @@ def ShowSystem():
         machineInfo = machineInfo)   
 
 @app.route('/resources', methods=['GET'])
-def ShowResources():
+def ShowResourcesPage():
     try:
         cpuInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetCpuResourceInfo').content)
     except Exception as e:
@@ -155,7 +155,14 @@ def ShowResources():
         memoryInfo = memoryInfo)   
 
 @app.route('/music', methods=['GET'])
-def ShowMusic():
+def ShowMusicPage():
+    try:
+        machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        machineInfo = []
+
     try:
         musicCollectionInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMusicCollectionInfo').content)
     except Exception as e:
@@ -183,10 +190,11 @@ def ShowMusic():
         apiRootUrl = configObject.ApiRootUrl,
         musicCollectionInfo = musicCollectionInfo,
         lmsServerStatus = lmsServerStatus,
-        lmsPlayers = lmsPlayers)
+        lmsPlayers = lmsPlayers,
+        machineInfo = machineInfo)
 
 @app.route('/backup', methods=['GET'])
-def ShowBackup():
+def ShowBackupPage():
     try:
         backupInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetBackupInfo').content)
     except Exception as e:
