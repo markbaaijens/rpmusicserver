@@ -70,14 +70,14 @@ mount -a
 echo "Creating directories."
 mkdir /media/usbdata/rpms/logs -p
 
-mkdir /media/usbdata/user/Publiek -p
-chmod 777 /media/usbdata/user/Publiek
+mkdir /media/usbdata/user/public -p
+chmod 777 /media/usbdata/user/public
 
-mkdir /media/usbdata/user/Publiek/Downloads -p
-chmod 777 /media/usbdata/user/Publiek/Downloads
+mkdir /media/usbdata/user/public/Downloads -p
+chmod 777 /media/usbdata/user/public/Downloads
 
-mkdir /media/usbdata/user/Publiek/Muziek -p
-chmod 777 /media/usbdata/user/Publiek/Muziek
+mkdir /media/usbdata/user/public/Muziek -p
+chmod 777 /media/usbdata/user/public/Muziek
 
 echo "Copy LMS config files"
 if [ ! -d /media/usbdata/rpms/config/docker/lms ]; then
@@ -157,7 +157,7 @@ echo " => line added."
 
 echo "Adding line to setting rights to /etc/crontab..."
 sed -i '/chmod 777/d' /etc/crontab
-/bin/sh -c 'echo "10 02 * * * root chmod 777 /media/usbdata/user/Publiek -R" >> /etc/crontab'
+/bin/sh -c 'echo "10 02 * * * root chmod 777 /media/usbdata/user/public -R" >> /etc/crontab'
 echo " => line added."    
 
 echo "Adding line to update-docker to /etc/crontab..."

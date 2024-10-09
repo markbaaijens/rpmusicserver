@@ -14,7 +14,7 @@ if [ ! "$(docker ps -f name=lms -q)" ]; then
         --rm \
         --name lms \
         -v "/media/usbdata/rpms/config/docker/lms":"/config":rw \
-        -v "/media/usbdata/user/Publiek/Muziek":"/music":ro \
+        -v "/media/usbdata/user/public/Muziek":"/music":ro \
         -v "/etc/localtime":"/etc/localtime":ro \
         -v "/etc/timezone":"/etc/timezone":ro \
         -p 9002:9002/tcp \
@@ -39,7 +39,7 @@ if [ ! "$(docker ps -f name=transmission -q)" ]; then
         -e PUID=1000 \
         -e PGID=1000 \
         -v /media/usbdata/rpms/config/docker/transmission:/config \
-        -v /media/usbdata/user/Publiek/Downloads:/downloads \
+        -v /media/usbdata/user/public/Downloads:/downloads \
         linuxserver/transmission:latest
 fi
 
@@ -61,7 +61,7 @@ if [ ! "$(docker ps -f name=syncthing -q)" ]; then
         -p 22000:22000/udp \
         -p 21027:21027/udp \
         -v /media/usbdata/rpms/config/docker/syncthing:/config \
-        -v /media/usbdata/user/Publiek:/data\
+        -v /media/usbdata/user/public:/data\
         lscr.io/linuxserver/syncthing:latest
 fi
 

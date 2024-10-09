@@ -470,7 +470,7 @@ def GetUserBaseFolder():
     return '/media/usbdata/user'
 
 def GetPublicFolder():
-    return 'Publiek'
+    return 'public'
 
 def GetMusicFolder():
     return 'Muziek'    

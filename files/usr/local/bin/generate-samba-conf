@@ -32,7 +32,7 @@ echo "unix extensions = no" >> $temp_conf
 echo "multicast dns register = yes" >> $temp_conf
 echo "" >> $temp_conf
 
-generate_share "Publiek" "/media/usbdata/user/Publiek" "yes"
+generate_share "Publiek" "/media/usbdata/user/public" "yes"
 generate_share "Backup" "/media/usbbackup/user" "no"
 
 rm $samba_conf -f

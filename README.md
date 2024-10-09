@@ -278,10 +278,34 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
 
 ### Steps to migrate to 1.0
 - backup your system
-- burn a SD-card, put the SD-card into the Pi and do an install, just like doing a new install of RPMS
-  - see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) for instructions
-  - you can take a new card or just re-use the existing card
-  - you might consider a new, bigger card b/c the [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements) concerning the size of the card have been changed
-  - skip the step 'Format USB-drive for data'; this ensures that all data and all settings remain intact, you can go on where you left the system
-
+  - create a server-backup
+  - optional: create remote backup
+- delete entries in server-aplications (SyncThing and Transmission)
+  - copy media/usbdata/rpms/config/docker/syncthing/config.xml for later reference
+  - delete all folders in SyncThing
+  - delete all downloads in Transmission
+- ssh to rpms: `ssh pi@rpms`
+  - kill all containers
+    - `sudo kill-docker`
+  - rename folders
+    - `sudo mv /media/usbdata/user/Publiek /media/usbdata/user/public`
+    - `ls /media/usbdata/user  # Check`
+  - convert transcoder-settings
+    - `sudo sed -i -e 's/Publiek/public/g' /media/usbdata/rpms/config/transcoder-settings.json`
+    - `cat /media/usbdata/rpms/config/transcoder-settings.json  # Check`
+  - if you are NOT on a 64-bit system but still on 32-bit: 
+    - stop the server
+      - `sudo reboot-server`  
+    - burn a SD-card
+      - see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) for instructions
+      - you can take a new card or just re-use the existing card
+      - you might consider a new, bigger card b/c the [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements) concerning the size of the card have been changed
+      - skip the step 'Format USB-drive for data'; this ensures that all data and all settings remain intact, you can go on where you left the system
+      - put the SD-card into the Pi and boot-up
+      - do an install, just like doing a new install of RPMS
+  - if you are already on a 64-bit system:       
+    - update
+      - `sudo update-rpms`
+      - `sudo reboot-server`  
+- re-creeate folders in SyncThing
 
