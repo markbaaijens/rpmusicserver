@@ -289,10 +289,10 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
     - `sudo kill-docker`
   - rename folders
     - `sudo mv /media/usbdata/user/Publiek /media/usbdata/user/public`
-    - `ls /media/usbdata/user  # Check`
+    - `ls /media/usbdata/user  # To check`
   - convert transcoder-settings
     - `sudo sed -i -e 's/Publiek/public/g' /media/usbdata/rpms/config/transcoder-settings.json`
-    - `cat /media/usbdata/rpms/config/transcoder-settings.json  # Check`
+    - `cat /media/usbdata/rpms/config/transcoder-settings.json  # To check`
   - if you are NOT on a 64-bit system but still on 32-bit: 
     - stop the server
       - `sudo reboot-server`  
@@ -308,4 +308,15 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
       - `sudo update-rpms`
       - `sudo reboot-server`  
 - re-creeate folders in SyncThing
+
+_Optional_
+
+- to speedup server-backup
+  - `ssh pi@rpms`
+  - `sudo mv /media/usbbackup/user/Publiek /media/usbbackup/user/public`
+  - `ls /media/usbbackup/user  # To cheeck`
+- local computer
+  - manually modify local script for external backup if needed
+  - modify bookmarks to shares
+
 
