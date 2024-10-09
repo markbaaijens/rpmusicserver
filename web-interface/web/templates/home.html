@@ -1,15 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="sub-header">
-        <small>
-        <a class="external-link" href="{{ machineInfo.HostUrl }}:9002" target="_blank">Lyrion Music Server</a>&nbsp;&nbsp;
-        <a class="external-link" href="{{ machineInfo.HostUrl }}:9091" target="_blank">Transmission</a>&nbsp;&nbsp;
-        <a class="external-link" href="{{ machineInfo.HostUrl }}:8384" target="_blank">SyncThing</a>&nbsp;&nbsp;        
-        <a class="external-link" href="https://github.com/markbaaijens/rpmusicserver" target="_blank">GitHub</a> 
-        </small>
-    </div>
-    <p>
     <h2>Home</h2>
     <table>
         <tr>
@@ -37,11 +28,11 @@
     <h3>Version</h3>
     <table>
         <tr>
-            <td>Current Version</td>
+            <td>Current</td>
             <td><b>{{ versionInfo.CurrentVersion }}</b></td>
         </tr>
         <tr>
-            <td>Available Version</td>
+            <td>Available</td>
             <td><b>{{ versionInfo.AvailableVersion }}</b>
                 {% if versionInfo.IsVersionOverridden %}   
                     *
@@ -49,7 +40,7 @@
             </td>
         </tr>
         <tr>
-            <td>Last Update</td>
+            <td>Updated</td>
             <td><b>{{ versionInfo.LastUpdateTimeStamp }}</b></td>
         </tr>
     </table> 
@@ -63,5 +54,13 @@
         <a class="link-button disabled">Update</a> 
     {% endif %}            
         
-    </table>  
+    <div>
+        <p>
+        <small>
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:9002" target="_blank">Lyrion Music Server</a>&nbsp;&nbsp;
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:9091" target="_blank">Transmission</a>&nbsp;&nbsp;
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:8384" target="_blank">SyncThing</a>&nbsp;&nbsp;        
+        <a class="external-link" href="https://github.com/markbaaijens/rpmusicserver" target="_blank">GitHub</a> 
+        </small>
+    </div>
 {% endblock %}

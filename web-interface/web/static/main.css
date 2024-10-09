@@ -1,18 +1,18 @@
 body {
     font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 16px;
+	background-color: rgb(25, 29, 28);
 }
 
 p, li, th, td, ol, ul, dl, a, blockquote, body { 
-    color: black;
+    color: silver;
 }
-
 
 h1, h2 {
-	color: rgb(111, 111, 111);
+	color: whitesmoke;
 }
 h3 {
-	color: gray;
+	color: whitesmoke;
 }
 
 a {
@@ -24,39 +24,38 @@ a:visited {color: steelblue;}
 a:hover { text-decoration: underline;}
 
 a.link-button {
-	background-color: whitesmoke;
-	color: black;
-	padding: 5px 8px;
+	background-color: rgb(46, 54, 52);
+	color: lightgray;
+	padding: 6px 8px;
 	text-decoration: none;
-	border-radius: 8px;
-	border: 1px solid lightgray;
+	border-radius: 6px;
+	border: 1px solid gray;
 	display: inline-block;
 	font-weight: normal;
 	margin-bottom: 5px;
 }
   
 a.link-button:hover {
-	border: 1px solid grey;
-	background-color: lightgray;
+	background-color: rgb(55, 65, 62);
 }
 
 a.proceed {
-	background-color: green;
+	background-color: darkgreen;
 	color: white;
+	border: 1px solid gray;
 }
   
 a.proceed:hover {
-	border: 1px solid grey;
-	background-color: darkgreen;
+	background-color: green;
 }
 
 a.cancel {
-	background-color: whitesmoke;
+	background-color: rgb(46, 54, 52);
 	color: red;
+	border: 1px solid grey;
 }
   
 a.cancel:hover {
-	border: 1px solid grey;
 	background-color: red;
 	color: white;	
 }
@@ -67,7 +66,7 @@ a.cancel:hover {
 }    
 
 em {
-	color: red;
+	color: orangered;
 }
 
 ul {
@@ -83,10 +82,6 @@ td {
 	padding-top: 3px;
 }
 
-.sub-header {
-	margin-top: 8px;
-}
-
 .external-link {
 	background-image: url(/static/external.svg);
 	background-position: center right;
@@ -99,7 +94,7 @@ td {
 }
 
 .checkmark-y {
-	color: green;
+	color: limegreen;
 }
 .checkmark-n {
 	color: red;
@@ -114,6 +109,7 @@ meter {
 .small {
 	display: block;
 	margin-top: -5px;
+	padding-right: 10px;
 }
 
 .icon-player {
@@ -127,33 +123,30 @@ meter {
 	how to apply the a.link-classes to Flask-objects.
 */
 #submit {
-	padding: 7px 10px;
+	padding: 6px 8px;
 	font-size: 16px;
-	border-radius: 8px;
-	border: 1px solid lightgray;
+	border-radius: 6px;
+	border: 1px solid gray;
 	cursor: pointer;
-	background-color: green;		
+	background-color: darkgreen;		
 	color: white;
 }
 
 #submit:hover {
-	border: 1px solid grey;
-	background-color: darkgreen;
-	color: white;
+	background-color: green;
 }
 
 #cancel {
-	padding: 7px 10px;
+	padding: 6px 8px;
 	font-size: 16px;
-	border-radius: 8px;
-	border: 1px solid lightgray;
+	border-radius: 6px;
+	border: 1px solid gray;
 	cursor: pointer;
-	background-color: whitesmoke;		
+	background-color: rgb(46, 54, 52);
 	color: red;	
 }
 
 #cancel:hover {
-	border: 1px solid grey;
 	background-color: red;
 	color: white;
 }
