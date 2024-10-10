@@ -7,4 +7,4 @@ fi
 
 rm /tmp/rpms-system.zip
 zip -r -q /tmp/rpms-system.zip /media/usbdata/rpms/*
-cp /tmp/rpms-system.zip /media/usbdata/user/Publiek
+cp /tmp/rpms-system.zip /media/usbdata/user/public

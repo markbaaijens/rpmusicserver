@@ -57,7 +57,6 @@ Check for output:
     * `watch nmap rpms`
     * wait until port 22 appears; exit with Ctrl-C
     * _if the Pi does not appear in the network, checkout the Troubleshooting-section below_
-
 * Installation:
   * `rsync -r /tmp/rpmusicserver-master/* pi@rpms:/tmp/rpmusicserver`
 	  * password = raspberry  
@@ -277,11 +276,49 @@ The `rpmsdev` hostname is used in this build
 Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade contains breaking changes which turn your system into a broken one.
 
 ### Steps to migrate to 1.0
+
+(1) Burn a SD-card
+- burn a SD-card on a new card on your local computer as if it is a fresh install
+  - see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) under 'Burn SD-card' for instructions
+- card considerations
+  - by taking a new card, you have a fall-back if things go wrong
+  - you might use a bigger card b/c the [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements) concerning the size of the card have been changed
+
+(2) Convert your system
 - backup your system
-- burn a SD-card, put the SD-card into the Pi and do an install, just like doing a new install of RPMS
-  - see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) for instructions
-  - you can take a new card or just re-use the existing card
-  - you might consider a new, bigger card b/c the [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements) concerning the size of the card have been changed
-  - skip the step 'Format USB-drive for data'; this ensures that all data and all settings remain intact, you can go on where you left the system
+  - create a server-backup
+  - optional: create remote backup
+- delete entries in SyncThing
+  - copy media/usbdata/rpms/config/docker/syncthing/config.xml for later reference
+  - delete all folders in SyncThing
+- delete all downloads in Transmission
+- ssh to rpms 
+  - `ssh pi@rpms`
+- kill all containers
+  - `sudo kill-docker`
+- rename folders
+  - `sudo mv /media/usbdata/user/Publiek /media/usbdata/user/public`
+  - `ls /media/usbdata/user  # To check`
+- convert transcoder-settings
+  - `sudo sed -i -e 's/Publiek/public/g' /media/usbdata/rpms/config/transcoder-settings.json`
+  - `cat /media/usbdata/rpms/config/transcoder-settings.json  # To check`
+- stop the server
+  - `sudo halt-server`  
+
+(3) Install the new SD-card, boot the Pi and finish the installation
+- put the new SD-card into the Pi and boot-up
+- do an install, just like doing a new install of RPMS
+  - see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) under 'Installation' for instructions
+- re-create folders in SyncThing if needed
+
+**Optional**
+
+- to speedup server-backup
+  - `ssh pi@rpms`
+  - `sudo mv /media/usbbackup/user/Publiek /media/usbbackup/user/public`
+  - `ls /media/usbbackup/user  # To cheeck`
+- local computer
+  - manually modify local script for external backup if needed
+  - modify bookmarks to shares
 
 
