@@ -280,10 +280,9 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
 (1) Burn a SD-card
 - burn a SD-card on a new card on your local computer as if it is a fresh install
   - see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) under 'Burn SD-card' for instructions
-  - card considerations
-    - by taking a new card, you have a fall-back if things go wrong
-    - you might bigger card b/c the [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements) concerning the size of the card have been changed
-  - skip the step 'Format USB-drive for data'; this ensures that all data and all settings remain intact, you can go on where you left the system
+- card considerations
+  - by taking a new card, you have a fall-back if things go wrong
+  - you might bigger card b/c the [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements) concerning the size of the card have been changed
 
 (2) Convert your system
 - backup your system
@@ -293,7 +292,7 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
   - copy media/usbdata/rpms/config/docker/syncthing/config.xml for later reference
   - delete all folders in SyncThing
 - delete all downloads in Transmission
-- ssh to rpms: 
+- ssh to rpms 
   - `ssh pi@rpms`
 - kill all containers
   - `sudo kill-docker`
