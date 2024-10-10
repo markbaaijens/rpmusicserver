@@ -282,7 +282,7 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
   - see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) under 'Burn SD-card' for instructions
 - card considerations
   - by taking a new card, you have a fall-back if things go wrong
-  - you might bigger card b/c the [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements) concerning the size of the card have been changed
+  - you might use bigger card b/c the [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements) concerning the size of the card have been changed
 
 (2) Convert your system
 - backup your system
