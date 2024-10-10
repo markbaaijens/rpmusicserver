@@ -291,7 +291,6 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
 - delete entries in SyncThing
   - copy media/usbdata/rpms/config/docker/syncthing/config.xml for later reference
   - delete all folders in SyncThing
-- delete all downloads in Transmission
 - ssh to rpms 
   - `ssh pi@rpms`
 - kill all containers
