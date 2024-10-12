@@ -295,6 +295,7 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
     - /data/Muziek => /data/music
     - /data => /data/public     
   - record the folder-config functionally
+    - sync-method (S Send, R Receive, S/R Send and receive)
     - current base folder (say /data/Muziek/xxx)
     - new base folder (say /data/music/xxx)
     - current subscribers
