@@ -310,7 +310,7 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
   - `sudo mkdir /media/usbdata/user/music -p`
   - `sudo mv /media/usbdata/user/public/Muziek/* /media/usbdata/user/music`
   - `sudo rmdir /media/usbdata/user/public/Muziek`
-  - `tree -d -L 3 /media/usbdata/user  # To check`
+  - `tree -d -L 2 /media/usbdata/user  # To check`
 - convert transcoder-settings
   - `sudo sed -i -e 's/Publiek/public/g' /media/usbdata/rpms/config/transcoder-settings.json`
   - `sudo sed -i -e 's/public\/Muziek/music/g' /media/usbdata/rpms/config/transcoder-settings.json`
@@ -340,7 +340,7 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
   - `sudo mkdir /media/usbbackup/user/music -p`
   - `sudo mv /media/usbbackup/user/public/Muziek/* /media/usbbackup/user/music`
   - `sudo rmdir /media/usbbackup/user/public/Muziek`
-  - `tree -d -L 3 /media/usbbackup/user  # To check`
+  - `tree -d -L 2 /media/usbbackup/user  # To check`
 - local computer
   - manually modify local script for external backup if needed
   - modify bookmarks to shares
