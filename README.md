@@ -291,6 +291,13 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
 - delete entries in SyncThing
   - copy syncthing-config for later reference
     - `ssh pi@rpms "cat /media/usbdata/rpms/config/docker/syncthing/config.xml" > ~/synthing-config.txt`
+  - locations will be changed:
+    - /data/Muziek => /data/music
+    - /data => /data/public     
+  - record the folder-config functionally
+    - original base folder (say /data/Muziek)
+    - new base folder (say /data/music)
+    - subscribers
   - delete all folders in SyncThing
 - ssh to rpms 
   - `ssh pi@rpms`
