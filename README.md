@@ -289,17 +289,31 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
   - create a server-backup
   - optional: create remote backup
 - delete entries in SyncThing
-  - copy media/usbdata/rpms/config/docker/syncthing/config.xml for later reference
+  - copy syncthing-config for later reference
+    - `ssh pi@rpms "cat /media/usbdata/rpms/config/docker/syncthing/config.xml" > ~/synthing-config.txt`
+  - locations will be changed:
+    - /data/Muziek => /data/music
+    - /data => /data/public     
+  - record the folder-config functionally
+    - sync-method (S Send, R Receive, S/R Send and receive)
+    - current base folder (say /data/Muziek/xxx)
+    - new base folder (say /data/music/xxx)
+    - current subscribers
   - delete all folders in SyncThing
+    - choose Discard when deleting folder (so that it can be added automatically later)
 - ssh to rpms 
   - `ssh pi@rpms`
 - kill all containers
   - `sudo kill-docker`
 - rename folders
   - `sudo mv /media/usbdata/user/Publiek /media/usbdata/user/public`
-  - `ls /media/usbdata/user  # To check`
+  - `sudo mkdir /media/usbdata/user/music -p`
+  - `sudo mv /media/usbdata/user/public/Muziek/* /media/usbdata/user/music`
+  - `sudo rmdir /media/usbdata/user/public/Muziek`
+  - `tree -d -L 2 /media/usbdata/user  # To check`
 - convert transcoder-settings
   - `sudo sed -i -e 's/Publiek/public/g' /media/usbdata/rpms/config/transcoder-settings.json`
+  - `sudo sed -i -e 's/public\/Muziek/music/g' /media/usbdata/rpms/config/transcoder-settings.json`
   - `cat /media/usbdata/rpms/config/transcoder-settings.json  # To check`
 - stop the server
   - `sudo halt-server`  
@@ -308,14 +322,25 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
 - put the new SD-card into the Pi and boot-up
 - do an install, just like doing a new install of RPMS
   - see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) under 'Installation' for instructions
-- re-create folders in SyncThing if needed
+- re-create folders in SyncThing if needed, with these new locations:
+  - /data/Muziek => /data/music
+  - /data => /data/public 
+
+(4) Check system if all is working well: 
+- Samba-shares
+- LMS
+- Transmission
+- all pages and actions in the web-interface
 
 **Optional**
 
 - to speedup server-backup
   - `ssh pi@rpms`
   - `sudo mv /media/usbbackup/user/Publiek /media/usbbackup/user/public`
-  - `ls /media/usbbackup/user  # To cheeck`
+  - `sudo mkdir /media/usbbackup/user/music -p`
+  - `sudo mv /media/usbbackup/user/public/Muziek/* /media/usbbackup/user/music`
+  - `sudo rmdir /media/usbbackup/user/public/Muziek`
+  - `tree -d -L 2 /media/usbbackup/user  # To check`
 - local computer
   - manually modify local script for external backup if needed
   - modify bookmarks to shares
