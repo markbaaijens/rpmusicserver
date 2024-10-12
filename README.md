@@ -290,7 +290,7 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
   - optional: create remote backup
 - delete entries in SyncThing
   - copy syncthing-config for later reference
-    `ssh pi@rpms "cat /media/usbdata/rpms/config/docker/syncthing/config.xml" > ~/synthing-config.txt`
+    - `ssh pi@rpms "cat /media/usbdata/rpms/config/docker/syncthing/config.xml" > ~/synthing-config.txt`
   - delete all folders in SyncThing
 - ssh to rpms 
   - `ssh pi@rpms`
