@@ -295,9 +295,9 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
     - /data/Muziek => /data/music
     - /data => /data/public     
   - record the folder-config functionally
-    - original base folder (say /data/Muziek)
-    - new base folder (say /data/music)
-    - subscribers
+    - current base folder (say /data/Muziek/xxx)
+    - new base folder (say /data/music/xxx)
+    - current subscribers
   - delete all folders in SyncThing
 - ssh to rpms 
   - `ssh pi@rpms`
