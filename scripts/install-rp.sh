@@ -76,8 +76,8 @@ chmod 777 /media/usbdata/user/public
 mkdir /media/usbdata/user/public/Downloads -p
 chmod 777 /media/usbdata/user/public/Downloads
 
-mkdir /media/usbdata/user/public/Muziek -p
-chmod 777 /media/usbdata/user/public/Muziek
+mkdir /media/usbdata/user/music -p
+chmod 777 /media/usbdata/user/music
 
 echo "Copy LMS config files"
 if [ ! -d /media/usbdata/rpms/config/docker/lms ]; then

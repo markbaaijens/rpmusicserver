@@ -473,10 +473,10 @@ def GetPublicFolder():
     return 'public'
 
 def GetMusicFolder():
-    return 'Muziek'    
+    return 'music'    
 
 def GetDefaultMusicCollectionFolder():
-    return GetUserBaseFolder() + '/' + GetPublicFolder() + '/' + GetMusicFolder()
+    return GetUserBaseFolder() + '/' + GetMusicFolder()
 
 def GetMusicCollectionInfo():   
     transcoderInfo = GetTranscoderInfo()
