@@ -300,6 +300,7 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
     - new base folder (say /data/music/xxx)
     - current subscribers
   - delete all folders in SyncThing
+    - choose Discard when deleting folder (so that it can be added automatically later)
 - ssh to rpms 
   - `ssh pi@rpms`
 - kill all containers
