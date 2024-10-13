@@ -256,7 +256,7 @@ To switch version from `master` branch to e.g. `develop` branch:
 Returning to the `master` branch version simply delete the `update-branch.txt` file:
 * `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
 
-Note. If local DNS does not work, the hostname`rpms` has to be replaced by the ip-address of that machine. 
+Note. If local DNS does not work, the hostname`rpms` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
 
 ### Build development version with separate hostname
 A regular install results in a Pi with hostname `rpms`, which is fine. As a developer, you want to develop and test on a different, second Pi, but having two machines within the network with the same hostname, results in errors. 
@@ -285,6 +285,8 @@ Copy local code to a Pi and install the changed code:
   * password: `rpms`
 * `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
   * password: `rpms`
+
+Note. If local DNS does not work, the hostname`rpmsdev` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
 
 Note. You can also do this 'trick' in a live, production-environment, but than you must know what you are doing, so don't try this at home! Usually, a production-machine is updated through the regular update-mechanism, in which code is retreived from the git-repo on github (be it the master-branch or, if overridden, by another branch, usually develop). 
 
