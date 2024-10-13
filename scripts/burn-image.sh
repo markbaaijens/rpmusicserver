@@ -1,17 +1,10 @@
 #!/bin/bash
 
 if [ -z "$(whoami | grep root)" ]; then
-    echo "Not running as root."
-    echo "Script ended with failure."
+    echo "Not running as root"
+    echo "Script ended with failure"
     exit
 fi
-
-working_dir=/tmp/raspbian
-image=https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-01-28/2022-01-28-raspios-bullseye-arm64-lite.zip
-image_hash="d694d2838018cf0d152fe81031dba83182cee79f785c033844b520d222ac12f5"
-archive=raspbian-os-lite.zip
-number_pattern="[0-9]+"
-mount_point=/mnt/temp
 
 setup_environment() {
     if [ ! -d $working_dir ]; then 
@@ -25,32 +18,41 @@ cleanup_environment() {
 }
 
 mount_partition () {
-    echo "Mounting partition /dev/$partition."
+    partition=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
+    echo "Mounting partition /dev/$partition"
+
     if [ ! -d $mount_point ]; then 
         mkdir $mount_point
     fi
 
     if [ -z $partition ]; then
-        echo "Failed to capture $partition."
+        echo "Failed to capture $partition"
         cleanup_environment
-        echo "Script ended with failure."
+        echo "Script ended with failure"
         exit
     fi
 
     mount "/dev/$partition" $mount_point
-    hdparm -z /dev/$chosen_disk
-    echo "Partition /dev/$partition mounted."
 }
 
 unmount_partition () {
+    partition=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
+    echo "Unmounting partition /dev/$partition"
+
     umount "/dev/$partition"
     hdparm -z /dev/$chosen_disk
     if [ -d $mount_point ]; then 
         rm -rf $mount_point
     fi
     sleep 3 # Give the OS time to reread
-    echo "Partition /dev/$partition unmounted."
 }
+
+working_dir=/tmp/raspbian
+image=https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-01-28/2022-01-28-raspios-bullseye-arm64-lite.zip
+image_hash="d694d2838018cf0d152fe81031dba83182cee79f785c033844b520d222ac12f5"
+archive=raspbian-os-lite.zip
+number_pattern="[0-9]+"
+mount_point=/mnt/temp
 
 setup_environment
 
@@ -62,9 +64,9 @@ for disk in "${disks[@]}"; do
 done
 
 if [ "${sd_disks[0]}" == "" ]; then
-    echo "No disk available."
+    echo "No disk available"
     cleanup_environment
-    echo "Script ended with failure." 
+    echo "Script ended with failure" 
     exit
 fi
 
@@ -82,14 +84,14 @@ read -p "Select a disk: " disk_choice
 
 if [ "${disk_choice,,}" == "q" ]; then
     cleanup_environment    
-    echo "Script ended by user."
+    echo "Script ended by user"
     exit
 fi
 
 if [ "$disk_choice" == "" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
-    echo "No disk selected."
+    echo "No disk selected"
     cleanup_environment    
-    echo "Script ended."
+    echo "Script ended"
     exit
 fi
 
@@ -112,9 +114,9 @@ fi
 
 minsize_kb=$((1024 * 1024 * 14))  # approximately 16GB in KB
 if [ $size_kb -lt $minsize_kb ]; then
-    echo "Error: SD-card has insufficient capacity. Minimum size is 16GB."
+    echo "Error: SD-card has insufficient capacity. Minimum size is 16GB"
     cleanup_environment    
-    echo "Script ended."
+    echo "Script ended"
     exit
 fi
 
@@ -127,20 +129,20 @@ read -p "Select a type: " type_choice
 
 if [ "${type_choice,,}" == "q" ]; then
     cleanup_environment    
-    echo "Script ended by user."
+    echo "Script ended by user"
     exit
 fi
 
 if [ "$type_choice" == "" ]; then
-    echo "No type selected."
+    echo "No type selected"
     cleanup_environment    
-    echo "Script ended."
+    echo "Script ended"
     exit
 fi
 if [ ${type_choice,,} != "p" ] && [ ${type_choice,,} != "d" ]; then
-    echo "No type selected."
+    echo "No type selected"
     cleanup_environment    
-    echo "Script ended."
+    echo "Script ended"
     exit
 fi
 echo "You have chosen: $type_choice $([ ${type_choice,,} == "p" ] && echo "=> production" || echo "=> development")"
@@ -148,94 +150,92 @@ echo "You have chosen: $type_choice $([ ${type_choice,,} == "p" ] && echo "=> pr
 read -r -p "Do you want to continue burning on $chosen_disk? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
     cleanup_environment
-    echo "Script ended by user."
+    echo "Script ended by user"
     exit
 fi
 
 if [ ! $(dpkg --list | grep wget | awk '{print $1}' | grep ii) ]; then 
     apt install wget -y
 fi
-echo "Downloading image..."
+echo "Downloading image.."
 wget -c --show-progress -P $working_dir -O $working_dir/$archive $image
-echo " => download complete"
+echo "... download complete"
 
 if [ "$(sha256sum $working_dir/$archive | cut -d' ' -f1)" != "$image_hash" ]; then
-    echo "Checksum of the downloaded image $archive failed."
+    echo "Checksum of the downloaded image $archive failed"
     cleanup_environment
-    echo "Script ended with failure."
+    echo "Script ended with failure"
     exit
 fi
-echo "Checksum of the downloaded image $archive is OK."
+echo "Checksum of the downloaded image $archive is OK"
 
-echo "Extracting $working_dir/$archive..."
+echo "Extracting $working_dir/$archive.."
 unzip -o $working_dir/$archive -d $working_dir
 extracted_img=$(ls -t $working_dir/*.img | head -n 1)
 if [ -z $extracted_img ]; then
-    echo "No image found in $working_dir."
+    echo "No image found in $working_dir"
     cleanup_environment
-    echo "Script ended with failure."
+    echo "Script ended with failure"
     exit
 fi
-echo " => done extracting $working_dir/$archive"
+echo "... done extracting $working_dir/$archive"
 
-echo "Unmounting /dev/$chosen_disk partitions..."
+echo "Unmounting /dev/$chosen_disk partitions.."
 partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
 for partition in $partitions; do
     sleep 3
     umount -f "$partition"
 	if [ -n "$(df | grep $partition)" ]; then
-        echo "Failed to umount $partition."
+        echo "Failed to umount $partition"
         cleanup_environment
-        echo "Script ended with failure."
+        echo "Script ended with failure"
         exit
     fi
-   	echo "Partition $partition successfully unmounted."
+   	echo "Partition $partition successfully unmounted"
 done
 hdparm -z /dev/$chosen_disk
-echo " => done unmounting /dev/$chosen_disk partitions"
+echo "... done unmounting /dev/$chosen_disk partitions"
 
-echo "Start wiping $chosen_disk..."
+echo "Start wiping $chosen_disk.."
 wipefs -a "/dev/$chosen_disk"
 hdparm -z /dev/$chosen_disk
-echo " => done wiping $chosen_disk."
+echo "... done wiping $chosen_disk"
 
 if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]; then 
     apt install gddrescue -y
 fi
-echo "Start burning $extracted_img to $chosen_disk..."
+echo "Start burning $extracted_img to $chosen_disk.."
 ddrescue -D --force $extracted_img "/dev/$chosen_disk"
 hdparm -z /dev/$chosen_disk
 sleep 3  # Give the OS some time to reread
-echo " => done burning $chosen_disk."
+echo "... done burning $chosen_disk"
 
 if [ ! -d /dev/disk/by-label ]; then
 	echo "/dev/disk/by-label doesn't exist"
     cleanup_environment
-    echo "Script ended with failure."
+    echo "Script ended with failure"
     exit
 fi
 
-echo "Activate SSH..."
-partition=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$chosen_disk.*$")
-mount_partition
+echo "Activate SSH.."
+mount_partition "boot"
 touch $mount_point/ssh
-unmount_partition
-echo " => SSH has been activated on $chosen_disk."
+unmount_partition "boot"
+echo "... SSH has been activated on $chosen_disk"
 
 if [ ${type_choice,,} == "p" ]; then
     hostname="rpms"
 else
     hostname="rpmsdev"
 fi
-echo "Change hostname to $hostname..."
-partition=$(ls -l /dev/disk/by-label | grep "rootfs" | grep -oE "$chosen_disk.*$")
-mount_partition
+echo "Change hostname to $hostname.."
+mount_partition "rootfs"
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hostname
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hosts
-unmount_partition
-echo " => done changing hostname."
+unmount_partition "rootfs"
+echo "... done changing hostname"
 
 cleanup_environment
-echo "Script ended successfully."
+echo "Script ended successfully"
 
 exit
