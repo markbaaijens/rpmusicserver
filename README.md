@@ -258,8 +258,8 @@ Returning to the `master` branch version simply delete the `update-branch.txt` f
 
 Note. If local DNS does not work, the hostname`rpms` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
 
-### Build development version with separate hostname
-A regular install results in a Pi with hostname `rpms`, which is fine. As a developer, you want to develop and test on a different, second Pi, but having two machines within the network with the same hostname, results in errors. 
+### Build development machine with a separate hostname
+A regular install of rpms results in a Pi with hostname `rpms`, which is fine. As a developer, you want to develop and test on a different, second Pi, but having two machines within the network with the same hostname, results in errors. 
 
 You can opt for using `rpmsdev` as the hostname for that second Pi. This is done while burning the SD-card, as the first step in the installation process [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
 
