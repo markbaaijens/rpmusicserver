@@ -268,6 +268,8 @@ You can opt for using `rpmsdev` as the hostname for that second Pi. This is done
 
 The other steps in the installation process stay the same. In the end, this results in a Pi with hostname `rpmsdev`, so you can easily distinquish and address the two, development (`rpmsdev`) and production (`rpms`). From now on, you can reach the development-server on `rpmsdev`.
 
+Note. It must be clear that if you do not have a production/live machine for rpms in you network and you are using the installed Pi solely for testing purposes, there is no need to have a different hostname, the standard `rpms` will do just fine.
+
 Tip. In case hostnames `rpms` and `rpmsdev` get mixed up, try to flush DNS:
   * `sudo systemd-resolve --flush-caches`
 
