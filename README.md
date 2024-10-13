@@ -308,6 +308,17 @@ In short, you have to open two terminals, eachrunning a web-service, one running
 
 Note. This environment is very limited b/c not all components which the code interacts with, such as disks or docker-containers or the Pi itself, are not available (however, you can spoof some of those components). But for seeing changes in the UI, this works just fine.
 
+### Local LMS-player
+As a developer, it is usefull to have at least one player which can connect to the LMS-server. We can easily transform a regular laptop or PC to an local player, just for testing purposes.
+
+Steps for installing a local player:
+- install squeezelite
+  - `sudo apt install squeezelite`
+- start player
+  - `squeezelite -o default -z -n "Local"`
+- stop player
+  - `sudo kill $(ps -ef | grep squeeze | grep -v grep | awk '{print $2}')`
+
 ### List of API requests 
   * `curl rpms:5000/api/GetApiList`
   * http://rpms:5000/api/GetApiList
