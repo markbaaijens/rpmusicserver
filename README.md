@@ -263,22 +263,19 @@ You can opt for using `rpmsdev` as the hostname for that second Pi. This is done
 * While burning the SD-card:
   * Select a type: choose D for Development
 
-The other steps in the installation process stay the same. In the end, this result in a Pi with a hostname `rpmsdev`, so you can easily distinquish and address the two, development (`rpmsdev`) and production (`rpms`). 
+The other steps in the installation process stay the same. In the end, this result in a Pi with hostname `rpmsdev`, so you can easily distinquish and address the two, development (`rpmsdev`) and production (`rpms`). From now on, you can reach the development-server on `rpmsdev`.
+
+Tip. In case hostnames `rpms` and `rpmsdev` get mixed up, try to flush DNS:
+  * `sudo systemd-resolve --flush-caches`
 
 ### Update and install from local files  
 * `cd <source-folder of rpmusicserver>`
 * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
   * password:
-    * raspberry (on first install) 
     * rpms (on existing install) 
 * `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
   * password:
-    * raspberry (on first install) 
     * rpms (on existing install) 
-* after installation, password is changed to `rpms`
-* from now on, you can reach the development-server on `rpmsdev`
-* in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
-  * `sudo systemd-resolve --flush-caches`
 
 ### List of API requests 
   * `curl rpms:5000/api/GetApiList`
