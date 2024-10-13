@@ -263,19 +263,27 @@ You can opt for using `rpmsdev` as the hostname for that second Pi. This is done
 * While burning the SD-card:
   * Select a type: choose D for Development
 
-The other steps in the installation process stay the same. In the end, this result in a Pi with hostname `rpmsdev`, so you can easily distinquish and address the two, development (`rpmsdev`) and production (`rpms`). From now on, you can reach the development-server on `rpmsdev`.
+The other steps in the installation process stay the same. In the end, this results in a Pi with hostname `rpmsdev`, so you can easily distinquish and address the two, development (`rpmsdev`) and production (`rpms`). From now on, you can reach the development-server on `rpmsdev`.
 
 Tip. In case hostnames `rpms` and `rpmsdev` get mixed up, try to flush DNS:
   * `sudo systemd-resolve --flush-caches`
 
 ### Update and install from local files  
+As a developer, you want to test your changes on a physical machine (Pi). As the changes in the code are usually done on a different machine than the one on which the test takes places, you have to have a way to transfer your code to the (test) Pi and install them to see the result.
+
+To have the code locally on your machine:
+* clone/download the git-repo from [github](https://github.com/markbaaijens/rpmusicserver) (instructions can be found there)
+* place the code in a folder, something like `~/home/[user]/source/rpmusicserver`
+
+Copy local code to a Pi and install the changed code:
+* (make your code changes)
 * `cd <source-folder of rpmusicserver>`
 * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
-  * password:
-    * rpms (on existing install) 
+  * password: `rpms`
 * `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
-  * password:
-    * rpms (on existing install) 
+  * password: `rpms`
+
+Note. You can also do this 'trick' in a live, production-environment, but than you must know what you are doing, so don't try this at home! Usually, a production-machine is updated through the regular update-mechanism, in which code is retreived from the git-repo on github (be it the master-branch or, if overridden, by another branch, usually develop). 
 
 ### List of API requests 
   * `curl rpms:5000/api/GetApiList`
