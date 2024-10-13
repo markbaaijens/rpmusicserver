@@ -2,6 +2,7 @@
 Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Lyrion/Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
 [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)<br/> 
+[Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works)<br/> 
 [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
 [Troubleshooting](https://github.com/markbaaijens/rpmusicserver#troubleshooting)<br/> 
 [Folder mapping](https://github.com/markbaaijens/rpmusicserver#folder-mapping)<br/> 
@@ -21,16 +22,16 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
   * for installation purposes, a Linux PC is required
   * once installed, any OS will do, be it Windows, Linux or MacOS
 
-## Installation of RPMS on a Pi
-Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
-
-### Check your network if local DNS works
+## Check your network if local DNS works
 To detect if your network supports local DNS, execute the following command in a terminal:
 * `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
 
 Check for output:
 * _no output_, it is all good and you can proceed installing RPMS on your Pi.
 * _output produced_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific [Pi/rpms can only reached by ip-address](https://github.com/markbaaijens/rpmusicserver#pirpms-can-only-reached-by-ip-address)
+
+## Installation of RPMS on a Pi
+Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
 
 ### Steps to install RPMS on your Pi
 * Install package(s) on your Linux PC:
@@ -255,6 +256,8 @@ To switch version from `master` branch to e.g. `develop` branch:
 Returning to the `master` branch version simply delete the `update-branch.txt` file:
 * `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
 
+Note. If local DNS does not work, the hostname`rpms` has to be replaced by the ip-address of that machine. 
+
 ### Build development version with separate hostname
 A regular install results in a Pi with hostname `rpms`, which is fine. As a developer, you want to develop and test on a different, second Pi, but having two machines within the network with the same hostname, results in errors. 
 
@@ -273,7 +276,7 @@ As a developer, you want to test your changes on a physical machine (Pi). As the
 
 To have the code locally on your machine:
 * clone/download the git-repo from [github](https://github.com/markbaaijens/rpmusicserver) (instructions can be found there)
-* place the code in a folder, something like `~/home/[user]/source/rpmusicserver`
+* place the code in a folder, something like `~/source/rpmusicserver`
 
 Copy local code to a Pi and install the changed code:
 * (make your code changes)
