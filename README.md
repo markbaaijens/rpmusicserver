@@ -258,8 +258,8 @@ Returning to the `master` branch version simply delete the `update-branch.txt` f
 
 Note. If local DNS does not work, the hostname`rpms` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
 
-### Build development machine with a separate hostname
-A regular install of rpms results in a Pi with hostname `rpms`, which is fine. As a developer, you want to develop and test on a different, second Pi, but having two machines within the network with the same hostname, results in errors. 
+### Build a test machine with a separate hostname
+A regular install of rpms results in a Pi with hostname `rpms`, which is fine. As a developer, you want to test your code on a different machine than the one in production, on a second Pi; but having two machines within the network with the same hostname, results in errors. 
 
 You can opt for using `rpmsdev` as the hostname for that second Pi. This is done while burning the SD-card, as the first step in the installation process [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
 
@@ -289,6 +289,23 @@ Copy local code to a Pi and install the changed code:
 Note. If local DNS does not work, the hostname`rpmsdev` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
 
 Note. You can also do this 'trick' in a live, production-environment, but than you must know what you are doing, so don't try this at home! Usually, a production-machine is updated through the regular update-mechanism, in which code is retreived from the git-repo on github (be it the master-branch or, if overridden, by another branch, usually develop). 
+
+### Environment for quickly testing web- and api-code
+Testing on a (second) machine is the ultimate test, but to quickly see your changes in the web-interface (api or web), we can setup an environment for exactly that. 
+
+In short, you have to open two terminals, one running the api, the second running the web-UI:
+* open a terminal
+  * `cd <source-folder of rpmusicserver>/web-interface/api`
+  * `python3 controller.py`
+* open a second terminal
+  * `cd <source-folder of rpmusicserver>/web-interface/web`
+  * `python3 controller.py`
+* for the web-UI, point your browser to `http://localhost:1080` 
+* you can access the api:
+  * point your browser to `http://localhost:5000`
+  * cli: `curl http://localhost:5000`
+
+Note. This environment is very limited b/c not all components which the code interacts with, such as disks or docker-containers or the Pi itself, are not available (however, you can spoof some of those components). But for seeing changes in the UI, this works just fine.
 
 ### List of API requests 
   * `curl rpms:5000/api/GetApiList`
