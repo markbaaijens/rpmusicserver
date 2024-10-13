@@ -252,14 +252,21 @@ Note that once VersionOverride is active, CurrentVersion and AvailableVersion do
 To switch version from `master` branch to e.g. `develop` branch:
 * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
 
-Returning to the `master` branch version simply delete the `update-branch.txt` text file:
+Returning to the `master` branch version simply delete the `update-branch.txt` file:
 * `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
 
 ### Build development version with separate hostname
-The `rpmsdev` hostname is used in this build
+A regular install results in a Pi with hostname `rpms`, which is fine. As a developer, you want to develop and test on a different, second Pi, but having two machines within the network with the same hostname, results in errors. 
+
+You can opt for using `rpmsdev` as the hostname for that second Pi. This is done while burning the SD-card, as the first step in the installation process [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
+
+* While burning the SD-card:
+  * Select a type: choose D for Development
+
+The other steps in the installation process stay the same. In the end, this result in a Pi with a hostname `rpmsdev`, so you can easily distinquish and address the two, development (`rpmsdev`) and production (`rpms`). 
+
+### Update and install from local files  
 * `cd <source-folder of rpmusicserver>`
-* `sudo scripts/burn-image.sh`
-  * choose type `d = development`
 * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
   * password:
     * raspberry (on first install) 
