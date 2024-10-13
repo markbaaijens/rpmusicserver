@@ -290,10 +290,10 @@ Note. If local DNS does not work, the hostname`rpmsdev` must be replaced by the 
 
 Note. You can also do this 'trick' in a live, production-environment, but than you must know what you are doing, so don't try this at home! Usually, a production-machine is updated through the regular update-mechanism, in which code is retreived from the git-repo on github (be it the master-branch or, if overridden, by another branch, usually develop). 
 
-### Environment for quickly testing web- and api-code
-Testing on a (second) machine is the ultimate test, but to quickly see your changes in the web-interface (api or web), we can setup an environment for exactly that. 
+### Local test-environment on your development-machine
+Testing on a (second) machine/Pi is the ultimate test, but to quickly see your changes in the web-interface (api or web) on your development-machine, we can setup an environment for exactly that. 
 
-In short, you have to open two terminals, one running the api, the second running the web-UI:
+In short, you have to open two terminals, running each a web-service, one running the api, the second running the web-UI:
 * open a terminal
   * `cd <source-folder of rpmusicserver>/web-interface/api`
   * `python3 controller.py`
