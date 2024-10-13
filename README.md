@@ -276,12 +276,11 @@ Tip. In case hostnames `rpms` and `rpmsdev` get mixed up, try to flush DNS:
 ### Update and install from local files  
 As a developer, you want to test your changes on a physical machine (Pi). As the changes in the code are usually done on a different machine than the one on which the test takes places, you have to have a way to transfer your code to the (test) Pi and install them to see the result.
 
-To have the code locally on your machine:
+To have the code locally on your development-machine:
 * clone/download the git-repo from [github](https://github.com/markbaaijens/rpmusicserver) (instructions can be found there)
 * place the code in a folder, something like `~/source/rpmusicserver`
 
 Copy local code to a Pi and install the changed code:
-* (make your code changes)
 * `cd <source-folder of rpmusicserver>`
 * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
   * password: `rpms`
@@ -295,7 +294,7 @@ Note. You can also do this 'trick' in a live, production-environment, but than y
 ### Local test-environment on your development-machine
 Testing on a (second) machine/Pi is the ultimate test, but to quickly see your changes in the web-interface (api or web) on your development-machine, we can setup an environment for exactly that. 
 
-In short, you have to open two terminals, running each a web-service, one running the api, the second running the web-UI:
+In short, you have to open two terminals, eachrunning a web-service, one running the api, the second running the web-UI:
 * open a terminal
   * `cd <source-folder of rpmusicserver>/web-interface/api`
   * `python3 controller.py`
