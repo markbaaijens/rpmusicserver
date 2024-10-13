@@ -41,12 +41,17 @@ Check for output:
 * Burn SD-card:
   * insert SD-card into your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/burn-image.sh`
-    * enter your (personal) password of your PC
+    * Type your (personal) password of your PC when asked
+    * Select a disk: choose the inserted SD-card
+    * Select a type: choose P for Production
+    * Do you want to continue burning on mmcblk0: type 'yes'
 * Format USB-drive for data:
   * connect USB-drive to your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/format-usbdisk.sh`
-    * enter your (personal) password of your PC
-  * follow the instructions to format as a DATA-disk    
+    * Type your (personal) password of your PC when asked
+    * Select a disk: select the inserted USB-disk
+    * Select a format-type: choose D for data-disk
+    * Do you want to continue formatting 'sda' as 'usbbackup': type 'yes'   
 * First boot:
   * make sure your Pi is powered off
   * insert SD-card into your Pi
