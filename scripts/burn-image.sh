@@ -19,7 +19,6 @@ cleanup_environment() {
 
 mount_partition () {
     partition=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
-    echo "Mounting partition /dev/$partition"
 
     if [ ! -d $mount_point ]; then 
         mkdir $mount_point
@@ -37,10 +36,9 @@ mount_partition () {
 
 unmount_partition () {
     partition=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
-    echo "Unmounting partition /dev/$partition"
 
     umount "/dev/$partition"
-    hdparm -z /dev/$chosen_disk
+    hdparm -z /dev/$chosen_disk > /dev/null
     if [ -d $mount_point ]; then 
         rm -rf $mount_point
     fi
@@ -147,6 +145,33 @@ if [ ${type_choice,,} != "p" ] && [ ${type_choice,,} != "d" ]; then
 fi
 echo "You have chosen: $type_choice $([ ${type_choice,,} == "p" ] && echo "=> production" || echo "=> development")"
 
+echo "Language:"
+echo "E: English"
+echo "D: Dutch"
+echo "Q: quit"
+
+read -p "Select a language: " lang_choice
+
+if [ "${lang_choice,,}" == "q" ]; then
+    cleanup_environment    
+    echo "Script ended by user"
+    exit
+fi
+
+if [ "$lang_choice" == "" ]; then
+    echo "No language selected"
+    cleanup_environment    
+    echo "Script ended"
+    exit
+fi
+if [ ${lang_choice,,} != "e" ] && [ ${lang_choice,,} != "d" ]; then
+    echo "No language selected"
+    cleanup_environment    
+    echo "Script ended"
+    exit
+fi
+echo "You have chosen: $lang_choice $([ ${lang_choice,,} == "e" ] && echo "=> English" || echo "=> Dutch")"
+
 read -r -p "Do you want to continue burning on $chosen_disk? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
     cleanup_environment
@@ -184,6 +209,7 @@ echo "Unmounting /dev/$chosen_disk partitions.."
 partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
 for partition in $partitions; do
     sleep 3
+
     umount -f "$partition"
 	if [ -n "$(df | grep $partition)" ]; then
         echo "Failed to umount $partition"
@@ -193,12 +219,12 @@ for partition in $partitions; do
     fi
    	echo "Partition $partition successfully unmounted"
 done
-hdparm -z /dev/$chosen_disk
+hdparm -z /dev/$chosen_disk > /dev/null
 echo "... done unmounting /dev/$chosen_disk partitions"
 
-echo "Start wiping $chosen_disk.."
+echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
-hdparm -z /dev/$chosen_disk
+hdparm -z /dev/$chosen_disk > /dev/null
 echo "... done wiping $chosen_disk"
 
 if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]; then 
@@ -206,7 +232,7 @@ if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]; then
 fi
 echo "Start burning $extracted_img to $chosen_disk.."
 ddrescue -D --force $extracted_img "/dev/$chosen_disk"
-hdparm -z /dev/$chosen_disk
+hdparm -z /dev/$chosen_disk > /dev/null
 sleep 3  # Give the OS some time to reread
 echo "... done burning $chosen_disk"
 
@@ -234,6 +260,12 @@ sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hostname
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hosts
 unmount_partition "rootfs"
 echo "... done changing hostname"
+
+echo "Set language..."
+mount_partition "rootfs"
+echo $lang_choice > $mount_point/etc/rmps-lang-choice.txt
+unmount_partition "rootfs"
+echo " => language has been set to $lang_choice."
 
 cleanup_environment
 echo "Script ended successfully"
