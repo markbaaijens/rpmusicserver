@@ -32,6 +32,13 @@ mount_partition () {
     fi
 
     mount "/dev/$partition" $mount_point
+
+	if [ -z "$(df | grep $partition)" ]; then
+        echo "Failed to mount $partition"
+        cleanup_environment
+        echo "Script ended with failure"
+        exit
+    fi
 }
 
 unmount_partition () {
@@ -43,6 +50,13 @@ unmount_partition () {
         rm -rf $mount_point
     fi
     sleep 3 # Give the OS time to reread
+
+	if [ -n "$(df | grep $partition)" ]; then
+        echo "Failed to umount $partition"
+        cleanup_environment
+        echo "Script ended with failure"
+        exit
+    fi
 }
 
 working_dir=/tmp/raspbian
@@ -265,7 +279,7 @@ echo "Set language..."
 mount_partition "rootfs"
 echo $lang_choice > $mount_point/etc/rmps-lang-choice.txt
 unmount_partition "rootfs"
-echo " => language has been set to $lang_choice."
+echo "... language has been set to $lang_choice."
 
 cleanup_environment
 echo "Script ended successfully"
