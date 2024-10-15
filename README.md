@@ -253,7 +253,13 @@ Note that once VersionOverride is active, CurrentVersion and AvailableVersion do
 To switch version from `master` branch to e.g. `develop` branch:
 * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
 
-Returning to the `master` branch version simply delete the `update-branch.txt` file:
+Once the file `update-branch.txt` has been set, the update-button in the web-interface becomes active. Click on it and it will update rpms to the latest version on `develop`. 
+
+You can also opt to update through ssh on rpms: 
+* `ssh pi@rpms`
+* `sudo update-server`
+
+For returning to the `master` branch version, simply delete the `update-branch.txt` file:
 * `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
 
 Note. If local DNS does not work, the hostname`rpms` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
