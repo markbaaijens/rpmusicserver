@@ -249,7 +249,7 @@ Remember to make a backup to a new backup-disk immediately!
 ## Development
 
 ### Update from another git branch
-By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. Once set, you can update to the latest developer-features. But b/c this is considered as experimental (non-stable), use thus option with precaution!
+By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. Once set, you can update to the latest developer-features. But b/c this is considered as experimental (non-stable), use this option with precaution!
 
 To switch version from `master` branch to e.g. `develop` branch:
 * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
