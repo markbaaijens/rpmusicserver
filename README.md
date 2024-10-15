@@ -249,9 +249,7 @@ Remember to make a backup to a new backup-disk immediately!
 ## Development
 
 ### Update from another git branch
-By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. As a result, an indicator VersionOverride pops up in the web-interface.
-
-Note that once VersionOverride is active, CurrentVersion and AvailableVersion do not play a role anymore.
+By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. Once set, you can update to the latest developer-features. But b/c this is considered as experimental (non-stable), use thus option with precaution!
 
 To switch version from `master` branch to e.g. `develop` branch:
 * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
@@ -303,7 +301,7 @@ Note. You can also do this 'trick' in a live, production-environment, but than y
 ### Local test-environment on your development-machine
 Testing on a (second) machine/Pi is the ultimate test, but to quickly see your changes in the web-interface (api or web) on your development-machine, we can setup an environment for exactly that. 
 
-In short, you have to open two terminals, eachrunning a web-service, one running the api, the second running the web-UI:
+In short, you have to open two terminals, each running a web-service, one running the api, the second running the web-UI:
 * open a terminal
   * `cd <source-folder of rpmusicserver>/web-interface/api`
   * `python3 controller.py`
@@ -318,7 +316,7 @@ In short, you have to open two terminals, eachrunning a web-service, one running
 Note. This environment is very limited b/c not all components which the code interacts with, such as disks or docker-containers or the Pi itself, are not available (however, you can spoof some of those components). But for seeing changes in the UI, this works just fine.
 
 ### Local LMS-player
-As a developer, it is usefull to have at least one player which can connect to the LMS-server. We can easily transform a regular laptop or PC to an local player, just for testing purposes.
+As a developer, it is usefull to have at least one player which can connect to the LMS-server. We can easily transform a regular laptop or PC to a local player, just for testing purposes.
 
 Steps for installing a local player:
 - install squeezelite
