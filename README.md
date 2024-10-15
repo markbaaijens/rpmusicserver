@@ -138,8 +138,11 @@ Reconfiguring is best done:
 * (or) on the Squeezebox-device itself (all except Duet which has no physical interface)
 
 ## Update RPMS
-Update your RPMS-server by the web-interface: 
-* Under Version, click on the Update-button
+Update your RPMS-server by the web-interface, on the Home-page under Version. If the update-button is active, you can  Click on it to update rpms. 
+
+You can also opt to update through ssh on rpms: 
+* `ssh pi@rpms`
+* `sudo update-rpms`
 
 Note: update is disabled when there is no newer version found.
 
@@ -257,7 +260,7 @@ Once the file `update-branch.txt` has been set, the update-button in the web-int
 
 You can also opt to update through ssh on rpms: 
 * `ssh pi@rpms`
-* `sudo update-server`
+* `sudo update-rpms`
 
 For returning to the `master` branch version, simply delete the `update-branch.txt` file:
 * `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
