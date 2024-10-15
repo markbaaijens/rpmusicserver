@@ -220,6 +220,7 @@ fi
 echo "... done extracting $working_dir/$archive"
 
 echo "Unmounting /dev/$chosen_disk partitions..."
+# partitions_bylabel=$(ls -l /dev/disk/by-label | grep -oE "$chosen_disk.*$"  | awk '{print $9}')
 partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
 for partition in $partitions; do
     sleep 3
