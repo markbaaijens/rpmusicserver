@@ -276,8 +276,9 @@ unmount_partition "rootfs"
 echo "... done changing hostname"
 
 echo "Set language..."
+lang_choice=${lang_choice,,}
 mount_partition "rootfs"
-echo ${lang_choice,,} > $mount_point/etc/rmps-lang-choice.txt
+echo $lang_choice > $mount_point/etc/lang-choice.txt
 unmount_partition "rootfs"
 echo "... language has been set to $lang_choice."
 
