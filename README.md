@@ -331,7 +331,7 @@ Steps for installing a local player:
   * http://rpms:5000/api/GetApiList
 
 ## Migrating to 1.0
-Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade contains breaking changes which turn your system into a broken one.
+Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade contains breaking changes which turn your system into a broken one. Further more, b/c we moved the OS from 32-bit to 64-bit, a new image-burn is needed.
 
 ### Steps to migrate to 1.0
 
