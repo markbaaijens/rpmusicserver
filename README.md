@@ -45,7 +45,7 @@ Installing RPMS on your Pi can be done with a few simple steps, described below.
     * enter your (personal) password of your PC
     * Select a disk: choose the inserted SD-card
     * Select a type: choose P for Production
-    * Do you want to continue burning on mmcblk0: type 'yes'        
+    * Do you want to continue burning on [chosen device]: type 'yes'        
 * Format USB-drive for data:
   * connect USB-drive to your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/format-usbdisk.sh`
