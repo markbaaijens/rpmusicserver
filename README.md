@@ -155,8 +155,9 @@ For getting trancoding to work, take the following steps:
 * in your file explorer
   * create a folder `flac` under `smb://<music folder>`
   * move your flac-files into that folder `flac`
-* in LMS Server Settings, point music-folder to this location:
-  * `/music/flac`
+* in LMS Server Settings, modify music-folder:
+  * from  `/music`
+  * to `/music/flac`
 * in the web-interface, under Transcoder, Edit, change setting `Source Folder`
   * point to `flac`
 * for transcoding to ogg
