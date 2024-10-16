@@ -2,7 +2,6 @@
 Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Lyrion/Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
 [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)<br/> 
-[Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works)<br/> 
 [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
 [Troubleshooting](https://github.com/markbaaijens/rpmusicserver#troubleshooting)<br/> 
 [Folder mapping](https://github.com/markbaaijens/rpmusicserver#folder-mapping)<br/> 
@@ -22,16 +21,16 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
   * for installation purposes, a Linux PC is required
   * once installed, any OS will do, be it Windows, Linux or MacOS
 
-## Check your network if local DNS works
+## Installation of RPMS on a Pi
+Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
+
+### Check your network if local DNS works
 To detect if your network supports local DNS, execute the following command in a terminal:
 * `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
 
 Check for output:
 * _no output_, it is all good and you can proceed installing RPMS on your Pi.
 * _output produced_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific [Pi/rpms can only reached by ip-address](https://github.com/markbaaijens/rpmusicserver#pirpms-can-only-reached-by-ip-address)
-
-## Installation of RPMS on a Pi
-Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
 
 ### Steps to install RPMS on your Pi
 * Install package(s) on your Linux PC:
@@ -42,17 +41,12 @@ Installing RPMS on your Pi can be done with a few simple steps, described below.
 * Burn SD-card:
   * insert SD-card into your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/burn-image.sh`
-    * Type your (personal) password of your PC when asked
-    * Select a disk: choose the inserted SD-card
-    * Select a type: choose P for Production
-    * Do you want to continue burning on mmcblk0: type 'yes'
+    * enter your (personal) password of your PC
 * Format USB-drive for data:
   * connect USB-drive to your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/format-usbdisk.sh`
-    * Type your (personal) password of your PC when asked
-    * Select a disk: select the inserted USB-disk
-    * Select a format-type: choose D for data-disk
-    * Do you want to continue formatting 'sda' as 'usbbackup': type 'yes'   
+    * enter your (personal) password of your PC
+  * follow the instructions to format as a DATA-disk    
 * First boot:
   * make sure your Pi is powered off
   * insert SD-card into your Pi
@@ -138,16 +132,16 @@ Reconfiguring is best done:
 * (or) on the Squeezebox-device itself (all except Duet which has no physical interface)
 
 ## Update RPMS
-Update your RPMS-server by the web-interface, on the Home-page under Version. If the update-button is active, you can  Click on it to update rpms. 
-
-You can also opt to update through ssh on rpms: 
-* `ssh pi@rpms`
-* `sudo update-rpms`
+Update your RPMS-server by the web-interface: 
+* Under Version, click on the Update-button
 
 Note: update is disabled when there is no newer version found.
 
 ## Transcoder
-For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps. From then on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
+Within RPMS, there is a trancoder buil-in, for transcoding your lossless music files (flac) into lossy ones (ogg or mp3). By default, the transcoder is not active, it must be configured to become active.
+
+### Enabling transcoder
+For getting trancoding to work, take the following steps: 
 * in your file explorer
   * create a folder `flac` under `smb://<music folder>`
   * move your flac-files into that folder `flac`
@@ -163,6 +157,10 @@ For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take th
   * in your file explorer, create a folder `mp3`under `smb://rpms/<music folder>`
   * in the web-interface, under Transcoder, Edit, change setting `Mp3 Folder`
     * point to `mp3`
+
+From now on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder.
+
+In the Transcoder-page, You can also click on the Transcode-button, to start an immediate transcoding session (if you do want to wait for the automatic session to kick off). Note that this button is diabled if transcoding is not configured.
 
 ### Notes
 * some default quality-levels are used for transcoding: ogg = 1, mp3 = 128; optionally, you can change these defaults through the web-interface under Transcoder
@@ -249,89 +247,40 @@ Remember to make a backup to a new backup-disk immediately!
 ## Development
 
 ### Update from another git branch
-By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. Once set, you can update to the latest developer-features. But b/c this is considered as experimental (non-stable), use this option with precaution!
+By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. As a result, an indicator VersionOverride pops up in the web-interface.
+
+Note that once VersionOverride is active, CurrentVersion and AvailableVersion do not play a role anymore.
 
 To switch version from `master` branch to e.g. `develop` branch:
 * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
 
-Once the file `update-branch.txt` has been set, the update-button in the web-interface becomes active. Click on it and it will update rpms to the latest version on `develop`. 
-
-You can also opt to update through ssh on rpms: 
-* `ssh pi@rpms`
-* `sudo update-rpms`
-
-For returning to the `master` branch version, simply delete the `update-branch.txt` file:
+Returning to the `master` branch version simply delete the `update-branch.txt` text file:
 * `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
 
-Note. If local DNS does not work, the hostname`rpms` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
-
-### Build a test machine with a separate hostname
-A regular install of rpms results in a Pi with hostname `rpms`, which is fine. As a developer, you want to test your code on a different machine than the one in production, on a second Pi; but having two machines within the network with the same hostname, results in errors. 
-
-You can opt for using `rpmsdev` as the hostname for that second Pi. This is done while burning the SD-card, as the first step in the installation process [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
-
-* While burning the SD-card:
-  * Select a type: choose D for Development
-
-The other steps in the installation process stay the same. In the end, this results in a Pi with hostname `rpmsdev`, so you can easily distinquish and address the two, development (`rpmsdev`) and production (`rpms`). From now on, you can reach the development-server on `rpmsdev`.
-
-Note. It must be clear that if you do not have a production/live machine for rpms in your network and you are using the installed Pi solely for testing purposes, there is no need to have a different hostname, the standard `rpms` will do just fine.
-
-Tip. In case hostnames `rpms` and `rpmsdev` get mixed up, try to flush DNS:
-  * `sudo systemd-resolve --flush-caches`
-
-### Update and install from local files  
-As a developer, you want to test your changes on a physical machine (Pi). As the changes in the code are usually done on a different machine than the one on which the test takes places, you have to have a way to transfer your code to the (test) Pi and install them to see the result.
-
-To have the code locally on your development-machine:
-* clone/download the git-repo from [github](https://github.com/markbaaijens/rpmusicserver) (instructions can be found there)
-* place the code in a folder, something like `~/source/rpmusicserver`
-
-Copy local code to a Pi and install the changed code:
+### Build development version with separate hostname
+The `rpmsdev` hostname is used in this build
 * `cd <source-folder of rpmusicserver>`
+* `sudo scripts/burn-image.sh`
+  * choose type `d = development`
 * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
-  * password: `rpms`
+  * password:
+    * raspberry (on first install) 
+    * rpms (on existing install) 
 * `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
-  * password: `rpms`
-
-Note. If local DNS does not work, the hostname`rpmsdev` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
-
-Note. You can also do this 'trick' in a live, production-environment, but than you must know what you are doing, so don't try this at home! Usually, a production-machine is updated through the regular update-mechanism, in which code is retreived from the git-repo on github (be it the master-branch or, if overridden, by another branch, usually develop). 
-
-### Local test-environment on your development-machine
-Testing on a (second) machine/Pi is the ultimate test, but to quickly see your changes in the web-interface (api or web) on your development-machine, we can setup an environment for exactly that. 
-
-In short, you have to open two terminals, each running a web-service, one running the api, the second running the web-UI:
-* open a terminal
-  * `cd <source-folder of rpmusicserver>/web-interface/api`
-  * `python3 controller.py`
-* open a second terminal
-  * `cd <source-folder of rpmusicserver>/web-interface/web`
-  * `python3 controller.py`
-* for the web-UI, point your browser to `http://localhost:1080` 
-* you can access the api:
-  * point your browser to `http://localhost:5000`
-  * cli: `curl http://localhost:5000`
-
-Note. This environment is very limited b/c not all components which the code interacts with, such as disks or docker-containers or the Pi itself, are not available (however, you can spoof some of those components). But for seeing changes in the UI, this works just fine.
-
-### Local LMS-player
-As a developer, it is usefull to have at least one player which can connect to the LMS-server. We can easily transform a regular laptop or PC to a local player, just for testing purposes.
-
-Steps for installing a local player:
-- install squeezelite
-  - `sudo apt install squeezelite`
-- start player
-  - `squeezelite -o default -z -n "Local"`
-- stop player
-  - `sudo kill $(ps -ef | grep squeeze | grep -v grep | awk '{print $2}')`
+  * password:
+    * raspberry (on first install) 
+    * rpms (on existing install) 
+* after installation, password is changed to `rpms`
+* from now on, you can reach the development-server on `rpmsdev`
+* in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
+  * `sudo systemd-resolve --flush-caches`
 
 ### List of API requests 
   * `curl rpms:5000/api/GetApiList`
   * http://rpms:5000/api/GetApiList
 
 ## Migrating to 1.0
-Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade contains breaking changes which turn your system into a broken one. Further more, b/c we moved the OS from 32-bit to 64-bit, a new image-burn is needed.
+Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade contains breaking changes which turn your system into a broken one.
 
 ### Steps to migrate to 1.0
 
