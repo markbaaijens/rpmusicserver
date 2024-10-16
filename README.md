@@ -185,6 +185,8 @@ The advantage of the server-based (local) backup is that the resulting backup is
 
 This backup will be done to a dedicated backup-disk, connected to the Pi it self, thus a server-based backup.
 
+#### Steps to create a server-based backup
+
 * format a disk dedicated for RPMS-backups (you only have to do this once):
   * connect your (empty) backup-disk to your PC
   * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/format-usbdisk.sh -O /tmp/format-usbdisk.sh && chmod +x /tmp/format-usbdisk.sh && sudo /tmp/format-usbdisk.sh`
@@ -196,11 +198,10 @@ This backup will be done to a dedicated backup-disk, connected to the Pi it self
   * disconnect backup-disk
 
 #### Viewing backup-data on the usbbackup-disk
-In case of a server-based backup, your backup will be made to a separate backup-disk. You can view the data on this disk, either online or offline.
+In case of a server-based backup, your backup will be made to a separate backup-disk. You can view the data on this disk, either online or offline:
 
-For viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file esplorer to `smb://rpms/Backup` and than you can view all the files on that disk.
-
-For viewing _offline_, the backup-disk has to be attached to your own PC or laptop. The backup-disk is formatted as ext4 so this format is natively supported on Linux, thus being plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
+* for viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file esplorer to `smb://rpms/Backup` and than you can view all the files on that disk.
+* for viewing _offline_, the backup-disk has to be attached to your own PC or laptop. The backup-disk is formatted as ext4 so this format is natively supported on Linux, thus being plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
 ### Remote backup
 The advantage of the remote backup is that you can use a protocol at wish, be it ssh/rsync or syncthing (which is built-in in RPMS) or SMB. The disadvantage of a remote backup is that in case of a disaster, it is a lot more work to get up-and-running again.
