@@ -280,7 +280,7 @@ The `rpmsdev` hostname is used in this build
   * http://rpms:5000/api/GetApiList
 
 ## Migrating to 1.0
-Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade contains breaking changes which turn your system into a broken one.
+Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade will introduce breaking changes which turn your system into a broken one. And b/c teh OS is changed from 32-bit to 64, a new image-burn is needed.
 
 ### Steps to migrate to 1.0
 
