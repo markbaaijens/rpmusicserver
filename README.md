@@ -52,7 +52,7 @@ Installing RPMS on your Pi can be done with a few simple steps, described below.
     * enter your (personal) password of your PC
     * Select a disk: select the inserted USB-disk
     * Select a format-type: choose D for data-disk
-    * Do you want to continue formatting 'sda' as 'usbbackup': type 'yes'  
+    * Do you want to continue formatting [chosen device] as 'usbbackup': type 'yes'  
 * First boot:
   * make sure your Pi is powered off
   * insert SD-card into your Pi
