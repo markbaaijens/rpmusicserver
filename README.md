@@ -148,7 +148,7 @@ You can also opt to update through ssh on rpms:
 Note. Update is disabled when there is no newer version found.
 
 ## Transcoder
-Within RPMS, there is a trancoder buil-in, for transcoding your lossless music files (flac) into lossy ones (ogg or mp3). By default, the transcoder is not active, it must be configured to become active.
+Within RPMS, there is a trancoder built in, for transcoding your lossless music files (flac) into lossy ones (ogg or mp3). By default, the transcoder is not active, it must be configured to become active.
 
 ### Enabling transcoder
 For getting trancoding to work, take the following steps: 
