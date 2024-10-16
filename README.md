@@ -158,9 +158,9 @@ For getting trancoding to work, take the following steps:
   * in the web-interface, under Transcoder, Edit, change setting `Mp3 Folder`
     * point to `mp3`
 
-From now on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder.
+From now on, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder without any interaction.
 
-In the Transcoder-page, You can also click on the Transcode-button, to start an immediate transcoding session (if you do want to wait for the automatic session to kick off). Note that this button is diabled if transcoding is not configured.
+In the Transcoder-page, You can also click on the Transcode-button, to start an immediate transcoding session, for if you do want to wait for the automatic session to kick in. Note that this button is diabled if transcoding is not configured.
 
 ### Notes
 * some default quality-levels are used for transcoding: ogg = 1, mp3 = 128; optionally, you can change these defaults through the web-interface under Transcoder
@@ -249,7 +249,7 @@ Remember to make a backup to a new backup-disk immediately!
 ### Update from another git branch
 By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. As a result, an indicator VersionOverride pops up in the web-interface.
 
-Note that once VersionOverride is active, CurrentVersion and AvailableVersion do not play a role anymore.
+Note that once an override is active, the current and available version do not play a role anymore.
 
 To switch version from `master` branch to e.g. `develop` branch:
 * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
