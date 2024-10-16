@@ -2,6 +2,7 @@
 Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Lyrion/Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
 [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)<br/> 
+[Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works)<br/> 
 [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
 [Troubleshooting](https://github.com/markbaaijens/rpmusicserver#troubleshooting)<br/> 
 [Folder mapping](https://github.com/markbaaijens/rpmusicserver#folder-mapping)<br/> 
@@ -21,16 +22,16 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
   * for installation purposes, a Linux PC is required
   * once installed, any OS will do, be it Windows, Linux or MacOS
 
-## Installation of RPMS on a Pi
-Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
-
-### Check your network if local DNS works
+## Check your network if local DNS works
 To detect if your network supports local DNS, execute the following command in a terminal:
 * `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
 
 Check for output:
 * _no output_, it is all good and you can proceed installing RPMS on your Pi.
 * _output produced_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific [Pi/rpms can only reached by ip-address](https://github.com/markbaaijens/rpmusicserver#pirpms-can-only-reached-by-ip-address)
+
+## Installation of RPMS on a Pi
+Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
 
 ### Steps to install RPMS on your Pi
 * Install package(s) on your Linux PC:
@@ -42,11 +43,16 @@ Check for output:
   * insert SD-card into your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/burn-image.sh`
     * enter your (personal) password of your PC
+    * Select a disk: choose the inserted SD-card
+    * Select a type: choose P for Production
+    * Do you want to continue burning on mmcblk0: type 'yes'        
 * Format USB-drive for data:
   * connect USB-drive to your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/format-usbdisk.sh`
     * enter your (personal) password of your PC
-  * follow the instructions to format as a DATA-disk    
+    * Select a disk: select the inserted USB-disk
+    * Select a format-type: choose D for data-disk
+    * Do you want to continue formatting 'sda' as 'usbbackup': type 'yes'  
 * First boot:
   * make sure your Pi is powered off
   * insert SD-card into your Pi
@@ -89,8 +95,8 @@ Check for output:
 For several services within RPMS, container-technology docker is used. Within docker, there is no direct link to the file-system, but this is achieved through a virtual folder which is set during installation. Normally, an end-user does not have to know about these virtual folders, but there are a few exceptions primarily around LMS and SyncThing. These specific case have to be documented.
 
 Mapping from virtual folder to fysical folders:
-* LMS: /music => smb://rpms/[public]/[music]
-* SyncThing: => /data => smb://rpms/[public]
+* LMS: /music => rpms://user/[music]
+* SyncThing: => /data => rpms://user
 
 So when working the inside of the docker-infrastructure, either LMS or SyncThing, refer to the virtual folders.
 
@@ -133,9 +139,13 @@ Reconfiguring is best done:
 
 ## Update RPMS
 Update your RPMS-server by the web-interface: 
-* Under Version, click on the Update-button
+* Under Home, Version, click on the Update-button
 
-Note: update is disabled when there is no newer version found.
+You can also opt to update through ssh on rpms: 
+* `ssh pi@rpms`
+* `sudo update-rpms`
+
+Note. Update is disabled when there is no newer version found.
 
 ## Transcoder
 Within RPMS, there is a trancoder buil-in, for transcoding your lossless music files (flac) into lossy ones (ogg or mp3). By default, the transcoder is not active, it must be configured to become active.
@@ -167,7 +177,7 @@ In the Transcoder-page, You can also click on the Transcode-button, to start an 
 * you can simultaneously transcode to ogg AND mp3; just set both `Ogg Folder` and `Mp3 Folder`
 
 ## Backup
-You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS.
+You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS. A proper backup is the basis for [disaster recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery).
 
 ### Server-based backup 
 The advantage of the server-based (local) backup is that the resulting backup is a identical copy of the data-disk, making it very easy to switch in case of a disaster. The disadvantage is that you have to have local access to the server (Pi) for attaching the backup-disk.
@@ -247,18 +257,26 @@ Remember to make a backup to a new backup-disk immediately!
 ## Development
 
 ### Update from another git branch
-By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. As a result, an indicator VersionOverride pops up in the web-interface.
+By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. 
 
-Note that once an override is active, the current and available version do not play a role anymore.
+In most cases this is the `develop` branch. Once set, you can update to the latest developer-features. But b/c this is considered as experimental (non-stable), use this option with precaution!
 
 To switch version from `master` branch to e.g. `develop` branch:
 * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
 
+Once the file `update-branch.txt` has been set, the update-button in the web-interface becomes active. Click on it and it will update rpms to the latest version on `develop`. 
+
+You can also opt to update through ssh on rpms: 
+* `ssh pi@rpms`
+* `sudo update-rpms`
+
 Returning to the `master` branch version simply delete the `update-branch.txt` text file:
 * `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
 
+Note. Once an override is active, the current and available version do not play a role anymore.
+
 ### Build development version with separate hostname
-The `rpmsdev` hostname is used in this build
+The result is an installed rpms on a Pi with hostname `rpmsdev`.
 * `cd <source-folder of rpmusicserver>`
 * `sudo scripts/burn-image.sh`
   * choose type `d = development`
@@ -272,7 +290,8 @@ The `rpmsdev` hostname is used in this build
     * rpms (on existing install) 
 * after installation, password is changed to `rpms`
 * from now on, you can reach the development-server on `rpmsdev`
-* in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
+
+Note. * in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
   * `sudo systemd-resolve --flush-caches`
 
 ### List of API requests 
@@ -280,7 +299,7 @@ The `rpmsdev` hostname is used in this build
   * http://rpms:5000/api/GetApiList
 
 ## Migrating to 1.0
-Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade will introduce breaking changes which turn your system into a broken one. And b/c teh OS is changed from 32-bit to 64, a new image-burn is needed.
+Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade will introduce breaking changes which turn your system into a broken one. Further more, b/c we moved the OS from 32-bit to 64-bit, a new image-burn is needed.
 
 ### Steps to migrate to 1.0
 
