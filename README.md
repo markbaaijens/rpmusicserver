@@ -303,15 +303,15 @@ As a developer, you want to test your changes on a physical machine (Pi). As the
 #### Copy local code to a Pi and install the (changed) code
 * `cd <source-folder of rpmusicserver>`
 * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
-  * password:
-    * `rpms`
+  * password: `rpms`
 * `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
-  * password:
-    * `rpms`
+  * password: `rpms`
 
-Note. If local DNS does not work, the hostname`rpmsdev` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.    
+Note. The transferred code is dependent on the chosen git-branch. By changing the branch, you can transfer and test any code in any branch. 
 
 Note. You can also do this 'trick' in a live, production-environment, but than you must know what you are doing, so don't try this at home! Usually, a production-machine is updated through the regular update-mechanism, in which code is retreived from the git-repo on github (be it the master-branch or, if overridden, by another branch, usually develop). 
+
+Note. If local DNS does not work, the hostname`rpmsdev` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.    
 
 ### Local test-environment on your development-machine
 Testing on a (second) machine/Pi is the ultimate test, but to quickly see your changes in the web-interface (api or web) on your development-machine, we can setup an environment for exactly that. 
