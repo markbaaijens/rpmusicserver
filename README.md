@@ -186,7 +186,6 @@ The advantage of the server-based (local) backup is that the resulting backup is
 This backup will be done to a dedicated backup-disk, connected to the Pi it self, thus a server-based backup.
 
 #### Steps to create a server-based backup
-
 * format a disk dedicated for RPMS-backups (you only have to do this once):
   * connect your (empty) backup-disk to your PC
   * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/format-usbdisk.sh -O /tmp/format-usbdisk.sh && chmod +x /tmp/format-usbdisk.sh && sudo /tmp/format-usbdisk.sh`
@@ -272,29 +271,75 @@ You can also opt to update through ssh on rpms:
 * `ssh pi@rpms`
 * `sudo update-rpms`
 
-Returning to the `master` branch version simply delete the `update-branch.txt` text file:
+For returning to the `master` branch version simply delete the `update-branch.txt` file:
 * `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
 
 Note. Once an override is active, the current and available version do not play a role anymore.
 
+Note. If local DNS does not work, the hostname`rpms` has to be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
+
 ### Build development version with separate hostname
-The result is an installed rpms on a Pi with hostname `rpmsdev`.
+A regular install of rpms results in a Pi with hostname `rpms`, which is fine. As a developer, you want to test your code on a different machine than the one in production, on a second Pi; but having two machines within the network with the same hostname, results in errors. 
+
+You can opt for using `rpmsdev` as the hostname for that second Pi. This is done while burning the SD-card, as the first step in the installation process [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
+
+* While burning the SD-card:
+  * Select a type: choose D for Development
+
+The other steps in the installation process stay the same. In the end, this result in a Pi with a hostname `rpmsdev`, so you can easily distinquish and address the two, development (`rpmsdev`) and production (`rpms`). From now on, you can reach the development-server on `rpmsdev`.
+
+Note. It must be clear that if you do not have a production/live machine for rpms in your network and you are using the installed Pi solely for testing purposes, there is no need to have a different hostname, the standard `rpms` will do just fine.
+
+Tip. In case hostnames `rpms` and `rpmsdev` get mixed up, try to flush DNS:
+  * `sudo systemd-resolve --flush-caches`
+
+### Update and install from local files  
+As a developer, you want to test your changes on a physical machine (Pi). As the changes in the code are usually done on a different machine than the one on which the test takes places, you have to have a way to transfer your code to the (test) Pi and install them to see the result.
+
+To have the code locally on your development-machine:
+* clone/download the git-repo from [github](https://github.com/markbaaijens/rpmusicserver) (instructions can be found there)
+* place the code in a folder, something like `~/source/rpmusicserver`
+
+Copy local code to a Pi and install the changed code:
 * `cd <source-folder of rpmusicserver>`
-* `sudo scripts/burn-image.sh`
-  * choose type `d = development`
 * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
   * password:
-    * raspberry (on first install) 
-    * rpms (on existing install) 
+    * `rpms`
 * `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
   * password:
-    * raspberry (on first install) 
-    * rpms (on existing install) 
-* after installation, password is changed to `rpms`
-* from now on, you can reach the development-server on `rpmsdev`
+    * `rpms`
 
-Note. * in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
-  * `sudo systemd-resolve --flush-caches`
+Note. If local DNS does not work, the hostname`rpmsdev` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.    
+
+Note. You can also do this 'trick' in a live, production-environment, but than you must know what you are doing, so don't try this at home! Usually, a production-machine is updated through the regular update-mechanism, in which code is retreived from the git-repo on github (be it the master-branch or, if overridden, by another branch, usually develop). 
+
+### Local test-environment on your development-machine
+Testing on a (second) machine/Pi is the ultimate test, but to quickly see your changes in the web-interface (api or web) on your development-machine, we can setup an environment for exactly that. 
+
+In short, you have to open two terminals, each running a web-service, one running the api, the second running the web-UI:
+* open a terminal
+  * `cd <source-folder of rpmusicserver>/web-interface/api`
+  * `python3 controller.py`
+* open a second terminal
+  * `cd <source-folder of rpmusicserver>/web-interface/web`
+  * `python3 controller.py`
+* for the web-UI, point your browser to `http://localhost:1080` 
+* you can access the api:
+  * point your browser to `http://localhost:5000`
+  * cli: `curl http://localhost:5000`
+
+Note. This environment is very limited b/c not all components which the code interacts with, such as disks or docker-containers or the Pi itself, are not available (however, you can spoof some of those components). But for seeing changes in the UI, this works just fine.
+
+### Local LMS-player
+As a developer, it is usefull to have at least one player which can connect to the LMS-server. We can easily transform a regular laptop or PC to a local player, just for testing purposes.
+
+Steps for installing a local player:
+- install squeezelite
+  - `sudo apt install squeezelite`
+- start player
+  - `squeezelite -o default -z -n "Local"`
+- stop player
+  - `sudo kill $(ps -ef | grep squeeze | grep -v grep | awk '{print $2}')`
 
 ### List of API requests 
   * `curl rpms:5000/api/GetApiList`
