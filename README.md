@@ -317,17 +317,23 @@ Note. If local DNS does not work, the hostname`rpmsdev` must be replaced by the 
 ### Local test-environment on your development-machine
 Testing on a (second) machine/Pi is the ultimate test, but to quickly see your changes in the web-interface (api or web) on your development-machine, we can setup an environment for exactly that. 
 
-In short, you have to open two terminals, each running a web-service, one running the api, the second running the web-UI:
-* open a terminal
-  * `cd <source-folder of rpmusicserver>/web-interface/api`
-  * `python3 controller.py`
-* open a second terminal
-  * `cd <source-folder of rpmusicserver>/web-interface/web`
-  * `python3 controller.py`
-* for the web-UI, point your browser to `http://localhost:1080` 
-* you can access the api:
-  * point your browser to `http://localhost:5000`
-  * cli: `curl http://localhost:5000`
+In short, you have to open two terminals, each running a web-service, one running the api, the second running the web-UI.
+
+#### Steps to setup a local web-environment
+* install local software (you only have to do this once):
+  * `sudo apt-get install docker.io python3-pip`
+  * `pip3 install -r <source-folder of rpmusicserver>/web-interface/requirements.txt`
+* open terminal(s) and start web-services:
+  * open a terminal
+    * `cd <source-folder of rpmusicserver>/web-interface/api`
+    * `python3 controller.py`
+  * open a second terminal
+    * `cd <source-folder of rpmusicserver>/web-interface/web`
+    * `python3 controller.py`
+* access:     
+  * web: `http://localhost:1080` 
+  * API: `http://localhost:5000`
+  - cli: `curl http://localhost:5000`
 
 Note. This environment is very limited b/c not all components which the code interacts with, such as disks or docker-containers or the Pi itself, are not available (however, you can spoof some of those components). But for seeing changes in the UI, this works just fine.
 
