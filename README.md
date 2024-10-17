@@ -321,7 +321,7 @@ In short, you have to open two terminals, each running a web-service, one runnin
 
 #### Steps to setup a local web-environment
 * install local software (you only have to do this once):
-  * `sudo apt-get install docker.io python3-pip`
+  * `sudo apt-get install python3-pip`
   * `pip3 install -r <source-folder of rpmusicserver>/web-interface/requirements.txt`
 * open terminal(s) and start web-services:
   * open a terminal
