@@ -299,6 +299,7 @@ As a developer, you want to test your changes on a physical machine (Pi). As the
 #### To have the code locally on your development-machine
 * clone/download the git-repo from [github](https://github.com/markbaaijens/rpmusicserver) (instructions can be found there)
 * place the code in a folder, something like `~/source/rpmusicserver`
+* switch to branch `develop`
 
 #### Copy local code to a Pi and install the (changed) code
 * `cd <source-folder of rpmusicserver>`
