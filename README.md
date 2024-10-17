@@ -296,11 +296,11 @@ Tip. In case hostnames `rpms` and `rpmsdev` get mixed up, try to flush DNS:
 ### Update and install from local files  
 As a developer, you want to test your changes on a physical machine (Pi). As the changes in the code are usually done on a different machine than the one on which the test takes places, you have to have a way to transfer your code to the (test) Pi and install them to see the result.
 
-To have the code locally on your development-machine:
+#### To have the code locally on your development-machine
 * clone/download the git-repo from [github](https://github.com/markbaaijens/rpmusicserver) (instructions can be found there)
 * place the code in a folder, something like `~/source/rpmusicserver`
 
-Copy local code to a Pi and install the changed code:
+#### Copy local code to a Pi and install the (changed) code
 * `cd <source-folder of rpmusicserver>`
 * `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
   * password:
