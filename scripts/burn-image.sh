@@ -18,23 +18,23 @@ cleanup_environment() {
 }
 
 mount_partition () {
-    partition=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
+    partition_name=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
 
     if [ ! -d $mount_point ]; then 
         mkdir $mount_point
     fi
 
-    if [ -z $partition ]; then
-        echo "Failed to capture $partition"
+    if [ -z $partition_name ]; then
+        echo "Failed to capture $partition_name"
         cleanup_environment
         echo "Script ended with failure"
         exit
     fi
 
-    mount "/dev/$partition" $mount_point
+    mount "/dev/$partition_name" $mount_point
 
-	if [ -z "$(df | grep $partition)" ]; then
-        echo "Failed to mount $partition"
+	if [ -z "$(df | grep $partition_name)" ]; then
+        echo "Failed to mount $partition_name"
         cleanup_environment
         echo "Script ended with failure"
         exit
@@ -42,17 +42,17 @@ mount_partition () {
 }
 
 unmount_partition () {
-    partition=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
+    partition_name=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
 
-    umount "/dev/$partition"
+    umount "/dev/$partition_name"
     hdparm -z /dev/$chosen_disk > /dev/null
     if [ -d $mount_point ]; then 
         rm -rf $mount_point
     fi
     sleep 3 # Give the OS time to reread
 
-	if [ -n "$(df | grep $partition)" ]; then
-        echo "Failed to umount $partition"
+	if [ -n "$(df | grep $partition_name)" ]; then
+        echo "Failed to umount $partition_name"
         cleanup_environment
         echo "Script ended with failure"
         exit
@@ -71,7 +71,6 @@ setup_environment
 readarray -t disks < <(lsblk -b -e7 -o name,type | grep disk | awk '{print $1}')
 sd_disks=()
 for disk in "${disks[@]}"; do
-    model=$(parted /dev/$disk print | grep Model)
     sd_disks+=("$disk")
 done
 
@@ -85,8 +84,8 @@ fi
 echo "Available disk(s):"
 counter=0
 for disk in "${sd_disks[@]}"; do
-    model=$(parted /dev/$disk print | grep "Model" | cut -d " " -f2- )
-    size=$(parted /dev/$disk print | grep "Disk /dev/" | awk '{print $3}')
+    model=$(parted -s /dev/$disk print | grep "Model" | cut -d " " -f2- )
+    size=$(parted -s /dev/$disk print | grep "Disk /dev/" | awk '{print $3}')
     echo "$counter: $model /dev/$disk ($size)"
     counter=$(($counter + 1))
 done
@@ -108,7 +107,7 @@ if [ "$disk_choice" == "" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
 fi
 
 chosen_disk=${sd_disks[disk_choice]}
-size=$(parted /dev/$chosen_disk print | grep "Disk /dev/" | awk '{print $3}')
+size=$(parted -s /dev/$chosen_disk print | grep "Disk /dev/" | awk '{print $3}')
 echo "You have chosen: $chosen_disk ($size)"
 
 # Variable $size returns a string like 32.2GB (or MB or KB)
@@ -223,19 +222,14 @@ echo "Unmounting /dev/$chosen_disk partitions..."
 # partitions_bylabel=$(ls -l /dev/disk/by-label | grep -oE "$chosen_disk.*$"  | awk '{print $9}')
 partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
 for partition in $partitions; do
-    sleep 3
-
-    umount -f "$partition"
-	if [ -n "$(df | grep $partition)" ]; then
-        echo "Failed to umount $partition"
-        cleanup_environment
-        echo "Script ended with failure"
-        exit
-    fi
-   	echo "Partition $partition successfully unmounted"
+    partition_name=$(echo $partition | sed -e "s/\/dev\///g")
+    partition_label=$(ls -l /dev/disk/by-label | grep $partition_name | awk '{print $9}')
+    unmount_partition "$partition_label"
+   	echo "- partition $partition_label successfully unmounted"
 done
 hdparm -z /dev/$chosen_disk > /dev/null
 echo "... done unmounting /dev/$chosen_disk partitions"
+exit # todo
 
 echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
