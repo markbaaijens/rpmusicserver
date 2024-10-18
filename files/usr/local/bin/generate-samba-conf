@@ -34,7 +34,7 @@ echo "" >> $temp_conf
 
 generate_share "Publiek" "/media/usbdata/user/public" "yes"
 generate_share "Muziek" "/media/usbdata/user/music" "yes"
-generate_share "Backup" "/media/usbbackup/user" "no"
+generate_share "Backup" "/media/usbbackup" "no"
 
 rm $samba_conf -f
 cp $temp_conf $samba_conf
