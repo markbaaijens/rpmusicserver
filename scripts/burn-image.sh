@@ -44,18 +44,20 @@ mount_partition () {
 unmount_partition () {
     partition_name=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
 
-    umount "/dev/$partition_name"
-    hdparm -z /dev/$chosen_disk > /dev/null
-    if [ -d $mount_point ]; then 
-        rm -rf $mount_point
-    fi
-    sleep 3 # Give the OS time to reread
+    if [ -n "$(mount | grep "$1")" ]; then
+        umount "/dev/$partition_name"
+        hdparm -z /dev/$chosen_disk > /dev/null
+        if [ -d $mount_point ]; then 
+            rm -rf $mount_point
+        fi
+        sleep 3 # Give the OS time to reread
 
-	if [ -n "$(df | grep $partition_name)" ]; then
-        echo "Failed to umount $partition_name"
-        cleanup_environment
-        echo "Script ended with failure"
-        exit
+        if [ -n "$(df | grep $partition_name)" ]; then
+            echo "Failed to umount $partition_name"
+            cleanup_environment
+            echo "Script ended with failure"
+            exit
+        fi
     fi
 }
 
@@ -232,7 +234,6 @@ for partition in $partitions; do
 done
 hdparm -z /dev/$chosen_disk > /dev/null
 echo "... done unmounting /dev/$chosen_disk partitions"
-exit # todo
 
 echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
