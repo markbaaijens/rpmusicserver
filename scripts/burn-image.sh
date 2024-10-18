@@ -71,7 +71,10 @@ setup_environment
 readarray -t disks < <(lsblk -b -e7 -o name,type | grep disk | awk '{print $1}')
 sd_disks=()
 for disk in "${disks[@]}"; do
-    sd_disks+=("$disk")
+    model=$(parted -s /dev/$disk print | grep Model)
+    if [[ ! $model == *"nvme"* ]]; then
+        sd_disks+=("$disk")
+    fi
 done
 
 if [ "${sd_disks[0]}" == "" ]; then
