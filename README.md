@@ -207,7 +207,8 @@ The advantage of the remote backup is that you can use a protocol at wish, be it
 
 Note that system-data is also present on the data-part ('Public') in the form of a file rpms-system.zip. Thus, as you backup the user-data, you also backup the system-files resulting in a full backup. 
 
-For a backup using rsync over SSH, here is a example-script:<br>
+For a backup using rsync over SSH, here is an example-script:<br>
+
 `#!/bin/bash`<br/> 
 `rsync --progress --delete -rtv --max-size=4GB --modify-window=2 --exclude Downloads \`<br/> 
 `	pi@rpms:/media/usbdata/user/* \`<br/> 
