@@ -89,6 +89,17 @@ def GetTranscoderSettings():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/GetTranslations', methods=['GET'])
+def GetTranslations():
+    try:
+        info = logic.GetTranslations()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetDockerContainerList', methods=['GET'])
 def GetDockerContainerList():
     try:
@@ -310,6 +321,69 @@ def SetTranscoderMp3Bitrate():
 
     try:
         info = logic.SetTranscoderSetting('mp3bitrate', requestData['Value'])
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+@app.route('/api/SetPublicShareTranslation', methods=['POST'])
+def SetPublicShareTranslation():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    if not 'Value' in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    if requestData['Value'] == "":
+        abort(HTTP_BAD_REQUEST) 
+
+    try:
+        info = logic.SetTranslation('PublicShareName', requestData['Value'])
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)  
+
+@app.route('/api/SetMusicShareTranslation', methods=['POST'])
+def SetMusicShareTranslation():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    if not 'Value' in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    if requestData['Value'] == "":
+        abort(HTTP_BAD_REQUEST) 
+
+    try:
+        info = logic.SetTranslation('MusicShareName', requestData['Value'])
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)  
+
+@app.route('/api/SetBackupShareTranslation', methods=['POST'])
+def SetPublicBackupTranslation():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    if not 'Value' in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    if requestData['Value'] == "":
+        abort(HTTP_BAD_REQUEST) 
+
+    try:
+        info = logic.SetTranslation('BackupShareName', requestData['Value'])
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())

@@ -18,7 +18,7 @@ setup_environment
 readarray -t disks < <(lsblk -b -e7 -o name,type | grep disk | awk '{print $1}')
 sd_disks=()
 for disk in "${disks[@]}"; do
-    model=$(parted /dev/$disk print | grep Model)
+    model=$(parted -s /dev/$disk print | grep Model)
     if [[ ! $model == *"nvme"* ]]; then
         sd_disks+=("$disk")
     fi
@@ -34,8 +34,8 @@ fi
 echo "Available disk(s):"
 counter=0
 for disk in "${sd_disks[@]}"; do
-    model=$(parted /dev/$disk print | grep Model | cut -d " " -f3- )
-    size=$(parted /dev/$disk print | grep "Disk /dev/" | awk '{print $3}')
+    model=$(parted -s /dev/$disk print | grep Model | cut -d " " -f3- )
+    size=$(parted -s /dev/$disk print | grep "Disk /dev/" | awk '{print $3}')
   	echo "$counter: $model/$disk ($size)"
     counter=$(($counter + 1))
 done
@@ -103,15 +103,15 @@ for partition in $partitions; do
         echo "Script ended with failure."
         exit
     fi    
-    echo "Partition $partition successfully unmounted."
+    echo "Partition $partition successfully unmounted"
 done
-hdparm -z /dev/$chosen_disk
-echo " => done unmounting /dev/$chosen_disk partitions."
+hdparm -z /dev/$chosen_disk > /dev/null
+echo "... done unmounting /dev/$chosen_disk partitions."
 
 echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
-hdparm -z /dev/$chosen_disk
-echo " => done wiping $chosen_disk."
+hdparm -z /dev/$chosen_disk > /dev/null
+echo "... done wiping $chosen_disk."
 
 # Scripting fdisk to create partition:
 #   n = new partition
@@ -122,8 +122,8 @@ echo " => done wiping $chosen_disk."
 #   w = write
 echo "Start creating partition on $chosen_disk..."
 echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/$chosen_disk
-hdparm -z /dev/$chosen_disk
-echo " => done creating partition on $chosen_disk."
+hdparm -z /dev/$chosen_disk > /dev/null
+echo "... done creating partition on $chosen_disk."
 
 disk_label=""
 if [ ${type_choice,,} == "d" ]; then
@@ -134,8 +134,8 @@ fi
 
 echo "Start formatting partition on $chosen_disk as '$disk_label'..."	
 mkfs.ext4 -L "$disk_label" "/dev/$chosen_disk"
-hdparm -z /dev/$chosen_disk
-echo " => done formatting partition on $chosen_disk."		
+hdparm -z /dev/$chosen_disk > /dev/null
+echo "... done formatting partition on $chosen_disk."
 
 cleanup_environment
 echo "Script ended successfully."

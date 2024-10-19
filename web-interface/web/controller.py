@@ -107,7 +107,14 @@ def ShowSystemPage():
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        machineInfo = []        
+        machineInfo = []   
+
+    try:
+        translationList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranslations').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        translationList = []             
 
     return render_template(
         'system.html', 
@@ -116,7 +123,8 @@ def ShowSystemPage():
         portStatusList = portStatusList,
         apiInfo = apiInfo,
         dockerContainerList = dockerContainerList,
-        machineInfo = machineInfo)   
+        machineInfo = machineInfo,
+        translationList = translationList)   
 
 @app.route('/resources', methods=['GET'])
 def ShowResourcesPage():
