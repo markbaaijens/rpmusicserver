@@ -140,9 +140,6 @@ install_bin_file export-collection
 install_bin_file start-web
 install_bin_file generate-samba-conf
 
-echo "Generate samba-configuration..."
-generate-samba-conf
-
 # By always delete existing lines in crontab, we can easily implement
 # a different crontab-strategy later, if needed
 echo "Adding line to transcode in /etc/crontab..."
@@ -217,6 +214,11 @@ else
     echo "- /etc/lang-choice.txt not found"    
 fi
 echo "... done generating translations.json."
+
+# Generating smb.conf must be done *after* translations have been set b/c share-names are translated
+echo "Generate samba-configuration..."
+generate-samba-conf
+echo "... done generating samba-configuration."
 
 echo "Start docker for preloading containers"
 start-docker

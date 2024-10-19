@@ -32,9 +32,19 @@ echo "unix extensions = no" >> $temp_conf
 echo "multicast dns register = yes" >> $temp_conf
 echo "" >> $temp_conf
 
-generate_share "Publiek" "/media/usbdata/user/public" "yes"
-generate_share "Muziek" "/media/usbdata/user/music" "yes"
-generate_share "Backup" "/media/usbbackup/user" "no"
+public_share_name="Public"
+music_share_name="Music"
+backup_share_name="Backup"
+
+if [ -f /media/usbdata/rpms/config/translations.json ]; then
+    public_share_name=$(jq '.PublicShareName' /media/usbdata/rpms/config/translations.json | tr -d '"')
+    music_share_name=$(jq '.MusicShareName' /media/usbdata/rpms/config/translations.json | tr -d '"')
+    backup_share_name=$(jq '.BackupShareName' /media/usbdata/rpms/config/translations.json | tr -d '"')
+fi
+
+generate_share "$public_share_name" "/media/usbdata/user/public" "yes"
+generate_share "$music_share_name" "/media/usbdata/user/music" "yes"
+generate_share "$backup_share_name" "/media/usbbackup/user" "no"
 
 rm $samba_conf -f
 cp $temp_conf $samba_conf
