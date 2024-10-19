@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ -z "$(whoami | grep root)" ]; then
-    echo "Not running as root"
-    echo "Script ended with failure"
+    echo "Not running as root."
+    echo "Script ended with failure."
     exit
 fi
 
@@ -25,18 +25,18 @@ mount_partition () {
     fi
 
     if [ -z $partition_name ]; then
-        echo "Failed to capture $partition_name"
+        echo "Failed to capture $partition_name."
         cleanup_environment
-        echo "Script ended with failure"
+        echo "Script ended with failure."
         exit
     fi
 
     mount "/dev/$partition_name" $mount_point
 
 	if [ -z "$(df | grep $partition_name)" ]; then
-        echo "Failed to mount $partition_name"
+        echo "Failed to mount $partition_name."
         cleanup_environment
-        echo "Script ended with failure"
+        echo "Script ended with failure."
         exit
     fi
 }
@@ -53,9 +53,9 @@ unmount_partition () {
         sleep 3 # Give the OS time to reread
 
         if [ -n "$(df | grep $partition_name)" ]; then
-            echo "Failed to umount $partition_name"
+            echo "Failed to umount $partition_name."
             cleanup_environment
-            echo "Script ended with failure"
+            echo "Script ended with failure."
             exit
         fi
     fi
@@ -80,9 +80,9 @@ for disk in "${disks[@]}"; do
 done
 
 if [ "${sd_disks[0]}" == "" ]; then
-    echo "No disk available"
+    echo "No disk available."
     cleanup_environment
-    echo "Script ended with failure" 
+    echo "Script ended with failure." 
     exit
 fi
 
@@ -100,14 +100,14 @@ read -p "Select a disk: " disk_choice
 
 if [ "${disk_choice,,}" == "q" ]; then
     cleanup_environment    
-    echo "Script ended by user"
+    echo "Script ended by user."
     exit
 fi
 
 if [ "$disk_choice" == "" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
-    echo "No disk selected"
+    echo "No disk selected."
     cleanup_environment    
-    echo "Script ended"
+    echo "Script ended."
     exit
 fi
 
@@ -130,9 +130,9 @@ fi
 
 minsize_kb=$((1024 * 1024 * 14))  # approximately 16GB in KB
 if [ $size_kb -lt $minsize_kb ]; then
-    echo "Error: SD-card has insufficient capacity. Minimum size is 16GB"
+    echo "Error: SD-card has insufficient capacity. Minimum size is 16GB."
     cleanup_environment    
-    echo "Script ended"
+    echo "Script ended."
     exit
 fi
 
@@ -145,20 +145,20 @@ read -p "Select a type: " type_choice
 
 if [ "${type_choice,,}" == "q" ]; then
     cleanup_environment    
-    echo "Script ended by user"
+    echo "Script ended by user."
     exit
 fi
 
 if [ "$type_choice" == "" ]; then
-    echo "No type selected"
+    echo "No type selected."
     cleanup_environment    
-    echo "Script ended"
+    echo "Script ended."
     exit
 fi
 if [ ${type_choice,,} != "p" ] && [ ${type_choice,,} != "d" ]; then
-    echo "No type selected"
+    echo "No type selected."
     cleanup_environment    
-    echo "Script ended"
+    echo "Script ended."
     exit
 fi
 echo "You have chosen: $type_choice $([ ${type_choice,,} == "p" ] && echo "=> production" || echo "=> development")"
@@ -172,20 +172,20 @@ read -p "Select a language: " lang_choice
 
 if [ "${lang_choice,,}" == "q" ]; then
     cleanup_environment    
-    echo "Script ended by user"
+    echo "Script ended by user."
     exit
 fi
 
 if [ "$lang_choice" == "" ]; then
-    echo "No language selected"
+    echo "No language selected."
     cleanup_environment    
-    echo "Script ended"
+    echo "Script ended."
     exit
 fi
 if [ ${lang_choice,,} != "e" ] && [ ${lang_choice,,} != "d" ]; then
-    echo "No language selected"
+    echo "No language selected."
     cleanup_environment    
-    echo "Script ended"
+    echo "Script ended."
     exit
 fi
 echo "You have chosen: $lang_choice $([ ${lang_choice,,} == "e" ] && echo "=> English" || echo "=> Dutch")"
@@ -193,7 +193,7 @@ echo "You have chosen: $lang_choice $([ ${lang_choice,,} == "e" ] && echo "=> En
 read -r -p "Do you want to continue burning on $chosen_disk? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
     cleanup_environment
-    echo "Script ended by user"
+    echo "Script ended by user."
     exit
 fi
 
@@ -202,26 +202,26 @@ if [ ! $(dpkg --list | grep wget | awk '{print $1}' | grep ii) ]; then
 fi
 echo "Downloading image..."
 wget -c --show-progress -P $working_dir -O $working_dir/$archive $image
-echo "... download complete"
+echo "... download complete."
 
 if [ "$(sha256sum $working_dir/$archive | cut -d' ' -f1)" != "$image_hash" ]; then
     echo "Checksum of the downloaded image $archive failed"
     cleanup_environment
-    echo "Script ended with failure"
+    echo "Script ended with failure."
     exit
 fi
-echo "Checksum of the downloaded image $archive is OK"
+echo "Checksum of the downloaded image $archive is OK."
 
 echo "Extracting $working_dir/$archive..."
 unzip -o $working_dir/$archive -d $working_dir
 extracted_img=$(ls -t $working_dir/*.img | head -n 1)
 if [ -z $extracted_img ]; then
-    echo "No image found in $working_dir"
+    echo "No image found in $working_dir."
     cleanup_environment
-    echo "Script ended with failure"
+    echo "Script ended with failure."
     exit
 fi
-echo "... done extracting $working_dir/$archive"
+echo "... done extracting $working_dir/$archive."
 
 echo "Unmounting /dev/$chosen_disk partitions..."
 # partitions_bylabel=$(ls -l /dev/disk/by-label | grep -oE "$chosen_disk.*$"  | awk '{print $9}')
@@ -230,15 +230,15 @@ for partition in $partitions; do
     partition_name=$(echo $partition | sed -e "s/\/dev\///g")
     partition_label=$(ls -l /dev/disk/by-label | grep $partition_name | awk '{print $9}')
     unmount_partition "$partition_label"
-   	echo "- partition $partition_label successfully unmounted"
+   	echo "- partition $partition_label successfully unmounted."
 done
 hdparm -z /dev/$chosen_disk > /dev/null
-echo "... done unmounting /dev/$chosen_disk partitions"
+echo "... done unmounting /dev/$chosen_disk partitions."
 
 echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
 hdparm -z /dev/$chosen_disk > /dev/null
-echo "... done wiping $chosen_disk"
+echo "... done wiping $chosen_disk."
 
 if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]; then 
     apt install gddrescue -y
@@ -247,12 +247,12 @@ echo "Start burning $extracted_img to $chosen_disk..."
 ddrescue -D --force $extracted_img "/dev/$chosen_disk"
 hdparm -z /dev/$chosen_disk > /dev/null
 sleep 3  # Give the OS some time to reread
-echo "... done burning $chosen_disk"
+echo "... done burning $chosen_disk."
 
 if [ ! -d /dev/disk/by-label ]; then
-	echo "/dev/disk/by-label doesn't exist"
+	echo "/dev/disk/by-label doesn't exist."
     cleanup_environment
-    echo "Script ended with failure"
+    echo "Script ended with failure."
     exit
 fi
 
@@ -260,7 +260,7 @@ echo "Activate SSH..."
 mount_partition "boot"
 touch $mount_point/ssh
 unmount_partition "boot"
-echo "... SSH has been activated on $chosen_disk"
+echo "... SSH has been activated on $chosen_disk."
 
 if [ ${type_choice,,} == "p" ]; then
     hostname="rpms"
@@ -272,7 +272,7 @@ mount_partition "rootfs"
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hostname
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hosts
 unmount_partition "rootfs"
-echo "... done changing hostname"
+echo "... done changing hostname."
 
 echo "Set language..."
 lang_choice=${lang_choice,,}
@@ -282,6 +282,6 @@ unmount_partition "rootfs"
 echo "... language has been set to $lang_choice."
 
 cleanup_environment
-echo "Script ended successfully"
+echo "Script ended successfully."
 
 exit
