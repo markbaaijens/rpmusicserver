@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z "$(whoami | grep root)" ]; then
-    echo "Not running as root"
+    echo "Not running as root."
     exit
 fi
 
@@ -25,9 +25,9 @@ for disk in "${disks[@]}"; do
 done
 
 if [ "${sd_disks[0]}" == "" ]; then
-    echo "No disk available"
+    echo "No disk available."
     cleanup_environment	
-    echo "Script ended with failure" 
+    echo "Script ended with failure." 
     exit
 fi
 
@@ -45,14 +45,14 @@ read -p "Select a disk: " disk_choice
 
 if [ "${disk_choice,,}" == "q" ]; then
     cleanup_environment    
-    echo "Script ended by user"
+    echo "Script ended by user."
     exit
 fi
 
 if [ "$disk_choice" == "" ] || [ "${sd_disks[disk_choice]}" == "" ]; then
-    echo "No disk selected"
+    echo "No disk selected."
     cleanup_environment    
-    echo "Script ended"
+    echo "Script ended."
     exit
 fi
 
@@ -72,14 +72,14 @@ fi
 
 if [ "${type_choice,,}" == "q" ]; then
     cleanup_environment    
-    echo "Script ended by user"
+    echo "Script ended by user."
     exit
 fi
 
 if [ ${type_choice,,} != "d" ] && [ ${type_choice,,} != "b" ]; then
-    echo "No type selected"
+    echo "No type selected."
     cleanup_environment    
-    echo "Script ended"
+    echo "Script ended."
     exit
 fi
 echo "You have chosen: $type_choice $([ ${type_choice,,} == "d" ] && echo "=> usbdata" || echo "=> usbbackup")"
@@ -87,7 +87,7 @@ echo "You have chosen: $type_choice $([ ${type_choice,,} == "d" ] && echo "=> us
 read -r -p "Do you want to continue formatting '$chosen_disk' as $([ ${type_choice,,} == "d" ] && echo "'usbdata'" || echo "'usbbackup'")? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
     cleanup_environment
-    echo "Script ended by user"
+    echo "Script ended by user."
     exit
 fi
 
@@ -100,18 +100,18 @@ for partition in $partitions; do
 	if [ -n "$(df | grep /dev/$partition)" ]; then
         echo "Failed to umount /dev/$partition."
         cleanup_environment
-        echo "Script ended with failure"
+        echo "Script ended with failure."
         exit
     fi    
     echo "Partition $partition successfully unmounted"
 done
 hdparm -z /dev/$chosen_disk > /dev/null
-echo "... done unmounting /dev/$chosen_disk partitions"
+echo "... done unmounting /dev/$chosen_disk partitions."
 
 echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
 hdparm -z /dev/$chosen_disk > /dev/null
-echo "... done wiping $chosen_disk"
+echo "... done wiping $chosen_disk."
 
 # Scripting fdisk to create partition:
 #   n = new partition
@@ -123,7 +123,7 @@ echo "... done wiping $chosen_disk"
 echo "Start creating partition on $chosen_disk..."
 echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/$chosen_disk
 hdparm -z /dev/$chosen_disk > /dev/null
-echo "... done creating partition on $chosen_disk"
+echo "... done creating partition on $chosen_disk."
 
 disk_label=""
 if [ ${type_choice,,} == "d" ]; then
@@ -135,9 +135,9 @@ fi
 echo "Start formatting partition on $chosen_disk as '$disk_label'..."	
 mkfs.ext4 -L "$disk_label" "/dev/$chosen_disk"
 hdparm -z /dev/$chosen_disk > /dev/null
-echo "... done formatting partition on $chosen_disk"
+echo "... done formatting partition on $chosen_disk."
 
 cleanup_environment
-echo "Script ended successfully"
+echo "Script ended successfully."
 
 exit
