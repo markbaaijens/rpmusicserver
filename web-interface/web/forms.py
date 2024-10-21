@@ -41,3 +41,29 @@ class EditTranscoderForm(FlaskForm):
                 raise ValidationError('Either Ogg Folder or Mp3 Folder should have a value to activate Transcoder')
         pass
 
+class EditTranslationsForm(FlaskForm):
+    publicShareName = StringField('Public Share')
+    musicShareName = StringField('Music Share')
+    backupShareName = StringField('Backup Share')    
+
+    submit = SubmitField('Save')
+    cancel = SubmitField('Cancel')    
+
+    # Not using standard wtf-validators like Required b/c they do not 
+    # show custom messages; this is overruled by HTML5
+    # Name of field validators must be in this exact format: validate_<variable>
+    def validate_publicShareName(self, field):
+        if field.data == '':
+            raise ValidationError('Empty value is not permitted.')
+        pass
+
+    def validate_musicShareName(self, field):
+        if field.data == '':
+            raise ValidationError('Empty value is not permitted.')
+        pass
+
+    def validate_backuphareName(self, field):
+        if field.data == '':
+            raise ValidationError('Empty value not permitted.')
+        pass
+

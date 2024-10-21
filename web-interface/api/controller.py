@@ -328,8 +328,8 @@ def SetTranscoderMp3Bitrate():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
-@app.route('/api/SetPublicShareTranslation', methods=['POST'])
-def SetPublicShareTranslation():
+@app.route('/api/SetTranslationPublicShare', methods=['POST'])
+def SetTranslationPublicShare():
     if not request.json:
         abort(HTTP_BAD_REQUEST)
     requestData = request.get_json()
@@ -349,8 +349,8 @@ def SetPublicShareTranslation():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)  
 
-@app.route('/api/SetMusicShareTranslation', methods=['POST'])
-def SetMusicShareTranslation():
+@app.route('/api/SetTranslationMusicShare', methods=['POST'])
+def SetTranslationMusicShare():
     if not request.json:
         abort(HTTP_BAD_REQUEST)
     requestData = request.get_json()
@@ -370,8 +370,8 @@ def SetMusicShareTranslation():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)  
 
-@app.route('/api/SetBackupShareTranslation', methods=['POST'])
-def SetPublicBackupTranslation():
+@app.route('/api/SetTranslationBackupShare', methods=['POST'])
+def SetTranslationPublicBackup():
     if not request.json:
         abort(HTTP_BAD_REQUEST)
     requestData = request.get_json()

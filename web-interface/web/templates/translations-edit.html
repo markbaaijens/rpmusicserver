@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Translations</h2>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+        <table>
+            <tr>
+                <td>
+                    {{ form.publicShareName.label }}
+                </td>
+                <td>
+                    {{ form.publicShareName(size=20)}}
+                    {% for error in form.publicShareName.errors %}
+                        <br><small><em>[{{ error }}]</em></small>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.musicShareName.label }}
+                </td>
+                <td>
+                    {{ form.musicShareName(size=20)}}
+                    {% for error in form.musicShareName.errors %}
+                        <br><small><em>[{{ error }}]</em></small>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.backupShareName.label }}
+                </td>
+                <td>
+                    {{ form.backupShareName(size=20)}}
+                    {% for error in form.backupShareName.errors %}
+                        <br><small><em>[{{ error }}]</em></small>
+                    {% endfor %}
+                </td>
+            </tr>                        
+        </table>
+
+        <p>{{ form.submit() }} {{ form.cancel() }}</p>
+    </form>
+{% endblock %}

@@ -8,7 +8,7 @@ import os
 
 from globals import configObject
 from converters import ConvertToTwoDecimals, ConvertBooleanToText
-from forms import EditTranscoderForm
+from forms import EditTranscoderForm, EditTranslationsForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)  # For flask/wtf-forms
@@ -664,6 +664,65 @@ def EditTranscoderSettings():
         appTitle = 'Transcoder Settings - ' + configObject.AppTitle, 
         form = form,
         musicFolder = defaultMusicFolderFunctional)
+
+@app.route('/translations-edit', methods=['GET', 'POST'])
+def EditTranslations():
+    try:
+        translationList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranslations').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        translationList = []             
+
+    form = EditTranslationsForm()
+
+    if request.method == 'GET':
+        form.publicShareName.data = translationList['PublicShareName']
+        form.musicShareName.data = translationList['MusicShareName']
+        form.backupShareName.data = translationList['BackupShareName']                
+
+    if form.cancel.data: 
+        return redirect('/system')
+
+    if request.method == 'POST' and form.validate(): 
+        newPublicShareName = request.form['publicShareName'].strip()
+        if newPublicShareName != translationList['PublicShareName'].strip():
+            try:
+                requests.post(
+                    configObject.ApiRootUrl + '/api/SetTranslationPublicShare', 
+                    json = {"Value": newPublicShareName})
+                flash('Saved \'' + newPublicShareName + '\' to Public Share')
+            except Exception as e:
+                logger.error(e)
+                logger.error(traceback.format_exc())
+
+        newMusicShareName = request.form['musicShareName'].strip()
+        if newMusicShareName != translationList['MusicShareName'].strip():
+            try:
+                requests.post(
+                    configObject.ApiRootUrl + '/api/SetTranslationMusicShare', 
+                    json = {"Value": newMusicShareName})
+                flash('Saved \'' + newMusicShareName + '\' to Music Share')
+            except Exception as e:
+                logger.error(e)
+                logger.error(traceback.format_exc())
+
+        newBackupShareName = request.form['backupShareName'].strip()
+        if newBackupShareName != translationList['BackupShareName'].strip():
+            try:
+                requests.post(
+                    configObject.ApiRootUrl + '/api/SetTranslationBackupShare', 
+                    json = {"Value": newBackupShareName})
+                flash('Saved \'' + newBackupShareName + '\' to Backup Share')
+            except Exception as e:
+                logger.error(e)
+                logger.error(traceback.format_exc())                                
+
+        return redirect('/system')
+
+    return render_template('translations-edit.html', 
+        appTitle = 'Translations Edit - ' + configObject.AppTitle, 
+        form = form)
 
 if __name__ == '__main__':
     import argparse
