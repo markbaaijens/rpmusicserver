@@ -41,6 +41,18 @@ def SizeHumanReadable(num, suffix="B"):
         num /= 1024.0
     return f"{num:.1f}Yi{suffix}"
 
+def SaveFormValue(apiUrl, newValue, fieldLabel):
+    try:
+        requests.post(
+            configObject.ApiRootUrl + '/api/' + apiUrl, 
+            json = {"Value": newValue})
+        flash('Saved \'' + str(newValue) + '\' to \'' + str(fieldLabel) + '\'')
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+
+    pass
+
 @app.route('/', methods=['GET'])
 def ShowHomePage():
     try:
@@ -552,6 +564,8 @@ def ShowUpdateLog(nrOfLines):
 
 @app.route('/transcoder/edit', methods=['GET', 'POST'])
 def EditTranscoderSettings():
+    redirectPage = '/transcoder'
+
     try:
         transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
     except Exception as e:
@@ -562,8 +576,6 @@ def EditTranscoderSettings():
     defaultMusicFolder = transcoderInfo["DefaultCollectionFolder"] + '/'
     defaultMusicFolderFunctional = transcoderInfo["DefaultCollectionFolderFunctional"]
 
-    form = EditTranscoderForm()
-
     try:
         transcoderSettings = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderSettings').content)
     except Exception as e:
@@ -571,15 +583,23 @@ def EditTranscoderSettings():
         logger.error(traceback.format_exc())
         transcoderSettings = []
 
-    if request.method == 'GET':
-        form.sourceFolder.data = transcoderSettings['sourcefolder'].replace(defaultMusicFolder, '')
-        form.oggFolder.data = transcoderSettings['oggfolder'].replace(defaultMusicFolder, '')
-        form.oggQuality.data = transcoderSettings['oggquality']
-        form.mp3Folder.data = transcoderSettings['mp3folder'].replace(defaultMusicFolder, '')
-        form.mp3Bitrate.data = transcoderSettings['mp3bitrate']
+    currentSourceFolder = transcoderSettings['sourcefolder'].strip()
+    currentOggFolder = transcoderSettings['oggfolder'].strip()
+    currentOggQuality = int(transcoderSettings['oggquality'])
+    currentMp3Folder = transcoderSettings['mp3folder'].strip()
+    currentMp3Bitrate = int(transcoderSettings['mp3bitrate'])
+
+    form = EditTranscoderForm()
 
     if form.cancel.data: 
-        return redirect('/transcoder')
+        return redirect(redirectPage)
+
+    if request.method == 'GET':
+        form.sourceFolder.data = currentSourceFolder.replace(defaultMusicFolder, '')
+        form.oggFolder.data = currentOggFolder.replace(defaultMusicFolder, '')
+        form.oggQuality.data = currentOggQuality
+        form.mp3Folder.data = currentMp3Folder.replace(defaultMusicFolder, '')
+        form.mp3Bitrate.data = currentMp3Bitrate
 
     if request.method == 'POST' and form.validate(): 
         try:
@@ -587,86 +607,58 @@ def EditTranscoderSettings():
         except Exception as e:
             resetToDefaults = False
 
-        newSourceFolder = defaultMusicFolder + request.form['sourceFolder'].strip()
-        if not newSourceFolder.replace(defaultMusicFolder, ''):
-            newSourceFolder = ''
         if resetToDefaults:
             newSourceFolder = ''            
-        if newSourceFolder != transcoderSettings['sourcefolder'].strip():
-            try:
-                requests.post(
-                    configObject.ApiRootUrl + '/api/SetTranscoderSourceFolder', 
-                    json = {"Value": newSourceFolder})
-                flash('Saved \'' + newSourceFolder + '\' to Source Folder')
-            except Exception as e:
-                logger.error(e)
-                logger.error(traceback.format_exc())
+        else:
+            newSourceFolder = defaultMusicFolder + request.form['sourceFolder'].strip()
+            if not newSourceFolder.replace(defaultMusicFolder, ''):
+                newSourceFolder = ''                            
+        if newSourceFolder != currentSourceFolder:
+            SaveFormValue('SetTranscoderSourceFolder', newSourceFolder, form.sourceFolder.label)
 
-        newOggFolder = defaultMusicFolder + request.form['oggFolder'].strip()
-        if not newOggFolder.replace(defaultMusicFolder, ''):
-            newOggFolder = ''
         if resetToDefaults:
-            newOggFolder = ''                        
-        if newOggFolder != transcoderSettings['oggfolder'].strip():
-            try:
-                requests.post(
-                    configObject.ApiRootUrl + '/api/SetTranscoderOggFolder', 
-                    json = {"Value": newOggFolder})
-                flash('Saved \'' + newOggFolder + '\' to Ogg Folder')
-            except Exception as e:
-                logger.error(e)
-                logger.error(traceback.format_exc())
+            newOggFolder = ''  
+        else:
+            newOggFolder = defaultMusicFolder + request.form['oggFolder'].strip()
+            if not newOggFolder.replace(defaultMusicFolder, ''):
+                newOggFolder = ''                      
+        if newOggFolder != currentOggFolder:            
+            SaveFormValue('SetTranscoderOggFolder', newOggFolder, form.oggFolder.label)
 
-        newOggQuality = int(request.form['oggQuality'])
         if resetToDefaults:
             newOggQuality = 0        
-        if newOggQuality != int(transcoderSettings['oggquality']):
-            try:
-                requests.post(
-                    configObject.ApiRootUrl + '/api/SetTranscoderOggQuality', 
-                    json = {"Value": newOggQuality})
-                flash('Saved \'' + str(newOggQuality) + '\' to Ogg Quality')
-            except Exception as e:
-                logger.error(e)
-                logger.error(traceback.format_exc())
+        else:
+            newOggQuality = int(request.form['oggQuality'])
+        if newOggQuality != currentOggQuality:
+            SaveFormValue('SetTranscoderOggQuality', newOggQuality, form.oggQuality.label)
 
-        newMp3Folder = defaultMusicFolder + request.form['mp3Folder'].strip()
-        if not newMp3Folder.replace(defaultMusicFolder, ''):
-            newMp3Folder = ''  
         if resetToDefaults:
-            newMp3Folder = ''                        
-        if newMp3Folder != transcoderSettings['mp3folder'].strip():
-            try:
-                requests.post(
-                    configObject.ApiRootUrl + '/api/SetTranscoderMp3Folder', 
-                    json = {"Value": newMp3Folder})
-                flash('Saved \'' + newMp3Folder + '\' to Mp3 Folder')
-            except Exception as e:
-                logger.error(e)
-                logger.error(traceback.format_exc())
+            newMp3Folder = ''  
+        else:
+            newMp3Folder = defaultMusicFolder + request.form['mp3Folder'].strip()
+            if not newMp3Folder.replace(defaultMusicFolder, ''):
+                newMp3Folder = ''                        
+        if newMp3Folder != currentMp3Folder:
+            SaveFormValue('SetTranscoderMp3Folder', newMp3Folder, form.mp3Folder.label)
 
-        newMp3Bitrate = int(request.form['mp3Bitrate'])
         if resetToDefaults:
             newMp3Bitrate = 0
-        if newMp3Bitrate != int(transcoderSettings['mp3bitrate']):
-            try:
-                requests.post(
-                    configObject.ApiRootUrl + '/api/SetTranscoderMp3Bitrate', 
-                    json = {"Value": newMp3Bitrate})
-                flash('Saved \'' + str(newMp3Bitrate) + '\' to Mp3 Bitrate')
-            except Exception as e:
-                logger.error(e)
-                logger.error(traceback.format_exc())
+        else:
+            newMp3Bitrate = int(request.form['mp3Bitrate'])
+        if newMp3Bitrate != currentMp3Bitrate:
+            SaveFormValue('SetTranscoderMp3Bitrate', newMp3Bitrate, form.mp3Bitrate.label)
 
-        return redirect('/transcoder')
+        return redirect(redirectPage)
 
     return render_template('transcoder-edit.html', 
-        appTitle = 'Transcoder Settings - ' + configObject.AppTitle, 
+        appTitle = 'Edit Transcoder Settings - ' + configObject.AppTitle, 
         form = form,
         musicFolder = defaultMusicFolderFunctional)
 
 @app.route('/translations-edit', methods=['GET', 'POST'])
 def EditTranslations():
+    redirectPage = '/system'
+
     try:
         translationList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranslations').content)
     except Exception as e:
@@ -674,54 +666,37 @@ def EditTranslations():
         logger.error(traceback.format_exc())
         translationList = []             
 
+    currentPublicShareName = translationList['PublicShareName'].strip()
+    currentMusicShareName = translationList['MusicShareName'].strip()
+    currentBackupShareName = translationList['BackupShareName'].strip()
+
     form = EditTranslationsForm()
 
-    if request.method == 'GET':
-        form.publicShareName.data = translationList['PublicShareName']
-        form.musicShareName.data = translationList['MusicShareName']
-        form.backupShareName.data = translationList['BackupShareName']                
-
     if form.cancel.data: 
-        return redirect('/system')
+        return redirect(redirectPage)
+
+    if request.method == 'GET':
+        form.publicShareName.data = currentPublicShareName
+        form.musicShareName.data = currentMusicShareName
+        form.backupShareName.data = currentBackupShareName
 
     if request.method == 'POST' and form.validate(): 
         newPublicShareName = request.form['publicShareName'].strip()
-        if newPublicShareName != translationList['PublicShareName'].strip():
-            try:
-                requests.post(
-                    configObject.ApiRootUrl + '/api/SetTranslationPublicShare', 
-                    json = {"Value": newPublicShareName})
-                flash('Saved \'' + newPublicShareName + '\' to Public Share')
-            except Exception as e:
-                logger.error(e)
-                logger.error(traceback.format_exc())
+        if newPublicShareName != currentPublicShareName:
+            SaveFormValue('SetTranslationPublicShare', newPublicShareName, form.publicShareName.label)
 
         newMusicShareName = request.form['musicShareName'].strip()
-        if newMusicShareName != translationList['MusicShareName'].strip():
-            try:
-                requests.post(
-                    configObject.ApiRootUrl + '/api/SetTranslationMusicShare', 
-                    json = {"Value": newMusicShareName})
-                flash('Saved \'' + newMusicShareName + '\' to Music Share')
-            except Exception as e:
-                logger.error(e)
-                logger.error(traceback.format_exc())
+        if newMusicShareName != currentMusicShareName:
+            SaveFormValue('SetTranslationMusicShare', newMusicShareName, form.musicShareName.label)
 
         newBackupShareName = request.form['backupShareName'].strip()
-        if newBackupShareName != translationList['BackupShareName'].strip():
-            try:
-                requests.post(
-                    configObject.ApiRootUrl + '/api/SetTranslationBackupShare', 
-                    json = {"Value": newBackupShareName})
-                flash('Saved \'' + newBackupShareName + '\' to Backup Share')
-            except Exception as e:
-                logger.error(e)
-                logger.error(traceback.format_exc())                                
+        if newBackupShareName != currentBackupShareName:
+            SaveFormValue('SetTranslationBackupShare', newBackupShareName, form.backupShareName.label)            
 
-        return redirect('/system')
+        return redirect(redirectPage)
 
     return render_template('translations-edit.html', 
-        appTitle = 'Translations Edit - ' + configObject.AppTitle, 
+        appTitle = 'Edit Translations - ' + configObject.AppTitle, 
         form = form)
 
 if __name__ == '__main__':
