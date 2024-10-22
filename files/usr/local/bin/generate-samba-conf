@@ -44,7 +44,7 @@ fi
 
 generate_share "$public_share_name" "/media/usbdata/user/public" "yes"
 generate_share "$music_share_name" "/media/usbdata/user/music" "yes"
-generate_share "$backup_share_name" "/media/usbbackup/user" "no"
+generate_share "$backup_share_name" "/media/usbbackup" "no"
 
 rm $samba_conf -f
 cp $temp_conf $samba_conf
