@@ -596,6 +596,10 @@ async def DoTranscode():
     await asyncio.create_subprocess_shell("transcode")
     pass
 
+async def DoGenerateSambaConf():
+    await asyncio.create_subprocess_shell("generate-samba-conf")
+    pass
+
 def ExportCollectionArtistAlbumByFolder(collectionFolder):
     collection = ''
 

@@ -681,17 +681,31 @@ def EditTranslations():
         form.backupShareName.data = currentBackupShareName
 
     if request.method == 'POST' and form.validate(): 
+        translationChanged = False
+
         newPublicShareName = request.form['publicShareName'].strip()
         if newPublicShareName != currentPublicShareName:
+            translationChanged = True
             SaveFormValue('SetTranslationPublicShare', newPublicShareName, form.publicShareName.label)
 
         newMusicShareName = request.form['musicShareName'].strip()
         if newMusicShareName != currentMusicShareName:
+            translationChanged = True            
             SaveFormValue('SetTranslationMusicShare', newMusicShareName, form.musicShareName.label)
 
         newBackupShareName = request.form['backupShareName'].strip()
         if newBackupShareName != currentBackupShareName:
+            translationChanged = True            
             SaveFormValue('SetTranslationBackupShare', newBackupShareName, form.backupShareName.label)            
+
+        if translationChanged:
+            try:
+                apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoGenerateSambaConf').content)
+                flash('Samba share-name(s) haven been adapted.')
+            except Exception as e:
+                logger.error(e)
+                logger.error(traceback.format_exc())
+                apiMessage = []            
 
         return redirect(redirectPage)
 

@@ -548,7 +548,19 @@ def DoTranscode():
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
-    return BuildResponse(HTTP_OK, jsonify(info), request.url)        
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)     
+
+@app.route('/api/DoGenerateSambaConf', methods=['POST'])
+def DoGenerateSambaConf():
+    try:
+        asyncio.run(logic.DoGenerateSambaConf())
+        info = { "Message": "Sambe-configuration is being generated." }
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
 @app.route('/api/GetLmsServerStatus', methods=['GET'])
 def GetLmsServerStatus():
