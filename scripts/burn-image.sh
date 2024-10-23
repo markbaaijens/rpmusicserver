@@ -64,8 +64,7 @@ unmount_partition () {
 working_dir=/tmp/raspbian
 image=https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-01-28/2022-01-28-raspios-bullseye-arm64-lite.zip
 image_hash="d694d2838018cf0d152fe81031dba83182cee79f785c033844b520d222ac12f5"
-archive=raspbian-os-lite.zip
-number_pattern="[0-9]+"
+archive=2022-01-28-raspios-bullseye-arm64-lite.zip
 mount_point=/mnt/temp
 
 setup_environment
@@ -97,8 +96,9 @@ done
 echo "Q: quit"
 
 read -p "Select a disk: " disk_choice
+disk_choice=${disk_choice,,}
 
-if [ "${disk_choice,,}" == "q" ]; then
+if [ "$disk_choice" == "q" ]; then
     cleanup_environment    
     echo "Script ended by user."
     exit
@@ -142,8 +142,9 @@ echo "D: Development (hostname = rpmsdev)"
 echo "Q: quit"
 
 read -p "Select a type: " type_choice
+type_choice=${type_choice,,}
 
-if [ "${type_choice,,}" == "q" ]; then
+if [ "$type_choice" == "q" ]; then
     cleanup_environment    
     echo "Script ended by user."
     exit
@@ -155,22 +156,25 @@ if [ "$type_choice" == "" ]; then
     echo "Script ended."
     exit
 fi
-if [ ${type_choice,,} != "p" ] && [ ${type_choice,,} != "d" ]; then
+if [ $type_choice != "p" ] && [ $type_choice != "d" ]; then
     echo "No type selected."
     cleanup_environment    
     echo "Script ended."
     exit
 fi
-echo "You have chosen: $type_choice $([ ${type_choice,,} == "p" ] && echo "=> production" || echo "=> development")"
+echo "You have chosen: $type_choice $([ $type_choice == "p" ] && echo "=> production" || echo "=> development")"
 
 echo "Language:"
 echo "E: English"
 echo "D: Dutch"
+echo "G: German"
+echo "F: French"
 echo "Q: quit"
 
 read -p "Select a language: " lang_choice
+lang_choice=${lang_choice,,}
 
-if [ "${lang_choice,,}" == "q" ]; then
+if [ "$lang_choice" == "q" ]; then
     cleanup_environment    
     echo "Script ended by user."
     exit
@@ -182,13 +186,30 @@ if [ "$lang_choice" == "" ]; then
     echo "Script ended."
     exit
 fi
-if [ ${lang_choice,,} != "e" ] && [ ${lang_choice,,} != "d" ]; then
+
+if [ $lang_choice != "e" ] && [ $lang_choice != "d" ] && [ $lang_choice != "g" ] && [ $lang_choice != "f" ]; then
     echo "No language selected."
     cleanup_environment    
     echo "Script ended."
     exit
 fi
-echo "You have chosen: $lang_choice $([ ${lang_choice,,} == "e" ] && echo "=> English" || echo "=> Dutch")"
+
+lang_choice_desc=""
+case $lang_choice in
+    e)
+        lang_choice_desc="English"
+        ;;
+    d)
+        lang_choice_desc="Dutch"
+        ;;
+    g)
+        lang_choice_desc="German"
+        ;;
+    f)
+        lang_choice_desc="French"
+        ;;
+esac
+echo "You have chosen: $lang_choice => $lang_choice_desc"
 
 read -r -p "Do you want to continue burning on $chosen_disk? [yes/NO] " start_install
 if [ "$start_install" != "yes" ]; then
@@ -224,7 +245,6 @@ fi
 echo "... done extracting $working_dir/$archive."
 
 echo "Unmounting /dev/$chosen_disk partitions..."
-# partitions_bylabel=$(ls -l /dev/disk/by-label | grep -oE "$chosen_disk.*$"  | awk '{print $9}')
 partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
 for partition in $partitions; do
     partition_name=$(echo $partition | sed -e "s/\/dev\///g")
@@ -275,7 +295,6 @@ unmount_partition "rootfs"
 echo "... done changing hostname."
 
 echo "Set language..."
-lang_choice=${lang_choice,,}
 mount_partition "rootfs"
 echo $lang_choice > $mount_point/etc/lang-choice.txt
 unmount_partition "rootfs"
