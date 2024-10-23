@@ -13,7 +13,7 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
-echo "Start installing packages..."
+echo "Installing packages..."
 apt-get update
 apt-get install docker.io python3-pip tree jq bwm-ng nmap zip -y   # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
@@ -125,7 +125,7 @@ chmod +x /usr/local/bin/transcoder/transcoder.py
 if [ ! -f /media/usbdata/rpms/config/transcoder-settings.json ]; then
     cp /tmp/rpmusicserver/files/config/transcoder/transcoder-settings.json /media/usbdata/rpms/config/transcoder-settings.json
 fi 
-echo "... transcoder installed"
+echo "... transcoder installed."
 
 install_bin_file update-rpms
 install_bin_file backup-server
@@ -139,9 +139,6 @@ install_bin_file reboot-server
 install_bin_file export-collection
 install_bin_file start-web
 install_bin_file generate-samba-conf
-
-echo "Generate samba-configuration..."
-generate-samba-conf
 
 # By always delete existing lines in crontab, we can easily implement
 # a different crontab-strategy later, if needed
@@ -190,13 +187,58 @@ echo "Limit size of /var/log/journal"
 sed -i '/SystemMaxUse/d' /etc/systemd/journald.conf
 /bin/sh -c 'echo "SystemMaxUse=50M" >> /etc/systemd/journald.conf'
 
+echo "Generate translations.json"
+if [ -f /etc/lang-choice.txt ]; then
+    if [ ! -f /media/usbdata/rpms/config/translations.json ]; then
+        echo "- generating translations.json"
+        public_share_name="Public"
+        music_share_name="Music"
+        backup_share_name="Backup"
+
+        if [ "$(grep "d" /etc/lang-choice.txt)" ]; then
+            public_share_name="Publiek"
+            music_share_name="Muziek"
+            backup_share_name="Backup"
+        fi
+
+        if [ "$(grep "g" /etc/lang-choice.txt)" ]; then
+            public_share_name="Öffentlich"
+            music_share_name="Muzik"
+            backup_share_name="Sicherung"
+        fi
+
+        if [ "$(grep "f" /etc/lang-choice.txt)" ]; then
+            public_share_name="Public"
+            music_share_name="Musique"
+            backup_share_name="Sauvegarde"
+        fi
+
+        jq --null-input \
+        --arg public_share_name "$public_share_name" \
+        --arg music_share_name "$music_share_name" \
+        --arg backup_share_name "$backup_share_name" '{"PublicShareName": $public_share_name, "MusicShareName": $music_share_name, "BackupShareName": $backup_share_name }' > /media/usbdata/rpms/config/translations.json
+
+        rm /etc/lang-choice.txt
+    else
+        echo "- translations.json already present"
+    fi
+else
+    echo "- /etc/lang-choice.txt not found"    
+fi
+echo "... done generating translations.json."
+
+# Generating smb.conf must be done *after* translations have been set b/c share-names are translated
+echo "Generate samba-configuration..."
+generate-samba-conf
+echo "... done generating samba-configuration."
+
 echo "Start docker for preloading containers"
 start-docker
-echo "... done starting docker-containers"
+echo "... done starting docker-containers."
 
 echo "Start web-services"
 start-web
-echo "... done starting web-services"
+echo "... done starting web-services."
 
-echo "Installation complete"
+echo "Installation complete."
 
