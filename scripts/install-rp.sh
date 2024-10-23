@@ -195,10 +195,22 @@ if [ -f /etc/lang-choice.txt ]; then
         music_share_name="Music"
         backup_share_name="Backup"
 
-        if [ "$(grep "n" /etc/lang-choice.txt)" ]; then
+        if [ "$(grep "d" /etc/lang-choice.txt)" ]; then
             public_share_name="Publiek"
             music_share_name="Muziek"
             backup_share_name="Backup"
+        fi
+
+        if [ "$(grep "g" /etc/lang-choice.txt)" ]; then
+            public_share_name="Öffentlich"
+            music_share_name="Muzik"
+            backup_share_name="Sicherung"
+        fi
+
+        if [ "$(grep "f" /etc/lang-choice.txt)" ]; then
+            public_share_name="Public"
+            music_share_name="Musique"
+            backup_share_name="Sauvegarde"
         fi
 
         jq --null-input \
