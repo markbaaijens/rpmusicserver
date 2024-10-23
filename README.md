@@ -22,6 +22,8 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
   * for installation purposes, a Linux PC is required
   * once installed, any OS will do, be it Windows, Linux or MacOS
 
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)  
+
 ## Check your network if local DNS works
 To detect if your network supports local DNS, execute the following command in a terminal:
 * `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
@@ -29,6 +31,8 @@ To detect if your network supports local DNS, execute the following command in a
 Check for output:
 * _no output_, it is all good and you can proceed installing RPMS on your Pi.
 * _output produced_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific [Pi/rpms can only reached by ip-address](https://github.com/markbaaijens/rpmusicserver#pirpms-can-only-reached-by-ip-address)
+
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
 
 ## Installation of RPMS on a Pi
 Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
@@ -91,6 +95,8 @@ Installing RPMS on your Pi can be done with a few simple steps, described below.
   * install a Android App like [Squeezer](https://play.google.com/store/apps/details?id=uk.org.ngo.squeezer)
   * enjoy!
 
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
+
 ## Folder mapping
 For several services within RPMS, container-technology docker is used. Within docker, there is no direct link to the file-system, but this is achieved through a virtual folder which is set during installation. Normally, an end-user does not have to know about these virtual folders, but there are a few exceptions primarily around LMS and SyncThing. These specific cases have to be documented.
 
@@ -100,7 +106,11 @@ Mapping from virtual folder to physical folders:
 
 So when working the inside of the docker-infrastructure, either LMS or SyncThing, refer to the virtual folders.
 
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
+
 ## Troubleshooting
+Some common problems in their solutions.
+
 ### *Pi/rpms cannot be reached on the network*
 Sometimes the pi is not visible in the network, either by hostname `rpms` or even by ip-address.
 
@@ -137,6 +147,8 @@ Reconfiguring is best done:
 * (or) by the Squeezebox Controller (per player, change 'Music Collection')
 * (or) on the Squeezebox-device itself (all except Duet which has no physical interface)
 
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
+
 ## Update RPMS
 Update your RPMS-server by the web-interface: 
 * Under Home, Version, click on the Update-button
@@ -146,6 +158,8 @@ You can also opt to update through ssh on rpms:
 * `sudo update-rpms`
 
 Note. Update is disabled when there is no newer version found.
+
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
 
 ## Transcoder
 Within RPMS, there is a transcoder built in, for transcoding your lossless music files (flac) into lossy ones (ogg or mp3). By default, the transcoder is not active, it must be configured to become active.
@@ -176,6 +190,8 @@ In the Transcoder-page, You can also click on the Transcode-button, to start an 
 ### Notes
 * some default quality-levels are used for transcoding: ogg = 1, mp3 = 128; optionally, you can change these defaults through the web-interface under Transcoder
 * you can simultaneously transcode to ogg AND mp3; just set both `Ogg Folder` and `Mp3 Folder`
+
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
 
 ## Backup
 You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS. A proper backup is the basis for [disaster recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery).
@@ -214,6 +230,8 @@ For a backup using rsync over SSH, here is an example-script:<br>
 `	pi@rpms:/media/usbdata/user/* \`<br/> 
 `	/media/$USER/<disklabel of backup-disk>/backup/user`<br/> 
 `sync`<br/> 
+
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
 
 ## Disaster Recovery
 Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which gets broken. In each case, the solution within RPMS is very simple
@@ -255,6 +273,8 @@ _In case of a remote backup_, you have more work to do:
 * reboot and you are back in business
 
 Remember to make a backup to a new backup-disk immediately!
+
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
 
 ## Development
 
@@ -356,6 +376,8 @@ Steps for installing a local player:
   * `curl rpms:5000/api/GetApiList`
   * http://rpms:5000/api/GetApiList
 
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)  
+
 ## Migrating to 1.0
 Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade will introduce breaking changes which turn your system into a broken one. Furthermore, b/c we moved the OS from 32-bit to 64-bit, a new image-burn is needed.
 
@@ -428,5 +450,7 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
 - local computer
   - manually modify local script for external backup if needed
   - modify bookmarks to shares
+
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
 
 
