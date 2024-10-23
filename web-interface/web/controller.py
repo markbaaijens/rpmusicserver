@@ -46,7 +46,7 @@ def SaveFormValue(apiUrl, newValue, fieldLabel):
         requests.post(
             configObject.ApiRootUrl + '/api/' + apiUrl, 
             json = {"Value": newValue})
-        flash('Saved \'' + str(newValue) + '\' to \'' + str(fieldLabel) + '.\'')
+        flash('Saved \'' + str(newValue) + '\' to \'' + str(fieldLabel) + '\'.')
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
