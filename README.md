@@ -92,9 +92,9 @@ Installing RPMS on your Pi can be done with a few simple steps, described below.
   * enjoy!
 
 ## Folder mapping
-For several services within RPMS, container-technology docker is used. Within docker, there is no direct link to the file-system, but this is achieved through a virtual folder which is set during installation. Normally, an end-user does not have to know about these virtual folders, but there are a few exceptions primarily around LMS and SyncThing. These specific case have to be documented.
+For several services within RPMS, container-technology docker is used. Within docker, there is no direct link to the file-system, but this is achieved through a virtual folder which is set during installation. Normally, an end-user does not have to know about these virtual folders, but there are a few exceptions primarily around LMS and SyncThing. These specific cases have to be documented.
 
-Mapping from virtual folder to fysical folders:
+Mapping from virtual folder to physical folders:
 * LMS: /music => rpms://user/[music]
 * SyncThing: => /data => rpms://user
 
@@ -123,14 +123,14 @@ If everything fails (no hostname shown for pi, multiple ip-addresses for hostnam
 ### *Pi/rpms can only reached by ip-address*
 On some local networks, there might be a problem present that the hostname of all connected devices, including RPMS cannot be resolved. In practice, `ping rpms` does not return anything. So any command directly targeted at RPMS such as `ssh pi@rpms` does not work. This is a problem within the router/network, the origin of this problem is unknown to date.
 
-The good news however is that a device is *always* accesible by ip-address. So once you know the ip-address of your RPMS-instance, you can install, configure and use RPMS. All you have to do is the following: in any command in the section *Installation of RPMS on a Pi* (and following sections), replace RPMS with the discovered ip-address.
+The good news however is that a device is *always* accessible by ip-address. So once you know the ip-address of your RPMS-instance, you can install, configure and use RPMS. All you have to do is the following: in any command in the section *Installation of RPMS on a Pi* (and following sections), replace RPMS with the discovered ip-address.
 
-So for example, if the ip-address of RPMS is 192.68.1.20: `ping rpms` will become `ping 192.68.1.20`. And `ssh pi@rpms` will become `ssh pi@192.68.1.20`. In your browser, LMS `rpms:9002` wil become `192.68.1.20:9002` Etc. 
+So for example, if the ip-address of RPMS is 192.68.1.20: `ping rpms` will become `ping 192.68.1.20`. And `ssh pi@rpms` will become `ssh pi@192.68.1.20`. In your browser, LMS `rpms:9002` will become `192.68.1.20:9002` Etc. 
 
 Note that the ip-address might change over time b/c RPMS does not use a fixed address, but instead depends on the router which determines the address. In that case, point to the new address.
 
 ### *Reconnect players after LMS migration*
-When migrating from an existing LMS-server or upgraded your Pi-hardware, you have to reconfigure all players to point to the new LMS-server (even if LMS has the same name). This is especially true for Squeezebox-hardware like Squeezebox Classic, Duet, Touch, Radio, Boom or Transporter. Note: clients with piCorePlayer will autodetect the new LMS-server.
+When migrating from an existing LMS-server or upgrading your Pi-hardware, you have to reconfigure all players to point to the new LMS-server (even if LMS has the same name). This is especially true for Squeezebox-hardware like Squeezebox Classic, Duet, Touch, Radio, Boom or Transporter. Note: clients with piCorePlayer will autodetect the new LMS-server.
 
 Reconfiguring is best done:
 * by the Squeezer-app (per player, disconnect server and reconnect)
@@ -148,10 +148,10 @@ You can also opt to update through ssh on rpms:
 Note. Update is disabled when there is no newer version found.
 
 ## Transcoder
-Within RPMS, there is a trancoder built in, for transcoding your lossless music files (flac) into lossy ones (ogg or mp3). By default, the transcoder is not active, it must be configured to become active.
+Within RPMS, there is a transcoder built in, for transcoding your lossless music files (flac) into lossy ones (ogg or mp3). By default, the transcoder is not active, it must be configured to become active.
 
 ### Enabling transcoder
-For getting trancoding to work, take the following steps: 
+For getting transcoding to work, take the following steps: 
 * in your file explorer
   * create a folder `flac` under `smb://<music folder>`
   * move your flac-files into that folder `flac`
@@ -165,13 +165,13 @@ For getting trancoding to work, take the following steps:
   * in the web-interface, under Transcoder, Edit, change setting `Ogg Folder`
     * point to `ogg`
 * for transcoding to mp3
-  * in your file explorer, create a folder `mp3`under `smb://rpms/<music folder>`
+  * in your file explorer, create a folder `mp3` under `smb://rpms/<music folder>`
   * in the web-interface, under Transcoder, Edit, change setting `Mp3 Folder`
     * point to `mp3`
 
 From now on, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder without any interaction.
 
-In the Transcoder-page, You can also click on the Transcode-button, to start an immediate transcoding session, for if you do want to wait for the automatic session to kick in. Note that this button is diabled if transcoding is not configured.
+In the Transcoder-page, You can also click on the Transcode-button, to start an immediate transcoding session, for if you do want to wait for the automatic session to kick in. Note that this button is disabled if transcoding is not configured.
 
 ### Notes
 * some default quality-levels are used for transcoding: ogg = 1, mp3 = 128; optionally, you can change these defaults through the web-interface under Transcoder
@@ -181,9 +181,9 @@ In the Transcoder-page, You can also click on the Transcode-button, to start an 
 You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS. A proper backup is the basis for [disaster recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery).
 
 ### Server-based backup 
-The advantage of the server-based (local) backup is that the resulting backup is a identical copy of the data-disk, making it very easy to switch in case of a disaster. The disadvantage is that you have to have local access to the server (Pi) for attaching the backup-disk.
+The advantage of the server-based (local) backup is that the resulting backup is an identical copy of the data-disk, making it very easy to switch in case of a disaster. The disadvantage is that you have to have local access to the server (Pi) for attaching the backup-disk.
 
-This backup will be done to a dedicated backup-disk, connected to the Pi it self, thus a server-based backup.
+This backup will be done to a dedicated backup-disk, connected to the Pi itself, thus a server-based backup.
 
 #### Steps to create a server-based backup
 * format a disk dedicated for RPMS-backups (you only have to do this once):
@@ -199,7 +199,7 @@ This backup will be done to a dedicated backup-disk, connected to the Pi it self
 #### Viewing backup-data on the usbbackup-disk
 In case of a server-based backup, your backup will be made to a separate backup-disk. You can view the data on this disk, either online or offline:
 
-* for viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file esplorer to `smb://rpms/Backup` and than you can view all the files on that disk.
+* for viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file explorer to `smb://rpms/Backup` and than you can view all the files on that disk.
 * for viewing _offline_, the backup-disk has to be attached to your own PC or laptop. The backup-disk is formatted as ext4 so this format is natively supported on Linux, thus being plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
 ### Remote backup
@@ -216,7 +216,7 @@ For a backup using rsync over SSH, here is an example-script:<br>
 `sync`<br/> 
 
 ## Disaster Recovery
-Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple
+Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which gets broken. In each case, the solution within RPMS is very simple
 
 ### Broken Pi (very unlikely)
 Steps to get back on track:
@@ -241,7 +241,7 @@ _In case of a server-based backup_, you are 'lucky': b/c the backup-disk is an e
 
 Steps to get back on track:
 * rename the label of the backup-disk from `usbbackup` to `usbdata` 
-  * use your favourite disk-tool (Disks, gparted, etc.)
+  * use your favorite disk-tool (Disks, gparted, etc.)
 * connect the disk to the Pi and boot up
 
 By now, the backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made.
@@ -277,7 +277,7 @@ For returning to the `master` branch version simply delete the `update-branch.tx
 
 Note. Once an override is active, the current and available version do not play a role anymore.
 
-Note. If local DNS does not work, the hostname`rpms` has to be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
+Note. If local DNS does not work, the hostname `rpms` has to be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
 
 ### Build development version with separate hostname
 A regular install of rpms results in a Pi with hostname `rpms`, which is fine. As a developer, you want to test your code on a different machine than the one in production, on a second Pi; but having two machines within the network with the same hostname, results in errors. 
@@ -287,7 +287,7 @@ You can opt for using `rpmsdev` as the hostname for that second Pi. This is done
 * While burning the SD-card:
   * Select a type: choose D for Development
 
-The other steps in the installation process stay the same. In the end, this result in a Pi with a hostname `rpmsdev`, so you can easily distinquish and address the two, development (`rpmsdev`) and production (`rpms`). From now on, you can reach the development-server on `rpmsdev`.
+The other steps in the installation process stay the same. In the end, this results in a Pi with a hostname `rpmsdev`, so you can easily distinguish and address the two, development (`rpmsdev`) and production (`rpms`). From now on, you can reach the development-server on `rpmsdev`.
 
 Note. It must be clear that if you do not have a production/live machine for rpms in your network and you are using the installed Pi solely for testing purposes, there is no need to have a different hostname, the standard `rpms` will do just fine.
 
@@ -295,7 +295,7 @@ Tip. In case hostnames `rpms` and `rpmsdev` get mixed up, try to flush DNS:
   * `sudo systemd-resolve --flush-caches`
 
 ### Update and install from local files  
-As a developer, you want to test your changes on a physical machine (Pi). As the changes in the code are usually done on a different machine than the one on which the test takes places, you have to have a way to transfer your code to the (test) Pi and install them to see the result.
+As a developer, you want to test your changes on a physical machine (Pi). As the changes in the code are usually done on a different machine than the one on which the test takes place, you have to have a way to transfer your code to the (test) Pi and install them to see the result.
 
 #### To have the code locally on your development-machine
 * clone/download the git-repo from [github](https://github.com/markbaaijens/rpmusicserver) (instructions can be found there)
@@ -314,12 +314,12 @@ As a developer, you want to test your changes on a physical machine (Pi). As the
 
 Note. The transferred code is dependent on the chosen git-branch. By changing the branch, you can transfer and test any code in any branch. 
 
-Note. You can also do this 'trick' in a live, production-environment, but than you must know what you are doing, so don't try this at home! Usually, a production-machine is updated through the regular update-mechanism, in which code is retreived from the git-repo on github (be it the master-branch or, if overridden, by another branch, usually develop). 
+Note. You can also do this 'trick' in a live, production-environment, but then you must know what you are doing, so don't try this at home! Usually, a production-machine is updated through the regular update-mechanism, in which code is retrieved from the git-repo on github (be it the master-branch or, if overridden, by another branch, usually develop). 
 
-Note. If local DNS does not work, the hostname`rpmsdev` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.    
+Note. If local DNS does not work, the hostname `rpmsdev` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.    
 
 ### Local test-environment on your development-machine
-Testing on a (second) machine/Pi is the ultimate test, but to quickly see your changes in the web-interface (api or web) on your development-machine, we can setup an environment for exactly that. 
+Testing on a (second) machine/Pi is the ultimate test, but to quickly see your changes in the web-interface (api or web) on your development-machine, we can set up an environment for exactly that. 
 
 In short, you have to open two terminals, each running a web-service, one running the api, the second running the web-UI.
 
@@ -342,7 +342,7 @@ In short, you have to open two terminals, each running a web-service, one runnin
 Note. This environment is very limited b/c not all components which the code interacts with, such as disks or docker-containers or the Pi itself, are not available (however, you can spoof some of those components). But for seeing changes in the UI, this works just fine.
 
 ### Local LMS-player
-As a developer, it is usefull to have at least one player which can connect to the LMS-server. We can easily transform a regular laptop or PC to a local player, just for testing purposes.
+As a developer, it is useful to have at least one player which can connect to the LMS-server. We can easily transform a regular laptop or PC to a local player, just for testing purposes.
 
 Steps for installing a local player:
 - install squeezelite
@@ -357,7 +357,7 @@ Steps for installing a local player:
   * http://rpms:5000/api/GetApiList
 
 ## Migrating to 1.0
-Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade will introduce breaking changes which turn your system into a broken one. Further more, b/c we moved the OS from 32-bit to 64-bit, a new image-burn is needed.
+Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade will introduce breaking changes which turn your system into a broken one. Furthermore, b/c we moved the OS from 32-bit to 64-bit, a new image-burn is needed.
 
 ### Steps to migrate to 1.0
 
