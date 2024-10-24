@@ -215,7 +215,7 @@ This backup will be done to a dedicated backup-disk, connected to the Pi itself,
 #### Viewing backup-data on the usbbackup-disk
 In case of a server-based backup, your backup will be made to a separate backup-disk. You can view the data on this disk, either online or offline:
 
-* for viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file explorer to `smb://rpms/Backup` and than you can view all the files on that disk.
+* for viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file explorer to `smb://rpms/Backup` and then you can view all the files on that disk.
 * for viewing _offline_, the backup-disk has to be attached to your own PC or laptop. The backup-disk is formatted as ext4 so this format is natively supported on Linux, thus being plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
 ### Remote backup
@@ -300,7 +300,7 @@ Note. Once an override is active, the current and available version do not play 
 Note. If local DNS does not work, the hostname `rpms` has to be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
 
 ### Build development version with separate hostname
-A regular install of rpms results in a Pi with hostname `rpms`, which is fine. As a developer, you want to test your code on a different machine than the one in production, on a second Pi; but having two machines within the network with the same hostname, results in errors. 
+A regular install of rpms results in a Pi with hostname `rpms`, which is fine. As a developer, you want to test your code on a different machine then the one in production, on a second Pi; but having two machines within the network with the same hostname, results in errors. 
 
 You can opt for using `rpmsdev` as the hostname for that second Pi. This is done while burning the SD-card, as the first step in the installation process [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
 
