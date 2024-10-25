@@ -409,7 +409,7 @@ def GetBackupInfo():
     try:
         lastBackup = lastBackup + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastBackup, '%Y-%m-%d %H:%M:%S'))  
     except:      
-       lastBackup = "No backup made, yet";
+       lastBackup = "No backup made, yet"
     
     return {"IsSystemFreeForBackup": isSystemFreeForBackup,
             "IsBackupDiskPresent": isBackupDiskPresent,
