@@ -258,9 +258,12 @@ You may possibly need to [reconnect player(s)](https://github.com/markbaaijens/r
 _In case of a server-based backup_, you are 'lucky': b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. 
 
 Steps to get back on track:
+* shut down the Pi
 * rename the label of the backup-disk from `usbbackup` to `usbdata` 
-  * use your favorite disk-tool (Disks, gparted, etc.)
-* connect the disk to the Pi and boot up
+  * use your favorite disk-tool (Disks, gparted, etc.) on your PC or laptop
+  * unplug the usbdisk
+* connect the newly renamed usbdisk to the Pi and boot up
+* check if everything is working correctly (smb, transcoding, lms, etc.) 
 
 By now, the backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made.
 
