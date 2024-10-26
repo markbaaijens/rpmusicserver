@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Home</h2>
+    <h2>Home
+        <a href="https://github.com/markbaaijens/rpmusicserver#rp-music-server" target="_blank">
+            <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
+         </a>
+    </h2>
     <table>
         <tr>
             <td>Hostname</td>
@@ -25,7 +29,11 @@
         </tr>
     </table>    
 
-    <h3>Version</h3>
+    <h3>Version
+        <a href="https://github.com/markbaaijens/rpmusicserver#update-rpms" target="_blank">
+            <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
+         </a>
+    </h3>
     <table>
         <tr>
             <td>Current</td>
