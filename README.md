@@ -159,6 +159,8 @@ You can also opt to update through ssh on rpms:
 
 Note. Update is disabled when there is no newer version found.
 
+Note. For developer-purposes, you might want to update from the development-branch, to have the latest-and-greatest version of RPMS. Beware that this might be unstable, so use with caution! See [Update from another git branch](https://github.com/markbaaijens/rpmusicserver#update-from-another-git-branch) for details.
+
 [Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
 
 ## Transcoder
@@ -286,22 +288,20 @@ Remember to make a backup to a new backup-disk immediately!
 [Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
 
 ## Development
+For the developer for RPMS, several tips-and-tricks are available to make development easier. 
 
 ### Update from another git branch
 By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. 
 
 In most cases this is the `develop` branch. Once set, you can update to the latest developer-features. But b/c this is considered as experimental (non-stable), use this option with precaution!
 
-To switch version from `master` branch to e.g. `develop` branch:
+#### For overriding update from `master` to `develop` branch
 * `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
 
-Once the file `update-branch.txt` has been set, the update-button in the web-interface becomes active. Click on it and it will update rpms to the latest version on `develop`. 
+Once the override-file `update-branch.txt` has been set, you can update your RPMS as usual, it will now update RPMS to the latest version on `develop`. See [Update RPMS](https://github.com/markbaaijens/rpmusicserver#update-rpms) for details.
 
-You can also opt to update through ssh on rpms: 
-* `ssh pi@rpms`
-* `sudo update-rpms`
-
-For returning to the `master` branch version simply delete the `update-branch.txt` file:
+#### For reverting the update-override
+Simply delete the `update-branch.txt` file:
 * `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
 
 Note. Once an override is active, the current and available version do not play a role anymore.
