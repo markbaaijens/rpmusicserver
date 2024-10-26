@@ -47,16 +47,17 @@ Installing RPMS on your Pi can be done with a few simple steps, described below.
   * insert SD-card into your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/burn-image.sh`
     * enter your (personal) password of your PC
-    * Select a disk: choose the inserted SD-card
-    * Select a type: choose P for Production
-    * Do you want to continue burning on [chosen device]: type 'yes'        
+  * Select a disk: choose the inserted SD-card
+  * Select a type: choose P for Production
+  * Select a language: choose your language
+  * Do you want to continue burning on [chosen device]: type 'yes'        
 * Format USB-drive for data:
   * connect USB-drive to your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/format-usbdisk.sh`
     * enter your (personal) password of your PC
-    * Select a disk: select the inserted USB-disk
-    * Select a format-type: choose D for data-disk
-    * Do you want to continue formatting [chosen device] as 'usbbackup': type 'yes'  
+  * Select a disk: select the inserted USB-disk
+  * Select a format-type: choose D for data-disk
+  * Do you want to continue formatting [chosen device] as 'usbbackup': type 'yes'  
 * First boot:
   * make sure your Pi is powered off
   * insert SD-card into your Pi
@@ -403,12 +404,9 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
 - backup your system
   - create a server-backup
   - optional: create remote backup
-- delete entries in SyncThing
+- delete sync-folders in SyncThing
   - copy syncthing-config for later reference
     - `ssh pi@rpms "cat /media/usbdata/rpms/config/docker/syncthing/config.xml" > ~/synthing-config.txt`
-  - locations will be changed:
-    - /data/Muziek => /data/music
-    - /data => /data/public     
   - record the folder-config functionally
     - sync-method (S Send, R Receive, S/R Send and receive)
     - current base folder (say /data/Muziek/xxx)
@@ -420,16 +418,23 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
   - `ssh pi@rpms`
 - kill all containers
   - `sudo kill-docker`
-- rename folders
+- move folders
   - `sudo mv /media/usbdata/user/Publiek /media/usbdata/user/public`
-  - `sudo mkdir /media/usbdata/user/music -p`
-  - `sudo mv /media/usbdata/user/public/Muziek/* /media/usbdata/user/music`
-  - `sudo rmdir /media/usbdata/user/public/Muziek`
-  - `tree -d -L 2 /media/usbdata/user  # To check`
+  - move music-folder
+    - `sudo mkdir /media/usbdata/user/music -p`
+    - `sudo mv /media/usbdata/user/public/Muziek/* /media/usbdata/user/music`
+    - `sudo rmdir /media/usbdata/user/public/Muziek`
+  - move downloads-folder
+    - `sudo mkdir /media/usbdata/user/downloads -p`
+    - `sudo mv /media/usbdata/user/public/Downloads/* /media/usbdata/user/downloads`
+    - `sudo rmdir /media/usbdata/user/public/Downloads`
+  - check result
+    - `tree -d -L 2 /media/usbdata/user`
 - convert transcoder-settings
   - `sudo sed -i -e 's/Publiek/public/g' /media/usbdata/rpms/config/transcoder-settings.json`
   - `sudo sed -i -e 's/public\/Muziek/music/g' /media/usbdata/rpms/config/transcoder-settings.json`
-  - `cat /media/usbdata/rpms/config/transcoder-settings.json  # To check`
+  - check result
+    - `cat /media/usbdata/rpms/config/transcoder-settings.json`
 - stop the server
   - `sudo halt-server`  
 
@@ -437,9 +442,9 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
 - put the new SD-card into the Pi and boot-up
 - do an install, just like doing a new install of RPMS
   - see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) under 'Installation' for instructions
-- re-create folders in SyncThing if needed, with these new locations:
-  - /data/Muziek => /data/music
-  - /data => /data/public 
+- re-create folders in SyncThing if needed, with these new locations of /data:
+  - from /media/usbdata/user/Publiek 
+  - to /media/usbdata/user
 
 (4) Check system if all is working well: 
 - Samba-shares
@@ -449,7 +454,7 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
 
 **Optional**
 
-- to speedup server-backup
+- to speedup server-backup, move folders
   - `ssh pi@rpms`
   - `sudo mv /media/usbbackup/user/Publiek /media/usbbackup/user/public`
   - `sudo mkdir /media/usbbackup/user/music -p`

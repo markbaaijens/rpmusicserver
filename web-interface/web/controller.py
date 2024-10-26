@@ -668,6 +668,7 @@ def EditTranslations():
 
     currentPublicShareName = translationList['PublicShareName'].strip()
     currentMusicShareName = translationList['MusicShareName'].strip()
+    currentDownloadsShareName = translationList['DownloadsShareName'].strip()    
     currentBackupShareName = translationList['BackupShareName'].strip()
 
     form = EditTranslationsForm()
@@ -678,6 +679,7 @@ def EditTranslations():
     if request.method == 'GET':
         form.publicShareName.data = currentPublicShareName
         form.musicShareName.data = currentMusicShareName
+        form.downloadsShareName.data = currentDownloadsShareName
         form.backupShareName.data = currentBackupShareName
 
     if request.method == 'POST' and form.validate(): 
@@ -692,6 +694,11 @@ def EditTranslations():
         if newMusicShareName != currentMusicShareName:
             translationChanged = True            
             SaveFormValue('SetTranslationMusicShare', newMusicShareName, form.musicShareName.label)
+
+        newDownloadsShareName = request.form['downloadsShareName'].strip()
+        if newDownloadsShareName != currentDownloadsShareName:
+            translationChanged = True            
+            SaveFormValue('SetTranslationDownloadsShare', newDownloadsShareName, form.downloadsShareName.label)
 
         newBackupShareName = request.form['backupShareName'].strip()
         if newBackupShareName != currentBackupShareName:

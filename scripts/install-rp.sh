@@ -73,8 +73,8 @@ mkdir /media/usbdata/rpms/logs -p
 mkdir /media/usbdata/user/public -p
 chmod 777 /media/usbdata/user/public
 
-mkdir /media/usbdata/user/public/Downloads -p
-chmod 777 /media/usbdata/user/public/Downloads
+mkdir /media/usbdata/user/downloads -p
+chmod 777 /media/usbdata/user/downloads
 
 mkdir /media/usbdata/user/music -p
 chmod 777 /media/usbdata/user/music
@@ -202,30 +202,35 @@ if [ ! -f /media/usbdata/rpms/config/translations.json ]; then
     # 'e' = default and also fail-safe
     public_share_name="Public"
     music_share_name="Music"
+    downloads_share_name="Downloads"
     backup_share_name="Backup"
 
     if [ "$lang_choice" == "d" ]; then
         public_share_name="Publiek"
         music_share_name="Muziek"
+        downloads_share_name="Downloads"        
         backup_share_name="Backup"
     fi
 
     if [ "$lang_choice" == "g" ]; then
         public_share_name="Öffentlich"
         music_share_name="Muzik"
+        downloads_share_name="Herunterladungen"
         backup_share_name="Sicherung"
     fi
 
     if [ "$lang_choice" == "f" ]; then
         public_share_name="Public"
         music_share_name="Musique"
+        downloads_share_name="Téléchargements"
         backup_share_name="Sauvegarde"
     fi
 
     jq --null-input \
     --arg public_share_name "$public_share_name" \
     --arg music_share_name "$music_share_name" \
-    --arg backup_share_name "$backup_share_name" '{"PublicShareName": $public_share_name, "MusicShareName": $music_share_name, "BackupShareName": $backup_share_name }' > /media/usbdata/rpms/config/translations.json
+    --arg downloads_share_name "$downloads_share_name" \
+    --arg backup_share_name "$backup_share_name" '{"PublicShareName": $public_share_name, "MusicShareName": $music_share_name, "DownloadsShareName": $downloads_share_name, "BackupShareName": $backup_share_name }' > /media/usbdata/rpms/config/translations.json
 
 else
     echo "- translations.json already present"

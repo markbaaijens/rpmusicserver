@@ -44,6 +44,7 @@ class EditTranscoderForm(FlaskForm):
 class EditTranslationsForm(FlaskForm):
     publicShareName = StringField('Public Share')
     musicShareName = StringField('Music Share')
+    downloadsShareName = StringField('Downloads Share')    
     backupShareName = StringField('Backup Share')    
 
     submit = SubmitField('Save')
@@ -61,6 +62,11 @@ class EditTranslationsForm(FlaskForm):
         if field.data == '':
             raise ValidationError('Empty value is not permitted.')
         pass
+
+    def validate_downloadsShareName(self, field):
+        if field.data == '':
+            raise ValidationError('Empty value is not permitted.')
+        pass    
 
     def validate_backuphareName(self, field):
         if field.data == '':
