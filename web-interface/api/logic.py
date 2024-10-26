@@ -405,8 +405,12 @@ def GetBackupInfo():
     canBackup = isBackupDiskPresent and isSystemFreeForBackup
 
     lastBackup = ExecuteBashCommand("cat /media/usbdata/rpms/logs/backup.log | grep 'executing backup' | tail -n 1 | cut -c1-19")
-    lastBackup = lastBackup + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastBackup, '%Y-%m-%d %H:%M:%S'))    
 
+    try:
+        lastBackup = lastBackup + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastBackup, '%Y-%m-%d %H:%M:%S'))  
+    except:      
+       lastBackup = "No backup made, yet"
+    
     return {"IsSystemFreeForBackup": isSystemFreeForBackup,
             "IsBackupDiskPresent": isBackupDiskPresent,
             "CanBackup": canBackup,
