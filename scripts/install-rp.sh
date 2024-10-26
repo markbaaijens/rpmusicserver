@@ -188,43 +188,49 @@ sed -i '/SystemMaxUse/d' /etc/systemd/journald.conf
 /bin/sh -c 'echo "SystemMaxUse=50M" >> /etc/systemd/journald.conf'
 
 echo "Generate translations.json"
-if [ -f /etc/lang-choice.txt ]; then
-    if [ ! -f /media/usbdata/rpms/config/translations.json ]; then
-        echo "- generating translations.json"
-        public_share_name="Public"
-        music_share_name="Music"
-        backup_share_name="Backup"
+if [ ! -f /media/usbdata/rpms/config/translations.json ]; then
+    echo "- file translations.json not found, generating translations.json"
 
-        if [ "$(grep "d" /etc/lang-choice.txt)" ]; then
-            public_share_name="Publiek"
-            music_share_name="Muziek"
-            backup_share_name="Backup"
-        fi
-
-        if [ "$(grep "g" /etc/lang-choice.txt)" ]; then
-            public_share_name="Öffentlich"
-            music_share_name="Muzik"
-            backup_share_name="Sicherung"
-        fi
-
-        if [ "$(grep "f" /etc/lang-choice.txt)" ]; then
-            public_share_name="Public"
-            music_share_name="Musique"
-            backup_share_name="Sauvegarde"
-        fi
-
-        jq --null-input \
-        --arg public_share_name "$public_share_name" \
-        --arg music_share_name "$music_share_name" \
-        --arg backup_share_name "$backup_share_name" '{"PublicShareName": $public_share_name, "MusicShareName": $music_share_name, "BackupShareName": $backup_share_name }' > /media/usbdata/rpms/config/translations.json
-
-        rm /etc/lang-choice.txt
+    lang_choice="e"
+    if [ -f /etc/lang-choice.txt ]; then
+        lang_choice="$(cat /etc/lang-choice.txt)"
+        echo "- language from /etc/lang-choice.txt = '$lang_choice'"
     else
-        echo "- translations.json already present"
+        echo "- file /etc/lang-choice.txt not found, resorting to default = 'e'"
     fi
+
+    # 'e' = default and also fail-safe
+    public_share_name="Public"
+    music_share_name="Music"
+    backup_share_name="Backup"
+
+    if [ "$lang_choice" == "d" ]; then
+        public_share_name="Publiek"
+        music_share_name="Muziek"
+        backup_share_name="Backup"
+    fi
+
+    if [ "$lang_choice" == "g" ]; then
+        public_share_name="Öffentlich"
+        music_share_name="Muzik"
+        backup_share_name="Sicherung"
+    fi
+
+    if [ "$lang_choice" == "f" ]; then
+        public_share_name="Public"
+        music_share_name="Musique"
+        backup_share_name="Sauvegarde"
+    fi
+
+    jq --null-input \
+    --arg public_share_name "$public_share_name" \
+    --arg music_share_name "$music_share_name" \
+    --arg backup_share_name "$backup_share_name" '{"PublicShareName": $public_share_name, "MusicShareName": $music_share_name, "BackupShareName": $backup_share_name }' > /media/usbdata/rpms/config/translations.json
+
 else
-    echo "- /etc/lang-choice.txt not found"    
+    echo "- translations.json already present"
 fi
+rm /etc/lang-choice.txt -rf
 echo "... done generating translations.json."
 
 # Generating smb.conf must be done *after* translations have been set b/c share-names are translated
