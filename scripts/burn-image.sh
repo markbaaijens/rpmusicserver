@@ -20,24 +20,26 @@ cleanup_environment() {
 mount_partition () {
     partition_name=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
 
-    if [ ! -d $mount_point ]; then 
-        mkdir $mount_point
-    fi
+	if [ -n "$(df | grep $partition_name)" ]; then
+        if [ ! -d $mount_point ]; then 
+            mkdir $mount_point
+        fi
 
-    if [ -z $partition_name ]; then
-        echo "Failed to capture $partition_name."
-        cleanup_environment
-        echo "Script ended with failure."
-        exit
-    fi
+        if [ -z $partition_name ]; then
+            echo "Failed to capture $partition_name."
+            cleanup_environment
+            echo "Script ended with failure."
+            exit
+        fi
 
-    mount "/dev/$partition_name" $mount_point
+        mount "/dev/$partition_name" $mount_point
 
-	if [ -z "$(df | grep $partition_name)" ]; then
-        echo "Failed to mount $partition_name."
-        cleanup_environment
-        echo "Script ended with failure."
-        exit
+        if [ -z "$(df | grep $partition_name)" ]; then
+            echo "Failed to mount $partition_name."
+            cleanup_environment
+            echo "Script ended with failure."
+            exit
+        fi
     fi
 }
 
@@ -252,11 +254,13 @@ for partition in $partitions; do
     unmount_partition "$partition_label"
    	echo "- partition $partition_label successfully unmounted."
 done
+sleep 3
 hdparm -z /dev/$chosen_disk > /dev/null
 echo "... done unmounting /dev/$chosen_disk partitions."
 
 echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
+sleep 3
 hdparm -z /dev/$chosen_disk > /dev/null
 echo "... done wiping $chosen_disk."
 
@@ -265,8 +269,8 @@ if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]; then
 fi
 echo "Start burning $extracted_img to $chosen_disk..."
 ddrescue -D --force $extracted_img "/dev/$chosen_disk"
+sleep 3
 hdparm -z /dev/$chosen_disk > /dev/null
-sleep 3  # Give the OS some time to reread
 echo "... done burning $chosen_disk."
 
 if [ ! -d /dev/disk/by-label ]; then
