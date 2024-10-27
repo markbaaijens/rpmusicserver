@@ -170,7 +170,7 @@ Within RPMS, there is a transcoder built in, for transcoding your lossless music
 ### Enabling transcoder
 For getting transcoding to work, take the following steps: 
 * in your file explorer
-  * create a folder `flac` under `smb://<music folder>`
+  * create a folder `flac` under `smb://rpms/music`
   * move your flac-files into that folder `flac`
 * in LMS Server Settings, modify music-folder:
   * from  `/music`
@@ -178,11 +178,11 @@ For getting transcoding to work, take the following steps:
 * in the web-interface, under Transcoder, Edit, change setting `Source Folder`
   * point to `flac`
 * for transcoding to ogg
-  * in your file explorer, create a folder `ogg` under `smb://rpms/<music folder>`
+  * in your file explorer, create a folder `ogg` under `smb://rpms/music`
   * in the web-interface, under Transcoder, Edit, change setting `Ogg Folder`
     * point to `ogg`
 * for transcoding to mp3
-  * in your file explorer, create a folder `mp3` under `smb://rpms/<music folder>`
+  * in your file explorer, create a folder `mp3` under `smb://rpms/music`
   * in the web-interface, under Transcoder, Edit, change setting `Mp3 Folder`
     * point to `mp3`
 
@@ -191,7 +191,7 @@ From now on, file transcoding will take place and lossy-files will automagically
 In the Transcoder-page, You can also click on the Transcode-button, to start an immediate transcoding session, for if you do want to wait for the automatic session to kick in. Note that this button is disabled if transcoding is not configured.
 
 ### Notes
-* some default quality-levels are used for transcoding: ogg = 1, mp3 = 128; optionally, you can change these defaults through the web-interface under Transcoder
+* some default quality-levels are used for transcoding: ogg = 1, mp3 = 128 kbps; optionally, you can change these defaults through the web-interface under Transcoder
 * you can simultaneously transcode to ogg AND mp3; just set both `Ogg Folder` and `Mp3 Folder`
 
 [Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
@@ -218,7 +218,7 @@ This backup will be done to a dedicated backup-disk, connected to the Pi itself,
 #### Viewing backup-data on the usbbackup-disk
 In case of a server-based backup, your backup will be made to a separate backup-disk. You can view the data on this disk, either online or offline:
 
-* for viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file explorer to `smb://rpms/Backup` and then you can view all the files on that disk.
+* for viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file explorer to `smb://rpms/backup` and then you can view all the files on that disk.
 * for viewing _offline_, the backup-disk has to be attached to your own PC or laptop. The backup-disk is formatted as ext4 so this format is natively supported on Linux, thus being plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
 ### Remote backup
