@@ -18,48 +18,29 @@ cleanup_environment() {
 }
 
 mount_partition () {
-    partition_name=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
-
-	if [ -n "$(df | grep $partition_name)" ]; then
-        if [ ! -d $mount_point ]; then 
-            mkdir $mount_point
-        fi
-
-        if [ -z $partition_name ]; then
-            echo "Failed to capture $partition_name."
-            cleanup_environment
-            echo "Script ended with failure."
-            exit
-        fi
-
-        mount "/dev/$partition_name" $mount_point
-
-        if [ -z "$(df | grep $partition_name)" ]; then
-            echo "Failed to mount $partition_name."
-            cleanup_environment
-            echo "Script ended with failure."
-            exit
-        fi
+    if [ ! -d $mount_point ]; then 
+        mkdir $mount_point
     fi
+
+    if [ -z $partition ]; then
+        echo "Failed to capture $partition."
+        cleanup_environment
+        echo "Script ended with failure."
+        exit
+    fi
+
+    mount "/dev/$partition" $mount_point
+    hdparm -z /dev/$chosen_disk > /dev/null
 }
 
 unmount_partition () {
-    partition_name=$(ls -l /dev/disk/by-label | grep "$1" | grep -oE "$chosen_disk.*$")
-
-    if [ -n "$(mount | grep "$1")" ]; then
-        umount "/dev/$partition_name"
+    if [ -n "$(mount | grep "$partitions")" ]; then
+        umount "/dev/$partition"
         hdparm -z /dev/$chosen_disk > /dev/null
         if [ -d $mount_point ]; then 
             rm -rf $mount_point
         fi
         sleep 3 # Give the OS time to reread
-
-        if [ -n "$(df | grep $partition_name)" ]; then
-            echo "Failed to umount $partition_name."
-            cleanup_environment
-            echo "Script ended with failure."
-            exit
-        fi
     fi
 }
 
@@ -249,18 +230,23 @@ echo "... done extracting $working_dir/$archive."
 echo "Unmounting /dev/$chosen_disk partitions..."
 partitions=$(lsblk -l -n -p -e7 /dev/$chosen_disk | grep part | awk '{print $1}')
 for partition in $partitions; do
-    partition_name=$(echo $partition | sed -e "s/\/dev\///g")
-    partition_label=$(ls -l /dev/disk/by-label | grep $partition_name | awk '{print $9}')
-    unmount_partition "$partition_label"
-   	echo "- partition $partition_label successfully unmounted."
+    sleep 3
+    if [ -n "$(mount | grep "$partitions")" ]; then
+        umount -f "$partition"
+        if [ -n "$(df | grep $partition)" ]; then
+            echo "Failed to umount $partition."
+            cleanup_environment
+            echo "Script ended with failure."
+            exit
+        fi
+        echo "- partition $partition unmounted."
+    fi
 done
-sleep 3
 hdparm -z /dev/$chosen_disk > /dev/null
 echo "... done unmounting /dev/$chosen_disk partitions."
 
 echo "Start wiping $chosen_disk..."
 wipefs -a "/dev/$chosen_disk"
-sleep 3
 hdparm -z /dev/$chosen_disk > /dev/null
 echo "... done wiping $chosen_disk."
 
@@ -269,8 +255,8 @@ if [ ! $(dpkg --list | grep gddrescue | awk '{print $1}' | grep ii) ]; then
 fi
 echo "Start burning $extracted_img to $chosen_disk..."
 ddrescue -D --force $extracted_img "/dev/$chosen_disk"
-sleep 3
 hdparm -z /dev/$chosen_disk > /dev/null
+sleep 3  # Give the OS some time to reread
 echo "... done burning $chosen_disk."
 
 if [ ! -d /dev/disk/by-label ]; then
@@ -280,11 +266,20 @@ if [ ! -d /dev/disk/by-label ]; then
     exit
 fi
 
+echo "Mount boot"
+partition=$(ls -l /dev/disk/by-label | grep "boot" | grep -oE "$chosen_disk.*$")
+mount_partition
+
 echo "Activate SSH..."
-mount_partition "boot"
 touch $mount_point/ssh
-unmount_partition "boot"
 echo "... SSH has been activated on $chosen_disk."
+
+echo "Unmount boot"
+unmount_partition
+
+echo "Mount rootfs"
+partition=$(ls -l /dev/disk/by-label | grep "rootfs" | grep -oE "$chosen_disk.*$")
+mount_partition
 
 if [ ${type_choice,,} == "p" ]; then
     hostname="rpms"
@@ -292,17 +287,16 @@ else
     hostname="rpmsdev"
 fi
 echo "Change hostname to $hostname..."
-mount_partition "rootfs"
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hostname
 sed -i -e "s/raspberrypi/$hostname/g" $mount_point/etc/hosts
-unmount_partition "rootfs"
 echo "... done changing hostname."
 
 echo "Set language..."
-mount_partition "rootfs"
 echo $lang_choice > $mount_point/etc/lang-choice.txt
-unmount_partition "rootfs"
 echo "... language has been set to $lang_choice."
+
+echo "Unmount rootfs"
+unmount_partition  
 
 cleanup_environment
 echo "Script ended successfully."
