@@ -62,6 +62,33 @@
         <a href="/ask-update-docker" class="link-button">Update</a>        
     </div> 
 
+    <h3>Translations</h3>
+    <table>
+        <tr>
+            <td>Public Share</td>
+            <td><b>{{ translationList.PublicShareName }}</b></td>            
+        </tr>
+        <tr>
+            <td>Music Share</td>            
+            <td><b>{{ translationList.MusicShareName }}</b></td>
+        </tr>
+        <tr>
+            <td>Downloads Share</td>            
+            <td><b>{{ translationList.DownloadsShareName }}</b></td>
+        </tr>        
+        <tr>
+            <td>Backup Share</td>            
+            <td><b>{{ translationList.BackupShareName }}</b></td>                        
+        </tr>                
+    </table>    
+    <div>
+        <p>
+        <a href="/translations-edit" class="link-button">
+            <img src="{{ url_for('static',filename='edit.png') }}" alt="Home" style="width:15px;height:15x;">
+            Edit
+        </a>
+    </div>
+
     <h3>Api</h3>
     <table>
         <tr>

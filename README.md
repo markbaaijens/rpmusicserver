@@ -47,16 +47,17 @@ Installing RPMS on your Pi can be done with a few simple steps, described below.
   * insert SD-card into your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/burn-image.sh`
     * enter your (personal) password of your PC
-    * Select a disk: choose the inserted SD-card
-    * Select a type: choose P for Production
-    * Do you want to continue burning on [chosen device]: type 'yes'        
+  * Select a disk: choose the inserted SD-card
+  * Select a type: choose P for Production
+  * Select a language: choose your language
+  * Do you want to continue burning on [chosen device]: type 'yes'        
 * Format USB-drive for data:
   * connect USB-drive to your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/format-usbdisk.sh`
     * enter your (personal) password of your PC
-    * Select a disk: select the inserted USB-disk
-    * Select a format-type: choose D for data-disk
-    * Do you want to continue formatting [chosen device] as 'usbbackup': type 'yes'  
+  * Select a disk: select the inserted USB-disk
+  * Select a format-type: choose D for data-disk
+  * Do you want to continue formatting [chosen device] as 'usbbackup': type 'yes'  
 * First boot:
   * make sure your Pi is powered off
   * insert SD-card into your Pi
@@ -169,7 +170,7 @@ Within RPMS, there is a transcoder built in, for transcoding your lossless music
 ### Enabling transcoder
 For getting transcoding to work, take the following steps: 
 * in your file explorer
-  * create a folder `flac` under `smb://<music folder>`
+  * create a folder `flac` under `smb://rpms/music`
   * move your flac-files into that folder `flac`
 * in LMS Server Settings, modify music-folder:
   * from  `/music`
@@ -177,11 +178,11 @@ For getting transcoding to work, take the following steps:
 * in the web-interface, under Transcoder, Edit, change setting `Source Folder`
   * point to `flac`
 * for transcoding to ogg
-  * in your file explorer, create a folder `ogg` under `smb://rpms/<music folder>`
+  * in your file explorer, create a folder `ogg` under `smb://rpms/music`
   * in the web-interface, under Transcoder, Edit, change setting `Ogg Folder`
     * point to `ogg`
 * for transcoding to mp3
-  * in your file explorer, create a folder `mp3` under `smb://rpms/<music folder>`
+  * in your file explorer, create a folder `mp3` under `smb://rpms/music`
   * in the web-interface, under Transcoder, Edit, change setting `Mp3 Folder`
     * point to `mp3`
 
@@ -190,7 +191,7 @@ From now on, file transcoding will take place and lossy-files will automagically
 In the Transcoder-page, You can also click on the Transcode-button, to start an immediate transcoding session, for if you do want to wait for the automatic session to kick in. Note that this button is disabled if transcoding is not configured.
 
 ### Notes
-* some default quality-levels are used for transcoding: ogg = 1, mp3 = 128; optionally, you can change these defaults through the web-interface under Transcoder
+* some default quality-levels are used for transcoding: ogg = 1, mp3 = 128 kbps; optionally, you can change these defaults through the web-interface under Transcoder
 * you can simultaneously transcode to ogg AND mp3; just set both `Ogg Folder` and `Mp3 Folder`
 
 [Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
@@ -217,7 +218,7 @@ This backup will be done to a dedicated backup-disk, connected to the Pi itself,
 #### Viewing backup-data on the usbbackup-disk
 In case of a server-based backup, your backup will be made to a separate backup-disk. You can view the data on this disk, either online or offline:
 
-* for viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file explorer to `smb://rpms/Backup` and then you can view all the files on that disk.
+* for viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file explorer to `smb://rpms/backup` and then you can view all the files on that disk.
 * for viewing _offline_, the backup-disk has to be attached to your own PC or laptop. The backup-disk is formatted as ext4 so this format is natively supported on Linux, thus being plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
 ### Remote backup
@@ -403,12 +404,9 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
 - backup your system
   - create a server-backup
   - optional: create remote backup
-- delete entries in SyncThing
+- delete sync-folders in SyncThing
   - copy syncthing-config for later reference
     - `ssh pi@rpms "cat /media/usbdata/rpms/config/docker/syncthing/config.xml" > ~/synthing-config.txt`
-  - locations will be changed:
-    - /data/Muziek => /data/music
-    - /data => /data/public     
   - record the folder-config functionally
     - sync-method (S Send, R Receive, S/R Send and receive)
     - current base folder (say /data/Muziek/xxx)
@@ -420,16 +418,23 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
   - `ssh pi@rpms`
 - kill all containers
   - `sudo kill-docker`
-- rename folders
+- move folders
   - `sudo mv /media/usbdata/user/Publiek /media/usbdata/user/public`
-  - `sudo mkdir /media/usbdata/user/music -p`
-  - `sudo mv /media/usbdata/user/public/Muziek/* /media/usbdata/user/music`
-  - `sudo rmdir /media/usbdata/user/public/Muziek`
-  - `tree -d -L 2 /media/usbdata/user  # To check`
+  - move music-folder
+    - `sudo mkdir /media/usbdata/user/music -p`
+    - `sudo mv /media/usbdata/user/public/Muziek/* /media/usbdata/user/music`
+    - `sudo rmdir /media/usbdata/user/public/Muziek`
+  - move downloads-folder
+    - `sudo mkdir /media/usbdata/user/downloads -p`
+    - `sudo mv /media/usbdata/user/public/Downloads/* /media/usbdata/user/downloads`
+    - `sudo rmdir /media/usbdata/user/public/Downloads`
+  - check result
+    - `tree -d -L 2 /media/usbdata/user`
 - convert transcoder-settings
   - `sudo sed -i -e 's/Publiek/public/g' /media/usbdata/rpms/config/transcoder-settings.json`
   - `sudo sed -i -e 's/public\/Muziek/music/g' /media/usbdata/rpms/config/transcoder-settings.json`
-  - `cat /media/usbdata/rpms/config/transcoder-settings.json  # To check`
+  - check result
+    - `cat /media/usbdata/rpms/config/transcoder-settings.json`
 - stop the server
   - `sudo halt-server`  
 
@@ -437,9 +442,9 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
 - put the new SD-card into the Pi and boot-up
 - do an install, just like doing a new install of RPMS
   - see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) under 'Installation' for instructions
-- re-create folders in SyncThing if needed, with these new locations:
-  - /data/Muziek => /data/music
-  - /data => /data/public 
+- re-create folders in SyncThing if needed, with these new locations of /data:
+  - from /media/usbdata/user/Publiek 
+  - to /media/usbdata/user
 
 (4) Check system if all is working well: 
 - Samba-shares
@@ -449,7 +454,7 @@ Coming from any version below 1.0, you cannot migrate through the usual upgrade-
 
 **Optional**
 
-- to speedup server-backup
+- to speedup server-backup, move folders
   - `ssh pi@rpms`
   - `sudo mv /media/usbbackup/user/Publiek /media/usbbackup/user/public`
   - `sudo mkdir /media/usbbackup/user/music -p`

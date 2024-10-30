@@ -89,6 +89,17 @@ def GetTranscoderSettings():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/GetTranslations', methods=['GET'])
+def GetTranslations():
+    try:
+        info = logic.GetTranslations()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetDockerContainerList', methods=['GET'])
 def GetDockerContainerList():
     try:
@@ -317,6 +328,90 @@ def SetTranscoderMp3Bitrate():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/SetTranslationPublicShare', methods=['POST'])
+def SetTranslationPublicShare():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    if not 'Value' in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    if requestData['Value'] == "":
+        abort(HTTP_BAD_REQUEST) 
+
+    try:
+        info = logic.SetTranslation('PublicShareName', requestData['Value'])
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)  
+
+@app.route('/api/SetTranslationMusicShare', methods=['POST'])
+def SetTranslationMusicShare():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    if not 'Value' in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    if requestData['Value'] == "":
+        abort(HTTP_BAD_REQUEST) 
+
+    try:
+        info = logic.SetTranslation('MusicShareName', requestData['Value'])
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)  
+
+@app.route('/api/SetTranslationDownloadsShare', methods=['POST'])
+def SetTranslationDownloadsShare():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    if not 'Value' in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    if requestData['Value'] == "":
+        abort(HTTP_BAD_REQUEST) 
+
+    try:
+        info = logic.SetTranslation('DownloadsShareName', requestData['Value'])
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)  
+
+@app.route('/api/SetTranslationBackupShare', methods=['POST'])
+def SetTranslationPublicBackup():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    if not 'Value' in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    if requestData['Value'] == "":
+        abort(HTTP_BAD_REQUEST) 
+
+    try:
+        info = logic.SetTranslation('BackupShareName', requestData['Value'])
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetMemoryResourceInfo', methods=['GET'])
 def GetMemoryResourceInfo():
     try:
@@ -474,7 +569,19 @@ def DoTranscode():
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
-    return BuildResponse(HTTP_OK, jsonify(info), request.url)        
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)     
+
+@app.route('/api/DoGenerateSambaConf', methods=['POST'])
+def DoGenerateSambaConf():
+    try:
+        asyncio.run(logic.DoGenerateSambaConf())
+        info = { "Message": "Sambe-configuration is being generated." }
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
 @app.route('/api/GetLmsServerStatus', methods=['GET'])
 def GetLmsServerStatus():

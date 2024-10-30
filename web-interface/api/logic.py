@@ -470,6 +470,15 @@ def GetTranscoderSettings():
         dataAsJson = json.loads(json.dumps(dataAsDict))
     return dataAsJson
 
+def GetTranslations():
+    dataAsJson = {}
+    translationsFile = '/media/usbdata/rpms/config/translations.json'
+    if os.path.isfile(translationsFile):
+        with open(translationsFile) as file:
+            dataAsDict = json.load(file)
+        dataAsJson = json.loads(json.dumps(dataAsDict))
+    return dataAsJson
+
 def GetUserBaseFolder():
     return '/media/usbdata/user'
 
@@ -541,18 +550,23 @@ def GetDockerContainerList():
 
     return dockerContainerList
 
-def SetTranscoderSetting(settingName, newValue):
-    transcoderSettingsFileName = '/media/usbdata/rpms/config/transcoder-settings.json'
-    if not os.path.isfile(transcoderSettingsFileName):
-        return { "Message": "File " + transcoderSettingsFileName + " does not exist"}
+def SetSetting(keyName, newValue, settingsFile):
+    if not os.path.isfile(settingsFile):
+        return { "Message": "File " + settingsFile + " does not exist"}
 
-    with open(transcoderSettingsFileName, 'r') as jsonFile:
+    with open(settingsFile, 'r') as jsonFile:
         data = json.load(jsonFile)
-    data[settingName] = newValue
-    with open(transcoderSettingsFileName, 'w') as jsonFile:
+    data[keyName] = newValue
+    with open(settingsFile, 'w') as jsonFile:
         json.dump(data, jsonFile)
 
-    return { "Message": "Transcoder-setting ["+ settingName + "] is modified to [" + str(newValue) + "]"}
+    return { "Message": "Setting ["+ keyName + "] is modified to [" + str(newValue) + "]"}
+
+def SetTranscoderSetting(keyName, newValue):
+    return SetSetting(keyName, newValue, '/media/usbdata/rpms/config/transcoder-settings.json')
+
+def SetTranslation(keyName, newValue):
+    return SetSetting(keyName, newValue, '/media/usbdata/rpms/config/translations.json')
 
 async def DoRebootServer():
     await asyncio.create_subprocess_shell("reboot-server")
@@ -584,6 +598,10 @@ async def DoUpdateRpms():
 
 async def DoTranscode():
     await asyncio.create_subprocess_shell("transcode")
+    pass
+
+async def DoGenerateSambaConf():
+    await asyncio.create_subprocess_shell("generate-samba-conf")
     pass
 
 def ExportCollectionArtistAlbumByFolder(collectionFolder):

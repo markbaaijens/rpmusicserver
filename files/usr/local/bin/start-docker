@@ -39,7 +39,7 @@ if [ ! "$(docker ps -f name=transmission -q)" ]; then
         -e PUID=1000 \
         -e PGID=1000 \
         -v /media/usbdata/rpms/config/docker/transmission:/config \
-        -v /media/usbdata/user/public/Downloads:/downloads \
+        -v /media/usbdata/user/downloads:/downloads \
         linuxserver/transmission:latest
 fi
 
