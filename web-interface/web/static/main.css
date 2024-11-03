@@ -136,6 +136,10 @@ meter {
 	background-color: green;
 }
 
+input[type="text"] {
+   background-color: rgba(200, 201, 202, 0.979);
+}
+
 #cancel {
 	padding: 6px 8px;
 	font-size: 16px;
