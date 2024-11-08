@@ -137,8 +137,8 @@ meter {
 }
 
 input[type="text"] {
-   background-color: rgba(200, 201, 202, 0.979);
-   font-weight: 900;
+   background-color: lightgrey;
+   padding: 2px;
 }
 
 #cancel {
