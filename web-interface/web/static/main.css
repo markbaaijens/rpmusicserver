@@ -118,6 +118,10 @@ meter {
 	vertical-align: middle;
 }
 
+input[type="text"] {
+	background-color: lightgrey;
+ }
+
 /* 
 	Classes duplicated from a.link for FlaskForm, as it is not clear 
 	how to apply the a.link-classes to Flask-objects.
