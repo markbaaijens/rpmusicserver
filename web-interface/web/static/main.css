@@ -1,7 +1,6 @@
 body {
     font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 16px;
-  	line-height: 18px;
 	background-color: rgb(25, 29, 28);
 }
 
@@ -119,6 +118,10 @@ meter {
 	vertical-align: middle;
 }
 
+input[type="text"] {
+	background-color: lightgrey;
+ }
+
 /* 
 	Classes duplicated from a.link for FlaskForm, as it is not clear 
 	how to apply the a.link-classes to Flask-objects.
@@ -135,10 +138,6 @@ meter {
 
 #submit:hover {
 	background-color: green;
-}
-
-input[type="text"] {
-   background-color: lightgrey;
 }
 
 #cancel {
