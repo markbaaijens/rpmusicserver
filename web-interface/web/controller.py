@@ -409,7 +409,7 @@ def DoUpdateRpms():
         logger.error(traceback.format_exc())
         apiMessage = []
 
-    flash('Update is in progress. Refresh this page after 1 minute.')
+    flash('Update is in progress. Refresh this page after 2 minutes.')
 
     return redirect('/')
 

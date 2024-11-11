@@ -247,9 +247,5 @@ echo "Start docker for preloading containers"
 start-docker
 echo "... done starting docker-containers."
 
-echo "Start web-services"
-start-web
-echo "... done starting web-services."
-
-echo "Installation complete."
-
+echo "Installation complete, system will be rebooted."
+reboot-server
