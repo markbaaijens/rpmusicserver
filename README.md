@@ -139,9 +139,12 @@ On some local networks, there might be a problem present that the hostname of al
 
 The good news however is that a device is *always* accessible by ip-address. So once you know the ip-address of your RPMS-instance, you can install, configure and use RPMS. All you have to do is the following: in any command in the section *Installation of RPMS on a Pi* (and following sections), replace RPMS with the discovered ip-address.
 
-So for example, if the ip-address of RPMS is 192.68.1.20: `ping rpms` will become `ping 192.68.1.20`. And `ssh pi@rpms` will become `ssh pi@192.68.1.20`. In your browser, LMS `rpms:9002` will become `192.68.1.20:9002` Etc. 
+Examples, if the ip-address of RPMS is 192.68.1.20: 
+- `ping rpms` will become `ping 192.68.1.20`
+- `ssh pi@rpms` will become `ssh pi@192.68.1.20`
+- LMS: `rpms:9002` will become `192.68.1.20:9002`
 
-Note that the ip-address might change over time b/c RPMS does not use a fixed address, but instead depends on the router which determines the address. In that case, point to the new address.
+Note. The ip-address might change over time b/c RPMS does not use a fixed address, but instead depends on the router which determines the address. In that case, point to the new address.
 
 ### *Reconnect players after LMS migration*
 When migrating from an existing LMS-server or upgrading your Pi-hardware, you have to reconfigure all players to point to the new LMS-server (even if LMS has the same name). This is especially true for Squeezebox-hardware like Squeezebox Classic, Duet, Touch, Radio, Boom or Transporter. Note: clients with piCorePlayer will autodetect the new LMS-server.
