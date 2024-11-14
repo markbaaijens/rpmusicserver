@@ -18,6 +18,7 @@ apt-get update
 apt-get install docker.io python3-pip tree jq bwm-ng nmap zip -y   # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
 apt-get install samba -y
+apt-get install dnsutils -y
 echo "... done installing packages."
 
 echo "Setting timezone to Europe/Amsterdam..."

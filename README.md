@@ -2,7 +2,6 @@
 Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Lyrion/Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
 [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)<br/> 
-[Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works)<br/> 
 [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
 [Troubleshooting](https://github.com/markbaaijens/rpmusicserver#troubleshooting)<br/> 
 [Folder mapping](https://github.com/markbaaijens/rpmusicserver#folder-mapping)<br/> 
@@ -23,16 +22,6 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
   * once installed, any OS will do, be it Windows, Linux or MacOS
 
 [Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)  
-
-## Check your network if local DNS works
-To detect if your network supports local DNS, execute the following command in a terminal:
-* `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
-
-Check for output:
-* _no output_, it is all good and you can proceed installing RPMS on your Pi.
-* _output produced_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific [Pi/rpms can only reached by ip-address](https://github.com/markbaaijens/rpmusicserver#pirpms-can-only-reached-by-ip-address)
-
-[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
 
 ## Installation of RPMS on a Pi
 Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
@@ -67,7 +56,7 @@ Installing RPMS on your Pi can be done with a few simple steps, described below.
   * check if Pi is running: 
     * `watch nmap rpms`
     * wait until port 22 appears; exit with Ctrl-C
-    * _if the Pi does not appear in the network, checkout the Troubleshooting-section below_
+> If the Pi does not appear in the network, checkout [Troubleshooting](https://github.com/markbaaijens/rpmusicserver#troubleshooting), or more specific [Pi/rpms can only reached by ip-address](https://github.com/markbaaijens/rpmusicserver#pirpms-can-only-reached-by-ip-address)
 * Installation:
   * `rsync -r /tmp/rpmusicserver-master/* pi@rpms:/tmp/rpmusicserver`
 	  * password = raspberry  
@@ -150,9 +139,12 @@ On some local networks, there might be a problem present that the hostname of al
 
 The good news however is that a device is *always* accessible by ip-address. So once you know the ip-address of your RPMS-instance, you can install, configure and use RPMS. All you have to do is the following: in any command in the section *Installation of RPMS on a Pi* (and following sections), replace RPMS with the discovered ip-address.
 
-So for example, if the ip-address of RPMS is 192.68.1.20: `ping rpms` will become `ping 192.68.1.20`. And `ssh pi@rpms` will become `ssh pi@192.68.1.20`. In your browser, LMS `rpms:9002` will become `192.68.1.20:9002` Etc. 
+Examples, if the ip-address of RPMS is 192.68.1.20: 
+- `ping rpms` will become `ping 192.68.1.20`
+- `ssh pi@rpms` will become `ssh pi@192.68.1.20`
+- LMS: `rpms:9002` will become `192.68.1.20:9002`
 
-Note that the ip-address might change over time b/c RPMS does not use a fixed address, but instead depends on the router which determines the address. In that case, point to the new address.
+Note. The ip-address might change over time b/c RPMS does not use a fixed address, but instead depends on the router which determines the address. In that case, point to the new address.
 
 ### *Reconnect players after LMS migration*
 When migrating from an existing LMS-server or upgrading your Pi-hardware, you have to reconfigure all players to point to the new LMS-server (even if LMS has the same name). This is especially true for Squeezebox-hardware like Squeezebox Classic, Duet, Touch, Radio, Boom or Transporter. Note: clients with piCorePlayer will autodetect the new LMS-server.
@@ -165,12 +157,15 @@ Reconfiguring is best done:
 [Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
 
 ## Update RPMS
-Update your RPMS-server by the web-interface: 
-* Under Home, Version, click on the Update-button
+You can update your RPMS-server on several ways:
 
-You can also opt to update through ssh on rpms: 
-* `ssh pi@rpms`
-* `sudo update-rpms`
+- by the web-interface: 
+  - Under Home, Version, click on the Update-button
+- by ssh on rpms: 
+  - `ssh pi@rpms`
+  - `sudo update-rpms`
+- by a command:
+  - `curl rpms:5000/api/DoUpdateRpms -X post`
 
 Note. Update is disabled when there is no newer version found.
 
