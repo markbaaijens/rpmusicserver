@@ -126,12 +126,15 @@ input[type="text"] {
 	Classes duplicated from a.link for FlaskForm, as it is not clear 
 	how to apply the a.link-classes to Flask-objects.
 */
-#submit {
+input[type="submit"] {
 	padding: 6px 8px;
 	font-size: 16px;
 	border-radius: 6px;
 	border: 1px solid gray;
 	cursor: pointer;
+ }
+
+#submit {	
 	background-color: darkgreen;		
 	color: white;
 }
@@ -141,11 +144,6 @@ input[type="text"] {
 }
 
 #cancel {
-	padding: 6px 8px;
-	font-size: 16px;
-	border-radius: 6px;
-	border: 1px solid gray;
-	cursor: pointer;
 	background-color: rgb(46, 54, 52);
 	color: red;	
 }
