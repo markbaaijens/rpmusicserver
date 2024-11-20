@@ -159,37 +159,48 @@ def GetMachineInfo():
 
 disks = []
 
-def AppendDiskInfo(diskMountPoint):
-    # diskDeviceName => mount | grep -w / | awk '{print $1}'
-    process = subprocess.run(["mount"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep -w " + diskMountPoint], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    diskDeviceName = process.stdout.decode("utf-8").strip('\n')
+DISK_SIZE = 2
+DISK_USED = 3
+DISK_USED_PERCENTAGE = 5
 
-    diskName = diskMountPoint.replace('/media/', '')
+def AppendDiskInfo(diskMountPoint):
+    def DiskPropertyCommand(diskMountPoint, printNumber, allDisks):
+        # B/c using the -a parameter (for all devices) hangs df if not all disks are mounted, we must use
+        # this parameter with caution, so on demand.
+        allDiskParameter = ''    
+        if allDisks:
+            allDiskParameter = '-a'
+        command = "df -h " + allDiskParameter + " | grep -w " + diskMountPoint + " | awk '{print $" + str(printNumber) + "}'"
+        return command
+
+    if diskMountPoint == '/':
+        diskName = 'boot'
+    else: 
+        diskName = diskMountPoint.replace('/media/', '')
+
+    isDiskPresent = ExecuteBashCommand("ls /dev/disk/by-label | grep " + diskName) != ''
 
     diskSize = ''
     diskUsed = ''
     diskUsedPercentage = 0
-    if diskDeviceName:
 
-        # diskSize => df -h | grep -w / | awk '{print $2}'
-        process = subprocess.run(["df -h"], stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["grep -w " + diskMountPoint], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-        diskSize = process.stdout.decode("utf-8").strip('\n')
+    if isDiskPresent:
+        diskSize = ExecuteBashCommand(DiskPropertyCommand(diskMountPoint, DISK_SIZE, False))
+        if diskSize == '':
+            diskSize = ExecuteBashCommand(DiskPropertyCommand(diskMountPoint, DISK_SIZE, True))
 
-        # diskUsed => df -h | grep -w / | awk '{print $3}'
-        process = subprocess.run(["df -h"], stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["grep -w " + diskMountPoint], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-        diskUsed = process.stdout.decode("utf-8").strip('\n')
+        diskUsed = ExecuteBashCommand(DiskPropertyCommand(diskMountPoint, DISK_USED, False))
+        if diskUsed == '':
+            diskUsed = ExecuteBashCommand(DiskPropertyCommand(diskMountPoint, DISK_USED, True))
 
-        # diskUsedPercentage => df -h | grep -w / | awk '{print $5}'
-        process = subprocess.run(["df -h"], stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["grep -w " + diskMountPoint], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["awk '{print $5}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-        diskUsedPercentage = int(process.stdout.decode("utf-8").strip('\n').replace('%', ''))
+        diskUsedPercentage = ExecuteBashCommand(DiskPropertyCommand(diskMountPoint, DISK_USED_PERCENTAGE, False))
+        if diskUsedPercentage == '':
+            diskUsedPercentage = ExecuteBashCommand(DiskPropertyCommand(diskMountPoint, DISK_USED_PERCENTAGE, True))
+        if diskUsedPercentage != '':
+            try:
+                diskUsedPercentage = int(diskUsedPercentage.replace('%', ''))
+            except:
+                diskUsedPercentage = 0
 
         onlineStatus = True
     else:
@@ -198,7 +209,6 @@ def AppendDiskInfo(diskMountPoint):
     disks.append({
                     "DiskName": diskName,
                     "MountPoint": diskMountPoint,
-                    "DeviceName": diskDeviceName,
                     "IsOnline": onlineStatus,
                     "Size": diskSize,
                     "Used": diskUsed,
