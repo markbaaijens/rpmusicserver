@@ -48,23 +48,20 @@ echo "Cleanup /usr/local/bin"
 rm -rf /usr/local/bin/*
 echo "... cleaned up."
 
+# By always delete existing lines in fstab, we can easily implement
+# a different crontab-strategy later, if needed
+
 echo "Adding line for usbdata-disk to /etc/fstab"
-if [ ! "$(grep "LABEL=usbdata" /etc/fstab)" ]; then
-    # auto,nofail: server starts even when harddisk is not present
-    /bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
-    echo "... line added."
-else
-    echo "... line is already present."    
-fi
+sed -i '/usbdata/d' /etc/fstab
+# auto,nofail: server starts even when harddisk is not present
+/bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
+echo "... line added."
 
 echo "Adding line for usbbackup-disk to /etc/fstab"
-if [ ! "$(grep "LABEL=usbbackup" /etc/fstab)" ]; then
-    # auto,nofail: server starts even when harddisk is not present
-    /bin/sh -c 'echo "LABEL=usbbackup /media/usbbackup ext4 auto,nofail 0 0" >> /etc/fstab'
-    echo "... line added."
-else
-    echo "... line is already present."    
-fi    
+sed -i '/usbbackup/d' /etc/fstab
+# auto,nofail: server starts even when harddisk is not present; x-systemd.automount: automounting usbbackup
+/bin/sh -c 'echo "LABEL=usbbackup /media/usbbackup ext4 auto,nofail,x-systemd.automount 0 0" >> /etc/fstab'
+echo "... line added."
 
 mount -a
 
