@@ -90,7 +90,7 @@
     {% for disk in diskList %}
     <div>
         <b>
-            {% if '/' in disk.DiskName %}
+            {% if 'boot' in disk.DiskName %}
                 system
             {% else %}
                 {{ disk.DiskName }}
