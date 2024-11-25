@@ -213,6 +213,8 @@ The advantage of the server-based (local) backup is that the resulting backup is
 
 This backup will be done to a dedicated backup-disk, connected to the Pi itself, thus a server-based backup.
 
+Note. Backups will be made automatically at night once the backup-disk is attached to the Pi.
+
 #### Steps to create a server-based backup
 * format a disk dedicated for RPMS-backups (you only have to do this once):
   * connect your (empty) backup-disk to your PC
