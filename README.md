@@ -233,7 +233,7 @@ In case of a server-based backup, your backup will be made to a separate backup-
 * for viewing _offline_, the backup-disk has to be attached to your own PC or laptop. The backup-disk is formatted as ext4 so this format is natively supported on Linux, thus being plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
 
 ### Disk-upgrade
-If you want to upgrade your disk to a larger one without any loss of my user-data, but also without any loss of system-data/configuration. 
+If you want to upgrade your disk to a larger one without any loss of your user-data, but also without any loss of system-data/configuration. 
 
 Create a backup on the new (larger) disk. After creating the new backup, you can use the backup-mechanism. Because the backup is an exact mirror of de data-disk, exchanging these two by renaming some labels, should do the trick. https://github.com/markbaaijens/rpmusicserver#data-disk-crash
 
