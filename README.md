@@ -83,6 +83,7 @@ Installing RPMS on your Pi can be done with a few simple steps, described below.
   * copy music files to `smb://rpms/<music folder>`
   * hookup a Squeezebox player to your network
   * install a Android App like [Squeezer](https://play.google.com/store/apps/details?id=uk.org.ngo.squeezer)
+  * review and make use of some useful [Custom LMS-settings](https://github.com/markbaaijens/rpmusicserver/wiki/Custom-LMS%E2%80%90settings)
   * enjoy!
 
 [Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
