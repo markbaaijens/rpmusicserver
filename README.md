@@ -1,16 +1,15 @@
 # RP Music Server
 Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Lyrion/Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
 
-[System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)<br/> 
-[Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
-[Troubleshooting](https://github.com/markbaaijens/rpmusicserver#troubleshooting)<br/> 
-[Folder mapping](https://github.com/markbaaijens/rpmusicserver#folder-mapping)<br/> 
-[Update RPMS](https://github.com/markbaaijens/rpmusicserver#update-rpms)<br/> 
-[Transcoder](https://github.com/markbaaijens/rpmusicserver#transcoder)<br/> 
-[Backup](https://github.com/markbaaijens/rpmusicserver#backup)<br/> 
-[Disaster Recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery)<br/> 
-[Development](https://github.com/markbaaijens/rpmusicserver#development)<br/> 
-[Migrating to 1.0](https://github.com/markbaaijens/rpmusicserver#migrating-to-10)<br/> 
+[System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)  
+[Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)  
+[Troubleshooting](https://github.com/markbaaijens/rpmusicserver#troubleshooting)  
+[Folder mapping](https://github.com/markbaaijens/rpmusicserver#folder-mapping)  
+[Update RPMS](https://github.com/markbaaijens/rpmusicserver#update-rpms)  
+[Transcoder](https://github.com/markbaaijens/rpmusicserver#transcoder)  
+[Backup](https://github.com/markbaaijens/rpmusicserver#backup)  
+[Disaster Recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery)  
+[Development](https://github.com/markbaaijens/rpmusicserver#development)  
 
 ## System requirements
 * Raspberry Pi: 
@@ -404,84 +403,3 @@ Steps for installing a local player:
   * http://rpms:5000/api/GetApiList
 
 [Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)  
-
-## Migrating to 1.0
-Coming from any version below 1.0, you cannot migrate through the usual upgrade-command b/c the upgrade will introduce breaking changes which turn your system into a broken one. Furthermore, b/c we moved the OS from 32-bit to 64-bit, a new image-burn is needed.
-
-### Steps to migrate to 1.0
-
-(1) Burn a SD-card
-- burn a SD-card on a new card on your local computer as if it is a fresh install
-  - see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) under 'Burn SD-card' for instructions
-- card considerations
-  - by taking a new card, you have a fall-back if things go wrong
-  - you might use a bigger card b/c the [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements) concerning the size of the card have been changed
-
-(2) Convert your system
-- backup your system
-  - create a server-backup
-  - optional: create remote backup
-- delete sync-folders in SyncThing
-  - copy syncthing-config for later reference
-    - `ssh pi@rpms "cat /media/usbdata/rpms/config/docker/syncthing/config.xml" > ~/synthing-config.txt`
-  - record the folder-config functionally
-    - sync-method (S Send, R Receive, S/R Send and receive)
-    - current base folder (say /data/Muziek/xxx)
-    - new base folder (say /data/music/xxx)
-    - current subscribers
-  - delete all folders in SyncThing
-    - choose Discard when deleting folder (so that it can be added automatically later)
-- ssh to rpms 
-  - `ssh pi@rpms`
-- kill all containers
-  - `sudo kill-docker`
-- move folders
-  - `sudo mv /media/usbdata/user/Publiek /media/usbdata/user/public`
-  - move music-folder
-    - `sudo mkdir /media/usbdata/user/music -p`
-    - `sudo mv /media/usbdata/user/public/Muziek/* /media/usbdata/user/music`
-    - `sudo rmdir /media/usbdata/user/public/Muziek`
-  - move downloads-folder
-    - `sudo mkdir /media/usbdata/user/downloads -p`
-    - `sudo mv /media/usbdata/user/public/Downloads/* /media/usbdata/user/downloads`
-    - `sudo rmdir /media/usbdata/user/public/Downloads`
-  - check result
-    - `tree -d -L 2 /media/usbdata/user`
-- convert transcoder-settings
-  - `sudo sed -i -e 's/Publiek/public/g' /media/usbdata/rpms/config/transcoder-settings.json`
-  - `sudo sed -i -e 's/public\/Muziek/music/g' /media/usbdata/rpms/config/transcoder-settings.json`
-  - check result
-    - `cat /media/usbdata/rpms/config/transcoder-settings.json`
-- stop the server
-  - `sudo halt-server`  
-
-(3) Install the new SD-card, boot the Pi and finish the installation
-- put the new SD-card into the Pi and boot-up
-- do an install, just like doing a new install of RPMS
-  - see [Steps to install RPMS on your Pi](https://github.com/markbaaijens/rpmusicserver#steps-to-install-rpms-on-your-pi) under 'Installation' for instructions
-- re-create folders in SyncThing if needed, with these new locations of /data:
-  - from /media/usbdata/user/Publiek 
-  - to /media/usbdata/user
-
-(4) Check system if all is working well: 
-- Samba-shares
-- LMS
-- Transmission
-- all pages and actions in the web-interface
-
-**Optional**
-
-- to speedup server-backup, move folders
-  - `ssh pi@rpms`
-  - `sudo mv /media/usbbackup/user/Publiek /media/usbbackup/user/public`
-  - `sudo mkdir /media/usbbackup/user/music -p`
-  - `sudo mv /media/usbbackup/user/public/Muziek/* /media/usbbackup/user/music`
-  - `sudo rmdir /media/usbbackup/user/public/Muziek`
-  - `tree -d -L 2 /media/usbbackup/user  # To check`
-- local computer
-  - manually modify local script for external backup if needed
-  - modify bookmarks to shares
-
-[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
-
-
