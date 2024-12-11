@@ -414,7 +414,7 @@ def GetBackupInfo():
 
     statusMessage = 'No disk'
     if isBackupDiskPresent:
-        statusMessage = 'Idle, disk present'
+        statusMessage = 'Disk present - Idle'
         if isBackupRunning:
             statusMessage = 'Running'
 
