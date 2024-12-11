@@ -17,25 +17,13 @@
         </tr>            
         <tr>
             <td>
-                Backup Disk Present?
+                Status
             </td>
             <td><b>
-                {% if backupInfo.IsBackupDiskPresent %}
-                    <span class="checkmark-y"> &#10004; </span>
+                {% if backupInfo.CanBackup %}
+                    <span class="checkmark-y">{{ backupInfo.StatusMessage }}</span>
                 {% else %}
-                    <span class="checkmark-n"> &#x2717; </span> 
-                {% endif %}
-            </b></td>
-        </tr>
-        <tr>
-            <td>
-                System Free for Backup?
-            </td>
-            <td><b>
-                {% if backupInfo.IsSystemFreeForBackup %}
-                    <span class="checkmark-y"> &#10004; </span>
-                {% else %}
-                    <span class="checkmark-n"> &#x2717; </span> 
+                    <span class="checkmark-n">{{ backupInfo.StatusMessage }}</span> 
                 {% endif %}
             </b></td>
         </tr>
