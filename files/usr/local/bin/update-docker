@@ -7,3 +7,6 @@ fi
 
 kill-docker
 start-docker update
+
+# Remove obsolete docker-artefacts, residing in /var/lib/docker/overlay2
+docker system prune --all -f
