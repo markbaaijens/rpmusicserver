@@ -15,7 +15,7 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
 * Raspberry Pi: 
   * minimum: Pi 3 (B or B+), 1 GB; recommended: Pi 4 B, 4 GB
 * SD Card: 
-  * minimum: 16 GB; recommended: 32 GB
+  * minimum: 16 GB
 * Linux PC: 
   * for installation purposes, a Linux PC is required
   * once installed, any OS will do, be it Windows, Linux or MacOS
