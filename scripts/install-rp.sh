@@ -170,7 +170,7 @@ sed -i '/backup-rpms-system/d' /etc/crontab
 echo "... line added."    
 
 echo "Adding line for backup-server in /etc/crontab..."
-sed -i '/backup-rpms-system/d' /etc/crontab
+sed -i '/backup-server/d' /etc/crontab
 /bin/sh -c 'echo "30 03 * * * root backup-server" >> /etc/crontab'
 echo "... line added."    
 
