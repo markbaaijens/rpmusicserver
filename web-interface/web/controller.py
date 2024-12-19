@@ -459,13 +459,6 @@ def DoRebootServer():
 
     return redirect('/')
 
-@app.route('/logs', methods=['GET'])
-def ShowLogs():
-    return render_template(
-        'logs.html', 
-        appTitle = 'Logs - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl)   
-
 @app.route('/logs/api/<int:nrOfLines>', methods=['GET'])
 def ShowApiLog(nrOfLines):
     try:

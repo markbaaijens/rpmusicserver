@@ -30,7 +30,6 @@
             <a href="/transcoder">Transcoder</a>&nbsp;&nbsp;            
             <a href="/backup">Backup</a>&nbsp;&nbsp;
             <a href="/system">System</a>&nbsp;&nbsp;
-            <a href="/logs">Logs</a>
         </div>        
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -43,6 +42,7 @@
             {% endif %}
         {% endwith %}      
         
-        {% block content %}{% endblock %}    
+        {% block content %}{% endblock %}   
+        <br> 
     </body>
 </html>
