@@ -11,6 +11,9 @@ import asyncio
 import urllib.request
 
 const_LmsApiUrl = 'http://localhost:9002/jsonrpc.js'
+const_PublicFolder = 'public'
+const_MusicFolder = 'music' 
+const_DonwloadsFolder = 'downloads' 
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -30,9 +33,28 @@ def RevisionFileName():
         revisionFile = os.path.dirname(__file__) + '/../../revision.json'
     return revisionFile
 
+def GetHostName():
+    return ExecuteBashCommand("hostname")
 
 def ConvertToFunctionalFolder(folderName):
-    return folderName.replace(GetUserBaseFolder(), 'server:/')
+    hostName = GetHostName()
+    functionalFolder = folderName.replace(GetUserBaseFolder(), 'smb://' + hostName)
+
+    translationList = GetTranslations();
+    publicShareName = translationList['PublicShareName'].strip()
+    musicShareName = translationList['MusicShareName'].strip()
+    downloadsShareName = translationList['DownloadsShareName'].strip()    
+
+    if const_MusicFolder in functionalFolder:
+        functionalFolder = functionalFolder.replace(const_MusicFolder, musicShareName)
+    else: 
+        if const_PublicFolder in functionalFolder:
+            functionalFolder = functionalFolder.replace(const_PublicFolder, publicShareName)
+        else: 
+            if const_DonwloadsFolder in functionalFolder:
+                functionalFolder = functionalFolder.replace(const_DonwloadsFolder, downloadsShareName)
+
+    return functionalFolder
 
 def GetElapsedTimeHumanReadable(fromDate):
     if fromDate == '':
@@ -122,7 +144,7 @@ def GetElapsedTimeHumanReadable(fromDate):
     return elapsedTimeAsString
 
 def GetMachineInfo():
-    hostName = ExecuteBashCommand("hostname")
+    hostName = GetHostName()
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
 
     urlPrefix = 'http://'
@@ -499,14 +521,8 @@ def GetTranslations():
 def GetUserBaseFolder():
     return '/media/usbdata/user'
 
-def GetPublicFolder():
-    return 'public'
-
-def GetMusicFolder():
-    return 'music'    
-
 def GetDefaultMusicCollectionFolder():
-    return GetUserBaseFolder() + '/' + GetMusicFolder()
+    return GetUserBaseFolder() + '/' + const_MusicFolder
 
 def GetMusicCollectionInfo():   
     transcoderInfo = GetTranscoderInfo()
