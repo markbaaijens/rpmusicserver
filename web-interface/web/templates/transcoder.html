@@ -52,20 +52,14 @@
             <td>
                 {% if transcoderInfo.SettingOggFolderShort %}
                     <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
-                    <b>{{ transcoderInfo.SettingOggFolderShort }}</b>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td>Ogg Quality</td>
-            <td>
-                {% if transcoderInfo.SettingOggFolderShort %}                
+                    <b>{{ transcoderInfo.SettingOggFolderShort }}</b> |
+                    Quality
                     {% if transcoderInfo.SettingOggQuality == 0 %}
-                        <small>(default = 1)</small>
+                        <b>1</b>
                     {% else %}
                         <b>{{ transcoderInfo.SettingOggQuality }}</b>
-                    {% endif %}
-                {% endif %}                
+                    {% endif %}                    
+                {% endif %}
             </td>
         </tr>
         <tr>
@@ -73,20 +67,14 @@
             <td>
                 {% if transcoderInfo.SettingMp3FolderShort %}                
                     <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
-                    <b>{{ transcoderInfo.SettingMp3FolderShort }}</b>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td>Mp3 Bitrate</td>
-            <td>
-                {% if transcoderInfo.SettingMp3FolderShort %}                                
+                    <b>{{ transcoderInfo.SettingMp3FolderShort }}</b>  |
+                    Bitrate
                     {% if transcoderInfo.SettingMp3Bitrate == 0 %}
-                        <small>(default = 128)</small>
+                        <b>128</b>
                     {% else %}
                         <b>{{ transcoderInfo.SettingMp3Bitrate }}</b>
                     {% endif %}
-                {% endif %}                    
+                {% endif %}
             </td>
         </tr>
     </table>  

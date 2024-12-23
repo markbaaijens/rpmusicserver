@@ -5,11 +5,11 @@ class EditTranscoderForm(FlaskForm):
     sourceFolder = StringField('Source Folder')
     oggFolder = StringField('Ogg Folder')
     oggQuality = RadioField('Ogg Quality', 
-        choices=[(0, '1 = default'), (2, '2'), (3, '3'), (4, '4'), (5, '5')], 
+        choices=[(0, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')], 
         coerce=int)
     mp3Folder = StringField('Mp3 Folder')
     mp3Bitrate = RadioField('Mp3 Bitrate', 
-        choices=[(0, '128 = default'), (256, '256'), (384, 384)],
+        choices=[(0, '128'), (256, '256'), (384, 384)],
         coerce=int)
     resetToDefaults = BooleanField('Reset to defaults')
     submit = SubmitField('Save')
