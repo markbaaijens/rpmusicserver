@@ -539,13 +539,14 @@ def GetMusicCollectionInfo():
     exportFile = "collection-artist-album-by-folder.txt"    
     fullExportFile = collectionFolder + "/" + exportFile
     if os.path.isfile(fullExportFile):
-        try:
-            lastExportTimeStampAsString = os.path.getmtime(fullExportFile)
-        except:
-            pass
+        lastExportTimeStampAsString = os.path.getmtime(fullExportFile)
+
+    try:
         lastExportTimeStampAsString = datetime.fromtimestamp(lastExportTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
         lastExportTimeStampAsString = lastExportTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastExportTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
-
+    except:
+        lastExportTimeStampAsString = "No export made, yet"
+            
     return {"CollectionFolder": collectionFolder,
             "CollectionFolderFunctional": collectionFolderFunctional,
             "LastExport": lastExportTimeStampAsString}
