@@ -40,42 +40,40 @@
         <tr>
             <td>Source Folder</td>
             <td>
-                <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
-                <b>{{ transcoderInfo.SettingSourceFolderShort }}</b>
+                {% if transcoderInfo.SettingSourceFolderShort %}
+                    <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
+                    <b>{{ transcoderInfo.SettingSourceFolderShort }}</b>
+                {% endif %}
             </td>
         </tr>
         <h3>Settings</h3>     
         <tr>
             <td>Ogg Folder</td>
             <td>
-                <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
-                <b>{{ transcoderInfo.SettingOggFolderShort }}</b>
-            </td>
-        </tr>
-        <tr>
-            <td>Ogg Quality</td>
-            <td>
-                {% if transcoderInfo.SettingOggQuality == 0 %}
-                    <small>(default = 1)</small>
-                {% else %}
-                    <b>{{ transcoderInfo.SettingOggQuality }}</b>
+                {% if transcoderInfo.SettingOggFolderShort %}
+                    <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
+                    <b>{{ transcoderInfo.SettingOggFolderShort }}</b> |
+                    Quality
+                    {% if transcoderInfo.SettingOggQuality == 0 %}
+                        <b>1</b>
+                    {% else %}
+                        <b>{{ transcoderInfo.SettingOggQuality }}</b>
+                    {% endif %}                    
                 {% endif %}
             </td>
         </tr>
         <tr>
             <td>Mp3 Folder</td>
             <td>
-                <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
-                <b>{{ transcoderInfo.SettingMp3FolderShort }}</b>
-            </td>
-        </tr>
-        <tr>
-            <td>Mp3 Bitrate</td>
-            <td>
-                {% if transcoderInfo.SettingMp3Bitrate == 0 %}
-                    <small>(default = 128)</small>
-                {% else %}
-                    <b>{{ transcoderInfo.SettingMp3Bitrate }}</b>
+                {% if transcoderInfo.SettingMp3FolderShort %}                
+                    <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
+                    <b>{{ transcoderInfo.SettingMp3FolderShort }}</b>  |
+                    Bitrate
+                    {% if transcoderInfo.SettingMp3Bitrate == 0 %}
+                        <b>128</b>
+                    {% else %}
+                        <b>{{ transcoderInfo.SettingMp3Bitrate }}</b>
+                    {% endif %}
                 {% endif %}
             </td>
         </tr>
