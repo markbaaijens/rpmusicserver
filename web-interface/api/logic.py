@@ -13,7 +13,7 @@ import urllib.request
 const_LmsApiUrl = 'http://localhost:9002/jsonrpc.js'
 const_PublicFolder = 'public'
 const_MusicFolder = 'music' 
-const_DonwloadsFolder = 'downloads' 
+const_DownloadsFolder = 'downloads' 
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -51,8 +51,8 @@ def ConvertToFunctionalFolder(folderName):
         if const_PublicFolder in functionalFolder:
             functionalFolder = functionalFolder.replace(const_PublicFolder, publicShareName)
         else: 
-            if const_DonwloadsFolder in functionalFolder:
-                functionalFolder = functionalFolder.replace(const_DonwloadsFolder, downloadsShareName)
+            if const_DownloadsFolder in functionalFolder:
+                functionalFolder = functionalFolder.replace(const_DownloadsFolder, downloadsShareName)
 
     return functionalFolder
 
