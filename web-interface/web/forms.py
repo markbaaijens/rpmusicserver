@@ -4,11 +4,11 @@ from wtforms import StringField, SubmitField, IntegerField, DecimalField, Boolea
 class EditTranscoderForm(FlaskForm):
     sourceFolder = StringField('Source Folder')
     oggFolder = StringField('Ogg Folder')
-    oggQuality = RadioField('Ogg Quality', 
+    oggQuality = RadioField('Quality', 
         choices=[(0, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')], 
         coerce=int)
     mp3Folder = StringField('Mp3 Folder')
-    mp3Bitrate = RadioField('Mp3 Bitrate', 
+    mp3Bitrate = RadioField('Bitrate', 
         choices=[(0, '128'), (256, '256'), (384, 384)],
         coerce=int)
     resetToDefaults = BooleanField('Reset to defaults')

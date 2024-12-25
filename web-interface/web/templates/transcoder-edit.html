@@ -27,8 +27,6 @@
                         <br><small><em>[{{ error }}]</em></small>
                     {% endfor %}
                 </td>
-            </tr>            
-            <tr>
                 <td>
                     {{ form.oggQuality.label }}
                 </td>
@@ -52,8 +50,6 @@
                         <br><em>[{{ error }}]</em></small>
                     {% endfor %}
                 </td>
-            </tr>   
-            <tr>
                 <td>
                     {{ form.mp3Bitrate.label }}
                 </td>
@@ -68,7 +64,7 @@
                 </td>
             </tr>   
         </table>
-        <div><small>* Folders are relative to {{ musicFolder }}</small></div>
+        <div><small>* Folders are relative to <b>{{ musicFolder }}</b></small></div>
         <br>
         {{ form.resetToDefaults()}} {{ form.resetToDefaults.label}}
 
