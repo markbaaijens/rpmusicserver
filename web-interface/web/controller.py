@@ -108,13 +108,6 @@ def ShowSystemPage():
         dockerContainerList = []
 
     try:
-        apiInfo = json.loads(requests.get(configObject.ApiRootUrl).content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        apiInfo = []
-
-    try:
         machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
     except Exception as e:
         logger.error(e)
@@ -131,9 +124,7 @@ def ShowSystemPage():
     return render_template(
         'system.html', 
         appTitle = 'System - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
         portStatusList = portStatusList,
-        apiInfo = apiInfo,
         dockerContainerList = dockerContainerList,
         machineInfo = machineInfo,
         translationList = translationList)   

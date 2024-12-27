@@ -2,6 +2,10 @@
 
 {% block content %}
     <h2>System</h2>
+    <div>
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:5000" target="_blank">Api</a> |
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:5000/api/GetApiList" target="_blank">Documentation</a>    
+    </div>
 
     <h3>Server</h3>
     <div>
@@ -88,26 +92,6 @@
             Edit
         </a>
     </div>
-
-    <h3>Api</h3>
-    <table>
-        <tr>
-            <td>Documentation</td>
-            <td>
-                <b>
-                <a class="external-link" href="{{ machineInfo.HostUrl }}:5000/api/GetApiList" target="_blank">{{ apiInfo.Documentation }}</a>
-                </b>
-            </td>
-        </tr>
-        <tr>
-            <td>Url</td>
-            <td><b>{{ apiRootUrl }}</b></td>
-        </tr>
-        <tr>
-            <td>Name</td>
-            <td><b>{{ apiInfo.ApiName }}</b></td>
-        </tr>                
-    </table>  
 
     <h3>Logs</h2>
     <div class="indent">
