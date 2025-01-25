@@ -7,7 +7,7 @@ fi
 
 if [ ! "$(docker ps -f name=lms -q)" ]; then
     if [ "$1" = "update" ]; then
-        docker pull lmscommunity/logitechmediaserver:stable
+        docker pull lmscommunity/lyrionmusicserver:stable
     fi
     docker run \
         -d \
@@ -17,14 +17,11 @@ if [ ! "$(docker ps -f name=lms -q)" ]; then
         -v "/media/usbdata/user/music":"/music":ro \
         -v "/etc/localtime":"/etc/localtime":ro \
         -v "/etc/timezone":"/etc/timezone":ro \
-        -p 9002:9002/tcp \
+        -p 9000:9000/tcp \
         -p 9090:9090/tcp \
         -p 3483:3483/tcp \
         -p 3483:3483/udp \
-        -e HTTP_PORT=9002 \
-        -e PUID=0 \
-        -e PGID=0 \
-        lmscommunity/logitechmediaserver:stable
+        lmscommunity/lyrionmusicserver:stable
 fi
 
 if [ ! "$(docker ps -f name=transmission -q)" ]; then
