@@ -66,9 +66,9 @@ Installing RPMS on your Pi can be done with a few simple steps, described below.
 * Test access:
   * watch services to become active:
     * `watch nmap rpms`
-    * wait until port 9002 appears; exit with Ctrl-C
+    * wait until port 9000 appears; exit with Ctrl-C
   * RPMS (browser): http://rpms
-  * LMS (browser): http://rpms:9002
+  * LMS (browser): http://rpms:9000
   * Transmission (browser): http://rpms:9091
   * Samba (file explorer): 
     * `smb://rpms`
@@ -142,7 +142,7 @@ The good news however is that a device is *always* accessible by ip-address. So 
 Examples, if the ip-address of RPMS is 192.68.1.20: 
 - `ping rpms` will become `ping 192.68.1.20`
 - `ssh pi@rpms` will become `ssh pi@192.68.1.20`
-- LMS: `rpms:9002` will become `192.68.1.20:9002`
+- LMS: `rpms:9000` will become `192.68.1.20:9000`
 
 Note. The ip-address might change over time b/c RPMS does not use a fixed address, but instead depends on the router which determines the address. In that case, point to the new address.
 

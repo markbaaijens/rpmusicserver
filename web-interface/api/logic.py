@@ -10,7 +10,7 @@ from math import ceil
 import asyncio
 import urllib.request
 
-const_LmsApiUrl = 'http://localhost:9002/jsonrpc.js'
+const_LmsApiUrl = 'http://localhost:9000/jsonrpc.js'
 const_PublicFolder = 'public'
 const_MusicFolder = 'music' 
 const_DownloadsFolder = 'downloads' 
@@ -260,7 +260,7 @@ def GetPortStatusList():
     portStatusList.append(PortInfo(445, 'samba', 'microsoft-ds'))
     portStatusList.append(PortInfo(5000, 'rpms', 'api'))
     portStatusList.append(PortInfo(8384, 'syncthing', 'web'))
-    portStatusList.append(PortInfo(9002, 'lms', 'web'))
+    portStatusList.append(PortInfo(9000, 'lms', 'web'))
     portStatusList.append(PortInfo(9090, 'lms', 'telnet'))    
     portStatusList.append(PortInfo(9091, 'transmission', 'web'))
 
@@ -696,8 +696,8 @@ def ExportCollectionGenreArtistAlbumByTag(collectionFolder):
     pass
 
 def GetLmsServerStatus():
-    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
-    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["serverstatus","0","-1"]]}'
+    # LMS API-reference: http://rpms:9000/html/docs/cli-api.html
+    # curl "rpms:9000/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["serverstatus","0","-1"]]}'
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["serverstatus","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
@@ -710,8 +710,8 @@ def GetLmsServerStatus():
     return(response['result'])
 
 def GetLmsArtists():
-    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
-    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["artists","0","-1"]]}'
+    # LMS API-reference: http://rpms:9000/html/docs/cli-api.html
+    # curl "rpms:9000/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["artists","0","-1"]]}'
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["artists","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
@@ -724,8 +724,8 @@ def GetLmsArtists():
     return(response['result']['artists_loop'])
 
 def GetLmsAlbumsByArtist(artist):
-    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
-    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["albums","0","-1","artist_id:207087"]]}'
+    # LMS API-reference: http://rpms:9000/html/docs/cli-api.html
+    # curl "rpms:9000/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["albums","0","-1","artist_id:207087"]]}'
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["albums","0","-1","artist_id:' + str(artist) + '"]]}'
     headers = {'Content-Type': 'application/json'}
@@ -738,8 +738,8 @@ def GetLmsAlbumsByArtist(artist):
     return(response['result']['albums_loop'])
 
 def GetLmsAlbumsByGenreArtist(genre, artist):
-    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
-    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["albums","0","-1","genre_id:37841","artist_id:207087"]]}'
+    # LMS API-reference: http://rpms:9000/html/docs/cli-api.html
+    # curl "rpms:9000/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["albums","0","-1","genre_id:37841","artist_id:207087"]]}'
     37841
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["albums","0","-1","genre_id:' + str(genre) + '","artist_id:' + str(artist) + '"]]}'
@@ -753,8 +753,8 @@ def GetLmsAlbumsByGenreArtist(genre, artist):
     return(response['result']['albums_loop'])
 
 def GetLmsGenres():
-    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
-    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["genres","0","-1"]]}'
+    # LMS API-reference: http://rpms:9000/html/docs/cli-api.html
+    # curl "rpms:9000/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["genres","0","-1"]]}'
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["genres","0","-1"]]}'
     headers = {'Content-Type': 'application/json'}
@@ -767,8 +767,8 @@ def GetLmsGenres():
     return(response['result']['genres_loop'])
 
 def GetLmsArtistsByGenre(genre):
-    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
-    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["artists","0","-1","genre_id:37866"]]}'    
+    # LMS API-reference: http://rpms:9000/html/docs/cli-api.html
+    # curl "rpms:9000/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["artists","0","-1","genre_id:37866"]]}'    
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["artists","0","-1","genre_id:' + str(genre) + '"]]}'
     headers = {'Content-Type': 'application/json'}
@@ -784,8 +784,8 @@ def GetLmsPlayers():
     def GetUpperNameFromPlayer(x):
         return (x['Name'].upper())
 
-    # LMS API-reference: http://rpms:9002/html/docs/cli-api.html
-    # curl "rpms:9002/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["players","0","10"]]}'
+    # LMS API-reference: http://rpms:9000/html/docs/cli-api.html
+    # curl "rpms:9000/jsonrpc.js" -d '{"method": "slim.request", "params": ["-", ["players","0","10"]]}'
     url = const_LmsApiUrl
     data = '{"method": "slim.request", "params": ["-", ["players","0","10"]]}'
     headers = {'Content-Type': 'application/json'}
