@@ -1,0 +1,89 @@
+#!/bin/bash
+
+# TODO Check if process is running
+
+log_progress () {
+    echo "$1"
+    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1"  >> $log_dir/flac-health-progress.log
+}
+
+log_error () {
+    echo "$1" >> $log_dir/flac-health-error.log
+    echo "$2" >> $log_dir/flac-health-error.log
+    echo "" >> $log_dir/flac-health-error.log    
+}
+
+if [ -d "/media/usbdata/rpms/logs" ]; then
+    log_dir="/media/usbdata/rpms/logs"
+else
+    log_dir="."    
+fi
+
+rm -f $log_dir/flac-health-progress.log
+rm -f $log_dir/flac-health-error.log
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+source_folder=$(jq '.sourcefolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
+if [ "$source_folder" == "null" ] || [ -z "${source_folder}" ]; then
+    source_folder="/media/usbdata/user/music"
+fi
+
+source_folder="/home/mark/Temp/flactest"
+
+log_progress "Start session on '$source_folder'"
+
+# TODO Check if root-folder exists
+
+repair_file="repair.sh"
+previous_dir=""
+current_dir=""
+IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
+for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -k1); do
+    current_dir="$(dirname "${file}")"
+    if [ "$previous_dir" != "$current_dir" ]; then
+        previous_dir=$current_dir
+        log_progress ""
+        log_progress $current_dir
+        rm -f $current_dir/$repair_file
+    fi
+
+    log_progress $file
+    flac_error=`flac --silent -t "$file" 2>&1`
+    if [ -n "$flac_error" ]; then
+        if [ ! -f $current_dir/$repair_file ]; then
+            log_progress "Created repair-script $current_dir/$repair_file"
+        fi
+
+        log_progress " => $flac_error"
+        log_error "$file" "$flac_error"
+
+        file_name="$(basename "${file}")"
+
+        echo "# $flac_error" >> $current_dir/$repair_file
+        if [[ $flac_error == *"WARNING, cannot check MD5 signature since it was unset in the STREAMINFO"* ]]; then
+            echo "flac -f \"$file_name\" -o \"$file_name\"" >> $current_dir/$repair_file
+        else
+            echo "# No repair implemented (yet) for this error/warning"
+        fi
+        echo "" >> $current_dir/$repair_file        
+    fi
+done
+unset IFS; set +f
+
+IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
+log_progress ""
+log_progress "File '$repair_file' created in:"
+for file in $(find $source_folder -type f -name 'repair.sh' -printf '%p\n' | sort -k1); do
+    chmod +x $file
+    current_dir="$(dirname "${file}")"
+    log_progress $current_dir
+done
+unset IFS; set +f
+
+log_progress ""
+log_progress "End session"
+
