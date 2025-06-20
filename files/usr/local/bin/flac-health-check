@@ -43,6 +43,8 @@ previous_dir=""
 current_dir=""
 IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
 for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -k1); do
+    file_name="$(basename "${file}")"
+
     current_dir="$(dirname "${file}")"
     if [ "$previous_dir" != "$current_dir" ]; then
         previous_dir=$current_dir
@@ -51,17 +53,17 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
         rm -f $current_dir/$repair_file
     fi
 
-    log_progress $file
+    log_progress "$file_name"
+
     flac_error=`flac --silent -t "$file" 2>&1`
     if [ -n "$flac_error" ]; then
         if [ ! -f $current_dir/$repair_file ]; then
-            log_progress "Created repair-script $current_dir/$repair_file"
+            log_progress " => Created '$repair_file' in $current_dir"
         fi
 
+        log_progress " => $file"
         log_progress " => $flac_error"
         log_error "$file" "$flac_error"
-
-        file_name="$(basename "${file}")"
 
         echo "# $flac_error" >> $current_dir/$repair_file
         if [[ $flac_error == *"WARNING, cannot check MD5 signature since it was unset in the STREAMINFO"* ]]; then
@@ -76,7 +78,7 @@ unset IFS; set +f
 
 IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
 log_progress ""
-log_progress "File '$repair_file' created in:"
+log_progress "Created '$repair_file' in:"
 for file in $(find $source_folder -type f -name 'repair.sh' -printf '%p\n' | sort -k1); do
     chmod +x $file
     current_dir="$(dirname "${file}")"
