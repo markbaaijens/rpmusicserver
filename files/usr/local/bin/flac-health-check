@@ -52,6 +52,8 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
     flac_error=`flac --silent -t "$file" 2>&1`
     if [ -n "$flac_error" ]; then
         if [ ! -f $current_dir/$repair_file ]; then
+            echo "" >> $current_dir/$repair_file
+            chmod +x $current_dir/$repair_file
             log " => Created '$repair_file' in $current_dir"
         fi
 
@@ -73,7 +75,6 @@ IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
 log ""
 log "Created '$repair_file' in:"
 for file in $(find $source_folder -type f -name 'repair.sh' -printf '%p\n' | sort -k1); do
-    chmod +x $file
     current_dir="$(dirname "${file}")"
     log $current_dir
 done
