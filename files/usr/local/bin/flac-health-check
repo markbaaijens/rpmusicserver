@@ -2,15 +2,9 @@
 
 # TODO Check if process is running
 
-log_progress () {
+log () {
     echo "$1"
-    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1"  >> $log_dir/flac-health-progress.log
-}
-
-log_error () {
-    echo "$1" >> $log_dir/flac-health-error.log
-    echo "$2" >> $log_dir/flac-health-error.log
-    echo "" >> $log_dir/flac-health-error.log    
+    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1"  >> $log_dir/flac-health.log
 }
 
 if [ -d "/media/usbdata/rpms/logs" ]; then
@@ -34,7 +28,7 @@ fi
 
 source_folder="/home/mark/Temp/flactest"
 
-log_progress "Start session on '$source_folder'"
+log "Start session on '$source_folder'"
 
 # TODO Check if root-folder exists
 
@@ -48,22 +42,21 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
     current_dir="$(dirname "${file}")"
     if [ "$previous_dir" != "$current_dir" ]; then
         previous_dir=$current_dir
-        log_progress ""
-        log_progress $current_dir
+        log ""
+        log $current_dir
         rm -f $current_dir/$repair_file
     fi
 
-    log_progress "$file_name"
+    log "$file_name"
 
     flac_error=`flac --silent -t "$file" 2>&1`
     if [ -n "$flac_error" ]; then
         if [ ! -f $current_dir/$repair_file ]; then
-            log_progress " => Created '$repair_file' in $current_dir"
+            log " => Created '$repair_file' in $current_dir"
         fi
 
-        log_progress " => $file"
-        log_progress " => $flac_error"
-        log_error "$file" "$flac_error"
+        log " => $file"
+        log " => $flac_error"
 
         echo "# $flac_error" >> $current_dir/$repair_file
         if [[ $flac_error == *"WARNING, cannot check MD5 signature since it was unset in the STREAMINFO"* ]]; then
@@ -77,15 +70,15 @@ done
 unset IFS; set +f
 
 IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
-log_progress ""
-log_progress "Created '$repair_file' in:"
+log ""
+log "Created '$repair_file' in:"
 for file in $(find $source_folder -type f -name 'repair.sh' -printf '%p\n' | sort -k1); do
     chmod +x $file
     current_dir="$(dirname "${file}")"
-    log_progress $current_dir
+    log $current_dir
 done
 unset IFS; set +f
 
-log_progress ""
-log_progress "End session"
+log ""
+log "End session"
 
