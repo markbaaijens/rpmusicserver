@@ -1,11 +1,20 @@
 #!/bin/bash
 
-# TODO Check if process is running
-
 log () {
     echo "$1"
     echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1"  >> $log_dir/flac-health.log
 }
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+# TODO Check if process is running
+#if [ -z "$(ps -ef | grep 'flac-health-check' | grep -v grep)" ]; then
+#    echo "Process is already running, exit"
+#    exit
+#fi
 
 if [ -d "/media/usbdata/rpms/logs" ]; then
     log_dir="/media/usbdata/rpms/logs"
@@ -15,11 +24,6 @@ fi
 
 rm -f $log_dir/flac-health-progress.log
 rm -f $log_dir/flac-health-error.log
-
-if [ -z "$(whoami | grep root)" ]; then
-    echo "Not running as root."
-    exit
-fi
 
 source_folder=$(jq '.sourcefolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
 if [ "$source_folder" == "null" ] || [ -z "${source_folder}" ]; then
@@ -63,6 +67,7 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
         echo "# $flac_error" >> $current_dir/$repair_file
         if [[ $flac_error == *"WARNING, cannot check MD5 signature since it was unset in the STREAMINFO"* ]]; then
             echo "flac -f \"$file_name\" -o \"$file_name\"" >> $current_dir/$repair_file
+            echo "touch \"$file_name\"" >> $current_dir/$repair_file            
         else
             echo "# No repair implemented (yet) for this error/warning"
         fi
