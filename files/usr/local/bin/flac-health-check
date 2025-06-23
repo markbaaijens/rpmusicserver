@@ -62,7 +62,7 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
         fi
 
         log " => $file"
-        log " => $flac_error"
+        log " => $flac_error"  # TODO multi line errors are not handled
 
         echo "# $flac_error" >> $current_dir/$repair_file
         if [[ $flac_error == *"WARNING, cannot check MD5 signature since it was unset in the STREAMINFO"* ]]; then
