@@ -37,8 +37,11 @@ log "Start session on '$source_folder'"
 # TODO Check if root-folder exists
 
 repair_file="repair.sh"
+repair_all_file="repair-all.sh"
+
 previous_dir=""
 current_dir=""
+
 IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
 for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -k1); do
     file_name="$(basename "${file}")"
@@ -62,7 +65,7 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
         fi
 
         log " => $file"
-        log " => $flac_error"  # TODO multi line errors are not handled
+        log " => $flac_error"  # TODO multi line errors are not handledb
 
         echo "# $flac_error" >> $current_dir/$repair_file
         if [[ $flac_error == *"WARNING, cannot check MD5 signature since it was unset in the STREAMINFO"* ]]; then
@@ -76,14 +79,32 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
 done
 unset IFS; set +f
 
+rm -f $source_folder/$repair_all_file
 IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
-log ""
-log "Created '$repair_file' in:"
 for file in $(find $source_folder -type f -name 'repair.sh' -printf '%p\n' | sort -k1); do
+    if [ ! -f "$source_folder/$repair_all_file" ]; then
+        log ""    
+        log "Created '$repair_file' in:"
+    fi
+
     current_dir="$(dirname "${file}")"
     log $current_dir
+
+    echo "cd \"$current_dir\"" >> $source_folder/$repair_all_file
+    echo "echo \"\"" >> $source_folder/$repair_all_file
+    echo "pwd" >> $source_folder/$repair_all_file
+    echo "./repair.sh" >> $source_folder/$repair_all_file    
 done
 unset IFS; set +f
+
+if [ -f "$source_folder/$repair_all_file" ]; then
+    chmod +x "$source_folder/$repair_all_file"
+    log ""
+    log "Created '$source_folder/$repair_all_file'"
+else
+    log ""
+    log "No corrupt flacs found."
+fi
 
 log ""
 log "End session"
