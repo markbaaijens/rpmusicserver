@@ -82,7 +82,13 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
                     echo "rm \"$file_name\"" >> $current_dir/$repair_file
                     echo "mv \"temp.flac\" \"$file_name\"" >> $current_dir/$repair_file
                 else
-                    echo "# No repair implemented (yet) for this error/warning" >> $current_dir/$repair_file
+                    if [[ $flac_error == *"FLAC__STREAM_DECODER_ERROR_STATUS_UNPARSEABLE_STREAM"* ]]; then
+                        echo "ffmpeg -i \"$file_name\" \"temp.flac\"" >> $current_dir/$repair_file
+                        echo "rm \"$file_name\"" >> $current_dir/$repair_file
+                        echo "mv \"temp.flac\" \"$file_name\"" >> $current_dir/$repair_file
+                    else
+                        echo "# No repair implemented (yet) for this error/warning" >> $current_dir/$repair_file
+                    fi
                 fi
             fi
         fi
