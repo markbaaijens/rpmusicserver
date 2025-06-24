@@ -61,18 +61,24 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
         if [ ! -f $current_dir/$repair_file ]; then
             echo "" >> $current_dir/$repair_file
             chmod +x $current_dir/$repair_file
+            chmod 777 $current_dir/$repair_file            
             log " => Created '$repair_file' in $current_dir"
         fi
 
         log " => $file"
-        log " => $flac_error"  # TODO multi line errors are not handledb
+        log " => $flac_error"  # TODO multi line errors are not handled
 
-        echo "# $flac_error" >> $current_dir/$repair_file
+        echo "# $flac_error" >> $current_dir/$repair_file  # TODO multi line errors are not handled
         if [[ $flac_error == *"WARNING, cannot check MD5 signature since it was unset in the STREAMINFO"* ]]; then
             echo "flac -f \"$file_name\" -o \"$file_name\"" >> $current_dir/$repair_file
             echo "touch \"$file_name\"" >> $current_dir/$repair_file            
         else
-            echo "# No repair implemented (yet) for this error/warning" >> $current_dir/$repair_file
+            if [[ $flac_error == *"ERROR, MD5 signature mismatch"* ]]; then
+                echo "flac -f \"$file_name\" -o \"$file_name\"" >> $current_dir/$repair_file
+                echo "touch \"$file_name\"" >> $current_dir/$repair_file            
+            else
+                echo "# No repair implemented (yet) for this error/warning" >> $current_dir/$repair_file
+            fi
         fi
         echo "" >> $current_dir/$repair_file        
     fi
@@ -99,6 +105,7 @@ unset IFS; set +f
 
 if [ -f "$source_folder/$repair_all_file" ]; then
     chmod +x "$source_folder/$repair_all_file"
+    chmod 777 "$source_folder/$repair_all_file"    
     log ""
     log "Created '$source_folder/$repair_all_file'"
 else
