@@ -1,8 +1,10 @@
 #!/bin/bash
 
+log_file="flac-health.log"
+
 log () {
     echo "$1"
-    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1"  >> $log_dir/flac-health.log
+    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1"  >> $log_dir/$log_file
 }
 
 if [ -z "$(whoami | grep root)" ]; then
@@ -21,8 +23,7 @@ else
     log_dir="."    
 fi
 
-rm -f $log_dir/flac-health-progress.log
-rm -f $log_dir/flac-health-error.log
+rm -f $log_dir/$log_file
 
 source_folder=$(jq '.sourcefolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
 if [ "$source_folder" == "null" ] || [ -z "${source_folder}" ]; then
@@ -30,7 +31,7 @@ if [ "$source_folder" == "null" ] || [ -z "${source_folder}" ]; then
 fi
 
 # For debugging and testing purposes, uncomment this line and change it
-#source_folder="/home/mark/Temp/flactest"
+source_folder="/home/mark/Temp/flactest"
 
 if [ ! -d $source_folder ]; then
     echo "Sourcefolder '$source_folder' does not exist."
