@@ -10,11 +10,10 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
-# TODO Check if process is running
-#if [ -z "$(ps -ef | grep 'flac-health-check' | grep -v grep)" ]; then
-#    echo "Process is already running, exit"
-#    exit
-#fi
+if pidof -o %PPID -x "flac-health-check">/dev/null; then
+    echo "Process already running."
+    exit
+fi
 
 if [ -d "/media/usbdata/rpms/logs" ]; then
     log_dir="/media/usbdata/rpms/logs"
