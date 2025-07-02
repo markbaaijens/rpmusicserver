@@ -546,6 +546,22 @@ def ShowUpdateLog(nrOfLines):
         logLines = logLines,
         logTitle = 'Update Log')   
 
+@app.route('/logs/flac-health-check/<int:nrOfLines>', methods=['GET'])
+def ShowFlacHealthCheckLog(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetFlacHealthCheckLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    return render_template(
+        'loglines.html', 
+        appTitle = 'Flac Health Check Log - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        logLines = logLines,
+        logTitle = 'Flac Health Check Log')   
+
 @app.route('/transcoder/edit', methods=['GET', 'POST'])
 def EditTranscoderSettings():
     redirectPage = '/transcoder'

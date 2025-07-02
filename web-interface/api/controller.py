@@ -221,6 +221,17 @@ def GetBackupLog(nrOfLines):
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/GetFlacHealthCheckLog/<int:nrOfLines>', methods=['GET'])
+def GetFlacHealthCheckLog(nrOfLines):
+    try:
+        info = logic.GetLog('/media/usbdata/rpms/logs/flac-health-check.log', nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetBackupDetailsLog/<int:nrOfLines>', methods=['GET'])
 def GetBackupDetailsLog(nrOfLines):
     try:

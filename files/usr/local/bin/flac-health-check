@@ -1,6 +1,6 @@
 #!/bin/bash
 
-log_file="flac-health.log"
+log_file="flac-health-check.log"
 
 log () {
     echo "$1"

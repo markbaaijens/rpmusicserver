@@ -95,6 +95,35 @@
         <a href="/ask-export-collection" class="link-button">Export</a>   
     {% else %}
         <a class="link-button disabled">Export</a> 
-    {% endif %}    
+    {% endif %}  
+
+    <h3>Flac Health Check</h3>   
+    <!--
+    <table>
+        <tr>
+            <td>Report</td>
+            <td>
+                {% if lmsServerStatus['info total artists'] %}
+                    <b>{{ lmsServerStatus['info total artists'] }}</b> warning |
+                    <b>{{ lmsServerStatus['info total albums'] }}</b> errors
+                {% else %}
+                    <b>No check made, yet</b>
+                {% endif %}    
+            </td>
+        </tr>
+        <tr>
+            <td>Last Check</td>
+            <td><b>{{ musicCollectionInfo.LastExport }}</b></td>
+        </tr>
+    </table> 
+    <br>
+
+    <a href="/ask-export-collection" class="link-button">Check</a>   
+    -->
+    
+    <div class="indent">
+        <p>
+        <a href="/logs/flac-health-check/20">Log</a>
+    </div>       
 
 {% endblock %}
