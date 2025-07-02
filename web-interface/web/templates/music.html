@@ -59,33 +59,27 @@
         {% endfor %} 
     {% else %}
         {% if lmsServerStatus['info total artists'] %}
-            No players connected
+            <span class="checkmark-n">No players connected</span>
         {% else %}
-            Music-server is not active
+            <span class="checkmark-n">Music-server is not active</span>
         {% endif %}    
     {% endif %}   
 
     <h3>Collection</h3>   
     <table>
         <tr>
-            <td>Artists</td>
-            <td><b>{{ lmsServerStatus['info total artists'] }}</b></td>
+            <td>Info</td>
+            <td>
+                {% if lmsServerStatus['info total artists'] %}
+                    <b>{{ lmsServerStatus['info total artists'] }}</b> artists |
+                    <b>{{ lmsServerStatus['info total albums'] }}</b> albums |
+                    <b>{{ lmsServerStatus['info total songs'] }}</b> songs |
+                    <b>{{ lmsServerStatus['info total genres'] }}</b> genres
+                {% else %}
+                    <b>-</b>
+                {% endif %}    
+            </td>
         </tr>
-        <tr>
-            <td>Albums</td>
-            <td><b>{{ lmsServerStatus['info total albums'] }}</b></td>
-        </tr>
-        <tr>
-            <td>Songs</td>
-            <td><b>{{ lmsServerStatus['info total songs'] }}</b></td>
-        </tr>                
-        <tr>
-            <td>Genres</td>
-            <td><b>{{ lmsServerStatus['info total genres'] }}</b></td>
-        </tr>
-    </table>
-    <br>
-    <table>
         <tr>
             <td>Last Export</td>
             <td><b>{{ musicCollectionInfo.LastExport }}</b></td>
