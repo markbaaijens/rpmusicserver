@@ -343,7 +343,7 @@ def AskFlacHealthCheck():
         'dialog.html', 
         appTitle = 'Flac Health Check - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        labelText = 'Flac Health Check',
+        labelText = 'Start check for flac health?',
         proceedUrl = '/flac-health-check',
         backUrl = request.referrer)
 
