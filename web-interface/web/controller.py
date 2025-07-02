@@ -337,6 +337,16 @@ def AskExportCollection():
         proceedUrl = '/export-collection',
         backUrl = request.referrer)
 
+@app.route('/ask-flac-health-check', methods=['GET'])
+def AskFlacHealthCheck():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Flac Health Check - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Flac Health Check',
+        proceedUrl = '/flac-health-check',
+        backUrl = request.referrer)
+
 @app.route('/export-collection', methods=['GET'])
 def DoExportCollection():
     try:
@@ -353,6 +363,24 @@ def DoExportCollection():
         appTitle = 'Export Collection - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/music')
+
+@app.route('/flac-health-check', methods=['GET'])
+def DoFlacHealthCheck():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoFlacHealthCheck').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    flash(apiMessage['Message'])        
+
+    return render_template(
+        'message.html', 
+        appTitle = 'Flac Health Check - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/music')
+
 
 @app.route('/ask-transcode', methods=['GET'])
 def AskTranscode():

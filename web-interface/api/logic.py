@@ -558,7 +558,7 @@ def GetLog(logFile, nrOfLines):
         for logLine in logLinesFromFile:
             logLines.append(logLine.decode("utf-8").strip('\n'))
 
-    if logLines.count('') == 0:
+    if len(logLines) == 0:
         logLines.append('Log is empty.')
 
     return logLines
@@ -640,6 +640,10 @@ async def DoTranscode():
 
 async def DoGenerateSambaConf():
     await asyncio.create_subprocess_shell("generate-samba-conf")
+    pass
+
+async def DoFlacHealthCheck():
+    await asyncio.create_subprocess_shell("flac-health-check")
     pass
 
 def ExportCollectionArtistAlbumByFolder(collectionFolder):
