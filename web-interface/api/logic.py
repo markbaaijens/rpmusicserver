@@ -557,6 +557,10 @@ def GetLog(logFile, nrOfLines):
         logLinesFromFile = TailFromFile(logFile, nrOfLines)
         for logLine in logLinesFromFile:
             logLines.append(logLine.decode("utf-8").strip('\n'))
+
+    if logLines.count('') == 0:
+        logLines.append('Log is empty.')
+
     return logLines
 
 def GetDockerContainerList():
