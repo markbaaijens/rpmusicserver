@@ -489,10 +489,10 @@ def ShowApiLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'API Log - ' + configObject.AppTitle, 
+        appTitle = 'API-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Api Log')   
+        logTitle = 'Api-log')   
 
 @app.route('/logs/web/<int:nrOfLines>', methods=['GET'])
 def ShowWebLog(nrOfLines):
@@ -505,10 +505,10 @@ def ShowWebLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Web Log - ' + configObject.AppTitle, 
+        appTitle = 'Web-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Web Log')   
+        logTitle = 'Web-log')   
 
 @app.route('/logs/backup/<int:nrOfLines>', methods=['GET'])
 def ShowBackupLog(nrOfLines):
@@ -521,10 +521,10 @@ def ShowBackupLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Backup Log - ' + configObject.AppTitle, 
+        appTitle = 'Backup-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Backup Log')   
+        logTitle = 'Backup-log')   
 
 @app.route('/logs/backup-details/<int:nrOfLines>', methods=['GET'])
 def ShowBackupDetailsLog(nrOfLines):
@@ -537,10 +537,10 @@ def ShowBackupDetailsLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Backup Details Log - ' + configObject.AppTitle, 
+        appTitle = 'Backup Details-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Backup Details Log')   
+        logTitle = 'Backup Details-log')   
 
 @app.route('/logs/transcoder/<int:nrOfLines>', methods=['GET'])
 def ShowTranscoderLog(nrOfLines):
@@ -553,10 +553,10 @@ def ShowTranscoderLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Transcoder Log - ' + configObject.AppTitle, 
+        appTitle = 'Transcoder-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Transcoder Log')   
+        logTitle = 'Transcoder-log')   
 
 @app.route('/logs/update/<int:nrOfLines>', methods=['GET'])
 def ShowUpdateLog(nrOfLines):
@@ -569,10 +569,10 @@ def ShowUpdateLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Update Log - ' + configObject.AppTitle, 
+        appTitle = 'Update-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Update Log')   
+        logTitle = 'Update-log')   
 
 @app.route('/logs/flac-health-check/<int:nrOfLines>', methods=['GET'])
 def ShowFlacHealthCheckLog(nrOfLines):
@@ -585,10 +585,10 @@ def ShowFlacHealthCheckLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Flac Health Check Log - ' + configObject.AppTitle, 
+        appTitle = 'Flac Health Check-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Flac Health Check Log')   
+        logTitle = 'Flac Health Check-log')   
 
 @app.route('/transcoder/edit', methods=['GET', 'POST'])
 def EditTranscoderSettings():
