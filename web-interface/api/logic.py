@@ -553,17 +553,27 @@ def GetMusicCollectionInfo():
 
 def GetFlacHealthInfo():   
     lastCheckTimeStampAsString = ''
+    isChecked = False
     fullHealthLog = '/media/usbdata/rpms/logs/flac-health-check.log'
     if os.path.isfile(fullHealthLog):
         lastCheckTimeStampAsString = os.path.getmtime(fullHealthLog)
+        isChecked = True
 
     try:
         lastCheckTimeStampAsString = datetime.fromtimestamp(lastCheckTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
         lastCheckTimeStampAsString = lastCheckTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastCheckTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
     except:
         lastCheckTimeStampAsString = "No check made, yet"
+
+    errorCount = ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep -o ERROR -B1 | wc -l")
+    warningCount = ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep -o WARNING -B1 | wc -l")
+    corruptAlbumCount = ExecuteBashCommand("find /media/usbdata/user/music/flac/ -type f -name 'repair.sh' | wc -l")
             
-    return {"LastCheck": lastCheckTimeStampAsString}
+    return {"IsChecked": isChecked,
+            "LastCheck": lastCheckTimeStampAsString,
+            "ErrorCount": errorCount,
+            "WarningCount": warningCount,
+            "CorruptAlbumCount": corruptAlbumCount}
 
 def GetLog(logFile, nrOfLines):
     logLines = []

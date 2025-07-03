@@ -99,23 +99,37 @@
 
     <h3>Flac Health</h3>   
     <table>
-        <!--
-        <tr>
-            <td>Report</td>
-            <td>
-                {% if lmsServerStatus['info total artists'] %}
-                    <b>{{ lmsServerStatus['info total artists'] }}</b> warning |
-                    <b>{{ lmsServerStatus['info total albums'] }}</b> errors
-                {% else %}
-                    <b>No check made, yet</b>
-                {% endif %}    
-            </td>
-        </tr>
-        -->
         <tr>
             <td>Last Check</td>
             <td><b>{{ flacHealthInfo.LastCheck }}</b></td>
         </tr>
+        <tr>
+            <td>Report</td>
+            <td>
+                {% if flacHealthInfo.IsChecked %}
+                    {% if flacHealthInfo.ErrorCount == 0 %}
+                        <b><span class="checkmark-y">{{ flacHealthInfo.ErrorCount }}</span></b> errors |
+                    {% else %}
+                        <b><span class="checkmark-n">{{ flacHealthInfo.ErrorCount }}</span></b> errors |
+                    {% endif %}                  
+
+                    {% if flacHealthInfo.WarningCount == 0 %}
+                        <b><span class="checkmark-y">{{ flacHealthInfo.WarningCount }}</span></b> warnings |
+                    {% else %}
+                        <b><span class="checkmark-n">{{ flacHealthInfo.WarningCount }}</span></b> warnings |
+                    {% endif %}                                  
+
+                    {% if flacHealthInfo.CorruptAlbumCount == 0 %}
+                        <b><span class="checkmark-y">{{ flacHealthInfo.CorruptAlbumCount }}</span></b> corrupt albums
+                    {% else %}
+                        <b><span class="checkmark-n">{{ flacHealthInfo.CorruptAlbumCount }}</span></b> corrupt albums
+                    {% endif %}                                                  
+                {% else %}
+                    <b>-</b>
+                {% endif %}                                                                      
+            </td>
+        </tr>
+
     </table> 
     <br>
 
