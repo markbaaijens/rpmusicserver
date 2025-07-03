@@ -551,6 +551,20 @@ def GetMusicCollectionInfo():
             "CollectionFolderFunctional": collectionFolderFunctional,
             "LastExport": lastExportTimeStampAsString}
 
+def GetFlacHealthInfo():   
+    lastCheckTimeStampAsString = ''
+    fullHealthLog = '/media/usbdata/rpms/logs/flac-health-check.log'
+    if os.path.isfile(fullHealthLog):
+        lastCheckTimeStampAsString = os.path.getmtime(fullHealthLog)
+
+    try:
+        lastCheckTimeStampAsString = datetime.fromtimestamp(lastCheckTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
+        lastCheckTimeStampAsString = lastCheckTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastCheckTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
+    except:
+        lastCheckTimeStampAsString = "No check made, yet"
+            
+    return {"LastCheck": lastCheckTimeStampAsString}
+
 def GetLog(logFile, nrOfLines):
     logLines = []
     if os.path.isfile(logFile):

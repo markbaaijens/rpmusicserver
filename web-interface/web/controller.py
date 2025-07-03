@@ -193,7 +193,14 @@ def ShowMusicPage():
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        lmsPlayers = []                
+        lmsPlayers = []    
+
+    try:
+        flacHealthInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetFlacHealthInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        flacHealthInfo = []        
 
     return render_template(
         'music.html', 
@@ -202,7 +209,8 @@ def ShowMusicPage():
         musicCollectionInfo = musicCollectionInfo,
         lmsServerStatus = lmsServerStatus,
         lmsPlayers = lmsPlayers,
-        machineInfo = machineInfo)
+        machineInfo = machineInfo,
+        flacHealthInfo = flacHealthInfo)
 
 @app.route('/backup', methods=['GET'])
 def ShowBackupPage():
