@@ -574,7 +574,7 @@ def DoExportCollection():
 def DoFlacHealthCheck():
     try:
         asyncio.run(logic.DoFlacHealthCheck())
-        info = { "Message": "Flac Healthe Check started."}
+        info = { "Message": "Flac Health Check started."}
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
