@@ -54,7 +54,7 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
     if [ "$previous_dir" != "$current_dir" ]; then
         previous_dir=$current_dir
         log ""
-        log "Album: $current_dir"
+        log "Folder: $current_dir"
         rm -f $current_dir/$repair_file
     fi
 

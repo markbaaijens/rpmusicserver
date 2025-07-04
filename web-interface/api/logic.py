@@ -565,15 +565,17 @@ def GetFlacHealthInfo():
     except:
         lastCheckTimeStampAsString = "No check made, yet"
 
-    errorCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep -o ERROR | wc -l"))
-    warningCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep -o WARNING | wc -l"))
-    corruptAlbumCount = int(ExecuteBashCommand("find /media/usbdata/user/music/flac/ -type f -name 'repair.sh' | wc -l"))
+    folderCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'Folder:' | wc -l"))
+    errorCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep ERROR | wc -l"))
+    warningCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep WARNING | wc -l"))
+    corruptFolderCount = int(ExecuteBashCommand("find /media/usbdata/user/music/flac/ -type f -name 'repair.sh' | wc -l"))
             
     return {"IsChecked": isChecked,
             "LastCheck": lastCheckTimeStampAsString,
+            "FolderCount": folderCount,
             "ErrorCount": errorCount,
             "WarningCount": warningCount,
-            "CorruptAlbumCount": corruptAlbumCount}
+            "CorruptFolderCount": corruptFolderCount}
 
 def GetLog(logFile, nrOfLines):
     logLines = []

@@ -107,6 +107,8 @@
             <td>Report</td>
             <td>
                 {% if flacHealthInfo.IsChecked %}
+                    <b>{{ flacHealthInfo.FolderCount }}</b> folders |
+
                     {% if flacHealthInfo.ErrorCount == 0 %}
                         <b><span class="checkmark-y">{{ flacHealthInfo.ErrorCount }}</span></b> errors |
                     {% else %}
@@ -119,10 +121,10 @@
                         <b><span class="checkmark-n">{{ flacHealthInfo.WarningCount }}</span></b> warnings |
                     {% endif %}                                  
 
-                    {% if flacHealthInfo.CorruptAlbumCount == 0 %}
-                        <b><span class="checkmark-y">{{ flacHealthInfo.CorruptAlbumCount }}</span></b> corrupt albums
+                    {% if flacHealthInfo.CorruptFolderCount == 0 %}
+                        <b><span class="checkmark-y">{{ flacHealthInfo.CorruptFolderCount }}</span></b> corrupt folders
                     {% else %}
-                        <b><span class="checkmark-n">{{ flacHealthInfo.CorruptAlbumCount }}</span></b> corrupt albums
+                        <b><span class="checkmark-n">{{ flacHealthInfo.CorruptFolderCount }}</span></b> corrupt folders
                     {% endif %}                                                  
                 {% else %}
                     <b>-</b>
