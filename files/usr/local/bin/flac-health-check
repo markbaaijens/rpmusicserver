@@ -43,6 +43,9 @@ repair_all_file="repair-all.sh"
 previous_dir=""
 current_dir=""
 
+rm -f $source_folder/$repair_all_file
+find $source_folder -name "$repair_file" -exec rm {} \;
+
 IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
 for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -k1); do
     file_name="$(basename "${file}")"
@@ -51,7 +54,7 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
     if [ "$previous_dir" != "$current_dir" ]; then
         previous_dir=$current_dir
         log ""
-        log $current_dir
+        log "Album: $current_dir"
         rm -f $current_dir/$repair_file
     fi
 
@@ -98,7 +101,6 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
 done
 unset IFS; set +f
 
-rm -f $source_folder/$repair_all_file
 IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
 for file in $(find $source_folder -type f -name 'repair.sh' -printf '%p\n' | sort -k1); do
     if [ ! -f "$source_folder/$repair_all_file" ]; then
@@ -120,7 +122,7 @@ if [ -f "$source_folder/$repair_all_file" ]; then
     chmod +x "$source_folder/$repair_all_file"
     chmod 777 "$source_folder/$repair_all_file"    
     log ""
-    log "Created '$source_folder/$repair_all_file'"
+    log "Created '$repair_all_file' in '$source_folder'"
 else
     log ""
     log "No corrupt flacs found."
