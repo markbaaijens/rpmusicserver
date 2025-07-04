@@ -139,6 +139,7 @@ install_bin_file export-collection
 install_bin_file start-web
 install_bin_file generate-samba-conf
 install_bin_file flac-health-check
+install_bin_file flac-health-report
 
 # By always delete existing lines in crontab, we can easily implement
 # a different strategy later, if needed

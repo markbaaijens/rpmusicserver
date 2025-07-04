@@ -589,6 +589,20 @@ def GetLog(logFile, nrOfLines):
 
     return logLines
 
+def GetFlacHealthReport():
+    logLines = []
+
+    process = subprocess.Popen(['flac-health-report'], stdout=subprocess.PIPE)
+    logLinesFromFile = process.stdout.readlines()
+    
+    for logLine in logLinesFromFile:
+        logLines.append(logLine.decode("utf-8").strip('\n'))
+
+    if len(logLines) == 0:
+        logLines.append('Log is empty.')
+
+    return logLines
+
 def GetDockerContainerList():
     dockerContainerList = []
 

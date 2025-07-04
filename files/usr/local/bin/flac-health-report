@@ -1,0 +1,22 @@
+#!/bin/bash
+
+source_folder=$(jq '.sourcefolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
+if [ "$source_folder" == "null" ] || [ -z "${source_folder}" ]; then
+    source_folder="/media/usbdata/user/music"
+fi
+
+if [ ! -d $source_folder ]; then
+    echo "Sourcefolder '$source_folder' does not exist."
+    exit
+fi
+
+IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
+for file in $(find $source_folder -type f -name 'repair.sh' -printf '%p\n' | sort -k1); do
+    current_dir="$(dirname "${file}")"
+    echo $current_dir
+
+    cat $file | grep "# "
+    echo "---"
+done
+unset IFS; set +f
+
