@@ -236,9 +236,10 @@ In each folder where corruption has been detected during the check, a script _re
   * execute the script
     * `./repair.sh`
 
-For both repair-methods, you can also copy the files over to your desktop, do the repair locally and then copy them back; this gives you more control but it is quite lumbersome, time consuming and error prone due to the number of actions. Note that the repair-script only works om Linux-PC's.
-
-After repair, it is recommended to run the chack again, to validate the repair. 
+Notes
+* It is recommended to create a backup before the repair b/c the files are actually changed by the repair.
+* For both repair-methods, you can also copy the files over to your desktop, do the repair locally and then copy them back; this gives you more control but it is quite lumbersome, time consuming and error prone due to the number of actions. Note that the repair-script only works om Linux-PC's.
+* After repair, it is recommended to run the chack again, to validate the repair. 
 
 ## Backup
 You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS. A proper backup is the basis for [disaster recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery).
