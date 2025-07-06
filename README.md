@@ -209,7 +209,7 @@ In the Transcoder-page, You can also click on the Transcode-button, to start an 
 ## Flac Health
 Within RPMS, you can check the integrity of all the flac-files in your collection and search for corrupted flacs. A repair-script is created during the check; (most of) these faults can be repaired by running the script. 
 
-Note. Corruption can occur during ripping or copying; in theory, disk rot can also lead to corrupted flac-files. Either way, checking you collection regurarely is recommended.
+Note. Corruption can occur during ripping or copying; in theory, disk rot can also lead to corrupted flac-files. Either way, checking your collection regularly is recommended.
 
 ### Steps to run the check
 * On the Music-page, under _Flac Health_, click on _Check_
@@ -217,7 +217,7 @@ Note. Corruption can occur during ripping or copying; in theory, disk rot can al
 * Under _Log_, you can see the progress; when finished, it shows a summary
 * Under _Report_, you can see a detailed report where all folders are mentioned which contain corrupt files; also the actual errors or warnings are shown
 
-Wait until the number of folders in _Status_ matches the number of albums shown above in _Collection, Info_. Note that the number of folders can exceed the number of albums, due to a different storage organisation, so they can be different!
+Wait until the number of folders in _Status_ matches the number of albums shown above in _Collection, Info_. Note that the number of folders can exceed the number of albums, due to different storage organisations, so they can be different!
 
 ### Repair
 In each folder where corruption has been detected during the check, a script _repair.sh_ is created. On top of that, a script _repair-all.sh_ is created in de root-folder of your flac-files. You can use either of them to repair the corrupted files.
@@ -238,7 +238,7 @@ In each folder where corruption has been detected during the check, a script _re
 
 For both repair-methods, you can also copy the files over to your desktop, do the repair locally and then copy them back; this gives you more control but it is quite lumbersome, time consuming and error prone due to the number of actions. Note that the repair-script only works om Linux-PC's.
 
-After repair, it is recommended to run the chack again. 
+After repair, it is recommended to run the chack again, to validate the repair. 
 
 ## Backup
 You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS. A proper backup is the basis for [disaster recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery).
