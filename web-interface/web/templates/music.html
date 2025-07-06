@@ -97,14 +97,18 @@
         <a class="link-button disabled">Export</a> 
     {% endif %}  
 
-    <h3>Flac Health</h3>   
+    <h3>Flac Health
+        <a href="https://github.com/markbaaijens/rpmusicserver#flac-health" target="_blank">
+            <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
+         </a>        
+    </h3>
     <table>
         <tr>
             <td>Last Check</td>
             <td><b>{{ flacHealthInfo.LastCheck }}</b></td>
         </tr>
         <tr>
-            <td>Report</td>
+            <td>Status</td>
             <td>
                 {% if flacHealthInfo.IsChecked %}
                     <b>{{ flacHealthInfo.FolderCount }}</b> folders |

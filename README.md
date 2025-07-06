@@ -7,6 +7,7 @@ Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (
 [Folder mapping](https://github.com/markbaaijens/rpmusicserver#folder-mapping)  
 [Update RPMS](https://github.com/markbaaijens/rpmusicserver#update-rpms)  
 [Transcoder](https://github.com/markbaaijens/rpmusicserver#transcoder)  
+[Flac Health](https://github.com/markbaaijens/rpmusicserver#flac-health)  
 [Backup](https://github.com/markbaaijens/rpmusicserver#backup)  
 [Disaster Recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery)  
 [Development](https://github.com/markbaaijens/rpmusicserver#development)  
@@ -204,6 +205,40 @@ In the Transcoder-page, You can also click on the Transcode-button, to start an 
 * you can simultaneously transcode to ogg AND mp3; just set both `Ogg Folder` and `Mp3 Folder`
 
 [Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
+
+## Flac Health
+Within RPMS, you can check the integrity of all the flac-files in your collection and search for corrupted flacs. A repair-script is created during the check; (most of) these faults can be repaired by running the script. 
+
+Note. Corruption can occur during ripping or copying; in theory, disk rot can also lead to corrupted flac-files. Either way, checking you collection regurarely is recommended.
+
+### Steps to run the check
+* On the Music-page, under _Flac Health_, click on _Check_
+* Under _Status_, you can see the analysis (in realtime)
+* Under _Log_, you can see the progress; when finished, it shows a summary
+* Under _Report_, you can see a detailed report where all folders are mentioned which contain corrupt files; also the actual errors or warnings are shown
+
+Wait until the number of folders in _Status_ matches the number of albums shown above in _Collection, Info_. Note that the number of folders can exceed the number of albums, due to a different storage organisation, so they can be different!
+
+### Repair
+In each folder where corruption has been detected during the check, a script _repair.sh_ is created. On top of that, a script _repair-all.sh_ is created in de root-folder of your flac-files. You can use either of them to repair the corrupted files.
+
+* in the terminal, login by ssh: 
+  * `ssh pi@rpms`
+  * password: `rpms`
+* to repair all folders at once:
+  * change directory to the root of your music collection:
+    * `cd /media/usbdata/user/music/flac`
+  * execute the script
+    * `./repair-all.sh`
+* to repair an individual folder: 
+  * change directory to the specific folder:
+    * `cd /media/usbdata/user/music/flac` + name of the folder
+  * execute the script
+    * `./repair.sh`
+
+For both repair-methods, you can also copy the files over to your desktop, do the repair locally and then copy them back; this gives you more control but it is quite lumbersome, time consuming and error prone due to the number of actions. Note that the repair-script only works om Linux-PC's.
+
+After repair, it is recommended to run the chack again. 
 
 ## Backup
 You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS. A proper backup is the basis for [disaster recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery).
