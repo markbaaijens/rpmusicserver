@@ -30,8 +30,6 @@ if [ "$source_folder" == "null" ] || [ -z "${source_folder}" ]; then
     source_folder="/media/usbdata/user/music"
 fi
 
-source_folder="/home/mark/Temp/flactest"
-
 if [ ! -d $source_folder ]; then
     echo "Sourcefolder '$source_folder' does not exist."
     exit

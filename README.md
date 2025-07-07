@@ -217,7 +217,7 @@ Note. Corruption can occur during ripping or copying; in theory, disk rot can al
 * Under _Log_, you can see the progress; when finished, it shows a summary
 * Under _Report_, you can see a detailed report where all folders are mentioned which contain corrupt files; also the actual errors or warnings are shown
 
-Wait until the number of folders in _Status_ matches the number of albums shown above in _Collection, Info_. Note that the number of folders can exceed the number of albums, due to different storage organisations, so they can be different!
+Wait until the number of folders in _Status_ matches the number of albums shown above in _Collection, Info_. Note that the number of folders can exceed the number of albums, due to different storage organisations, so they can be different! Processing is taken place at approximately 2 folders per minute (on a Raspberry Pi 4).
 
 ### Repair
 In each folder where corruption has been detected during the check, a script _repair.sh_ is created. On top of that, a script _repair-all.sh_ is created in de root-folder of your flac-files. You can use either of them to repair the corrupted files.
