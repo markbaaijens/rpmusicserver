@@ -59,33 +59,27 @@
         {% endfor %} 
     {% else %}
         {% if lmsServerStatus['info total artists'] %}
-            No players connected
+            <span class="checkmark-n">No players connected</span>
         {% else %}
-            Music-server is not active
+            <span class="checkmark-n">Music-server is not active</span>
         {% endif %}    
     {% endif %}   
 
     <h3>Collection</h3>   
     <table>
         <tr>
-            <td>Artists</td>
-            <td><b>{{ lmsServerStatus['info total artists'] }}</b></td>
+            <td>Info</td>
+            <td>
+                {% if lmsServerStatus['info total artists'] %}
+                    <b>{{ lmsServerStatus['info total artists'] }}</b> artists |
+                    <b>{{ lmsServerStatus['info total albums'] }}</b> albums |
+                    <b>{{ lmsServerStatus['info total songs'] }}</b> songs |
+                    <b>{{ lmsServerStatus['info total genres'] }}</b> genres
+                {% else %}
+                    <b>-</b>
+                {% endif %}    
+            </td>
         </tr>
-        <tr>
-            <td>Albums</td>
-            <td><b>{{ lmsServerStatus['info total albums'] }}</b></td>
-        </tr>
-        <tr>
-            <td>Songs</td>
-            <td><b>{{ lmsServerStatus['info total songs'] }}</b></td>
-        </tr>                
-        <tr>
-            <td>Genres</td>
-            <td><b>{{ lmsServerStatus['info total genres'] }}</b></td>
-        </tr>
-    </table>
-    <br>
-    <table>
         <tr>
             <td>Last Export</td>
             <td><b>{{ musicCollectionInfo.LastExport }}</b></td>
@@ -101,6 +95,57 @@
         <a href="/ask-export-collection" class="link-button">Export</a>   
     {% else %}
         <a class="link-button disabled">Export</a> 
-    {% endif %}    
+    {% endif %}  
+
+    <h3>Flac Health
+        <a href="https://github.com/markbaaijens/rpmusicserver#flac-health" target="_blank">
+            <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
+         </a>        
+    </h3>
+    <table>
+        <tr>
+            <td>Last Check</td>
+            <td><b>{{ flacHealthInfo.LastCheck }}</b></td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>
+                {% if flacHealthInfo.IsChecked %}
+                    <b>{{ flacHealthInfo.FolderCount }}</b> folders |
+
+                    {% if flacHealthInfo.ErrorCount == 0 %}
+                        <b><span class="checkmark-y">{{ flacHealthInfo.ErrorCount }}</span></b> errors |
+                    {% else %}
+                        <b><span class="checkmark-n">{{ flacHealthInfo.ErrorCount }}</span></b> errors |
+                    {% endif %}                  
+
+                    {% if flacHealthInfo.WarningCount == 0 %}
+                        <b><span class="checkmark-y">{{ flacHealthInfo.WarningCount }}</span></b> warnings |
+                    {% else %}
+                        <b><span class="checkmark-n">{{ flacHealthInfo.WarningCount }}</span></b> warnings |
+                    {% endif %}                                  
+
+                    {% if flacHealthInfo.CorruptFolderCount == 0 %}
+                        <b><span class="checkmark-y">{{ flacHealthInfo.CorruptFolderCount }}</span></b> corrupt folders
+                    {% else %}
+                        <b><span class="checkmark-n">{{ flacHealthInfo.CorruptFolderCount }}</span></b> corrupt folders
+                    {% endif %}                                                  
+                {% else %}
+                    <b>-</b>
+                {% endif %}                                                                      
+            </td>
+        </tr>
+
+    </table> 
+    <br>
+
+    <div>
+        <a href="/ask-flac-health-check" class="link-button">Check</a>   
+    </div>
+
+    <div class="indent">
+        <p>
+        <a href="/logs/flac-health-check/20">Log</a> | <a href="/logs/flac-health-report">Report</a>
+    </div>       
 
 {% endblock %}

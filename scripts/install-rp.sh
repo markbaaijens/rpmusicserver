@@ -19,6 +19,7 @@ apt-get install docker.io python3-pip tree jq bwm-ng nmap zip -y   # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
 apt-get install samba -y
 apt-get install dnsutils -y
+apt-get install ffmpeg -y
 echo "... done installing packages."
 
 echo "Setting timezone to Europe/Amsterdam..."
@@ -137,6 +138,8 @@ install_bin_file reboot-server
 install_bin_file export-collection
 install_bin_file start-web
 install_bin_file generate-samba-conf
+install_bin_file flac-health-check
+install_bin_file flac-health-report
 
 # By always delete existing lines in crontab, we can easily implement
 # a different strategy later, if needed

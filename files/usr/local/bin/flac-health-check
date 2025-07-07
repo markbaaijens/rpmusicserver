@@ -1,0 +1,139 @@
+#!/bin/bash
+
+log_file="flac-health-check.log"
+
+log () {
+    echo "$1"
+    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1"  >> $log_dir/$log_file
+}
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+if pidof -o %PPID -x "flac-health-check">/dev/null; then
+    echo "Process already running."
+    exit
+fi
+
+if [ -d "/media/usbdata/rpms/logs" ]; then
+    log_dir="/media/usbdata/rpms/logs"
+else
+    log_dir="."    
+fi
+
+rm -f $log_dir/$log_file
+
+source_folder=$(jq '.sourcefolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
+if [ "$source_folder" == "null" ] || [ -z "${source_folder}" ]; then
+    source_folder="/media/usbdata/user/music"
+fi
+
+if [ ! -d $source_folder ]; then
+    echo "Sourcefolder '$source_folder' does not exist."
+    exit
+fi
+
+log "Start session on '$source_folder'"
+
+repair_file="repair.sh"
+repair_all_file="repair-all.sh"
+
+previous_dir=""
+current_dir=""
+
+rm -f $source_folder/$repair_all_file
+find $source_folder -name "$repair_file" -exec rm {} \;
+
+IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
+for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -k1); do
+    file_name="$(basename "${file}")"
+
+    current_dir="$(dirname "${file}")"
+    if [ "$previous_dir" != "$current_dir" ]; then
+        previous_dir=$current_dir
+        log ""
+        log "Folder: $current_dir"
+        rm -f $current_dir/$repair_file
+    fi
+
+    log "$file_name"
+
+    flac_error=`flac --silent -t "$file" 2>&1 | head -n 1`
+    if [ -n "$flac_error" ]; then
+        if [ ! -f $current_dir/$repair_file ]; then
+            echo "" >> $current_dir/$repair_file
+            chmod +x $current_dir/$repair_file
+            chmod 777 $current_dir/$repair_file            
+            log " => Created '$repair_file' in $current_dir"
+        fi
+
+        log " => $file"
+        log " => $flac_error" 
+
+        echo "# $flac_error" >> $current_dir/$repair_file 
+        if [[ $flac_error == *"WARNING, cannot check MD5 signature since it was unset in the STREAMINFO"* ]]; then
+            echo "flac -f \"$file_name\" -o \"$file_name\"" >> $current_dir/$repair_file
+            echo "touch \"$file_name\"" >> $current_dir/$repair_file            
+        else
+            if [[ $flac_error == *"ERROR, MD5 signature mismatch"* ]]; then
+                echo "flac -f \"$file_name\" -o \"$file_name\"" >> $current_dir/$repair_file
+                echo "touch \"$file_name\"" >> $current_dir/$repair_file            
+            else
+                if [[ $flac_error == *"FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC"* ]]; then
+                    echo "ffmpeg -i \"$file_name\" \"temp.flac\"" >> $current_dir/$repair_file
+                    echo "rm \"$file_name\"" >> $current_dir/$repair_file
+                    echo "mv \"temp.flac\" \"$file_name\"" >> $current_dir/$repair_file
+                else
+                    if [[ $flac_error == *"FLAC__STREAM_DECODER_ERROR_STATUS_UNPARSEABLE_STREAM"* ]]; then
+                        echo "ffmpeg -i \"$file_name\" \"temp.flac\"" >> $current_dir/$repair_file
+                        echo "rm \"$file_name\"" >> $current_dir/$repair_file
+                        echo "mv \"temp.flac\" \"$file_name\"" >> $current_dir/$repair_file
+                    else
+                        if [[ $flac_error == *"FLAC__STREAM_DECODER_ERROR_STATUS_FRAME_CRC_MISMATCH"* ]]; then
+                            echo "ffmpeg -i \"$file_name\" \"temp.flac\"" >> $current_dir/$repair_file
+                            echo "rm \"$file_name\"" >> $current_dir/$repair_file
+                            echo "mv \"temp.flac\" \"$file_name\"" >> $current_dir/$repair_file
+                        else
+                            echo "# No repair implemented (yet) for this error/warning" >> $current_dir/$repair_file
+                        fi
+                    fi
+                fi
+            fi
+        fi
+        echo "" >> $current_dir/$repair_file        
+    fi
+done
+unset IFS; set +f
+
+IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
+for file in $(find $source_folder -type f -name 'repair.sh' -printf '%p\n' | sort -k1); do
+    if [ ! -f "$source_folder/$repair_all_file" ]; then
+        log ""    
+        log "Created '$repair_file' in:"
+    fi
+
+    current_dir="$(dirname "${file}")"
+    log $current_dir
+
+    echo "cd \"$current_dir\"" >> $source_folder/$repair_all_file
+    echo "echo \"\"" >> $source_folder/$repair_all_file
+    echo "pwd" >> $source_folder/$repair_all_file
+    echo "./repair.sh" >> $source_folder/$repair_all_file    
+done
+unset IFS; set +f
+
+if [ -f "$source_folder/$repair_all_file" ]; then
+    chmod +x "$source_folder/$repair_all_file"
+    chmod 777 "$source_folder/$repair_all_file"    
+    log ""
+    log "Created '$repair_all_file' in '$source_folder'"
+else
+    log ""
+    log "No corrupt flacs found."
+fi
+
+log ""
+log "End session"
+

@@ -551,12 +551,56 @@ def GetMusicCollectionInfo():
             "CollectionFolderFunctional": collectionFolderFunctional,
             "LastExport": lastExportTimeStampAsString}
 
+def GetFlacHealthInfo():   
+    lastCheckTimeStampAsString = ''
+    isChecked = False
+    fullHealthLog = '/media/usbdata/rpms/logs/flac-health-check.log'
+    if os.path.isfile(fullHealthLog):
+        lastCheckTimeStampAsString = os.path.getmtime(fullHealthLog)
+        isChecked = True
+
+    try:
+        lastCheckTimeStampAsString = datetime.fromtimestamp(lastCheckTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
+        lastCheckTimeStampAsString = lastCheckTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastCheckTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
+    except:
+        lastCheckTimeStampAsString = "No check made, yet"
+
+    folderCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'Folder:' | wc -l"))
+    errorCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep ERROR | wc -l"))
+    warningCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep WARNING | wc -l"))
+    corruptFolderCount = int(ExecuteBashCommand("find /media/usbdata/user/music/flac/ -type f -name 'repair.sh' | wc -l"))
+            
+    return {"IsChecked": isChecked,
+            "LastCheck": lastCheckTimeStampAsString,
+            "FolderCount": folderCount,
+            "ErrorCount": errorCount,
+            "WarningCount": warningCount,
+            "CorruptFolderCount": corruptFolderCount}
+
 def GetLog(logFile, nrOfLines):
     logLines = []
     if os.path.isfile(logFile):
         logLinesFromFile = TailFromFile(logFile, nrOfLines)
         for logLine in logLinesFromFile:
             logLines.append(logLine.decode("utf-8").strip('\n'))
+
+    if len(logLines) == 0:
+        logLines.append('Log is empty.')
+
+    return logLines
+
+def GetFlacHealthReport():
+    logLines = []
+
+    process = subprocess.Popen(['flac-health-report'], stdout=subprocess.PIPE)
+    logLinesFromFile = process.stdout.readlines()
+    
+    for logLine in logLinesFromFile:
+        logLines.append(logLine.decode("utf-8").strip('\n'))
+
+    if len(logLines) == 0:
+        logLines.append('Log is empty.')
+
     return logLines
 
 def GetDockerContainerList():
@@ -636,6 +680,10 @@ async def DoTranscode():
 
 async def DoGenerateSambaConf():
     await asyncio.create_subprocess_shell("generate-samba-conf")
+    pass
+
+async def DoFlacHealthCheck():
+    await asyncio.create_subprocess_shell("flac-health-check")
     pass
 
 def ExportCollectionArtistAlbumByFolder(collectionFolder):

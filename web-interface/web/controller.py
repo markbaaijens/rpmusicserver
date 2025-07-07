@@ -193,7 +193,14 @@ def ShowMusicPage():
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
-        lmsPlayers = []                
+        lmsPlayers = []    
+
+    try:
+        flacHealthInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetFlacHealthInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        flacHealthInfo = []        
 
     return render_template(
         'music.html', 
@@ -202,7 +209,8 @@ def ShowMusicPage():
         musicCollectionInfo = musicCollectionInfo,
         lmsServerStatus = lmsServerStatus,
         lmsPlayers = lmsPlayers,
-        machineInfo = machineInfo)
+        machineInfo = machineInfo,
+        flacHealthInfo = flacHealthInfo)
 
 @app.route('/backup', methods=['GET'])
 def ShowBackupPage():
@@ -337,6 +345,16 @@ def AskExportCollection():
         proceedUrl = '/export-collection',
         backUrl = request.referrer)
 
+@app.route('/ask-flac-health-check', methods=['GET'])
+def AskFlacHealthCheck():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Flac Health Check - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Start check for flac health?',
+        proceedUrl = '/flac-health-check',
+        backUrl = request.referrer)
+
 @app.route('/export-collection', methods=['GET'])
 def DoExportCollection():
     try:
@@ -353,6 +371,24 @@ def DoExportCollection():
         appTitle = 'Export Collection - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/music')
+
+@app.route('/flac-health-check', methods=['GET'])
+def DoFlacHealthCheck():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoFlacHealthCheck').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    flash(apiMessage['Message'])        
+
+    return render_template(
+        'message.html', 
+        appTitle = 'Flac Health Check - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/music')
+
 
 @app.route('/ask-transcode', methods=['GET'])
 def AskTranscode():
@@ -461,10 +497,10 @@ def ShowApiLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'API Log - ' + configObject.AppTitle, 
+        appTitle = 'API-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Api Log')   
+        logTitle = 'Api-log')   
 
 @app.route('/logs/web/<int:nrOfLines>', methods=['GET'])
 def ShowWebLog(nrOfLines):
@@ -477,10 +513,10 @@ def ShowWebLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Web Log - ' + configObject.AppTitle, 
+        appTitle = 'Web-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Web Log')   
+        logTitle = 'Web-log')   
 
 @app.route('/logs/backup/<int:nrOfLines>', methods=['GET'])
 def ShowBackupLog(nrOfLines):
@@ -493,10 +529,10 @@ def ShowBackupLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Backup Log - ' + configObject.AppTitle, 
+        appTitle = 'Backup-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Backup Log')   
+        logTitle = 'Backup-log')   
 
 @app.route('/logs/backup-details/<int:nrOfLines>', methods=['GET'])
 def ShowBackupDetailsLog(nrOfLines):
@@ -509,10 +545,10 @@ def ShowBackupDetailsLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Backup Details Log - ' + configObject.AppTitle, 
+        appTitle = 'Backup Details-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Backup Details Log')   
+        logTitle = 'Backup Details-log')   
 
 @app.route('/logs/transcoder/<int:nrOfLines>', methods=['GET'])
 def ShowTranscoderLog(nrOfLines):
@@ -525,10 +561,10 @@ def ShowTranscoderLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Transcoder Log - ' + configObject.AppTitle, 
+        appTitle = 'Transcoder-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Transcoder Log')   
+        logTitle = 'Transcoder-log')   
 
 @app.route('/logs/update/<int:nrOfLines>', methods=['GET'])
 def ShowUpdateLog(nrOfLines):
@@ -541,10 +577,42 @@ def ShowUpdateLog(nrOfLines):
 
     return render_template(
         'loglines.html', 
-        appTitle = 'Update Log - ' + configObject.AppTitle, 
+        appTitle = 'Update-log - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         logLines = logLines,
-        logTitle = 'Update Log')   
+        logTitle = 'Update-log')   
+
+@app.route('/logs/flac-health-check/<int:nrOfLines>', methods=['GET'])
+def ShowFlacHealthCheckLog(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetFlacHealthCheckLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    return render_template(
+        'loglines.html', 
+        appTitle = 'Flac Health Check-log - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        logLines = logLines,
+        logTitle = 'Flac Health Check-log')   
+
+@app.route('/logs/flac-health-report', methods=['GET'])
+def ShowFlacHealthReport():
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetFlacHealthReport').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    return render_template(
+        'loglines.html', 
+        appTitle = 'Flac Health-report - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        logLines = logLines,
+        logTitle = 'Flac Health-report')          
 
 @app.route('/transcoder/edit', methods=['GET', 'POST'])
 def EditTranscoderSettings():
