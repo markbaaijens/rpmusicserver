@@ -1,39 +1,52 @@
 # RP Music Server
-Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
+Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Lyrion/Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
+
+[System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)  
+[Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)  
+[Troubleshooting](https://github.com/markbaaijens/rpmusicserver#troubleshooting)  
+[Folder mapping](https://github.com/markbaaijens/rpmusicserver#folder-mapping)  
+[Update RPMS](https://github.com/markbaaijens/rpmusicserver#update-rpms)  
+[Transcoder](https://github.com/markbaaijens/rpmusicserver#transcoder)  
+[Flac Health](https://github.com/markbaaijens/rpmusicserver#flac-health)  
+[Backup](https://github.com/markbaaijens/rpmusicserver#backup)  
+[Disaster Recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery)  
+[Development](https://github.com/markbaaijens/rpmusicserver#development)  
 
 ## System requirements
-* [minimum] Raspberry Pi 2 (B or B+), 1 GB
-* [recommended] Raspberry Pi 4 B, 4 GB
+* Raspberry Pi: 
+  * minimum: Pi 3 (B or B+), 1 GB; recommended: Pi 4 B, 4 GB
+* SD Card: 
+  * minimum: 16 GB
+* Linux PC: 
+  * for installation purposes, a Linux PC is required
+  * once installed, any OS will do, be it Windows, Linux or MacOS
+
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)  
 
 ## Installation of RPMS on a Pi
 Installing RPMS on your Pi can be done with a few simple steps, described below. But first, you should test your network if local DNS works.
-
-Note. As for now, the installation requires you to have a Linux PC.
-
-### Check your network if local DNS works
-To detect if your network supports local DNS, execute the following command in a terminal:
-* `nslookup $(hostname) $(ip route | grep default | awk '{print $3}') | grep "Can't find"`
-
-_If this command produces output_, it means that your local DNS is not working. No worries, this problem can be solved, just follow the steps in the troubleshooting-section below, or more specific _Pi/rpms can only reached by ip-address_.
-
-_If this command has no output_, it is all good and you can proceed installing RPMS on your Pi.
 
 ### Steps to install RPMS on your Pi
 * Install package(s) on your Linux PC:
   * `sudo apt-get install nmap`
     * enter your (personal) password of your PC  
 * Download code:
-  * `wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip`
-  * `unzip -d /tmp -o /tmp/rpmusicserver.zip`
+  * `wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/master.zip -O /tmp/rpmusicserver.zip && unzip -d /tmp -o /tmp/rpmusicserver.zip`
 * Burn SD-card:
   * insert SD-card into your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/burn-image.sh`
     * enter your (personal) password of your PC
+  * Select a disk: choose the inserted SD-card
+  * Select a type: choose P for Production
+  * Select a language: choose your language
+  * Do you want to continue burning on [chosen device]: type 'yes'        
 * Format USB-drive for data:
   * connect USB-drive to your Linux PC
   * `sudo /tmp/rpmusicserver-master/scripts/format-usbdisk.sh`
     * enter your (personal) password of your PC
-  * follow the instructions to format as a DATA-disk    
+  * Select a disk: select the inserted USB-disk
+  * Select a format-type: choose D for data-disk
+  * Do you want to continue formatting [chosen device] as 'usbbackup': type 'yes'  
 * First boot:
   * make sure your Pi is powered off
   * insert SD-card into your Pi
@@ -43,39 +56,66 @@ _If this command has no output_, it is all good and you can proceed installing R
   * check if Pi is running: 
     * `watch nmap rpms`
     * wait until port 22 appears; exit with Ctrl-C
-    * _if the Pi does not appear in the network, checkout the Troubleshooting-section below_
-
+> If the Pi does not appear in the network, checkout [Troubleshooting](https://github.com/markbaaijens/rpmusicserver#troubleshooting), or more specific [Pi/rpms can only reached by ip-address](https://github.com/markbaaijens/rpmusicserver#pirpms-can-only-reached-by-ip-address)
 * Installation:
   * `rsync -r /tmp/rpmusicserver-master/* pi@rpms:/tmp/rpmusicserver`
 	  * password = raspberry  
   * `ssh pi@rpms "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`
 	  * password = raspberry
   * notes:
-    * system will be rebooted automatically after installation
-    * after reboot, password of user `pi` is changed to `rpms`
+    * after installation, password of user `pi` is changed to `rpms`
 * Test access:
   * watch services to become active:
     * `watch nmap rpms`
-      * wait until port 9002 appears; exit with Ctrl-C
-    * [rpms/services](http://rpms:80/services)
-      * wait until port 9002 is active
-  * RPMS (browser): [rpms](http://rpms:80)
-  * LMS (browser): [rpms:9002](http://rpms:9002)
-  * Transmission (browser): [rpms:9091](http://rpms:9091)
-  * Samba (file explorer): `smb://rpms`
-  * Syncthing: [rpms:8384](http://rpms:8384)
+    * wait until port 9000 appears; exit with Ctrl-C
+  * RPMS (browser): http://rpms
+  * LMS (browser): http://rpms:9000
+  * Transmission (browser): http://rpms:9091
+  * Samba (file explorer): 
+    * `smb://rpms`
+  * Syncthing: http://rpms:8384
   * API: 
     * `curl rpms:5000`
   * SSH: 
     * `ssh pi@rpms`
     * password: rpms
 * Engage:
-  * copy music files to `smb://rpms/Publiek/Muziek`
+  * copy music files to `smb://rpms/<music folder>`
   * hookup a Squeezebox player to your network
   * install a Android App like [Squeezer](https://play.google.com/store/apps/details?id=uk.org.ngo.squeezer)
+  * review and make use of some useful [Custom LMS-settings](https://github.com/markbaaijens/rpmusicserver/wiki/Custom-LMS%E2%80%90settings)
   * enjoy!
 
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
+
+## Folder mapping
+For several services within RPMS, the container-technology docker is used. Within docker, there is no direct link to the file-system, but this is achieved through a virtual folder which is set during installation. 
+
+Normally, an end-user does not have to know about these virtual folders, but there are a few exceptions primarily around LMS and SyncThing, these specific cases are documented here. So when working on the inside of the docker-infrastructure, either LMS or SyncThing, refer to the virtual folders.
+
+### Mapping of virtual folder to physical folders
+* LMS: 
+  * virtual docker-folder: `/music`
+  * maps to physical folder: `/media/usbdata/user/music`
+  * can be reached by Samba: `smb://rpms/[music]`
+* SyncThing:
+  * virtual docker-folder: `/user`
+  * maps to physical folder: `/media/usbdata/user`
+  * can be reached by Samba: -
+
+Note. SyncThing maps to `/media/usbdata/user`, which is the root of all Samba-shares, `public`, `music` and `downloads`. Thus, you can sync any folder on any share with SyncThing.
+
+### Example
+If you want to sync your music-files, with Synthing:
+* music-files reside in `/media/usbdata/user/music` 
+* you can reach them by the file-share `smb://rpms/[music]`
+* then, the docker-folder should be `/user/music`
+
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
+
 ## Troubleshooting
+Some common problems in their solutions.
+
 ### *Pi/rpms cannot be reached on the network*
 Sometimes the pi is not visible in the network, either by hostname `rpms` or even by ip-address.
 
@@ -98,119 +138,304 @@ If everything fails (no hostname shown for pi, multiple ip-addresses for hostnam
 ### *Pi/rpms can only reached by ip-address*
 On some local networks, there might be a problem present that the hostname of all connected devices, including RPMS cannot be resolved. In practice, `ping rpms` does not return anything. So any command directly targeted at RPMS such as `ssh pi@rpms` does not work. This is a problem within the router/network, the origin of this problem is unknown to date.
 
-The good news however is that a device is *always* accesible by ip-address. So once you know the ip-address of your RPMS-instance, you can install, configure and use RPMS. For more details about discovering de Pi-address, see _Pi/rpms cannot be reached on the network_
+The good news however is that a device is *always* accessible by ip-address. So once you know the ip-address of your RPMS-instance, you can install, configure and use RPMS. All you have to do is the following: in any command in the section *Installation of RPMS on a Pi* (and following sections), replace RPMS with the discovered ip-address.
 
-All you have to do is the following: in any command in the section *Installation of RPMS on a Pi* (and following sections), replace RPMS with the discovered ip-address.
+Examples, if the ip-address of RPMS is 192.68.1.20: 
+- `ping rpms` will become `ping 192.68.1.20`
+- `ssh pi@rpms` will become `ssh pi@192.68.1.20`
+- LMS: `rpms:9000` will become `192.68.1.20:9000`
 
-So for example, if the ip-address of RPMS is 192.68.1.20: `ping rpms` will become `ping 192.68.1.20`. And `ssh pi@rpms` will become `ssh pi@192.68.1.20`. In your browser, LMS `rpms:9002` wil become `192.68.1.20:9002` Etc. 
-
-Note that the ip-address might change over time b/c RPMS does not use a fixed address, but instead depends on the router which determines the address. In that case, point to the new address.
+Note. The ip-address might change over time b/c RPMS does not use a fixed address, but instead depends on the router which determines the address. In that case, point to the new address.
 
 ### *Reconnect players after LMS migration*
-When migrating from an existing LMS-server or upgraded your Pi-hardware, you have to reconfigure all players to point to the new LMS-server (even if LMS has the same name). This is especially true for Squeezebox-hardware like Squeezebox Classic, Duet, Touch, Radio, Boom or Transporter. Note: clients with piCorePlayer will autodetect the new LMS-server.
+When migrating from an existing LMS-server or upgrading your Pi-hardware, you have to reconfigure all players to point to the new LMS-server (even if LMS has the same name). This is especially true for Squeezebox-hardware like Squeezebox Classic, Duet, Touch, Radio, Boom or Transporter. Note: clients with piCorePlayer will autodetect the new LMS-server.
 
 Reconfiguring is best done:
 * by the Squeezer-app (per player, disconnect server and reconnect)
 * (or) by the Squeezebox Controller (per player, change 'Music Collection')
 * (or) on the Squeezebox-device itself (all except Duet which has no physical interface)
 
-## Update
-Update your RPMS-server: 
-* [rpms/tasks](http://rpms:80/tasks)
-* click Update
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
 
-## Development
+## Update RPMS
+You can update your RPMS-server on several ways:
 
-### Update from another git branch
-RPMS can be updated from a github branch, where the rpms-code is stored. The update depends on version-numbering in the file `revision.json` (locally stored on rpms) on one hand and on `revision.json` in the github-repo in the other hand. 
+- by the web-interface: 
+  - Under Home, Version, click on the Update-button
+- by ssh on rpms: 
+  - `ssh pi@rpms`
+  - `sudo update-rpms`
+- by a command:
+  - `curl rpms:5000/api/DoUpdateRpms -X post`
 
-By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. In most cases this is the `develop` branch. As a result, an indicator VersionOverride pops up in the web-interface.
+Note. Update is disabled when there is no newer version found.
 
-Note that once VersionOverride is active, CurrentVersion and AvailableVersion do not play a role anymore.
+Note. For developer-purposes, you might want to update from the development-branch, to have the latest-and-greatest version of RPMS. Beware that this might be unstable, so use with caution! See [Update from another git branch](https://github.com/markbaaijens/rpmusicserver#update-from-another-git-branch) for details.
 
-To switch version from `master` branch to e.g. `develop` branch:
-* `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
-
-Returning to the `master` branch version simply delete the `/media/usbdata/rpms/config/update-branch.txt` text file.
-
-### Build development version with separate hostname
-The `rpmsdev` hostname is used in this build
-* `cd <source-folder of rpmusicserver>`
-* `sudo scripts/burn-image.sh`
-  * choose type `d = development`
-* `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
-  * password = raspberry  
-* `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
-  * password = raspberry 
-* after reboot, password is changed to `rpms`
-* from now on, you can reach the development-server on `rpmsdev`
-* in case hostnames `rpms` and `rpmsdev` get mixed up, flush DNS:
-  * `sudo systemd-resolve --flush-caches`
-
-### List of API requests 
-  * `curl rpms:5000/api/GetApiList`
-  * [rpms:5000/api/GetApiList](http://rpms:5000/api/GetApiList)
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
 
 ## Transcoder
-For transcoding your lossless files (flac) into lossy ones (ogg or mp3), take the following steps:
+Within RPMS, there is a transcoder built in, for transcoding your lossless music files (flac) into lossy ones (ogg or mp3). By default, the transcoder is not active, it must be configured to become active.
+
+### Enabling transcoder
+For getting transcoding to work, take the following steps: 
 * in your file explorer
-  * create a folder `flac` under `smb://rpms/Publiek/Muziek`
+  * create a folder `flac` under `smb://rpms/music`
   * move your flac-files into that folder `flac`
-* in [LMS](http://rpms:9002) Server Settings, point music-folder to this location:
-  * `/music/flac`
-* change [setting](http://rpms/transcoder/edit) `SourceFolder`
-  * point to `/media/usbdata/user/Publiek/Muziek/flac`
-  * click  Save
+* in LMS Server Settings, modify music-folder:
+  * from  `/music`
+  * to `/music/flac`
+* in the web-interface, under Transcoder, Edit, change setting `Source Folder`
+  * point to `flac`
 * for transcoding to ogg
-  * in your file explorer
-    * create a folder `ogg` under `smb://rpms/Publiek/Muziek`
-  * change [setting](http://rpms/transcoder/edit) `OggFolder`
-    * point to `/media/usbdata/user/Publiek/Muziek/ogg`
-    * click Save
+  * in your file explorer, create a folder `ogg` under `smb://rpms/music`
+  * in the web-interface, under Transcoder, Edit, change setting `Ogg Folder`
+    * point to `ogg`
 * for transcoding to mp3
-  * in your file explorer
-    * create a folder `mp3`under `smb://rpms/Publiek/Muziek`
-  * change [setting](http://rpms/transcoder/edit) `Mp3Folder`
-    * point to `/media/usbdata/user/Publiek/Muziek/mp3`
-    * click Save
-* from now on, every hour at 20 minutes, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder!
-* see transcoder-progress
-  * [rpms/logs/transcoder/20](http://rpms/logs/transcoder/20)
-  * `curl rpms:5000/api/GetTranscoderLog/20`
+  * in your file explorer, create a folder `mp3` under `smb://rpms/music`
+  * in the web-interface, under Transcoder, Edit, change setting `Mp3 Folder`
+    * point to `mp3`
+
+From now on, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder without any interaction.
+
+In the Transcoder-page, You can also click on the Transcode-button, to start an immediate transcoding session, for if you do want to wait for the automatic session to kick in. Note that this button is disabled if transcoding is not configured.
 
 ### Notes
-* Transcoding will be done by these default quality-levels: ogg = 1, mp3 = 128. Optionally, you can change these defaults:
-  * for example, change [setting](http://rpms/transcoder/edit) `OggQuality` to 3 (value = 1, 2, 3, 4, or 5):
-  * for example, change [setting](http://rpms/transcoder/edit) `Mp3Bitrate` to 256 (value = 128, 256 or 384):
-* Trancoding simultaneously to ogg AND mp3 is possible; just set both `OggFolder` and `Mp3Folder`
+* some default quality-levels are used for transcoding: ogg = 1, mp3 = 128 kbps; optionally, you can change these defaults through the web-interface under Transcoder
+* you can simultaneously transcode to ogg AND mp3; just set both `Ogg Folder` and `Mp3 Folder`
+
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
+
+## Flac Health
+Within RPMS, you can check the integrity of all the flac-files in your collection and search for corrupted flacs. A repair-script is created during the check; (most of) these faults can be repaired by running the script. 
+
+Note. Corruption can occur during ripping or copying; in theory, disk rot can also lead to corrupted flac-files. Either way, checking your collection regularly is recommended.
+
+### Steps to run the check
+* On the Music-page, under _Flac Health_, click on _Check_
+* Under _Status_, you can see the analysis (in realtime)
+* Under _Log_, you can see the progress; when finished, it shows a summary
+* Under _Report_, you can see a detailed report where all folders are mentioned which contain corrupt files; also the actual errors or warnings are shown
+
+Wait until the number of folders in _Status_ matches the number of albums shown above in _Collection, Info_. Note that the number of folders can exceed the number of albums, due to different storage organisations, so they can be different! Processing is taken place at approximately 2 folders per minute (on a Raspberry Pi 4).
+
+### Repair
+In each folder where corruption has been detected during the check, a script _repair.sh_ is created. On top of that, a script _repair-all.sh_ is created in de root-folder of your flac-files. You can use either of them to repair the corrupted files.
+
+* in the terminal, login by ssh: 
+  * `ssh pi@rpms`
+  * password: `rpms`
+* to repair all folders at once:
+  * change directory to the root of your music collection:
+    * `cd /media/usbdata/user/music/flac`
+  * execute the script
+    * `./repair-all.sh`
+* to repair an individual folder: 
+  * change directory to the specific folder:
+    * `cd /media/usbdata/user/music/flac` + name of the folder
+  * execute the script
+    * `./repair.sh`
+
+Notes
+* It is recommended to create a backup before the repair b/c the files are actually changed by the repair.
+* For both repair-methods, you can also copy the files over to your desktop, do the repair locally and then copy them back; this gives you more control but it is quite lumbersome, time consuming and error prone due to the number of actions. Note that the repair-script only works om Linux-PC's.
+* After repair, it is recommended to run the chack again, to validate the repair. 
 
 ## Backup
-You can make a backup of all the data contained in your RPMS-server. This backup will be done to a dedicated backup-disk, connected to the Pi it self, a so called server-based backup.
+You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS. A proper backup is the basis for [disaster recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery).
 
-* format a disk dedicated for RPMS-backups (one-time only):
+### Server-based backup 
+The advantage of the server-based (local) backup is that the resulting backup is an identical copy of the data-disk, making it very easy to switch in case of a disaster. The disadvantage is that you have to have local access to the server (Pi) for attaching the backup-disk.
+
+This backup will be done to a dedicated backup-disk, connected to the Pi itself, thus a server-based backup.
+
+Note. Backups will be made automatically at night once the backup-disk is attached to the Pi.
+
+#### Steps to create a server-based backup
+* format a disk dedicated for RPMS-backups (you only have to do this once):
   * connect your (empty) backup-disk to your PC
   * `wget https://github.com/markbaaijens/rpmusicserver/raw/master/scripts/format-usbdisk.sh -O /tmp/format-usbdisk.sh && chmod +x /tmp/format-usbdisk.sh && sudo /tmp/format-usbdisk.sh`
     * enter your (personal) password of the client-machine
   * follow the instructions to format as a BACKUP-disk
 * engage the backup:
   * connect your backup-disk to the Pi
-  * start the backup
-    * [rpms/tasks](http://rpms/tasks
-    * click BackupServer
-  * watch overall progress
-    * [rpms/logs/backup/20](http://rpms/logs/backup/20)
-    * refresh until log states: 'Backup ended'
-  * watch detailed progress
-    * [rpms/logs/backup-details/20](http://rpms/logs/backup-details/20)
-  * see full backup-log
-    * [rpms/logs/backup-details/0](http://rpms/logs/backup-details/0)
+  * in the web-interface, under Backup, click Backup
   * disconnect backup-disk
 
-### Off-line backup-data viewing
-Backup-disk is formatted as ext4; for off-line viewing on your own PC, this format is natively supported on Linux, so it is plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
+#### Viewing backup-data on the usbbackup-disk
+In case of a server-based backup, your backup will be made to a separate backup-disk. You can view the data on this disk, either online or offline:
 
-## Disaster-recovery
-Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which get broken. In each case, the solution within RPMS is very simple
-* *broken Pi* => just obtain a new Pi which meets the system requirements (see above), swap the SD-card and boot up the Pi (possible need to reconnect player, see Troubleshooting-section)
-* *corrupt SD-card* => re-burn en re-install RPMS (see above for instructions) on the same card (if the hardware is damaged, obtain a new card); then you can reboot the Pi and you are ready to go (possible need to reconnect player, see Troubleshooting-section)
-* *data-disk crash* =>  b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. Just rename the label of the backup-disk from `usbbackup` to `usbdata` with your favourite disk-tool (Disks, gparted, etc.), connect the disk to the Pi and boot up. The backup-disk has been automagically changed into a data-disk by now and you can go on from the last backup that you made. Remember to make a backup to a new backup-disk immediately!
+* for viewing _online_, the backup-disk has to be attached to the Pi. Simply point your file explorer to `smb://rpms/backup` and then you can view all the files on that disk.
+* for viewing _offline_, the backup-disk has to be attached to your own PC or laptop. The backup-disk is formatted as ext4 so this format is natively supported on Linux, thus being plug-and-play. Windows however requires additional drivers for viewing ext-drives. And worse, MacOS does NOT support ext4 at all! (despite extX being open-source/open-standard).
+
+### Disk-upgrade
+If you want to upgrade your disk to a larger one without any loss of your user-data, but also without any loss of system-data/configuration. 
+
+Create a backup on the new (larger) disk. After creating the new backup, you can use the backup-mechanism. Because the backup is an exact mirror of de data-disk, exchanging these two by renaming some labels, should do the trick. See [Data-disk crash]( https://github.com/markbaaijens/rpmusicserver#data-disk-crash)
+
+### Remote backup
+The advantage of the remote backup is that you can use a protocol at wish, be it ssh/rsync or syncthing (which is built-in in RPMS) or SMB. The disadvantage of a remote backup is that in case of a disaster, it is a lot more work to get up-and-running again.
+
+Note that system-data is also present on the data-part ('Public') in the form of a file rpms-system.zip. Thus, as you backup the user-data, you also backup the system-files resulting in a full backup. 
+
+For a backup using rsync over SSH, here is an example-script:<br>
+
+`#!/bin/bash`<br/> 
+`rsync --progress --delete -rtv --max-size=4GB --modify-window=2 --exclude Downloads \`<br/> 
+`	pi@rpms:/media/usbdata/user/* \`<br/> 
+`	/media/$USER/<disklabel of backup-disk>/backup/user`<br/> 
+`sync`<br/> 
+
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
+
+## Disaster Recovery
+Disaster can come from anywhere: a broken Pi (very unlikely), a corrupt SD-card or a data-disk which gets broken. In each case, the solution within RPMS is very simple
+
+### Broken Pi (very unlikely)
+Steps to get back on track:
+* obtain a new Pi which meets the system requirements (see above)
+* swap the SD-card from the defect Pi
+* connect your data-disk
+* boot up the new Pi and you are ready to go
+
+You may possibly need to [reconnect player(s)](https://github.com/markbaaijens/rpmusicserver#reconnect-players-after-lms-migration)
+
+### Corrupt SD-card
+Steps to get back on track:
+* if the hardware is damaged, obtain a new card, otherwise, use the same card
+* burn and install RPMS onto the card (see above for instructions)
+
+* now you are ready to go
+
+You may possibly need to [reconnect player(s)](https://github.com/markbaaijens/rpmusicserver#reconnect-players-after-lms-migration)
+
+### Data-disk crash
+_In case of a server-based backup_, you are 'lucky': b/c the backup-disk is an exact copy aka mirror of the data-disk and even of the same disk-type (ext4), you can simply swap them once the data-disk has been crashed. 
+
+Steps to get back on track:
+* shut down the Pi
+* unplug the usbbackup-disk from the Pi
+* unplug the usbdata-disk from the Pi
+* plug the usbbackup-disk into your local machine
+* rename the label of the backup-disk from `usbbackup` to `usbdata` 
+  * for renaming the disk, use your favorite disk-tool (Disks, gparted, etc.)
+* unplug the newly renamed disk (which is now `usbdata`) from your local machine
+* connect the renamed disk to the Pi
+* boot up the Pi
+* check if everything is working correctly (smb, transcoding, lms, etc.) 
+
+By now, the backup-disk has been automagically changed into a data-disk and you can go on from the last backup that you made.
+
+Note. As a bonus, you might rename the original usbdata-disk from `usbdata` to `usbbackup` and plug it into the Pi. Then you can do your backups again, as usual.
+
+_In case of a remote backup_, you have more work to do: 
+* reformat a (new) disk for usbdata-usage (see instructions above)
+* copy all data from the remote backup location to the data-disk under '/user'
+* unzip rpms-system.zip (this file is present in the root of the data-backup)
+* copy the contents of rpms-system.zip to /rpms
+* attach the newly formatted and populated data-disk to the Pi
+* reboot and you are back in business
+
+Remember to make a backup to a new backup-disk immediately!
+
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)
+
+## Development
+For the developer for RPMS, several tips-and-tricks are available to make development easier. 
+
+### Update from another git branch
+By default, the update-mechanism looks at the `master` branch on github. However, it is possible to override the `master` branch version, by setting the desired branch version to a different value. 
+
+In most cases this is the `develop` branch. Once set, you can update to the latest developer-features. But b/c this is considered as experimental (non-stable), use this option with precaution!
+
+#### For overriding update from `master` to `develop` branch
+* `ssh pi@rpms "sudo bash -c 'echo \"develop\" > /media/usbdata/rpms/config/update-branch.txt'"`
+
+Once the override-file `update-branch.txt` has been set, you can update your RPMS as usual, it will now update RPMS to the latest version on `develop`. See [Update RPMS](https://github.com/markbaaijens/rpmusicserver#update-rpms) for details.
+
+#### For reverting the update-override
+Simply delete the `update-branch.txt` file:
+* `ssh pi@rpms "sudo bash -c 'rm /media/usbdata/rpms/config/update-branch.txt'"`
+
+Note. Once an override is active, the current and available version do not play a role anymore.
+
+Note. If local DNS does not work, the hostname `rpms` has to be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.
+
+### Build development version with separate hostname
+A regular install of rpms results in a Pi with hostname `rpms`, which is fine. As a developer, you want to test your code on a different machine then the one in production, on a second Pi; but having two machines within the network with the same hostname, results in errors. 
+
+You can opt for using `rpmsdev` as the hostname for that second Pi. This is done while burning the SD-card, as the first step in the installation process [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)<br/> 
+
+* While burning the SD-card:
+  * Select a type: choose D for Development
+
+The other steps in the installation process stay the same. In the end, this results in a Pi with a hostname `rpmsdev`, so you can easily distinguish and address the two, development (`rpmsdev`) and production (`rpms`). From now on, you can reach the development-server on `rpmsdev`.
+
+Note. It must be clear that if you do not have a production/live machine for rpms in your network and you are using the installed Pi solely for testing purposes, there is no need to have a different hostname, the standard `rpms` will do just fine.
+
+Tip. In case hostnames `rpms` and `rpmsdev` get mixed up, try to flush DNS:
+  * `sudo systemd-resolve --flush-caches`
+
+### Update and install from local files  
+As a developer, you want to test your changes on a physical machine (Pi). As the changes in the code are usually done on a different machine than the one on which the test takes place, you have to have a way to transfer your code to the (test) Pi and install them to see the result.
+
+#### To have the code locally on your development-machine
+* clone/download the git-repo from [github](https://github.com/markbaaijens/rpmusicserver) (instructions can be found there)
+* place the code in a folder
+  * example: `~/source/rpmusicserver`
+* switch to branch `develop`
+  * `cd ~/source/rpmusicserver # Example`
+  * `git checkout develop`
+
+#### Copy local code to a Pi and install the (changed) code
+* `cd ~/source/rpmusicserver # Example`
+* `rsync -r ./* pi@rpmsdev:/tmp/rpmusicserver`
+  * password: `rpms`
+* `ssh pi@rpmsdev "sudo chmod +x /tmp/rpmusicserver/scripts/* && sudo /tmp/rpmusicserver/scripts/install-rp.sh"`  
+  * password: `rpms`
+
+Note. The transferred code is dependent on the chosen git-branch. By changing the branch, you can transfer and test any code in any branch. 
+
+Note. You can also do this 'trick' in a live, production-environment, but then you must know what you are doing, so don't try this at home! Usually, a production-machine is updated through the regular update-mechanism, in which code is retrieved from the git-repo on github (be it the master-branch or, if overridden, by another branch, usually develop). 
+
+Note. If local DNS does not work, the hostname `rpmsdev` must be replaced by the ip-address of that machine. See [Check your network if local DNS works](https://github.com/markbaaijens/rpmusicserver#check-your-network-if-local-dns-works) for details.    
+
+### Local test-environment on your development-machine
+Testing on a (second) machine/Pi is the ultimate test, but to quickly see your changes in the web-interface (api or web) on your development-machine, we can set up an environment for exactly that. 
+
+In short, you have to open two terminals, each running a web-service, one running the api, the second running the web-UI.
+
+#### Steps to setup a local web-environment
+* install local software (you only have to do this once):
+  * `sudo apt-get install python3-pip`
+  * `pip3 install -r <source-folder of rpmusicserver>/web-interface/requirements.txt`
+* open terminal(s) and start web-services:
+  * open a terminal
+    * `cd <source-folder of rpmusicserver>/web-interface/api`
+    * `python3 controller.py`
+  * open a second terminal
+    * `cd <source-folder of rpmusicserver>/web-interface/web`
+    * `python3 controller.py`
+* access:     
+  * web: `http://localhost:1080` 
+  * API: `http://localhost:5000`
+  - cli: `curl http://localhost:5000`
+
+Note. This environment is very limited b/c not all components which the code interacts with, such as disks or docker-containers or the Pi itself, are not available (however, you can spoof some of those components). But for seeing changes in the UI, this works just fine.
+
+### Local LMS-player
+As a developer, it is useful to have at least one player which can connect to the LMS-server. We can easily transform a regular laptop or PC to a local player, just for testing purposes.
+
+Steps for installing a local player:
+- install squeezelite
+  - `sudo apt install squeezelite`
+- start player
+  - `squeezelite -o default -z -n "Local"`
+- stop player
+  - `sudo kill $(ps -ef | grep squeeze | grep -v grep | awk '{print $2}')`
+
+### List of API requests 
+  * `curl rpms:5000/api/GetApiList`
+  * http://rpms:5000/api/GetApiList
+
+[Top](https://github.com/markbaaijens/rpmusicserver#rp-music-server)  

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+kill-docker
+start-docker update
+
+# Remove obsolete docker-artefacts, residing in /var/lib/docker/overlay2
+docker system prune --all -f

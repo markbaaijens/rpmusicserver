@@ -2,56 +2,55 @@
 
 {% block content %}
 <h2>Resources</h2>
-<h3>Generic</h3>
 <table>
     <tr>
-        <td align="right">Memory</td>
+        <td>Memory</td>
         <td>
             <meter 
                 id="memory" 
-                class="meter1" 
                 value="{{ memoryInfo.MemUsedPercentage }}" 
                 min="0" 
-                max="100">
+                max="100"
+                high="80">
             </meter>
             <span class="small">
                 <label for="memory">
                     <small>
-                        <b>{{ memoryInfo.MemUsed }}</b> used of <b>{{ memoryInfo.MemTotal }}</b>
+                        <b>{{ memoryInfo.MemUsed }}</b> {{ memoryInfo.MemUsedPercentage }}% used of <b>{{ memoryInfo.MemTotal }}</b>
                     </small>
                 </label>
             </span>
         </td>
     </tr>
     <tr>
-        <td align="right">Swap</td>
+        <td>Swap</td>
         <td>
             <meter 
                 id="swap" 
-                class="meter1" 
                 value="{{ memoryInfo.SwapUsedPercentage }}" 
                 min="0" 
-                max="100">
+                max="100"
+                high="80">
             </meter>
             </br />
             <span class="small">
                 <label for="swap">
                     <small>
-                        <b>{{ memoryInfo.SwapUsed }}</b> used of <b>{{ memoryInfo.SwapTotal }}</b>
+                        <b>{{ memoryInfo.SwapUsed }}</b> {{ memoryInfo.SwapUsedPercentage }}% used of <b>{{ memoryInfo.SwapTotal }}</b>
                     </small>
                 </label>
             </span>
         </td>
     </tr>
     <tr>
-        <td align="right">CpuLoad</td>
+        <td>Cpu Load</td>
         <td>
             <meter 
                 id="avload" 
-                class="meter1" 
                 value="{{ cpuInfo.CpuLoad1 }}" 
                 min="0" 
-                max="10">
+                max="10"
+                high="8">
             </meter>
             </br />
             <span class="small">
@@ -66,14 +65,14 @@
         </td>
     </tr>
     <tr>
-        <td align="right">CpuTemp</td>
+        <td>Cpu Temp</td>
         <td>
             <meter 
                 id="swap" 
-                class="meter1" 
                 value="{{ cpuInfo.CpuTemp }}" 
                 min="0" 
-                max="100">
+                max="100"
+                high="80">
             </meter> 
         </br />
         <span class="small">
@@ -91,7 +90,7 @@
     {% for disk in diskList %}
     <div>
         <b>
-            {% if '/' in disk.DiskName %}
+            {% if 'boot' in disk.DiskName %}
                 system
             {% else %}
                 {{ disk.DiskName }}
@@ -101,18 +100,18 @@
     <table>
         {% if disk.IsOnline %}
         <tr>
-            <td align="right">Size</td>
             <td>
                 <meter 
                     id="size" 
                     value="{{ disk.UsedPercentage }}" 
                     min="0" 
-                    max="100">
+                    max="100"
+                    high="80">
                 </meter>
                 <span class="small">
                     <label for="size">
                         <small>
-                            <b>{{ disk.Used }}</b> used of <b>{{ disk.Size }}</b>
+                            <b>{{ disk.Used }}</b> {{ disk.UsedPercentage }}% used of <b>{{ disk.Size }}</b>
                         </small>
                     </label>
                 </span>
@@ -120,10 +119,7 @@
         </tr>
         {% else %}
         <tr>
-            <td align="right">IsOnline</td>
-            <td>
-                <span class="checkmark-n"> &#x2717; </span>
-            </td>
+            <td><em>Not online</em></td>
         </tr>    
         {% endif %}
     </table>

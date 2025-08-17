@@ -5,10 +5,9 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
-echo "Killing docker-containers..."
 for docker_name in "$(docker ps --format '{{.Names}}')"; do
     if [ ! -z "$docker_name" ]; then
         docker kill $docker_name
     fi
 done
-echo " => done killing docker-containers"
+

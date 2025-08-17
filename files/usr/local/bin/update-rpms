@@ -1,7 +1,7 @@
 #!/bin/bash
 
 log () {
-    if [ -d "/media/usbdata/rpms/config" ]; then
+    if [ -d "/media/usbdata/rpms/logs" ]; then
         log_dir="/media/usbdata/rpms/logs"
     else
         log_dir="."    
@@ -63,7 +63,7 @@ fi
 # Always update if override-branch has been given, even if versions don't match
 if [ "$branch_name" != "master" ]; then
     update=1
-    log "- version-override b/c updating from other branch than master"
+    log "- version-override b/c updating from branch '$branch_name' instead of 'master'"
 fi
 
 if [ $update -eq 1 ]; then
@@ -71,13 +71,12 @@ if [ $update -eq 1 ]; then
     chmod +x /tmp/rpmusicserver/scripts/* 
     # B/c install-rp.sh ends with a reboot, nothing *after* executing install-rp.sh
     # will be reached. To have a nice log file, we just pretend the update has ended
-    # so we print it *before* the actual update (install).
-    log "- system will be rebooted in a few moments."
+    log "- system will be rebooted in a few moments"    
     log "Update ended."
     /tmp/rpmusicserver/scripts/install-rp.sh
     exit 0
 else
-    log "- no newer version available; update skipped."
+    log "- no newer version available; update skipped"
     log "Update ended."
     exit 1
 fi

@@ -89,6 +89,17 @@ def GetTranscoderSettings():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/GetTranslations', methods=['GET'])
+def GetTranslations():
+    try:
+        info = logic.GetTranslations()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetDockerContainerList', methods=['GET'])
 def GetDockerContainerList():
     try:
@@ -133,6 +144,17 @@ def GetBackupInfo():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
+@app.route('/api/GetTranscoderInfo', methods=['GET'])
+def GetTranscoderInfo():
+    try:
+        info = logic.GetTranscoderInfo()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetUpdateLog/<int:nrOfLines>', methods=['GET'])
 def GetUpdateLog(nrOfLines):
     try:
@@ -143,6 +165,28 @@ def GetUpdateLog(nrOfLines):
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetMusicCollectionInfo', methods=['GET'])
+def GetMusicCollectionInfo():
+    try:
+        info = logic.GetMusicCollectionInfo()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)      
+
+@app.route('/api/GetFlacHealthInfo', methods=['GET'])
+def GetFlacHealthInfo():
+    try:
+        info = logic.GetFlacHealthInfo()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)      
 
 @app.route('/api/GetApiLog/<int:nrOfLines>', methods=['GET'])
 def GetApiLog(nrOfLines):
@@ -181,6 +225,28 @@ def GetTranscoderLog(nrOfLines):
 def GetBackupLog(nrOfLines):
     try:
         info = logic.GetLog('/media/usbdata/rpms/logs/backup.log', nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+@app.route('/api/GetFlacHealthCheckLog/<int:nrOfLines>', methods=['GET'])
+def GetFlacHealthCheckLog(nrOfLines):
+    try:
+        info = logic.GetLog('/media/usbdata/rpms/logs/flac-health-check.log', nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+@app.route('/api/GetFlacHealthReport', methods=['GET'])
+def GetFlacHealthReport():
+    try:
+        info = logic.GetFlacHealthReport()
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -295,6 +361,90 @@ def SetTranscoderMp3Bitrate():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/SetTranslationPublicShare', methods=['POST'])
+def SetTranslationPublicShare():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    if not 'Value' in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    if requestData['Value'] == "":
+        abort(HTTP_BAD_REQUEST) 
+
+    try:
+        info = logic.SetTranslation('PublicShareName', requestData['Value'])
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)  
+
+@app.route('/api/SetTranslationMusicShare', methods=['POST'])
+def SetTranslationMusicShare():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    if not 'Value' in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    if requestData['Value'] == "":
+        abort(HTTP_BAD_REQUEST) 
+
+    try:
+        info = logic.SetTranslation('MusicShareName', requestData['Value'])
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)  
+
+@app.route('/api/SetTranslationDownloadsShare', methods=['POST'])
+def SetTranslationDownloadsShare():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    if not 'Value' in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    if requestData['Value'] == "":
+        abort(HTTP_BAD_REQUEST) 
+
+    try:
+        info = logic.SetTranslation('DownloadsShareName', requestData['Value'])
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)  
+
+@app.route('/api/SetTranslationBackupShare', methods=['POST'])
+def SetTranslationPublicBackup():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    if not 'Value' in requestData:
+        abort(HTTP_BAD_REQUEST)
+
+    if requestData['Value'] == "":
+        abort(HTTP_BAD_REQUEST) 
+
+    try:
+        info = logic.SetTranslation('BackupShareName', requestData['Value'])
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetMemoryResourceInfo', methods=['GET'])
 def GetMemoryResourceInfo():
     try:
@@ -328,10 +478,10 @@ def GetDiskList():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-@app.route('/api/GetServiceStatusList', methods=['GET'])
-def GetServiceStatusList():
+@app.route('/api/GetPortStatusList', methods=['GET'])
+def GetPortStatusList():
     try:
-        info = logic.GetServiceStatusList()
+        info = logic.GetPortStatusList()
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -343,7 +493,7 @@ def GetServiceStatusList():
 def DoRebootServer():
     try:
         asyncio.run(logic.DoRebootServer())
-        info = { "Message": "Server is rebooting" }
+        info = { "Message": "Server is rebooting." }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -355,7 +505,7 @@ def DoRebootServer():
 def DoBackupServer():
     try:
         asyncio.run(logic.DoBackupServer())
-        info = { "Message": "Backup has been started" }        
+        info = { "Message": "Backup started. Check logs for progress." }        
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -379,7 +529,7 @@ def DoHaltServer():
 def DoKillDocker():
     try:
         asyncio.run(logic.DoKillDocker())
-        info = { "Message": "Docker-container will be killed" }
+        info = { "Message": "Killing docker container(s)." }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -391,7 +541,7 @@ def DoKillDocker():
 def DoStartDocker():
     try:
         asyncio.run(logic.DoStartDocker())
-        info = { "Message": "Docker-container(s) will be restarted" }
+        info = { "Message": "Starting docker container(s)." }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -399,11 +549,23 @@ def DoStartDocker():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
-@app.route('/api/DoUpdateServer', methods=['POST'])
-def DoUpdateServer():
+@app.route('/api/DoUpdateDocker', methods=['POST'])
+def DoUpdateDocker():
     try:
-        asyncio.run(logic.DoUpdateServer())
-        info = { "Message": "Server is updating" }        
+        asyncio.run(logic.DoUpdateDocker())
+        info = { "Message": "Updating docker container(s)." }
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)        
+
+@app.route('/api/DoUpdateRpms', methods=['POST'])
+def DoUpdateRpms():
+    try:
+        asyncio.run(logic.DoUpdateRpms())
+        info = { "Message": "RPMS is updating." }        
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -411,10 +573,125 @@ def DoUpdateServer():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-@app.route('/api/GetLmsServerInfo', methods=['GET'])
-def GetLmsServerInfo():
+@app.route('/api/DoExportCollection', methods=['POST'])
+def DoExportCollection():
+    musicCollectionInfo = logic.GetMusicCollectionInfo()
+    collectionFolder = musicCollectionInfo["CollectionFolder"]    
+    collectionFolderFunctional = musicCollectionInfo["CollectionFolderFunctional"]
+
     try:
-        info = logic.GetLmsServerInfo()
+        logic.ExportCollectionArtistAlbumByFolder(collectionFolder)        
+        logic.ExportCollectionArtistAlbumByTag(collectionFolder)
+        logic.ExportCollectionGenreArtistAlbumByTag(collectionFolder)
+
+        info = { "Message": "Collection is exported to " + collectionFolderFunctional}
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+@app.route('/api/DoFlacHealthCheck', methods=['POST'])
+def DoFlacHealthCheck():
+    try:
+        asyncio.run(logic.DoFlacHealthCheck())
+        info = { "Message": "Flac Health Check started."}
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+@app.route('/api/DoTranscode', methods=['POST'])
+def DoTranscode():
+    try:
+        asyncio.run(logic.DoTranscode())
+        info = { "Message": "Transcoding started."}
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)     
+
+@app.route('/api/DoGenerateSambaConf', methods=['POST'])
+def DoGenerateSambaConf():
+    try:
+        asyncio.run(logic.DoGenerateSambaConf())
+        info = { "Message": "Sambe-configuration is being generated." }
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsServerStatus', methods=['GET'])
+def GetLmsServerStatus():
+    try:
+        info = logic.GetLmsServerStatus()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsArtists', methods=['GET'])
+def GetLmsArtists():
+    try:
+        info = logic.GetLmsArtists()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsAlbumsByArtist/<int:artist>', methods=['GET'])
+def GetLmsAlbumsByArtist(artist):
+    try:
+        info = logic.GetLmsAlbumsByArtist(artist)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsAlbumsByGenreArtist/<int:genre>/<int:artist>', methods=['GET'])
+def GetLmsAlbumsByGenreArtist(genre, artist):
+    try:
+        info = logic.GetLmsAlbumsByGenreArtist(genre, artist)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsGenres', methods=['GET'])
+def GetLmsGenres():
+    try:
+        info = logic.GetLmsGenres()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsArtistsByGenre/<int:genre>', methods=['GET'])
+def GetLmsArtistsByGenre(genre):
+    try:
+        info = logic.GetLmsArtistsByGenre(genre)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetLmsPlayers', methods=['GET'])
+def GetLmsPlayers():
+    try:
+        info = logic.GetLmsPlayers()
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -439,8 +716,8 @@ if __name__ == '__main__':
 
     if configObject.Debug:
         logger.info('API started - debug')
-        app.run(port=5000, debug=True)  # auto-reload on file change, only localhost
+        app.run(port=5000, debug=True) # auto-reload on file change, only localhost
     else:
         logger.info('API started - production')
-        app.run(host='0.0.0.0', port=5000)  # public server, reachable from remote
+        app.run(host='0.0.0.0', port=5000, debug=True) # public server, reachable from remote, auto-reload on file change
     logger.info('API stopped')

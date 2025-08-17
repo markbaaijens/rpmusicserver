@@ -1,0 +1,3 @@
+#bin/bash
+
+curl --silent localhost:5000/api/DoExportCollection -X post

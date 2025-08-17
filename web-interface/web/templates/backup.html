@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Backup
+        <a href="https://github.com/markbaaijens/rpmusicserver#backup" target="_blank">
+            <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
+         </a>
+    </h2>
+    <table>
+        <tr>
+            <td>
+                Last Backup
+            </td>
+            <td>
+                <b>{{ backupInfo.LastBackup }}</b>
+            </td>
+        </tr>            
+        <tr>
+            <td>
+                Status
+            </td>
+            <td><b>
+                {% if backupInfo.CanBackup %}
+                    <span class="checkmark-y">{{ backupInfo.StatusMessage }}</span>
+                {% else %}
+                    <span class="checkmark-n">{{ backupInfo.StatusMessage }}</span> 
+                {% endif %}
+            </b></td>
+        </tr>
+    </table>        
+    <br>
+    <div>
+        {% if backupInfo.CanBackup %}
+            <a href="/ask-backup-server" class="link-button">Backup</a>    
+        {% else %}
+            <a class="link-button disabled">Backup</a> 
+        {% endif %}
+    </div>    
+    <br>
+    <div class="indent">
+        <a href="/logs/backup/20">Log</a> | 
+        <a href="/logs/backup-details/20">Details</a>
+    </div>        
+
+{% endblock %}

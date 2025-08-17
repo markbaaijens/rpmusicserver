@@ -1,114 +1,101 @@
 [
     {   "EndPoint": "GET /",
-        "Description": "Shows the API-name",
         "Example":"curl rpms:5000/api"
     },
     {   "EndPoint": "GET api/GetApiList",
-        "Description": "Shows a list of all API-calls, hence the API-documentation",
         "Example":"curl rpms:5000/api/GetApiList"
     },
     {   "EndPoint": "GET api/GetMachineInfo",
-        "Description":"Shows hostname, IP-address and OS-codename",
         "Example":"curl rpms:5000/api/GetMachineInfo"
     },
     {   "EndPoint": "GET api/GetVersionInfo",
-        "Description": "Shows info about version of RPMS",
         "Example":"curl rpms:5000/api/GetVersionInfo"
     },
     {   "EndPoint": "GET api/GetUpdateLog/<int>",
-        "Description": "Get the last x lines of the update-log; 0 gives the whole file",
         "Example":"curl rpms:5000/api/GetUpdateLog/10"
     }, 
     {   "EndPoint": "GET api/GetApiLog/<int>",
-        "Description": "Get the last x lines of the API-log; 0 gives the whole file",
         "Example":"curl rpms:5000/api/GetApiLog/10"
     },
     {   "EndPoint": "GET api/GetTranscoderLog/<int>",
-        "Description": "Get the last x lines of the transcoder-log; 0 gives the whole file",
         "Example":"curl rpms:5000/api/GetTranscoderLog/10"
     },
     {   "EndPoint": "GET api/GetBackupLog/<int>",
-        "Description": "Get the last x lines of the backup-log; 0 gives the whole file",
         "Example":"curl rpms:5000/api/GetBackupLog/10"
     },    
     {   "EndPoint": "GET api/GetBackupDetailsLog/<int>",
-        "Description": "Get the last x lines of the backup-details-log; 0 gives the whole file",
         "Example":"curl rpms:5000/api/GetBackupDetailsLog/10"
     },        
     {   "EndPoint": "GET api/GetCpuResourceInfo",
-        "Description": "Show cpu-resources",
         "Example":"curl rpms:5000/api/GetCpuResourceInfo"
     },
     {   "EndPoint": "GET api/GetMemoryResourceInfo",
-        "Description": "Show memory-resources",
         "Example":"curl rpms:5000/api/GetMemoryResourceInfo"
     },    
     {   "EndPoint": "GET api/GetLmsServerInfo",
-        "Description": "Show LMS server-info",
         "Example":"curl rpms:5000/api/GetLmsServerInfo"
     },
     {   "EndPoint": "GET api/GetDiskList",
-        "Description": "Show list of disks: status, usage",
         "Example":"curl rpms:5000/api/GetDiskList"
     },
     {   "EndPoint": "GET api/GetDockerContainerList",
-        "Description": "Show all running docker containers",
         "Example":"curl rpms:5000/api/GetDockerContainerList"
     },
     {   "EndPoint": "GET api/GetTranscoderSettings",
-        "Description": "Show settings of transcoder",
         "Example":"curl rpms:5000/api/GetTranscoderSettings"
     },
     {   "EndPoint": "GET api/GetBackupInfo",
-        "Description": "Show info about backup",
         "Example":"curl rpms:5000/api/GetBackupInfo"
     },    
-    {   "EndPoint": "GET api/GetServiceStatusList",
-        "Description": "Show services",
-        "Example":"curl rpms:5000/api/GetSrviceList"
+    {   "EndPoint": "GET api/GetTranscoderInfo",
+        "Example":"curl rpms:5000/api/GetTranscoderInfo"
+    },        
+    {   "EndPoint": "GET api/GetPortStatusList",
+        "Example":"curl rpms:5000/api/GetPortStatusList"
     },
-    {   "EndPoint": "POST api/DoUpdateServer",
-        "Description": "Update RPMS to the latest version",
-        "Example":"curl rpms:5000/api/DoUpdateServer -X post"
+    {   "EndPoint": "POST api/DoUpdateRpms",
+        "Example":"curl rpms:5000/api/DoUpdateRpms -X post"
     },
+    {   "EndPoint": "GET api/GetMusicCollectionInfo",
+        "Example":"curl rpms:5000/api/GetMusicCollectionInfo"
+    },     
     {   "EndPoint": "POST api/DoHaltServer",
-        "Description": "Power-off server",
         "Example":"curl rpms:5000/api/DoHaltServer -X post"
     },
     {   "EndPoint": "POST api/DoRebootServer",
-        "Description": "Reboot server",
         "Example":"curl rpms:5000/api/DoHaltServer -X post"
     },
     {   "EndPoint": "POST api/DoBackupServer",
-        "Description": "Backup server",
         "Example":"curl rpms:5000/api/DoBackupServer -X post"
     },    
     {   "EndPoint": "POST api/DoKillDocker",
-        "Description": "Kill all docker-containers",
         "Example":"curl rpms:5000/api/DoKillDocker -X post"
     },        
     {   "EndPoint": "POST api/DoStartDocker",
-        "Description": "Start all (stopped) docker-containers",
         "Example":"curl rpms:5000/api/DoStartDocker -X post"
     },    
+    {   "EndPoint": "POST api/DoUpdateDocker",
+        "Example":"curl rpms:5000/api/DoUpdateDocker -X post"
+    },        
+    {   "EndPoint": "POST api/DoExportCollection",
+        "Example":"curl rpms:5000/api/DoExportCollection -X post"
+    },            
+    {   "EndPoint": "POST api/DoTranscode",
+        "Example":"curl rpms:5000/api/DoTranscode -X post"
+    },                
     {   "EndPoint": "POST api/SetTranscoderSourceFolder",
-        "Description": "Set transcoder-setting [sourcefolder]",
         "Example":"curl rpms:5000/api/SetTranscoderSourceFolder -X post -H \"Content-Type: application/json\" -d '{\"Value\":\"NewSourceFolder\"}'"
     },
     {   "EndPoint": "POST api/SetTranscoderOggFolder",
-        "Description": "Set transcoder-setting [oggfolder]",
         "Example":"curl rpms:5000/api/SetTranscoderOggFolder -X post -H \"Content-Type: application/json\" -d '{\"Value\":\"NewOggFolder\"}'"
     },
     {   "EndPoint": "POST api/SetTranscoderMp3Folder",
-        "Description": "Set transcoder-setting [mp3folder]",
         "Example":"curl rpms:5000/api/SetTranscoderMp3Folder -X post -H \"Content-Type: application/json\" -d '{\"Value\":\"NewMp3Folder\"}'"
     },
     {   "EndPoint": "POST api/SetTranscoderOggQuality",
-        "Description": "Set transcoder-setting [oggquality]; 1, 2, 3,4, or 5; default = 1",
         "Example":"curl rpms:5000/api/SetTranscoderOggQuality -X post -H \"Content-Type: application/json\" -d '{\"Value\": 2}'"
     },
     {   "EndPoint": "POST api/SetTranscoderMp3Bitrate",
-        "Description": "Set transcoder-setting [mp3bitrate]; 128, 256 or 384; default = 128",
         "Example":"curl rpms:5000/api/SetTranscoderMp3Bitrate -X post -H \"Content-Type: application/json\" -d '{\"Value\": 256}'"
     }
 ]

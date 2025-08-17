@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>System</h2>
+    <div>
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:5000" target="_blank">Api</a>&nbsp;
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:5000/api/GetApiList" target="_blank">Documentation</a>    
+    </div>
+
+    <h3>Server</h3>
+    <div>
+        <a href="/ask-reboot-server" class="link-button">Reboot</a>
+        <a href="/ask-halt-server" class="link-button">Halt</a>          
+    </div>
+
+    <h3>Port Status</h3>
+    <table>
+        {% for portStatus in portStatusList %}
+            <tr>
+                <td>
+                    {% if portStatus.IsActive %}
+                        <span class="checkmark-y"> &#10004; </span>
+                    {% else %}
+                        <span class="checkmark-n"> &#x2717; </span>
+                    {% endif %}        
+                </td>
+                <td>
+                    {{ portStatus.PortNumber }}
+                </td>
+                <td>
+                    <b>{{ portStatus.ServiceName }}</b>
+                    <small>{{ portStatus.ServiceType }}</small>
+                </td>
+            </tr>
+        {% endfor %} 
+    </table>
+    <p>
+    <div><em>
+        Ports may take a few moments to become visible to the outside.<br>
+        Use this command on your client for a correct port-status:<br>
+        <code>watch nmap rpms</code>
+    </em></div>
+
+    <h3>Docker</h3>
+    <table>
+        {% for dockerContainer in dockerContainerList %}
+            <tr>
+                <td>
+                    {% if dockerContainer.IsActive %}
+                        <span class="checkmark-y"> &#10004; </span>
+                    {% else %}
+                        <span class="checkmark-n"> &#x2717; </span>
+                    {% endif %}        
+                </td>
+                <td>
+                    <b>{{ dockerContainer.ContainerName }}</b>
+                </td>
+            </tr>
+        {% endfor %} 
+    </table>
+
+    <div>
+        <p>
+        <a href="/ask-start-docker" class="link-button">Start</a> 
+        <a href="/ask-kill-docker" class="link-button">Kill</a>
+        <a href="/ask-update-docker" class="link-button">Update</a>        
+    </div> 
+
+    <h3>Translations</h3>
+    <table>
+        <tr>
+            <td>Public Share</td>
+            <td><b>{{ translationList.PublicShareName }}</b></td>            
+        </tr>
+        <tr>
+            <td>Music Share</td>            
+            <td><b>{{ translationList.MusicShareName }}</b></td>
+        </tr>
+        <tr>
+            <td>Downloads Share</td>            
+            <td><b>{{ translationList.DownloadsShareName }}</b></td>
+        </tr>        
+        <tr>
+            <td>Backup Share</td>            
+            <td><b>{{ translationList.BackupShareName }}</b></td>                        
+        </tr>                
+    </table>    
+    <div>
+        <p>
+        <a href="/translations-edit" class="link-button">
+            <img src="{{ url_for('static',filename='edit.png') }}" alt="Home" style="width:15px;height:15x;">
+            Edit
+        </a>
+    </div>
+
+    <h3>Logs</h2>
+    <div class="indent">
+        <a href="/logs/update/20">Update</a>
+    </div>
+    <div class="indent">
+        <a href="/logs/transcoder/20">Transcoder</a>
+    </div>
+    <div class="indent">
+        <a href="/logs/backup/20">Backup</a> | 
+        <a href="/logs/backup-details/20">Details</a>
+    </div>     
+    <div class="indent">
+        <a href="/logs/api/20">Api</a> | 
+        <a href="/logs/web/20">Web</a>
+    </div>        
+    <div class="indent">
+        <a href="/logs/flac-health-check/20">Flac Health</a> | <a href="/logs/flac-health-report">Report</a>
+    </div>        
+
+{% endblock %}

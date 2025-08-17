@@ -1,0 +1,10 @@
+#bin/bash
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+rm /tmp/rpms-system.zip
+zip -r -q /tmp/rpms-system.zip /media/usbdata/rpms/*
+cp /tmp/rpms-system.zip /media/usbdata/user/public

@@ -1,51 +1,94 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Transcoder</h2>
+    <h2>Transcoder
+        <a href="https://github.com/markbaaijens/rpmusicserver#transcoder" target="_blank">
+            <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
+         </a>
+    </h2>
     <table>
         <tr>
-            <td align="right">SourceFolder</td>
-            <td><b>{{ transcoderSettings.sourcefolder }}</b></td>
+            <td>
+                Last Transcode
+            </td>
+            <td>
+                <b>{{ transcoderInfo.LastTranscode }}</b>
+            </td>
+        </tr>         
+        <tr>
+            <td>
+                Activated
+            </td>
+            <td><b>
+                {% if transcoderInfo.IsActivated %}
+                    <span class="checkmark-y"> &#10004; </span>
+                {% else %}
+                    <span class="checkmark-n"> &#x2717; </span> 
+                {% endif %}
+            </b></td>
+        </tr>                   
+    </table>
+    <br>
+    <div>
+        {% if transcoderInfo.IsActivated %}
+            <a href="/ask-transcode" class="link-button">Transcode</a>  
+        {% else %}
+            <a class="link-button disabled">Transcode</a> 
+        {% endif %}          
+    </div> 
+    <table>
+        <tr>
+            <td>Source Folder</td>
+            <td>
+                {% if transcoderInfo.SettingSourceFolderShort %}
+                    <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
+                    <b>{{ transcoderInfo.SettingSourceFolderShort }}</b>
+                {% endif %}
+            </td>
         </tr>
-        <div>
-            <p>
-            TranscoderLog -
-            <a href="/logs/transcoder/0">0</a>
-            <a href="/logs/transcoder/20">20</a>
-            <a href="/logs/transcoder/50">50</a>
-            <a href="/logs/transcoder/100">100</a>
-        </div>   
         <h3>Settings</h3>     
         <tr>
-            <td align="right">OggFolder</td>
-            <td><b>{{ transcoderSettings.oggfolder }}</b></td>
-        </tr>
-        <tr>
-            <td align="right">OggQuality</td>
+            <td>Ogg Folder</td>
             <td>
-                {% if transcoderSettings.oggquality == 0 %}
-                    <small>(default = 1)</small>
-                {% else %}
-                    <b>{{ transcoderSettings.oggquality }}</b>
+                {% if transcoderInfo.SettingOggFolderShort %}
+                    <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
+                    <b>{{ transcoderInfo.SettingOggFolderShort }}</b> |
+                    Quality
+                    {% if transcoderInfo.SettingOggQuality == 0 %}
+                        <b>1</b>
+                    {% else %}
+                        <b>{{ transcoderInfo.SettingOggQuality }}</b>
+                    {% endif %}                    
                 {% endif %}
             </td>
         </tr>
         <tr>
-            <td align="right">Mp3Folder</td>
-            <td><b>{{ transcoderSettings.mp3folder }}</b></td>
-        </tr>
-        <tr>
-            <td align="right">Mp3Bitrate</td>
+            <td>Mp3 Folder</td>
             <td>
-                {% if transcoderSettings.mp3bitrate == 0 %}
-                    <small>(default = 128)</small>
-                {% else %}
-                    <b>{{ transcoderSettings.mp3bitrate }}</b>
+                {% if transcoderInfo.SettingMp3FolderShort %}                
+                    <small>{{ transcoderInfo.DefaultCollectionFolderFunctional }}/</small>
+                    <b>{{ transcoderInfo.SettingMp3FolderShort }}</b>  |
+                    Bitrate
+                    {% if transcoderInfo.SettingMp3Bitrate == 0 %}
+                        <b>128</b>
+                    {% else %}
+                        <b>{{ transcoderInfo.SettingMp3Bitrate }}</b>
+                    {% endif %}
                 {% endif %}
             </td>
-
         </tr>
     </table>  
     <p>
-    <div><a href="/transcoder/edit" class="link-button"><img src="{{ url_for('static',filename='edit.png') }}" alt="Home" style="width:20px;height:20x;"> Edit</a></div>
-{% endblock %}
+    <div>
+        <a href="/transcoder/edit" class="link-button">
+            <img src="{{ url_for('static',filename='edit.png') }}" alt="Home" style="width:15px;height:15x;">
+            Edit
+        </a>
+    </div>
+
+    <div class="indent">
+        <p>
+        <a href="/logs/transcoder/20">Log</a>
+    </div>           
+
+    {% endblock %}

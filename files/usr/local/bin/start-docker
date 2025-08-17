@@ -5,44 +5,29 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
-echo "Starting docker-containers..."
-
 if [ ! "$(docker ps -f name=lms -q)" ]; then
+    if [ "$1" = "update" ]; then
+        docker pull lmscommunity/lyrionmusicserver:stable
+    fi
     docker run \
         -d \
         --rm \
         --name lms \
         -v "/media/usbdata/rpms/config/docker/lms":"/config":rw \
-        -v "/media/usbdata/user/Publiek/Muziek":"/music":ro \
+        -v "/media/usbdata/user/music":"/music":ro \
         -v "/etc/localtime":"/etc/localtime":ro \
         -v "/etc/timezone":"/etc/timezone":ro \
-        -p 9002:9002/tcp \
+        -p 9000:9000/tcp \
         -p 9090:9090/tcp \
         -p 3483:3483/tcp \
         -p 3483:3483/udp \
-        -e HTTP_PORT=9002 \
-        -e PUID=0 \
-        -e PGID=0 \
-        lmscommunity/logitechmediaserver:stable
-fi
-
-if [ ! "$(docker ps -f name=samba -q)" ]; then
-    docker run \
-        -d \
-        --rm \
-        --name samba \
-        -p 139:139 \
-        -p 445:445 \
-        -p 137:137/udp \
-        -p 138:138/udp \
-        -v /media/usbdata/user/Publiek:/mnt_public \
-        -v /media/usbbackup/user/Publiek:/mnt_backup \
-        dperson/samba -n -p -r \
-        -s "Publiek;/mnt_public;yes;no;yes;all;;;Publiek" \
-        -s "Backup;/mnt_backup;yes;yes;yes;all;;;Backup"
+        lmscommunity/lyrionmusicserver:stable
 fi
 
 if [ ! "$(docker ps -f name=transmission -q)" ]; then
+    if [ "$1" = "update" ]; then
+        docker pull linuxserver/transmission:latest
+    fi
     docker run \
         -d \
         --rm \
@@ -51,11 +36,15 @@ if [ ! "$(docker ps -f name=transmission -q)" ]; then
         -e PUID=1000 \
         -e PGID=1000 \
         -v /media/usbdata/rpms/config/docker/transmission:/config \
-        -v /media/usbdata/user/Publiek/Downloads:/downloads \
-        linuxserver/transmission
+        -v /media/usbdata/user/downloads:/downloads \
+        linuxserver/transmission:latest
 fi
 
 if [ ! "$(docker ps -f name=syncthing -q)" ]; then
+    if [ "$1" = "update" ]; then
+        docker pull lscr.io/linuxserver/syncthing:latest
+    fi
+
     # Note: parameter hostname is optional
     docker run \
         -d \
@@ -69,8 +58,7 @@ if [ ! "$(docker ps -f name=syncthing -q)" ]; then
         -p 22000:22000/udp \
         -p 21027:21027/udp \
         -v /media/usbdata/rpms/config/docker/syncthing:/config \
-        -v /media/usbdata/user/Publiek:/data\
+        -v /media/usbdata/user:/data\
         lscr.io/linuxserver/syncthing:latest
 fi
 
-echo " => done starting docker-containers"

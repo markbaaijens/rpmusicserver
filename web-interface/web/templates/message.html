@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if backUrl %}
+        <br>
+        <div>
+            <a href="{{ backUrl }}">
+                <img src="{{ url_for('static',filename='back.png') }}" 
+                     style="width:30px;height:30x;">
+            </a>
+        </div>
+    {% endif %}           
+{% endblock %}

@@ -1,90 +1,77 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="sub-header">
-        <small>
-        <a class="external-link" href="http://rpms:9002" target="_blank">LogitechMediaServer</a>&nbsp;&nbsp;
-        <a class="external-link" href="http://rpms:9091" target="_blank">Transmission</a>&nbsp;&nbsp;
-        <a class="external-link" href="http://rpms:8384" target="_blank">SyncThing</a>&nbsp;&nbsp;        
-        <a class="external-link" href="https://github.com/markbaaijens/rpmusicserver" target="_blank">GitHub</a> 
-        </small>
+    <h2>Home
+        <a href="https://github.com/markbaaijens/rpmusicserver#rp-music-server" target="_blank">
+            <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
+         </a>
+    </h2>
+
+    <div>
+        <p>
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:9000" target="_blank">Lyrion Music Server</a>&nbsp;
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:9091" target="_blank">Transmission</a>&nbsp;
+        <a class="external-link" href="{{ machineInfo.HostUrl }}:8384" target="_blank">SyncThing</a>&nbsp;
     </div>
-    <p>
-    <h2>Machine</h2>
+
     <table>
         <tr>
-            <td align="right">HostName</td>
+            <td>Hostname</td>
             <td><b>{{ machineInfo.HostName }}</b></td>
         </tr>
         <tr>
-            <td align="right">IpAddress</td>
+            <td>IP Address</td>
             <td><b>{{ machineInfo.IpAddress }}</b></td>
         </tr>
         <tr>
-            <td align="right">RpModel</td>
+            <td>Pi Model</td>
             <td><b>{{ machineInfo.RpModel }}</b> | <b>{{ machineInfo.RpModelMemoryInGB }}</b></td>
         </tr>
         <tr>
-            <td align="right">OS</td>
-            <td><b>{{ machineInfo.OsDescription }}</b> | <b>{{ machineInfo.OsBitType }}</b></td>
+            <td>OS</td>
+            <td><b>{{ machineInfo.OsDescription }}</b> | <b>{{ machineInfo.OsBitType }}</b> | <b>{{ machineInfo.KernelVersion }}</b></td>
         </tr>        
         <tr>
-            <td align="right">UpTime</td>
+            <td>Uptime</td>
             <td><b>{{ machineInfo.UpTime }}</b></td>
         </tr>
     </table>    
 
-    <h2>Version</h2>
+    <h3>Version
+        <a href="https://github.com/markbaaijens/rpmusicserver#update-rpms" target="_blank">
+            <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
+         </a>
+    </h3>
     <table>
         <tr>
-            <td align="right">CurrentVersion</td>
+            <td>Current</td>
             <td><b>{{ versionInfo.CurrentVersion }}</b></td>
         </tr>
         <tr>
-            <td align="right">AvailableVersion</td>
-            <td><b>{{ versionInfo.AvailableVersion }}</b></td>
+            <td>Available</td>
+            <td><b>{{ versionInfo.AvailableVersion }}</b>
+                {% if versionInfo.IsVersionOverridden %}   
+                    *
+                {% endif %}             
+            </td>
         </tr>
         <tr>
-            <td align="right">LastUpdate</td>
+            <td>Updated</td>
             <td><b>{{ versionInfo.LastUpdateTimeStamp }}</b></td>
         </tr>
-        <tr>
-            <td align="right">VersionFile</td>
-            <td><a class="external-link" href="http://rpms:5000/api/GetVersionList" target="_blank">{{ versionInfo.VersionFile }}</a></td>
-        </tr>                
-        <tr>
-            <td align="right">UpdateBranch</td>
-            <td>
-                <b>{{ versionInfo.UpdateBranchName }}</b>
-            </td>
-        </tr>
-        <tr>
-            <td align="right">IsVersionOverridden</td>
-            <td>
-                {% if versionInfo.IsVersionOverridden %}
-                    <span class="checkmark-y"> &#10004; </span>
-                {% else %}
-                    <span class="checkmark-n"> &#x2717; </span> 
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td align="right">CanUpdate</td>
-            <td>
-                {% if versionInfo.CanUpdate %}
-                    <span class="checkmark-y"> &#10004; </span>
-                {% else %}
-                    <span class="checkmark-n"> &#x2717; </span> 
-                {% endif %}
-            </td>
-        </tr>            
-    </table>  
+    </table> 
+    {% if versionInfo.IsVersionOverridden %}
+    <div><small>* overridden by update branch <b>{{ versionInfo.UpdateBranchName }}</b></small></div>
+    {% endif %}             
     <p>
     {% if versionInfo.CanUpdate %}
-        <a href="/update-server" class="link-button">UpdateServer</a> 
+        <a href="/ask-update-rpms" class="link-button">Update</a> 
     {% else %}
-        <a class="link-button disabled">UpdateServer</a> 
+        <a class="link-button disabled">Update</a> 
     {% endif %}            
         
-    </table>  
+    <div class="indent">
+        <p>
+        <a href="/logs/update/20">Log</a>
+    </div>               
 {% endblock %}

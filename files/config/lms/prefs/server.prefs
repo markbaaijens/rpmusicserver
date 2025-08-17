@@ -834,7 +834,7 @@ guessFileFormats:
 - /ARTIST/ALBUM/TRACKNUM - TITLE
 - /ARTIST/ALBUM/TRACKNUM TITLE
 - /ARTIST/ALBUM/TRACKNUM. TITLE
-httpport: '9002'
+httpport: '9000'
 ignoreDirRE: ''
 ignoreInAudioScan: []
 ignoreInImageScan:
