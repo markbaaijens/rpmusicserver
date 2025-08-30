@@ -5,8 +5,18 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
-kill-docker
-start-docker update
+docker_active="0"
+if [ "$(docker ps --format '{{.Names}}')" ]; then
+    docker_active="1"
+    kill-docker
+fi
+
+if [ "$docker_active" == "1" ]; then
+    start-docker update-with-start
+else
+    start-docker update-no-start
+fi
 
 # Remove obsolete docker-artefacts, residing in /var/lib/docker/overlay2
-docker system prune --all -f
+docker system prune -f
+
