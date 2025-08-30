@@ -177,6 +177,11 @@ sed -i '/backup-server/d' /etc/crontab
 /bin/sh -c 'echo "30 03 * * * root backup-server" >> /etc/crontab'
 echo "... line added."    
 
+echo "Adding line for flac-health-check in /etc/crontab..."
+sed -i '/flac-health-check/d' /etc/crontab
+/bin/sh -c 'echo "00 04 * * * root flac-health-check" >> /etc/crontab'
+echo "... line added."    
+
 echo "Change password of user 'pi'..."
 sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 # Note that changing password in su-mode (which is different than sudo-mode)
