@@ -41,9 +41,9 @@ if [ "$1" = "all" ]; then
 fi
 
 if [ "$check_all" = "1" ]; then
-    log "Start session on '$source_folder' - check all folders"
+    log "Start session on '$source_folder' - all folders"
 else
-    log "Start session on '$source_folder' - only check new folders"
+    log "Start session on '$source_folder' - new folders"
 fi
 
 repair_file="repair.sh"

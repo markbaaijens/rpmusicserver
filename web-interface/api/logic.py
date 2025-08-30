@@ -569,13 +569,20 @@ def GetFlacHealthInfo():
     errorCount = int(ExecuteBashCommand("flac-health-report | grep ERROR | wc -l"))
     warningCount = int(ExecuteBashCommand("flac-health-report | grep WARNING | wc -l"))
     corruptFolderCount = int(ExecuteBashCommand("find /media/usbdata/user/music/flac/ -type f -name 'repair.sh' | wc -l"))
+
+    checkTypeValue = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'all folders' | wc -l"))
+    if checkTypeValue == 1:
+        checkType = 'All folders'
+    else:
+        checkType = 'New folders'
             
     return {"IsChecked": isChecked,
             "LastCheck": lastCheckTimeStampAsString,
             "FolderCount": folderCount,
             "ErrorCount": errorCount,
             "WarningCount": warningCount,
-            "CorruptFolderCount": corruptFolderCount}
+            "CorruptFolderCount": corruptFolderCount,
+            "CheckType": checkType}
 
 def GetLog(logFile, nrOfLines):
     logLines = []
@@ -683,6 +690,10 @@ async def DoGenerateSambaConf():
     pass
 
 async def DoFlacHealthCheck():
+    await asyncio.create_subprocess_shell("flac-health-check all")
+    pass
+
+async def DoFlacHealthCheckNew():
     await asyncio.create_subprocess_shell("flac-health-check")
     pass
 

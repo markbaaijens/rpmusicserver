@@ -349,10 +349,20 @@ def AskExportCollection():
 def AskFlacHealthCheck():
     return render_template(
         'dialog.html', 
-        appTitle = 'Flac Health Check - ' + configObject.AppTitle, 
+        appTitle = 'Flac Health Check / All Folders - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        labelText = 'Start check for flac health?',
+        labelText = 'Start check for flac health for all folders (this may take a while)?',
         proceedUrl = '/flac-health-check',
+        backUrl = request.referrer)
+
+@app.route('/ask-flac-health-check-new', methods=['GET'])
+def AskFlacHealthCheckNew():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Flac Health Check / New Folders - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Start check for flac health only new folders?',
+        proceedUrl = '/flac-health-check-new',
         backUrl = request.referrer)
 
 @app.route('/export-collection', methods=['GET'])
@@ -389,6 +399,22 @@ def DoFlacHealthCheck():
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/music')
 
+@app.route('/flac-health-check-new', methods=['GET'])
+def DoFlacHealthCheckNew():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoFlacHealthCheckNew').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    flash(apiMessage['Message'])        
+
+    return render_template(
+        'message.html', 
+        appTitle = 'Flac Health Check / New Folders - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/music')
 
 @app.route('/ask-transcode', methods=['GET'])
 def AskTranscode():
