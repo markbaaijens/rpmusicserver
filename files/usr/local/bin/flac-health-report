@@ -16,7 +16,7 @@ for file in $(find $source_folder -type f -name 'repair.sh' -printf '%p\n' | sor
     echo $current_dir
 
     cat $file | grep "# "
-    echo ""
+    echo "---"
 done
 unset IFS; set +f
 
