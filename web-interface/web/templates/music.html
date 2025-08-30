@@ -137,7 +137,15 @@
         </tr>
         <tr>
             <td>Check Type</td>
-            <td><b>{{ flacHealthInfo.CheckType }}</b></td>
+            <td>
+                <b>
+                    {% if flacHealthInfo.CheckType == 1 %}
+                        All Folders
+                    {% else %}
+                        New folders
+                    {% endif %}
+                </b>
+            </td>
         </tr>        
     </table> 
     <br>

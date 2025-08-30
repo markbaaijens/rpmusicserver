@@ -569,12 +569,7 @@ def GetFlacHealthInfo():
     errorCount = int(ExecuteBashCommand("flac-health-report | grep ERROR | wc -l"))
     warningCount = int(ExecuteBashCommand("flac-health-report | grep WARNING | wc -l"))
     corruptFolderCount = int(ExecuteBashCommand("find /media/usbdata/user/music/flac/ -type f -name 'repair.sh' | wc -l"))
-
-    checkTypeValue = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'all folders' | wc -l"))
-    if checkTypeValue == 1:
-        checkType = 'All folders'
-    else:
-        checkType = 'New folders'
+    checkType = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'all folders' | wc -l"))
             
     return {"IsChecked": isChecked,
             "LastCheck": lastCheckTimeStampAsString,
