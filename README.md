@@ -222,26 +222,32 @@ Note. Corruption can occur during ripping or copying; in theory, disk rot can al
 Wait until the number of folders in _Status_ matches the number of albums shown above in _Collection, Info_. Note that the number of folders can exceed the number of albums, due to different storage organisations, so they can be different! Processing is taken place at approximately 2 folders per minute (on a Raspberry Pi 4).
 
 ### Repair
-In each folder where corruption has been detected during the check, a script _repair.sh_ is created. On top of that, a script _repair-all.sh_ is created in de root-folder of your flac-files. You can use either of them to repair the corrupted files.
+In each folder where corruption has been detected during the check, a script _repair.sh_ is created. On top of that, a script _repair-all.sh_ is created in de root-folder of your flac-files. You can execute them by a button, or manually  to repair the corrupted files.
 
-* in the terminal, login by ssh: 
-  * `ssh pi@rpms`
-  * password: `rpms`
-* to repair all folders at once:
-  * change directory to the root of your music collection:
-    * `cd /media/usbdata/user/music/flac`
-  * execute the script
-    * `./repair-all.sh`
-* to repair an individual folder: 
-  * change directory to the specific folder:
-    * `cd /media/usbdata/user/music/flac` + name of the folder
-  * execute the script
-    * `./repair.sh`
+* Repair using the web-interface:
+  * On the Music-page, under _Flac Health_
+  * click on 'Repair'
+* Manual repair:
+  * in the terminal, login by ssh: 
+    * `ssh pi@rpms`
+    * password: `rpms`
+  * to repair all folders at once, using a script:
+    * `sudo flac-health-repair`
+  * to repair all folders at once, manual:
+    * change directory to the root of your music collection:
+      * `cd /media/usbdata/user/music/flac`
+    * execute the script
+      * `./repair-all.sh`
+  * to repair an individual folder: 
+    * change directory to the specific folder:
+      * `cd /media/usbdata/user/music/flac` + name of the folder
+    * execute the script
+      * `./repair.sh`
 
 Notes
-* It is recommended to create a backup before the repair b/c the files are actually changed by the repair.
-* For both repair-methods, you can also copy the files over to your desktop, do the repair locally and then copy them back; this gives you more control but it is quite lumbersome, time consuming and error prone due to the number of actions. Note that the repair-script only works om Linux-PC's.
-* After repair, it is recommended to run the chack again, to validate the repair. 
+* It is recommended to create a backup before the repair b/c the files are actually modified by the repair.
+* For all (manual) repair-methods, you can also copy the files over to your desktop, do the repair locally and then copy them back; this gives you more control but it is quite lumbersome, time consuming and error prone due to the number of actions. Note that the repair-script only works om Linux-PC's.
+* After repair, it is recommended to run the check again, to validate the repair. Note: when the repair is done through the web-interface, this is automatically done.
 
 ## Backup
 You can make a backup of all the data contained in your RPMS-server. You have the choice for a full, server-based backup. Or a remote backup, where your backup contains basically the data/user-part of RPMS. A proper backup is the basis for [disaster recovery](https://github.com/markbaaijens/rpmusicserver#disaster-recovery).

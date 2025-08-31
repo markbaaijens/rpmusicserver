@@ -148,8 +148,14 @@
     <br>
 
     <div>
-        <a href="/ask-flac-health-check-new" class="link-button">Check New</a>           
-        <a href="/ask-flac-health-check" class="link-button">Check All</a>   
+        <a href="/ask-flac-health-check-new" class="link-button">Check New</a>
+        <a href="/ask-flac-health-check-all" class="link-button">Check All</a>
+
+        {% if flacHealthInfo.IsRepairFilePresent %}
+            <a href="/ask-flac-health-repair" class="link-button">Repair</a>
+        {% else %}
+            <a class="link-button disabled">Repair</a> 
+        {% endif %}         
     </div>
 
     <div class="indent">

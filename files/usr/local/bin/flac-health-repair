@@ -41,4 +41,6 @@ for file in $(find $source_folder -type f -name $repair_file -printf '%p\n' | so
 done
 unset IFS; set +f
 
+flac-health-check # Only for unchecked folders
+
 exit

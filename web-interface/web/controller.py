@@ -345,14 +345,14 @@ def AskExportCollection():
         proceedUrl = '/export-collection',
         backUrl = request.referrer)
 
-@app.route('/ask-flac-health-check', methods=['GET'])
-def AskFlacHealthCheck():
+@app.route('/ask-flac-health-check-all', methods=['GET'])
+def AskFlacHealthCheckAll():
     return render_template(
         'dialog.html', 
         appTitle = 'Flac Health Check / All Folders - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        labelText = 'Start check for flac health for all folders (this may take a while)?',
-        proceedUrl = '/flac-health-check',
+        labelText = 'Start flac-check for ALL folders (this may take a while)?',
+        proceedUrl = '/flac-health-check-all',
         backUrl = request.referrer)
 
 @app.route('/ask-flac-health-check-new', methods=['GET'])
@@ -361,8 +361,18 @@ def AskFlacHealthCheckNew():
         'dialog.html', 
         appTitle = 'Flac Health Check / New Folders - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        labelText = 'Start check for flac health only new folders?',
+        labelText = 'Start flac-check only for NEW folders?',
         proceedUrl = '/flac-health-check-new',
+        backUrl = request.referrer)
+
+@app.route('/ask-flac-health-repair', methods=['GET'])
+def AskFlacHealthRepair():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Flac Health Repair - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Start flac-repair (consider to make a backup first)?',
+        proceedUrl = '/flac-health-repair',
         backUrl = request.referrer)
 
 @app.route('/export-collection', methods=['GET'])
@@ -382,10 +392,10 @@ def DoExportCollection():
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/music')
 
-@app.route('/flac-health-check', methods=['GET'])
+@app.route('/flac-health-check-all', methods=['GET'])
 def DoFlacHealthCheck():
     try:
-        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoFlacHealthCheck').content)
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoFlacHealthCheckAll').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -395,7 +405,7 @@ def DoFlacHealthCheck():
 
     return render_template(
         'message.html', 
-        appTitle = 'Flac Health Check - ' + configObject.AppTitle, 
+        appTitle = 'Flac Health Check / All folders - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/music')
 
@@ -413,6 +423,23 @@ def DoFlacHealthCheckNew():
     return render_template(
         'message.html', 
         appTitle = 'Flac Health Check / New Folders - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/music')
+
+@app.route('/flac-health-repair', methods=['GET'])
+def DoFlacHealthRepair():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoFlacHealthRepair').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    flash(apiMessage['Message'])        
+
+    return render_template(
+        'message.html', 
+        appTitle = 'Flac Health Check Repair - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/music')
 
