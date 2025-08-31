@@ -111,36 +111,48 @@
             <td>Status</td>
             <td>
                 {% if flacHealthInfo.IsChecked %}
-                    <b>{{ flacHealthInfo.FolderCount }}</b> folders |
+                    <b>{{ flacHealthInfo.FolderCount }}</b> folder(s) |
 
                     {% if flacHealthInfo.ErrorCount == 0 %}
-                        <b><span class="checkmark-y">{{ flacHealthInfo.ErrorCount }}</span></b> errors |
+                        <b><span class="checkmark-y">{{ flacHealthInfo.ErrorCount }}</span></b> error(s) |
                     {% else %}
-                        <b><span class="checkmark-n">{{ flacHealthInfo.ErrorCount }}</span></b> errors |
+                        <b><span class="checkmark-n">{{ flacHealthInfo.ErrorCount }}</span></b> error(s) |
                     {% endif %}                  
 
                     {% if flacHealthInfo.WarningCount == 0 %}
-                        <b><span class="checkmark-y">{{ flacHealthInfo.WarningCount }}</span></b> warnings |
+                        <b><span class="checkmark-y">{{ flacHealthInfo.WarningCount }}</span></b> warning(s) |
                     {% else %}
-                        <b><span class="checkmark-n">{{ flacHealthInfo.WarningCount }}</span></b> warnings |
+                        <b><span class="checkmark-n">{{ flacHealthInfo.WarningCount }}</span></b> warning(s) |
                     {% endif %}                                  
 
                     {% if flacHealthInfo.CorruptFolderCount == 0 %}
-                        <b><span class="checkmark-y">{{ flacHealthInfo.CorruptFolderCount }}</span></b> corrupt folders
+                        <b><span class="checkmark-y">{{ flacHealthInfo.CorruptFolderCount }}</span></b> corrupt folder(s)
                     {% else %}
-                        <b><span class="checkmark-n">{{ flacHealthInfo.CorruptFolderCount }}</span></b> corrupt folders
+                        <b><span class="checkmark-n">{{ flacHealthInfo.CorruptFolderCount }}</span></b> corrupt folder(s)
                     {% endif %}                                                  
                 {% else %}
                     <b>-</b>
                 {% endif %}                                                                      
             </td>
         </tr>
-
+        <tr>
+            <td>Check Type</td>
+            <td>
+                <b>
+                    {% if flacHealthInfo.CheckType == 1 %}
+                        All Folders
+                    {% else %}
+                        New folders
+                    {% endif %}
+                </b>
+            </td>
+        </tr>        
     </table> 
     <br>
 
     <div>
-        <a href="/ask-flac-health-check" class="link-button">Check</a>   
+        <a href="/ask-flac-health-check-new" class="link-button">Check New</a>           
+        <a href="/ask-flac-health-check" class="link-button">Check All</a>   
     </div>
 
     <div class="indent">

@@ -212,7 +212,9 @@ Within RPMS, you can check the integrity of all the flac-files in your collectio
 Note. Corruption can occur during ripping or copying; in theory, disk rot can also lead to corrupted flac-files. Either way, checking your collection regularly is recommended.
 
 ### Steps to run the check
-* On the Music-page, under _Flac Health_, click on _Check_
+* On the Music-page, under _Flac Health_, click on either:
+  * _Check New_: This check will only handle _new_ folders since the last check, so this can be very fast. Note that this check is also run automatically at nigth, so the method is seldom needed
+  * _Check All_: Runs a check on _all_ folders, which may take a while. It is recommended to run this check regurarely.
 * Under _Status_, you can see the analysis (in realtime)
 * Under _Log_, you can see the progress; when finished, it shows a summary
 * Under _Report_, you can see a detailed report where all folders are mentioned which contain corrupt files; also the actual errors or warnings are shown
