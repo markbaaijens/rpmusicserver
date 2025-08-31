@@ -105,7 +105,16 @@
     <table>
         <tr>
             <td>Last Check</td>
-            <td><b>{{ flacHealthInfo.LastCheck }}</b></td>
+            <td>
+                <b>
+                    {{ flacHealthInfo.LastCheck }} | 
+                    {% if flacHealthInfo.CheckType == 1 %}
+                        All Folders
+                    {% else %}
+                        New folders
+                    {% endif %}                    
+                </b>
+            </td>
         </tr>
         <tr>
             <td>Status</td>
@@ -135,18 +144,6 @@
                 {% endif %}                                                                      
             </td>
         </tr>
-        <tr>
-            <td>Check Type</td>
-            <td>
-                <b>
-                    {% if flacHealthInfo.CheckType == 1 %}
-                        All Folders
-                    {% else %}
-                        New folders
-                    {% endif %}
-                </b>
-            </td>
-        </tr>        
     </table> 
     <br>
 
