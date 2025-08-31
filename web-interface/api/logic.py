@@ -684,7 +684,7 @@ async def DoGenerateSambaConf():
     await asyncio.create_subprocess_shell("generate-samba-conf")
     pass
 
-async def DoFlacHealthCheck():
+async def DoFlacHealthCheckAll():
     await asyncio.create_subprocess_shell("flac-health-check all")
     pass
 

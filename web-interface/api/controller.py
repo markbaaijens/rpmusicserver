@@ -592,10 +592,10 @@ def DoExportCollection():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
-@app.route('/api/DoFlacHealthCheck', methods=['POST'])
-def DoFlacHealthCheck():
+@app.route('/api/DoFlacHealthCheckAll', methods=['POST'])
+def DoFlacHealthCheckAll():
     try:
-        asyncio.run(logic.DoFlacHealthCheck())
+        asyncio.run(logic.DoFlacHealthCheckAll())
         info = { "Message": "Flac Health Check / All Folders started."}
     except Exception as e:
         logger.error(e)
