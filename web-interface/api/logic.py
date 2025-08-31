@@ -692,6 +692,10 @@ async def DoFlacHealthCheckNew():
     await asyncio.create_subprocess_shell("flac-health-check")
     pass
 
+async def DoFlacHealthRepair():
+    await asyncio.create_subprocess_shell("flac-health-repair")
+    pass
+
 def ExportCollectionArtistAlbumByFolder(collectionFolder):
     collection = ''
 

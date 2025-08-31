@@ -365,6 +365,16 @@ def AskFlacHealthCheckNew():
         proceedUrl = '/flac-health-check-new',
         backUrl = request.referrer)
 
+@app.route('/ask-flac-health-repair', methods=['GET'])
+def AskFlacHealthRepair():
+    return render_template(
+        'dialog.html', 
+        appTitle = 'Flac Health Repair - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        labelText = 'Start flac-repair?',
+        proceedUrl = '/flac-health-repair',
+        backUrl = request.referrer)
+
 @app.route('/export-collection', methods=['GET'])
 def DoExportCollection():
     try:
@@ -413,6 +423,23 @@ def DoFlacHealthCheckNew():
     return render_template(
         'message.html', 
         appTitle = 'Flac Health Check / New Folders - ' + configObject.AppTitle, 
+        apiRootUrl = configObject.ApiRootUrl,
+        backUrl = '/music')
+
+@app.route('/flac-health-repair', methods=['GET'])
+def DoFlacHealthRepair():
+    try:
+        apiMessage = json.loads(requests.post(configObject.ApiRootUrl + '/api/DoFlacHealthRepair').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        apiMessage = []
+
+    flash(apiMessage['Message'])        
+
+    return render_template(
+        'message.html', 
+        appTitle = 'Flac Health Check Repair - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         backUrl = '/music')
 

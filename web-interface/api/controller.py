@@ -616,6 +616,19 @@ def DoFlacHealthCheckNew():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/DoFlacHealthRepair', methods=['POST'])
+def DoFlacHealthRepair():
+    try:
+        asyncio.run(logic.DoFlacHealthRepair())
+        info = { "Message": "Flac-repair started."}
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
+
 @app.route('/api/DoTranscode', methods=['POST'])
 def DoTranscode():
     try:
