@@ -371,7 +371,7 @@ def AskFlacHealthRepair():
         'dialog.html', 
         appTitle = 'Flac Health Repair - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
-        labelText = 'Start flac-repair?',
+        labelText = 'Start flac-repair (consider to make a backup first)?',
         proceedUrl = '/flac-health-repair',
         backUrl = request.referrer)
 

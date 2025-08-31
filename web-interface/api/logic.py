@@ -570,6 +570,12 @@ def GetFlacHealthInfo():
     warningCount = int(ExecuteBashCommand("flac-health-report | grep WARNING | wc -l"))
     corruptFolderCount = int(ExecuteBashCommand("find /media/usbdata/user/music/flac/ -type f -name 'repair.sh' | wc -l"))
     checkType = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'all folders' | wc -l"))
+    repairFilePresent = True
+
+    if int(ExecuteBashCommand("find /media/usbdata/user/music -type f -name 'repair-all.sh' | wc -l")) != 0:
+        isRepairFilePresent = True
+    else:
+        isRepairFilePresent = False
             
     return {"IsChecked": isChecked,
             "LastCheck": lastCheckTimeStampAsString,
@@ -577,7 +583,8 @@ def GetFlacHealthInfo():
             "ErrorCount": errorCount,
             "WarningCount": warningCount,
             "CorruptFolderCount": corruptFolderCount,
-            "CheckType": checkType}
+            "CheckType": checkType,
+            "IsRepairFilePresent": isRepairFilePresent}
 
 def GetLog(logFile, nrOfLines):
     logLines = []
