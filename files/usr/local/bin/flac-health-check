@@ -70,6 +70,8 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
         previous_dir=$current_dir
         log ""
         log "Folder: $current_dir"
+
+        check_file="0"
         if [ -f "$current_dir/$control_file" ] && [ "$check_all" == "0" ]; then
             log "Folder already checked"
         else 
