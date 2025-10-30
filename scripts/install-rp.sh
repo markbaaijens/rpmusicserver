@@ -140,6 +140,7 @@ install_bin_file start-web
 install_bin_file generate-samba-conf
 install_bin_file flac-health-check
 install_bin_file flac-health-report
+install_bin_file flac-health-repair
 
 # By always delete existing lines in crontab, we can easily implement
 # a different strategy later, if needed
@@ -175,6 +176,11 @@ echo "... line added."
 echo "Adding line for backup-server in /etc/crontab..."
 sed -i '/backup-server/d' /etc/crontab
 /bin/sh -c 'echo "30 03 * * * root backup-server" >> /etc/crontab'
+echo "... line added."    
+
+echo "Adding line for flac-health-check in /etc/crontab..."
+sed -i '/flac-health-check/d' /etc/crontab
+/bin/sh -c 'echo "00 04 * * * root flac-health-check" >> /etc/crontab'
 echo "... line added."    
 
 echo "Change password of user 'pi'..."

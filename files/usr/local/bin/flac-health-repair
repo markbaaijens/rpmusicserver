@@ -1,0 +1,46 @@
+#!/bin/bash
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+if pidof -o %PPID -x "flac-health-repair">/dev/null; then
+    echo "Process already running."
+    exit
+fi
+
+source_folder=$(jq '.sourcefolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
+if [ "$source_folder" == "null" ] || [ -z "${source_folder}" ]; then
+    source_folder="/media/usbdata/user/music"
+fi
+
+if [ ! -d $source_folder ]; then
+    echo "Sourcefolder '$source_folder' does not exist."
+    exit
+fi
+
+repair_file="repair.sh"
+repair_all_file="repair-all.sh"
+control_file="flac-checked.txt"
+
+if [ ! -f "$source_folder/$repair_all_file" ]; then
+    exit
+fi
+
+"$source_folder/$repair_all_file"
+
+rm -f $source_folder/$repair_all_file
+
+IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
+for file in $(find $source_folder -type f -name $repair_file -printf '%p\n' | sort -k1); do
+    current_dir="$(dirname "${file}")"
+
+    rm -f $current_dir/$repair_file
+    rm -f $current_dir/$control_file
+done
+unset IFS; set +f
+
+flac-health-check # Only for unchecked folders
+
+exit

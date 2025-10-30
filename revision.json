@@ -1,6 +1,12 @@
 {
-    "CurrentVersion": "1.0",
+    "CurrentVersion": "1.1",
     "History": [
+        {
+            "Version":"1.1",
+            "Changes": [
+                ""
+            ]
+        },        
         {
             "Version":"1.0",
             "Changes": [
@@ -10,116 +16,55 @@
         {
             "Version":"0.9",
             "Changes": [
-                "Convert action-links to buttons #159",
-                "Show physical memory of Raspberry Pi-model #109",
-                "Bug: if backup-disk is not present, button for Backup should be disabled in web #122",
-                "Show checkmarks in green and crosses in red #107",
-                "Show OS-number and OS-type (32/64-bit) #135",
-                "Expand readme with info about update-mechanism #157",
-                "Bug: Faster execution of service-detection #138",
-                "Emphasize troubleshooting-section in readme #186",
-                "Shorten menu #149",
-                "Detect (from workstation) if local DNS is working, document in readme #192",
-                "If hostname or ip of rpms does not show up, mention to connect a display and keyboard to the pi (readme) #134",
-                "Bug: In install-rp.sh, minimize setting rights on existing folders #179",
-                "Bug: Update troubleshooting documentation for nmap command #140",
-                "Disks-page, remove device & mountpoint #146",
-                "Show checkmark/cross after VersionOverride #106",
-                "Bug: Invalid update-properties in API-call GetVersionInfo in conjuction to VersionOverride #185",
-                "Add meters for all resources and simplify resources-page #108",
-                "Cleanup Resources-page #215"
+                ""                
             ]
         },
         {
             "Version":"0.8",
             "Changes": [
-                "Implemented syncthing (as a docker container) #99",
-                "Bug: No command StartDocker in web #119 (web)",
-                "Renamed Commands to Tasks #105 (web)",
-                "Bug: Link to revision list should open a new tab #104",
-                "Bug: Prevented file rights issues #96",
-                "Bug: Lowered swappines to 1 #97",
-                "Showed Home next to icon #102 (web)",
-                "Bug: While formatting, the confirmation is always 'usbbackup' #95",
-                "Navigation: moved Services and Docker to the back #103 (web)",
-                "Documented in readme if hostname ('rpms') cannot be resolved #101 (doc)",
-                "In readme, added section 'Pi/rpms cannot be reached on the network' #100 (doc)"
+                ""                
             ]
         },
         {
             "Version":"0.7",
             "Changes": [
-                "Several small enhancements to web",
-                "[bug] Do not exclude `Downloads` on backup; b/c otherwise, backup is *not* a mirror of the data-disk",
-                "[bug] Update-script could not handle revisions with two digits",
-                "[bug] Fixed font-size to have a uniform appearance",
-                "[bug] logrotate was not respecting size-parameter",
-                "[bug] Timestamp of last update was not in local time",
-                "Show version-list (revision.json) trough web",
-                "Extended readme with troubleshooting-section (reconfigure players after migration)"
+                ""                
             ]
         },        
         {
             "Version":"0.6",
             "Changes": [
-                "While burning, choice for alternative hostname 'rpmsdev' for development",
-                "Expose backup-disk through samba (experimental)",
-                "Faster reboot/halt by first killing docker-containers (refactoring)",
-                "Enhanced readme, commands for transcoder- and backup-progress, extended disaster-recovery",
-                "Web-frontend",
-                "Installed nmap",
-                "Service detection, web + api"
+                ""                
             ]
         },
         {
             "Version":"0.5",
             "Changes": [
-                "[bug] Call api/ was a list of nodes within a node; should be list of nodes",
-                "[bug] In api/GetDiskList, removed '%' in UsedPercentage; return as int",
-                "[bug] Removed setting-name in request-data in api-calls for modifying transcoder-settings; simplified names",
-                "[bug] Format backup-disk as ext4 for faster formatting and to provide disaster-recovery"
+                ""                
             ]
         },                
         {
             "Version":"0.4",
             "Changes": [
-                "[bug] In readme, instructions for formatting backup-disk pointed to burn-image script",
-                "[bug] Wrong mountpoint for backup-disk so disk could not be found",
-                "Changed api/GetDiskList: DiskStatus => IsOnline",
-                "[bug] Instructions in readme to install nmap before installing RPMS",
-                "Better formatting of transcoder-section in readme"
+                ""                
             ]
         },        
         {
             "Version":"0.3",
             "Changes": [
-                "[bug] On install, set timezone to Europe/Amsterdam",
-                "Using logrotate to prevent infinite grow of log-files",
-                "Documented system requirements in readme",
-                "Faster reboot after install/update by killing docker-containers",
-                "Extended API-call GetMachineInfo with CpuTemp and RpModel",
-                "Backup, server-based",
-                "[bug] Enhanced burn-script: removed filter for sd, removed default in disk-choice"
+                ""                
             ]
         },
         {
             "Version":"0.2",
             "Changes": [
-                "Upgraded Raspbian to Bullseye",
-                "Changed hostname to 'rpms'",
-                "Changed password of user 'pi' to 'rpms'",
-                "Added update-command; always update from develop-branch",
-                "Added API",
-                "Transmission-integration",
-                "Transcoder-integration",
-                "LMS-name changed to 'RP Music Server'",
-                "Splitted config-folder /rpms/config for config and /rmps/logs for logs"
+                ""                
             ]
         },
         {
             "Version":"0.1",
             "Changes": [
-                "Basic install scripts for first pre-production version, providing LMS and Samba (only)"
+                ""                
             ]
         }
     ]
