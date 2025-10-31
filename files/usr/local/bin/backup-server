@@ -15,11 +15,16 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
-log "Backup started."
+if pidof -o %PPID -x "backup-server">/dev/null; then
+    echo "Process already running."
+    exit
+fi
+
+log "Backup started"
 
 mount -a
-if [ ! "$(mount | grep /media/usbbackup)" ]; then
-    log "- backup-disk not found."
+if [ ! "$(mount | grep /media/usbbackup | grep /dev)" ]; then
+    log "- backup-disk not found"
 else
     log_details_file=$log_dir/backup-details.log
     log "- executing backup; see details in $log_details_file"
@@ -29,5 +34,5 @@ else
     sync
 fi
 
-log "Backup ended."
+log "Backup ended"
 exit
