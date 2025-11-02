@@ -17,6 +17,9 @@ if pidof -o %PPID -x "flac-health-check">/dev/null; then
     exit
 fi
 
+# Set localisation to English, needed for correct sorting, so '/' is not ignored
+export LC_ALL=C  
+
 if [ -d "/media/usbdata/rpms/logs" ]; then
     log_dir="/media/usbdata/rpms/logs"
 else
@@ -161,4 +164,7 @@ fi
 
 log ""
 log "End session"
+
+# Reset console output to default language
+unset LC_ALL  
 
