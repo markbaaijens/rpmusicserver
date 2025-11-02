@@ -35,6 +35,19 @@
             <td>Uptime</td>
             <td><b>{{ machineInfo.UpTime }}</b></td>
         </tr>
+        <tr>
+            <td>
+                Power Health
+            </td>
+            <td><b>
+                {% if isPowerHealthy %}
+                    <span class="checkmark-y"> &#10004; </span>
+                {% else %}
+                    <span class="checkmark-n"> &#x2717; </span> 
+                {% endif %}
+                </b>
+            </td>
+        </tr>           
     </table>    
 
     <h3>Version
