@@ -238,6 +238,10 @@ def AppendDiskInfo(diskMountPoint):
                  })
     pass
 
+def GetPowerHealth():
+    isPowerHealthy = ExecuteBashCommand("dmesg | grep -i undervoltage") == ''
+    return isPowerHealthy
+
 def GetDiskList():
     disks.clear()
     AppendDiskInfo('/')
