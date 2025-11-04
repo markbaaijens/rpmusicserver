@@ -482,7 +482,10 @@ def GetTranscoderInfo():
     if lastTranscode != '':
         lastTranscode = lastTranscode + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
 
+    isLastTranscodeSuccesFul = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | tail -n 1 | grep error") == ''
+
     return {"IsActivated": isActivated,
+            "IsLastTranscodeSuccesFul": isLastTranscodeSuccesFul,
             "LastTranscode": lastTranscode,
             "DefaultCollectionFolder": defaultCollectionFolder,
             "DefaultCollectionFolderFunctional": defaultCollectionFolderFunctional,

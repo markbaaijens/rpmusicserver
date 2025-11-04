@@ -9,25 +9,33 @@
     <table>
         <tr>
             <td>
+                Transcoder Status
+            </td>
+            <td><b>
+                {% if transcoderInfo.IsActivated %}
+                    {% if transcoderInfo.LastTranscode %}
+                        {% if transcoderInfo.IsLastTranscodeSuccesFul %}
+                            <span class="checkmark-y">Activated</span>
+                        {% else %}                            
+                            <span class="checkmark-n">Error(s) in last transcode</span>                        
+                        {% endif %}                            
+                    {% else %}
+                        <span class="checkmark-y">Activated, no transcode (yet)</span>                    
+                    {% endif %}
+                {% else %}
+                    <span class="checkmark-n">Not activated</span> 
+                {% endif %}
+                </b>
+            </td>
+        </tr>                           
+        <tr>
+            <td>
                 Last Transcode
             </td>
             <td>
                 <b>{{ transcoderInfo.LastTranscode }}</b>
             </td>
         </tr>         
-        <tr>
-            <td>
-                Activated
-            </td>
-            <td><b>
-                {% if transcoderInfo.IsActivated %}
-                    <span class="checkmark-y"> &#10004; </span>
-                {% else %}
-                    <span class="checkmark-n"> &#x2717; </span> 
-                {% endif %}
-                </b>
-            </td>
-        </tr>                   
     </table>
     <br>
     <div>
