@@ -484,19 +484,22 @@ def GetTranscoderInfo():
 
     isLastTranscodeSuccesFul = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | tail -n 1 | grep error") == ''
 
+    lastTranscodedFile = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'transcoding file' | tail -n 1 | cut -d'\"' -f 2 | sed -e \"s/\[source_tree\]\///g\"")
+
     return {"IsActivated": isActivated,
             "IsLastTranscodeSuccesFul": isLastTranscodeSuccesFul,
             "LastTranscode": lastTranscode,
+            "LastTranscodedFile": lastTranscodedFile,
             "DefaultCollectionFolder": defaultCollectionFolder,
             "DefaultCollectionFolderFunctional": defaultCollectionFolderFunctional,
-            "SettingSourceFolder": settingSourceFolder,            
+            "SettingSourceFolder": settingSourceFolder,
             "SettingSourceFolderShort": settingSourceFolderShort,
-            "SettingOggFolder": settingOggFolder,            
+            "SettingOggFolder": settingOggFolder,
             "SettingOggFolderShort": settingOggFolderShort,
             "SettingOggQuality": settingOggQuality,
-            "SettingMp3Folder": settingMp3Folder,            
+            "SettingMp3Folder": settingMp3Folder,
             "SettingMp3FolderShort": settingMp3FolderShort,
-            "SettingMp3Bitrate": settingMp3Bitrate}            
+            "SettingMp3Bitrate": settingMp3Bitrate} 
 
 def GetApiList():
     dataAsJson = {}
