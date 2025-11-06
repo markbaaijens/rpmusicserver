@@ -7,6 +7,17 @@ log () {
     echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1"  >> $log_dir/$log_file
 }
 
+repair_by_flac () {
+    echo "flac -f \"$file_name\" -o \"$file_name\"" >> $current_dir/$repair_file
+    echo "touch \"$file_name\"" >> $current_dir/$repair_file            
+}
+
+repair_by_ffmpeg () {
+    echo "ffmpeg -i \"$file_name\" \"temp.flac\"" >> $current_dir/$repair_file
+    echo "rm \"$file_name\"" >> $current_dir/$repair_file
+    echo "mv \"temp.flac\" \"$file_name\"" >> $current_dir/$repair_file    
+}
+
 if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
     exit
@@ -88,40 +99,34 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
         log "$file_name"
 
         flac_error=`flac --silent -t "$file" 2>&1 | head -n 1`
-        if [ -n "$flac_error" ]; then
+        id3v2_error=`id3v2 -l "$file" | grep 'id3v2 tag info'`
+
+        if [ -n "$flac_error" ] || [ -n "$id3v2_error" ]; then
             if [ ! -f $current_dir/$repair_file ]; then
                 echo "" >> $current_dir/$repair_file
                 chmod +x $current_dir/$repair_file
                 chmod 777 $current_dir/$repair_file            
-                log " => Created '$repair_file' in $current_dir"
             fi
+        fi
 
-            log " => $file"
+        if [ -n "$flac_error" ]; then
             log " => $flac_error" 
 
             echo "# $flac_error" >> $current_dir/$repair_file 
             if [[ $flac_error == *"WARNING, cannot check MD5 signature since it was unset in the STREAMINFO"* ]]; then
-                echo "flac -f \"$file_name\" -o \"$file_name\"" >> $current_dir/$repair_file
-                echo "touch \"$file_name\"" >> $current_dir/$repair_file            
+                repair_by_ffmpeg
             else
                 if [[ $flac_error == *"ERROR, MD5 signature mismatch"* ]]; then
-                    echo "flac -f \"$file_name\" -o \"$file_name\"" >> $current_dir/$repair_file
-                    echo "touch \"$file_name\"" >> $current_dir/$repair_file            
+                    repair_by_flac
                 else
                     if [[ $flac_error == *"FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC"* ]]; then
-                        echo "ffmpeg -i \"$file_name\" \"temp.flac\"" >> $current_dir/$repair_file
-                        echo "rm \"$file_name\"" >> $current_dir/$repair_file
-                        echo "mv \"temp.flac\" \"$file_name\"" >> $current_dir/$repair_file
+                        repair_by_ffmpeg
                     else
                         if [[ $flac_error == *"FLAC__STREAM_DECODER_ERROR_STATUS_UNPARSEABLE_STREAM"* ]]; then
-                            echo "ffmpeg -i \"$file_name\" \"temp.flac\"" >> $current_dir/$repair_file
-                            echo "rm \"$file_name\"" >> $current_dir/$repair_file
-                            echo "mv \"temp.flac\" \"$file_name\"" >> $current_dir/$repair_file
+                            repair_by_ffmpeg
                         else
                             if [[ $flac_error == *"FLAC__STREAM_DECODER_ERROR_STATUS_FRAME_CRC_MISMATCH"* ]]; then
-                                echo "ffmpeg -i \"$file_name\" \"temp.flac\"" >> $current_dir/$repair_file
-                                echo "rm \"$file_name\"" >> $current_dir/$repair_file
-                                echo "mv \"temp.flac\" \"$file_name\"" >> $current_dir/$repair_file
+                                repair_by_ffmpeg
                             else
                                 echo "# No repair implemented (yet) for this error/warning" >> $current_dir/$repair_file
                             fi
@@ -129,7 +134,16 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
                     fi
                 fi
             fi
-            echo "" >> $current_dir/$repair_file        
+            echo "" >> $current_dir/$repair_file     
+        fi
+
+        if [ -n "$id3v2_error" ]; then
+            log " => $id3v2_error" 
+
+            echo "# $id3v2_error" >> $current_dir/$repair_file 
+            echo "id3v2 -d \"$file_name\"" >> $current_dir/$repair_file
+            echo "touch \"$file_name\"" >> $current_dir/$repair_file     
+            echo "" >> $current_dir/$repair_file               
         fi
     fi
 done
