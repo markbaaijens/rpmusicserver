@@ -113,6 +113,12 @@
                     {% else %}
                         New folders
                     {% endif %}                    
+                    {% if flacHealthInfo.IsRepairing %}
+                        - Repairing
+                    {% endif %}                    
+                    {% if flacHealthInfo.IsChecking %}
+                        - Checking
+                    {% endif %}
                 </b>
             </td>
         </tr>
@@ -148,11 +154,20 @@
     <br>
 
     <div>
-        <a href="/ask-flac-health-check-new" class="link-button">Check New</a>
-        <a href="/ask-flac-health-check-all" class="link-button">Check All</a>
+        {% if flacHealthInfo.IsChecking or flacHealthInfo.IsRepairing %}
+            <a class="link-button disabled">Check New</a> 
+            <a class="link-button disabled">Check All</a>             
+        {% else %}                    
+            <a href="/ask-flac-health-check-new" class="link-button">Check New</a>
+            <a href="/ask-flac-health-check-all" class="link-button">Check All</a>
+        {% endif %}
 
         {% if flacHealthInfo.IsRepairFilePresent %}
-            <a href="/ask-flac-health-repair" class="link-button">Repair</a>
+            {% if flacHealthInfo.IsRepairing %}        
+                <a class="link-button disabled">Repair</a> 
+            {% else %}
+                <a href="/ask-flac-health-repair" class="link-button">Repair</a>
+            {% endif %}         
         {% else %}
             <a class="link-button disabled">Repair</a> 
         {% endif %}         
