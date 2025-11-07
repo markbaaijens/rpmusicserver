@@ -486,8 +486,11 @@ def GetTranscoderInfo():
 
     lastTranscodedFile = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'transcoding file' | tail -n 1 | cut -d'\"' -f 2 | sed -e \"s/\[source_tree\]\///g\"")
 
+    isRunning = ExecuteBashCommand("pidof -o %PPID -x \"transcode\"") != ''
+
     return {"IsActivated": isActivated,
             "IsLastTranscodeSuccesFul": isLastTranscodeSuccesFul,
+            "IsRunning": isRunning,
             "LastTranscode": lastTranscode,
             "LastTranscodedFile": lastTranscodedFile,
             "DefaultCollectionFolder": defaultCollectionFolder,
