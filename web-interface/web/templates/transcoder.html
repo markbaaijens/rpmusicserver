@@ -15,10 +15,14 @@
                 {% if transcoderInfo.IsActivated %}
                     {% if transcoderInfo.LastTranscode %}
                         {% if transcoderInfo.IsLastTranscodeSuccesFul %}
-                            <span class="checkmark-y">Activated</span>
-                        {% else %}                            
+                            {% if transcoderInfo.IsRunning %}
+                                <span class="checkmark-y">Running</span>
+                            {% else %}
+                                <span class="checkmark-y">Activated</span>                            
+                            {% endif %}                            
+                        {% else %}
                             <span class="checkmark-n">Error(s) in last transcode</span>                        
-                        {% endif %}                            
+                        {% endif %}
                     {% else %}
                         <span class="checkmark-y">Activated, no transcode (yet)</span>                    
                     {% endif %}
@@ -48,7 +52,11 @@
     <br>
     <div>
         {% if transcoderInfo.IsActivated %}
-            <a href="/ask-transcode" class="link-button">Transcode</a>  
+            {% if transcoderInfo.IsRunning %}
+                <a class="link-button disabled">Transcode</a> 
+            {% else %}            
+                <a href="/ask-transcode" class="link-button">Transcode</a>              
+            {% endif %}
         {% else %}
             <a class="link-button disabled">Transcode</a> 
         {% endif %}          
