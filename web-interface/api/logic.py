@@ -589,8 +589,13 @@ def GetFlacHealthInfo():
         isRepairFilePresent = True
     else:
         isRepairFilePresent = False
+
+    isChecking = ExecuteBashCommand("pidof -o %PPID -x \"flac-health-check\"") != ''
+    isRepairing = ExecuteBashCommand("pidof -o %PPID -x \"flac-health-repair\"") != ''    
             
     return {"IsChecked": isChecked,
+            "IsChecking": isChecking,
+            "IsRepairing": isRepairing,
             "LastCheck": lastCheckTimeStampAsString,
             "FolderCount": folderCount,
             "ErrorCount": errorCount,
