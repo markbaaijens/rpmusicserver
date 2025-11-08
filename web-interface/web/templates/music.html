@@ -123,7 +123,7 @@
             </td>
         </tr>
         <tr>
-            <td>Status</td>
+            <td>Summary</td>
             <td>
                 {% if flacHealthInfo.IsChecked %}
                     <b>{{ flacHealthInfo.FolderCount }}</b> folder(s) |
@@ -139,6 +139,12 @@
                     {% else %}
                         <b><span class="checkmark-n">{{ flacHealthInfo.WarningCount }}</span></b> warning(s) |
                     {% endif %}                                  
+
+                    {% if flacHealthInfo.TagId3v2Count == 0 %}
+                        <b><span class="checkmark-y">{{ flacHealthInfo.TagId3v2Count }}</span></b> id3v2-tag(s) |
+                    {% else %}
+                        <b><span class="checkmark-n">{{ flacHealthInfo.TagId3v2Count }}</span></b> id3v2-tag(s) |
+                    {% endif %}                                                      
 
                     {% if flacHealthInfo.CorruptFolderCount == 0 %}
                         <b><span class="checkmark-y">{{ flacHealthInfo.CorruptFolderCount }}</span></b> corrupt folder(s)
