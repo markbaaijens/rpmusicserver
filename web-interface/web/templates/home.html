@@ -35,6 +35,19 @@
             <td>Uptime</td>
             <td><b>{{ machineInfo.UpTime }}</b></td>
         </tr>
+        <tr>
+            <td>
+                Power Supply
+            </td>
+            <td><b>
+                {% if isPowerHealthy %}
+                    <span class="checkmark-y">Provided current is sufficient</span>
+                {% else %}
+                    <span class="checkmark-n">Provided current is not sufficient</span> 
+                {% endif %}
+                </b>
+            </td>
+        </tr>           
     </table>    
 
     <h3>Version

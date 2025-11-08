@@ -69,12 +69,20 @@ def ShowHomePage():
         logger.error(traceback.format_exc())
         versionInfo = []
 
+    try:
+        isPowerHealthy = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetPowerHealth').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        versionInfo = []        
+
     return render_template(
         'home.html', 
         appTitle = 'Home - ' + configObject.AppTitle, 
         apiRootUrl = configObject.ApiRootUrl,
         machineInfo = machineInfo,
-        versionInfo = versionInfo)
+        versionInfo = versionInfo,
+        isPowerHealthy = isPowerHealthy)
 
 @app.route('/transcoder', methods=['GET'])
 def ShowTranscoderPage():

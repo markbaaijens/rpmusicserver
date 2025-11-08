@@ -113,11 +113,17 @@
                     {% else %}
                         New folders
                     {% endif %}                    
+                    {% if flacHealthInfo.IsRepairing %}
+                        - Repairing
+                    {% endif %}                    
+                    {% if flacHealthInfo.IsChecking %}
+                        - Checking
+                    {% endif %}
                 </b>
             </td>
         </tr>
         <tr>
-            <td>Status</td>
+            <td>Summary</td>
             <td>
                 {% if flacHealthInfo.IsChecked %}
                     <b>{{ flacHealthInfo.FolderCount }}</b> folder(s) |
@@ -134,6 +140,12 @@
                         <b><span class="checkmark-n">{{ flacHealthInfo.WarningCount }}</span></b> warning(s) |
                     {% endif %}                                  
 
+                    {% if flacHealthInfo.TagId3v2Count == 0 %}
+                        <b><span class="checkmark-y">{{ flacHealthInfo.TagId3v2Count }}</span></b> id3v2-tag(s) |
+                    {% else %}
+                        <b><span class="checkmark-n">{{ flacHealthInfo.TagId3v2Count }}</span></b> id3v2-tag(s) |
+                    {% endif %}                                                      
+
                     {% if flacHealthInfo.CorruptFolderCount == 0 %}
                         <b><span class="checkmark-y">{{ flacHealthInfo.CorruptFolderCount }}</span></b> corrupt folder(s)
                     {% else %}
@@ -148,11 +160,20 @@
     <br>
 
     <div>
-        <a href="/ask-flac-health-check-new" class="link-button">Check New</a>
-        <a href="/ask-flac-health-check-all" class="link-button">Check All</a>
+        {% if flacHealthInfo.IsChecking or flacHealthInfo.IsRepairing %}
+            <a class="link-button disabled">Check New</a> 
+            <a class="link-button disabled">Check All</a>             
+        {% else %}                    
+            <a href="/ask-flac-health-check-new" class="link-button">Check New</a>
+            <a href="/ask-flac-health-check-all" class="link-button">Check All</a>
+        {% endif %}
 
         {% if flacHealthInfo.IsRepairFilePresent %}
-            <a href="/ask-flac-health-repair" class="link-button">Repair</a>
+            {% if flacHealthInfo.IsRepairing %}        
+                <a class="link-button disabled">Repair</a> 
+            {% else %}
+                <a href="/ask-flac-health-repair" class="link-button">Repair</a>
+            {% endif %}         
         {% else %}
             <a class="link-button disabled">Repair</a> 
         {% endif %}         

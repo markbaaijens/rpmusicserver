@@ -489,6 +489,17 @@ def GetPortStatusList():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/GetPowerHealth', methods=['GET'])
+def GetPowerHealth():
+    try:
+        info = logic.GetPowerHealth()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/DoRebootServer', methods=['POST'])
 def DoRebootServer():
     try:

@@ -20,6 +20,7 @@ apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transco
 apt-get install samba -y
 apt-get install dnsutils -y
 apt-get install ffmpeg -y
+apt-get install id3v2 -y
 echo "... done installing packages."
 
 echo "Setting timezone to Europe/Amsterdam..."

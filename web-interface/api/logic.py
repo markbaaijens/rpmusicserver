@@ -238,6 +238,10 @@ def AppendDiskInfo(diskMountPoint):
                  })
     pass
 
+def GetPowerHealth():
+    isPowerHealthy = ExecuteBashCommand("dmesg | grep -i undervoltage") == ''
+    return isPowerHealthy
+
 def GetDiskList():
     disks.clear()
     AppendDiskInfo('/')
@@ -478,18 +482,27 @@ def GetTranscoderInfo():
     if lastTranscode != '':
         lastTranscode = lastTranscode + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
 
+    isLastTranscodeSuccesFul = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | tail -n 1 | grep error") == ''
+
+    lastTranscodedFile = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'transcoding file' | tail -n 1 | cut -d'\"' -f 2 | sed -e \"s/\[source_tree\]\///g\"")
+
+    isRunning = ExecuteBashCommand("pidof -o %PPID -x \"transcode\"") != ''
+
     return {"IsActivated": isActivated,
+            "IsLastTranscodeSuccesFul": isLastTranscodeSuccesFul,
+            "IsRunning": isRunning,
             "LastTranscode": lastTranscode,
+            "LastTranscodedFile": lastTranscodedFile,
             "DefaultCollectionFolder": defaultCollectionFolder,
             "DefaultCollectionFolderFunctional": defaultCollectionFolderFunctional,
-            "SettingSourceFolder": settingSourceFolder,            
+            "SettingSourceFolder": settingSourceFolder,
             "SettingSourceFolderShort": settingSourceFolderShort,
-            "SettingOggFolder": settingOggFolder,            
+            "SettingOggFolder": settingOggFolder,
             "SettingOggFolderShort": settingOggFolderShort,
             "SettingOggQuality": settingOggQuality,
-            "SettingMp3Folder": settingMp3Folder,            
+            "SettingMp3Folder": settingMp3Folder,
             "SettingMp3FolderShort": settingMp3FolderShort,
-            "SettingMp3Bitrate": settingMp3Bitrate}            
+            "SettingMp3Bitrate": settingMp3Bitrate} 
 
 def GetApiList():
     dataAsJson = {}
@@ -568,6 +581,8 @@ def GetFlacHealthInfo():
     folderCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'Folder:' | wc -l"))
     errorCount = int(ExecuteBashCommand("flac-health-report | grep ERROR | wc -l"))
     warningCount = int(ExecuteBashCommand("flac-health-report | grep WARNING | wc -l"))
+    tagId3v2Count = int(ExecuteBashCommand("flac-health-report | grep id3v2 | wc -l"))
+    
     corruptFolderCount = int(ExecuteBashCommand("find /media/usbdata/user/music/flac/ -type f -name 'repair.sh' | wc -l"))
     checkType = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'all folders' | wc -l"))
     repairFilePresent = True
@@ -576,12 +591,18 @@ def GetFlacHealthInfo():
         isRepairFilePresent = True
     else:
         isRepairFilePresent = False
+
+    isChecking = ExecuteBashCommand("pidof -o %PPID -x \"flac-health-check\"") != ''
+    isRepairing = ExecuteBashCommand("pidof -o %PPID -x \"flac-health-repair\"") != ''    
             
     return {"IsChecked": isChecked,
+            "IsChecking": isChecking,
+            "IsRepairing": isRepairing,
             "LastCheck": lastCheckTimeStampAsString,
             "FolderCount": folderCount,
             "ErrorCount": errorCount,
             "WarningCount": warningCount,
+            "TagId3v2Count": tagId3v2Count,            
             "CorruptFolderCount": corruptFolderCount,
             "CheckType": checkType,
             "IsRepairFilePresent": isRepairFilePresent}
