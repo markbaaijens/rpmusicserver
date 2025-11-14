@@ -27,18 +27,7 @@
                         <br><small><em>[{{ error }}]</em></small>
                     {% endfor %}
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    {{ form.downloadsShareName.label }}
-                </td>
-                <td>
-                    {{ form.downloadsShareName(size=20)}}
-                    {% for error in form.downloadsShareName.errors %}
-                        <br><small><em>[{{ error }}]</em></small>
-                    {% endfor %}
-                </td>
-            </tr>            
+            </tr>          
             <tr>
                 <td>
                     {{ form.backupShareName.label }}
