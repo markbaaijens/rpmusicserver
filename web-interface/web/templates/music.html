@@ -107,18 +107,22 @@
             <td>Last Check</td>
             <td>
                 <b>
-                    {{ flacHealthInfo.LastCheck }} | 
-                    {% if flacHealthInfo.CheckType == 1 %}
-                        All Folders
-                    {% else %}
-                        New folders
-                    {% endif %}                    
-                    {% if flacHealthInfo.IsRepairing %}
-                        - Repairing
-                    {% endif %}                    
-                    {% if flacHealthInfo.IsChecking %}
-                        - Checking
-                    {% endif %}
+                    {{ flacHealthInfo.LastCheck }}
+                    {% if flacHealthInfo.CheckType != 'none' %}
+                        |
+                        {% if flacHealthInfo.CheckType == 'new' %}
+                            New Folders
+                        {% endif %}
+                        {% if flacHealthInfo.CheckType == 'all' %}
+                            All Folders
+                        {% endif %}
+                        {% if flacHealthInfo.IsRepairing %}
+                            - Repairing
+                        {% endif %}                    
+                        {% if flacHealthInfo.IsChecking %}
+                            - Checking
+                        {% endif %}
+                    {% endif %}                        
                 </b>
             </td>
         </tr>

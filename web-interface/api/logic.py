@@ -578,13 +578,17 @@ def GetFlacHealthInfo():
     tagId3v2Count = int(ExecuteBashCommand("flac-health-report | grep id3v2 | wc -l"))
     
     corruptFolderCount = int(ExecuteBashCommand("find /media/usbdata/user/music/flac/ -type f -name 'repair.sh' | wc -l"))
-    checkType = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'all folders' | wc -l"))
-    repairFilePresent = True
 
+    checkType = 'none'
+    if int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'new folders' | wc -l")) != 0:
+        checkType = 'new'
+    else:
+        if int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'all folders' | wc -l")) != 0:
+            checkType = 'all'
+
+    isRepairFilePresent = False
     if int(ExecuteBashCommand("find /media/usbdata/user/music -type f -name 'repair-all.sh' | wc -l")) != 0:
         isRepairFilePresent = True
-    else:
-        isRepairFilePresent = False
 
     isChecking = ExecuteBashCommand("pidof -o %PPID -x \"flac-health-check\"") != ''
     isRepairing = ExecuteBashCommand("pidof -o %PPID -x \"flac-health-repair\"") != ''    
