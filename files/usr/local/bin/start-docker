@@ -35,26 +35,7 @@ if [ ! "$(docker ps -f name=lms -q)" ]; then
             -p 3483:3483/udp \
             lmscommunity/lyrionmusicserver:stable
     fi
-fi
-
-if [ ! "$(docker ps -f name=transmission -q)" ]; then
-    if [ "$run_update" = "1" ]; then
-        docker pull linuxserver/transmission:latest
-    fi
-
-    if [ "$run_start" = "1" ]; then    
-        docker run \
-            -d \
-            --rm \
-            --name transmission \
-            -p 9091:9091 \
-            -e PUID=1000 \
-            -e PGID=1000 \
-            -v /media/usbdata/rpms/config/docker/transmission:/config \
-            -v /media/usbdata/user/downloads:/downloads \
-            linuxserver/transmission:latest
-    fi
-fi
+fi  
 
 if [ ! "$(docker ps -f name=syncthing -q)" ]; then
     if [ "$run_update" = "1" ]; then
