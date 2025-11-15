@@ -13,7 +13,6 @@ import urllib.request
 const_LmsApiUrl = 'http://localhost:9000/jsonrpc.js'
 const_PublicFolder = 'public'
 const_MusicFolder = 'music' 
-const_DownloadsFolder = 'downloads' 
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -43,16 +42,12 @@ def ConvertToFunctionalFolder(folderName):
     translationList = GetTranslations();
     publicShareName = translationList['PublicShareName'].strip()
     musicShareName = translationList['MusicShareName'].strip()
-    downloadsShareName = translationList['DownloadsShareName'].strip()    
 
     if const_MusicFolder in functionalFolder:
         functionalFolder = functionalFolder.replace(const_MusicFolder, musicShareName)
     else: 
         if const_PublicFolder in functionalFolder:
             functionalFolder = functionalFolder.replace(const_PublicFolder, publicShareName)
-        else: 
-            if const_DownloadsFolder in functionalFolder:
-                functionalFolder = functionalFolder.replace(const_DownloadsFolder, downloadsShareName)
 
     return functionalFolder
 
@@ -265,8 +260,7 @@ def GetPortStatusList():
     portStatusList.append(PortInfo(5000, 'rpms', 'api'))
     portStatusList.append(PortInfo(8384, 'syncthing', 'web'))
     portStatusList.append(PortInfo(9000, 'lms', 'web'))
-    portStatusList.append(PortInfo(9090, 'lms', 'telnet'))    
-    portStatusList.append(PortInfo(9091, 'transmission', 'web'))
+    portStatusList.append(PortInfo(9090, 'lms', 'telnet'))
 
     portList = ''
     for portStatus in portStatusList:
@@ -584,13 +578,17 @@ def GetFlacHealthInfo():
     tagId3v2Count = int(ExecuteBashCommand("flac-health-report | grep id3v2 | wc -l"))
     
     corruptFolderCount = int(ExecuteBashCommand("find /media/usbdata/user/music/flac/ -type f -name 'repair.sh' | wc -l"))
-    checkType = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'all folders' | wc -l"))
-    repairFilePresent = True
 
+    checkType = 'none'
+    if int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'new folders' | wc -l")) != 0:
+        checkType = 'new'
+    else:
+        if int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'all folders' | wc -l")) != 0:
+            checkType = 'all'
+
+    isRepairFilePresent = False
     if int(ExecuteBashCommand("find /media/usbdata/user/music -type f -name 'repair-all.sh' | wc -l")) != 0:
         isRepairFilePresent = True
-    else:
-        isRepairFilePresent = False
 
     isChecking = ExecuteBashCommand("pidof -o %PPID -x \"flac-health-check\"") != ''
     isRepairing = ExecuteBashCommand("pidof -o %PPID -x \"flac-health-repair\"") != ''    
@@ -645,11 +643,7 @@ def GetDockerContainerList():
                     "ContainerName": 'lms',
                     "IsActive": isActive
                  })    
-    isActive = 'transmission' in activeContainers                 
-    dockerContainerList.append({
-                    "ContainerName": 'transmission',
-                    "IsActive": isActive
-                 })    
+   
     isActive = 'syncthing' in activeContainers                 
     dockerContainerList.append({
                     "ContainerName": 'syncthing',

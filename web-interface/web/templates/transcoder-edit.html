@@ -11,7 +11,7 @@
                     {{ form.sourceFolder.label }} *
                 </td>
                 <td>
-                    {{ form.sourceFolder(size=10)}}
+                    {{ form.sourceFolder(size=15)}}
                     {% for error in form.sourceFolder.errors %}
                         <br><small><em>[{{ error }}]</em></small>
                     {% endfor %}
@@ -22,7 +22,7 @@
                     {{ form.oggFolder.label }} *
                 </td>
                 <td>
-                    {{ form.oggFolder(size=10)}}
+                    {{ form.oggFolder(size=15)}}
                     {% for error in form.oggFolder.errors %}
                         <br><small><em>[{{ error }}]</em></small>
                     {% endfor %}
@@ -45,7 +45,7 @@
                     {{ form.mp3Folder.label }} *
                 </td>
                 <td>
-                    {{ form.mp3Folder(size=10)}}
+                    {{ form.mp3Folder(size=15)}}
                     {% for error in form.mp3Folder.errors %}
                         <br><em>[{{ error }}]</em></small>
                     {% endfor %}

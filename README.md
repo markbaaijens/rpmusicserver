@@ -1,5 +1,5 @@
 # RP Music Server
-Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Lyrion/Logitech Media Server/Squeezebox), Samba, Transmission, Syncthing, transcoder, etc. in a few simple steps.
+Transform a Raspberry Pi into a streaming/-file-server for your music with LMS (Lyrion/Logitech Media Server/Squeezebox), Samba, Syncthing, transcoder, etc. in a few simple steps.
 
 [System requirements](https://github.com/markbaaijens/rpmusicserver#system-requirements)  
 [Installation of RPMS on a Pi](https://github.com/markbaaijens/rpmusicserver#installation-of-rpms-on-a-pi)  
@@ -71,7 +71,6 @@ Installing RPMS on your Pi can be done with a few simple steps, described below.
     * wait until port 9000 appears; exit with Ctrl-C
   * RPMS (browser): http://rpms
   * LMS (browser): http://rpms:9000
-  * Transmission (browser): http://rpms:9091
   * Samba (file explorer): 
     * `smb://rpms`
   * Syncthing: http://rpms:8384
@@ -104,7 +103,7 @@ Normally, an end-user does not have to know about these virtual folders, but the
   * maps to physical folder: `/media/usbdata/user`
   * can be reached by Samba: -
 
-Note. SyncThing maps to `/media/usbdata/user`, which is the root of all Samba-shares, `public`, `music` and `downloads`. Thus, you can sync any folder on any share with SyncThing.
+Note. SyncThing maps to `/media/usbdata/user`, which is the root of all Samba-shares, `public`and `music`. Thus, you can sync any folder on any share with SyncThing.
 
 ### Example
 If you want to sync your music-files, with Synthing:
@@ -290,7 +289,7 @@ Note that system-data is also present on the data-part ('Public') in the form of
 For a backup using rsync over SSH, here is an example-script:<br>
 
 `#!/bin/bash`<br/> 
-`rsync --progress --delete -rtv --max-size=4GB --modify-window=2 --exclude Downloads \`<br/> 
+`rsync --progress --delete -rtv --max-size=4GB --modify-window=2 \`<br/> 
 `	pi@rpms:/media/usbdata/user/* \`<br/> 
 `	/media/$USER/<disklabel of backup-disk>/backup/user`<br/> 
 `sync`<br/> 

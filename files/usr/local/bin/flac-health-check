@@ -50,6 +50,7 @@ if [ ! -d $source_folder ]; then
 fi
 
 check_all="0"
+
 if [ "$1" = "all" ]; then
     check_all="1"
 fi
@@ -78,6 +79,9 @@ check_file="0"
 IFS=$'\n'; set -f  # Work-a-round for spaces in file- or folder-names
 for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -k1); do
     file_name="$(basename "${file}")"
+
+    file_name=$(echo $file_name | sed 's/\$/\\$/g')  # Escape $ to prevent expanding 
+    file_name=$(echo $file_name | sed 's/`/\\`/g')   # Escape ` (backtick) to prevent convert to literal code
 
     current_dir="$(dirname "${file}")"
     if [ "$previous_dir" != "$current_dir" ]; then
