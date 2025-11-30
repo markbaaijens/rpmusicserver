@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+DEBIAN_FRONTEND=noninteractive apt-get -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+DEBIAN_FRONTEND=noninteractive apt-get -y clean
+DEBIAN_FRONTEND=noninteractive apt-get -y autoremove
+DEBIAN_FRONTEND=noninteractive apt-get -y autoclean
+
+exit
