@@ -139,6 +139,7 @@ install_bin_file generate-samba-conf
 install_bin_file flac-health-check
 install_bin_file flac-health-report
 install_bin_file flac-health-repair
+install_bin_file apt-upgrade-unattended
 
 # By always delete existing lines in crontab, we can easily implement
 # a different strategy later, if needed
@@ -148,8 +149,9 @@ sed -i '/transcode/d' /etc/crontab
 echo "... line added."    
 
 echo "Adding line to apt-upgrade in /etc/crontab..."
-sed -i '/apt-get upgrade/d' /etc/crontab
-/bin/sh -c 'echo "00 02 * * * root apt-get upgrade -y && apt-get clean -y && apt-get autoremove -y && apt-get autoclean -y" >> /etc/crontab'
+sed -i '/apt-get upgrade/d' /etc/crontab  # Remove commands from previous version
+sed -i '/apt-upgrade-unattended/d' /etc/crontab
+/bin/sh -c 'echo "00 02 * * * root apt-upgrade-unattended >> /etc/crontab'
 echo "... line added."    
 
 echo "Removing line to set rights in /etc/crontab..."
