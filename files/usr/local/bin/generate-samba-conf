@@ -30,6 +30,7 @@ echo "server role = standalone" >> $temp_conf
 echo "security = user" >> $temp_conf
 echo "unix extensions = no" >> $temp_conf
 echo "multicast dns register = yes" >> $temp_conf
+echo "mangled names = no" >> $temp_conf
 echo "" >> $temp_conf
 
 public_share_name="Public"
