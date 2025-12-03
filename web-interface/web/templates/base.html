@@ -1,48 +1,26 @@
-<!doctype html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        
-        <title>{{ appTitle }}</title>
-        <link 
-            rel= "stylesheet" 
-            type= "text/css" 
-            href= "{{ url_for('static',filename='main.css') }}">    
-        <link 
-            rel="icon" 
-            type="image/x-icon" 
-            href="{{ url_for('static',filename='favicon.ico') }}">
-        <link 
-            rel="manifest" 
-            href="{{ url_for('static',filename='app.webmanifest') }}">            
-    </head>
-    <body>
-        <div class="top-header">                        
-            <a href="/">
-                <img src="{{ url_for('static',filename='home.png') }}" 
-                alt="Home" 
-                style="width:20px;height:20x;">&nbsp;Home
-            </a>&nbsp;
-            <a href="/resources">Resources</a>&nbsp;&nbsp;
-            <a href="/music">Music</a>&nbsp;&nbsp;
-            <a href="/transcoder">Transcoder</a>&nbsp;&nbsp;            
-            <a href="/backup">Backup</a>&nbsp;&nbsp;
-            <a href="/system">System</a>&nbsp;&nbsp;
-        </div>        
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <p>
-                {% for message in messages %}
-                    <div>
-                        <em>{{ message }}</em>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}      
-        
-        {% block content %}{% endblock %}   
-        <br> 
-    </body>
-</html>
+{% include "raw.html" %}
+
+<div class="top-header">                        
+    <a href="/">
+        <img src="{{ url_for('static',filename='home.png') }}" 
+        alt="Home" 
+        style="width:20px;height:20x;">&nbsp;Home
+    </a>&nbsp;
+    <a href="/resources">Resources</a>&nbsp;&nbsp;
+    <a href="/music">Music</a>&nbsp;&nbsp;
+    <a href="/transcoder">Transcoder</a>&nbsp;&nbsp;            
+    <a href="/backup">Backup</a>&nbsp;&nbsp;
+    <a href="/system">System</a>&nbsp;&nbsp;
+</div>        
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <p>
+        {% for message in messages %}
+            <div>
+                <em>{{ message }}</em>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}      
+
+{% block content %}{% endblock %}   
