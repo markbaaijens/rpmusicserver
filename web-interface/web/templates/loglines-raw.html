@@ -1,0 +1,9 @@
+{% block content %}
+    <small>
+    {% for line in logLines %}
+    <div>
+        {{ line }}
+    </div>
+    {% endfor %} 
+    </small>
+{% endblock %}

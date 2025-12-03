@@ -556,12 +556,18 @@ def ShowApiLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'API-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Api-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'API-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Api-log',
+            rawLog = '/logs/api/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
 
 @app.route('/logs/web/<int:nrOfLines>', methods=['GET'])
 def ShowWebLog(nrOfLines):
@@ -572,12 +578,18 @@ def ShowWebLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'Web-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Web-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Web-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Web-log',
+            rawLog = '/logs/web/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)    
 
 @app.route('/logs/backup/<int:nrOfLines>', methods=['GET'])
 def ShowBackupLog(nrOfLines):
@@ -588,12 +600,18 @@ def ShowBackupLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'Backup-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Backup-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Backup-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Backup-log',
+            rawLog = '/logs/backup/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
 
 @app.route('/logs/backup-details/<int:nrOfLines>', methods=['GET'])
 def ShowBackupDetailsLog(nrOfLines):
@@ -604,12 +622,18 @@ def ShowBackupDetailsLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'Backup Details-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Backup Details-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Backup Details-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Backup Details-log',
+            rawLog = '/logs/backup-details/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
 
 @app.route('/logs/transcoder/<int:nrOfLines>', methods=['GET'])
 def ShowTranscoderLog(nrOfLines):
@@ -620,12 +644,18 @@ def ShowTranscoderLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'Transcoder-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Transcoder-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Transcoder-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Transcoder-log',
+            rawLog = '/logs/transcoder/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
 
 @app.route('/logs/update/<int:nrOfLines>', methods=['GET'])
 def ShowUpdateLog(nrOfLines):
@@ -636,12 +666,18 @@ def ShowUpdateLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'Update-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Update-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Update-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Update-log',
+            rawLog = '/logs/update/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
 
 @app.route('/logs/flac-health-check/<int:nrOfLines>', methods=['GET'])
 def ShowFlacHealthCheckLog(nrOfLines):
@@ -652,12 +688,18 @@ def ShowFlacHealthCheckLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'Flac Health Check-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Flac Health Check-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Flac Health Check-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Flac Health Check-log',
+            rawLog = '/logs/flac-health-check/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
 
 @app.route('/logs/flac-health-report', methods=['GET'])
 def ShowFlacHealthReport():
