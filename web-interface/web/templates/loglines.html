@@ -1,13 +1,17 @@
-{% extends 'base.html' %}
+{% extends '_base.html' %}
 
 {% block content %}
     <h2>{{ logTitle }}</h2>
+
+    {% if rawLog %}
+        <a href="{{ rawLog }}" target="_blank">Raw</a>    
+    {% endif %}
     <p>
     <small>
-    {% for line in logLines %}
-    <div>
-        {{ line }}
-    </div>
-    {% endfor %} 
+        {% for line in logLines %}
+            <div>
+                {{ line }}
+            </div>
+        {% endfor %} 
     </small>
 {% endblock %}
