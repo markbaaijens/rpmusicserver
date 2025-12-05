@@ -731,18 +731,11 @@ def EditTranscoderSettings():
     defaultMusicFolder = transcoderInfo["DefaultCollectionFolder"] + '/'
     defaultMusicFolderFunctional = transcoderInfo["DefaultCollectionFolderFunctional"]
 
-    try:
-        transcoderSettings = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderSettings').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        transcoderSettings = []
-
-    currentSourceFolder = transcoderSettings['sourcefolder'].strip()
-    currentOggFolder = transcoderSettings['oggfolder'].strip()
-    currentOggQuality = int(transcoderSettings['oggquality'])
-    currentMp3Folder = transcoderSettings['mp3folder'].strip()
-    currentMp3Bitrate = int(transcoderSettings['mp3bitrate'])
+    currentSourceFolder = transcoderInfo['SettingSourceFolder'].strip()
+    currentOggFolder = transcoderInfo['SettingOggFolder'].strip()
+    currentOggQuality = int(transcoderInfo['SettingOggQuality'])
+    currentMp3Folder = transcoderInfo['SettingMp3Folder'].strip()
+    currentMp3Bitrate = int(transcoderInfo['SettingMp3Bitrate'])
 
     form = EditTranscoderForm()
 
