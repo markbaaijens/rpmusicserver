@@ -457,20 +457,35 @@ def GetTranscoderInfo():
     defaultCollectionFolder = GetDefaultMusicCollectionFolder()
     defaultCollectionFolderFunctional = ConvertToFunctionalFolder(defaultCollectionFolder)
 
-    transcoderSettings = GetTranscoderSettings()
+    settingSourceFolder = ""
+    settingOggFolder = ""
+    settingOggQuality = 0
+    settingMp3Folder = ""
+    settingMp3Bitrate = 0
 
-    settingSourceFolder = transcoderSettings['sourcefolder']
-    settingSourceFolderShort = settingSourceFolder.replace(defaultCollectionFolder + '/', '')
+    transcoderSettings = {}
+    transcoderSettingsFile = '/media/usbdata/rpms/config/transcoder-settings.json'
+    if os.path.isfile(transcoderSettingsFile):
+        with open(transcoderSettingsFile) as file:
+            dataAsDict = json.load(file)
+        transcoderSettings = json.loads(json.dumps(dataAsDict))
 
-    settingOggFolder = transcoderSettings['oggfolder']
-    settingOggFolderShort = settingOggFolder.replace(defaultCollectionFolder + '/', '')    
-    settingOggQuality = transcoderSettings['oggquality']
+    if transcoderSettings != {}:
+        if 'sourcefolder' in transcoderSettings:
+            settingSourceFolder = transcoderSettings['sourcefolder']
+        if 'oggfolder' in transcoderSettings:
+            settingOggFolder = transcoderSettings['oggfolder']
+        if 'oggquality' in transcoderSettings:
+            settingOggQuality = transcoderSettings['oggquality']
+        if 'mp3folder' in transcoderSettings:
+            settingMp3Folder = transcoderSettings['mp3folder']
+        if 'mp3bitrate' in transcoderSettings:
+            settingMp3Bitrate = transcoderSettings['mp3bitrate']
 
-    settingMp3Folder = transcoderSettings['mp3folder']
-    settingMp3FolderShort = settingMp3Folder.replace(defaultCollectionFolder + '/', '')        
-    settingMp3Bitrate = transcoderSettings['mp3bitrate']
-
-    isActivated = (transcoderSettings['sourcefolder'] != '') and ((transcoderSettings['oggfolder'] != '') or (transcoderSettings['mp3folder'] != ''))
+    settingSourceFolderShort = settingSourceFolder.replace(defaultCollectionFolder + '/', '')        
+    settingOggFolderShort = settingOggFolder.replace(defaultCollectionFolder + '/', '')        
+    settingMp3FolderShort = settingMp3Folder.replace(defaultCollectionFolder + '/', '')            
+    isActivated = (settingSourceFolder != '') and ((settingOggFolder != '') or (settingMp3Folder != ''))
 
     lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'End session' | tail -n 1 | cut -c1-19")
     if lastTranscode != '':
@@ -503,15 +518,6 @@ def GetApiList():
     apiInfoFile = os.path.dirname(__file__) + '/api-info.json'
     if os.path.isfile(apiInfoFile):
         with open(apiInfoFile) as file:
-            dataAsDict = json.load(file)
-        dataAsJson = json.loads(json.dumps(dataAsDict))
-    return dataAsJson
-
-def GetTranscoderSettings():
-    dataAsJson = {}
-    transcoderSettingsFile = '/media/usbdata/rpms/config/transcoder-settings.json'
-    if os.path.isfile(transcoderSettingsFile):
-        with open(transcoderSettingsFile) as file:
             dataAsDict = json.load(file)
         dataAsJson = json.loads(json.dumps(dataAsDict))
     return dataAsJson
@@ -653,11 +659,12 @@ def GetDockerContainerList():
     return dockerContainerList
 
 def SetSetting(keyName, newValue, settingsFile):
-    if not os.path.isfile(settingsFile):
-        return { "Message": "File " + settingsFile + " does not exist"}
+    if os.path.isfile(settingsFile):
+        with open(settingsFile, 'r') as jsonFile:
+            data = json.load(jsonFile)
+    else:
+        data = {}
 
-    with open(settingsFile, 'r') as jsonFile:
-        data = json.load(jsonFile)
     data[keyName] = newValue
     with open(settingsFile, 'w') as jsonFile:
         json.dump(data, jsonFile)

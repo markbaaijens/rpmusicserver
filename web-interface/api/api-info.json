@@ -41,9 +41,6 @@
     {   "EndPoint": "GET api/GetDockerContainerList",
         "Example":"curl rpms:5000/api/GetDockerContainerList"
     },
-    {   "EndPoint": "GET api/GetTranscoderSettings",
-        "Example":"curl rpms:5000/api/GetTranscoderSettings"
-    },
     {   "EndPoint": "GET api/GetBackupInfo",
         "Example":"curl rpms:5000/api/GetBackupInfo"
     },    

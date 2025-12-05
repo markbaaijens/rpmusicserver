@@ -76,18 +76,7 @@ def GetVersionList():
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
-    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
-
-@app.route('/api/GetTranscoderSettings', methods=['GET'])
-def GetTranscoderSettings():
-    try:
-        info = logic.GetTranscoderSettings()
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
-    
-    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)      
 
 @app.route('/api/GetTranslations', methods=['GET'])
 def GetTranslations():
