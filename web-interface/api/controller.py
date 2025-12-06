@@ -272,7 +272,7 @@ def SetTranscoderSourceFolder():
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     try:
-        info2 = logic.CreateMusicFolder(folderName)
+        info = logic.CreateMusicFolder(folderName)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -298,7 +298,7 @@ def SetTranscoderOggFolder():
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     try:
-        info2 = logic.CreateMusicFolder(folderName)
+        info = logic.CreateMusicFolder(folderName)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -324,7 +324,7 @@ def SetTranscoderMp3Folder():
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     try:
-        info2 = logic.CreateMusicFolder(folderName)
+        info = logic.CreateMusicFolder(folderName)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
