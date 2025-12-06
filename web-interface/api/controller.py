@@ -262,13 +262,21 @@ def SetTranscoderSourceFolder():
 
     if not 'Value' in requestData:
         abort(HTTP_BAD_REQUEST)
+    folderName = requestData['Value']
 
     try:
-        info = logic.SetTranscoderSetting('sourcefolder', requestData['Value'])
+        info = logic.SetTranscoderSetting('sourcefolder', folderName)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    try:
+        info2 = logic.CreateMusicFolder(folderName)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)      
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
@@ -280,13 +288,21 @@ def SetTranscoderOggFolder():
 
     if not 'Value' in requestData:
         abort(HTTP_BAD_REQUEST)
+    folderName = requestData['Value']
 
     try:
-        info = logic.SetTranscoderSetting('oggfolder', requestData['Value'])
+        info = logic.SetTranscoderSetting('oggfolder', folderName)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    try:
+        info2 = logic.CreateMusicFolder(folderName)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)      
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
@@ -298,13 +314,21 @@ def SetTranscoderMp3Folder():
 
     if not 'Value' in requestData:
         abort(HTTP_BAD_REQUEST)
+    folderName = requestData['Value']        
 
     try:
-        info = logic.SetTranscoderSetting('mp3folder', requestData['Value'])
+        info = logic.SetTranscoderSetting('mp3folder', folderName)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    try:
+        info2 = logic.CreateMusicFolder(folderName)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)      
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 

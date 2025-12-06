@@ -671,6 +671,14 @@ def SetSetting(keyName, newValue, settingsFile):
 
     return { "Message": "Setting ["+ keyName + "] is modified to [" + str(newValue) + "]"}
 
+def CreateMusicFolder(folderName):
+    message = ''
+    if not os.path.isdir(folderName):
+        os.mkdir(folderName)
+        message = "Folder '{folderName}' created successfully"
+
+    return { "Message": message}
+
 def SetTranscoderSetting(keyName, newValue):
     return SetSetting(keyName, newValue, '/media/usbdata/rpms/config/transcoder-settings.json')
 
