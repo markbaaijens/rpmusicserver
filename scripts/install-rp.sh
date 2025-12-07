@@ -4,12 +4,10 @@ install_bin_file () {
     echo "Copy $1 file"
     cp /tmp/rpmusicserver/files/usr/local/bin/$1 /usr/local/bin
     chmod +x /usr/local/bin/$1
-    echo "... file $1 copied." 
 }
 
 if [ -z "$(whoami | grep root)" ]; then
     echo "Not running as root."
-    echo "Script ended with failure."
     exit
 fi
 
@@ -21,18 +19,15 @@ apt-get install samba -y
 apt-get install dnsutils -y
 apt-get install ffmpeg -y
 apt-get install id3v2 -y
-echo "... done installing packages."
 
 echo "Setting timezone to Europe/Amsterdam..."
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
-echo "... done setting timezone."
 
 echo "Creating mountpoint for usbdata-disk"
 if [ ! -d /media/usbdata ]; then
     mkdir /media/usbdata
     chmod 777 /media/usbdata -R
-    echo "... mountpoint for usbdata created."    
 else
     echo "... mountpoint for usbdata is already present."    
 fi
@@ -41,14 +36,12 @@ echo "Creating mountpoint for usbbackup-disk"
 if [ ! -d /media/usbbackup ]; then
     mkdir /media/usbbackup
     chmod 777 /media/usbbackup -R
-    echo "... mountpoint for usbbackup created."    
 else
     echo "... mountpoint for usbbackup is already present."
 fi
 
 echo "Cleanup /usr/local/bin"
 rm -rf /usr/local/bin/*
-echo "... cleaned up."
 
 # By always delete existing lines in fstab, we can easily implement
 # a different strategy later, if needed
@@ -57,17 +50,15 @@ echo "Adding line for usbdata-disk to /etc/fstab"
 sed -i '/usbdata/d' /etc/fstab
 # auto,nofail: server starts even when harddisk is not present
 /bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
-echo "... line added."
 
 echo "Adding line for usbbackup-disk to /etc/fstab"
 sed -i '/usbbackup/d' /etc/fstab
 # auto,nofail: server starts even when harddisk is not present; x-systemd.automount: automounting usbbackup
 /bin/sh -c 'echo "LABEL=usbbackup /media/usbbackup ext4 auto,nofail,x-systemd.automount 0 0" >> /etc/fstab'
-echo "... line added."
 
 mount -a
 
-echo "Creating directories."
+echo "Creating directories on /media/usbdata."
 mkdir /media/usbdata/rpms/logs -p
 
 mkdir /media/usbdata/user/public -p
@@ -80,7 +71,6 @@ echo "Copy LMS config files"
 if [ ! -d /media/usbdata/rpms/config/docker/lms ]; then
     mkdir -p /media/usbdata/rpms/config/docker/lms
     cp -r /tmp/rpmusicserver/files/config/lms/* /media/usbdata/rpms/config/docker/lms
-    echo "... LMS config files copied."    
 else
     echo "... LMS config folder is already present, no config files copied."    
 fi
@@ -88,27 +78,22 @@ fi
 echo "Install (python) pip-packages"
 # Note that b/c this script is executed under sudo, pip3 packages are system-wide installed
 pip3 install -r /tmp/rpmusicserver/web-interface/requirements.txt 
-echo "... pip-packages installed." 
 
 echo "Install program files for web-interface"
 mkdir -p /usr/local/bin/rpmusicserver/web-interface
 cp -r /tmp/rpmusicserver/web-interface/* /usr/local/bin/rpmusicserver/web-interface
-echo "... program files for web-interface installed." 
 
 echo "Copy rc.local file"
 cp /tmp/rpmusicserver/files/etc/rc.local /etc
 chmod +x /etc/rc.local
-echo "... file rc.local copied."   
 
 echo "Copy logrotate.conf file"
 cp /tmp/rpmusicserver/files/etc/logrotate.conf /etc
-echo "... file logrotate.conf copied." 
 
 echo "Copy revision.json file"
 mkdir -p /etc/rpms
 cp /tmp/rpmusicserver/revision.json /etc/rpms
 touch /etc/rpms/revision.json  # For retrieving last update timestamp
-echo "... file revision.json copied." 
 
 echo "Installing transcoder..."
 rm -rf /tmp/transcoder*
@@ -118,7 +103,6 @@ mv /tmp/transcoder-1.2 /tmp/transcoder
 mkdir -p /usr/local/bin/transcoder
 cp /tmp/transcoder/transcoder.py /usr/local/bin/transcoder/transcoder.py
 chmod +x /usr/local/bin/transcoder/transcoder.py
-echo "... transcoder installed."
 
 install_bin_file update-rpms
 install_bin_file backup-server
@@ -142,49 +126,41 @@ install_bin_file apt-upgrade-unattended
 echo "Adding line to transcode in /etc/crontab..."
 sed -i '/transcode/d' /etc/crontab
 /bin/sh -c 'echo "20  * * * * root transcode" >> /etc/crontab'
-echo "... line added."    
 
 echo "Adding line to apt-upgrade in /etc/crontab..."
 sed -i '/apt-get upgrade/d' /etc/crontab  # Remove commands from previous version
 sed -i '/apt-upgrade-unattended/d' /etc/crontab
 /bin/sh -c 'echo "00 02 * * * root apt-upgrade-unattended >> /etc/crontab'
-echo "... line added."    
 
 echo "Removing line to set rights in /etc/crontab..."
 sed -i '/chmod 777/d' /etc/crontab
-echo "... line removed."    
 
 echo "Adding line to update-docker in /etc/crontab..."
 sed -i '/update-docker/d' /etc/crontab
 /bin/sh -c 'echo "00 03 * * * root update-docker" >> /etc/crontab'
-echo "... line added."    
+
 
 echo "Adding line to export-collection in /etc/crontab..."
 sed -i '/export-collection/d' /etc/crontab
 /bin/sh -c 'echo "10 03 * * * root export-collection" >> /etc/crontab'
-echo "... line added."    
 
 echo "Adding line to backup rpms-system in /etc/crontab..."
 sed -i '/backup-rpms-system/d' /etc/crontab
 /bin/sh -c 'echo "20 03 * * * root backup-rpms-system" >> /etc/crontab'
-echo "... line added."    
 
 echo "Adding line for backup-server in /etc/crontab..."
 sed -i '/backup-server/d' /etc/crontab
 /bin/sh -c 'echo "30 03 * * * root backup-server" >> /etc/crontab'
-echo "... line added."    
 
 echo "Adding line for flac-health-check in /etc/crontab..."
 sed -i '/flac-health-check/d' /etc/crontab
 /bin/sh -c 'echo "00 04 * * * root flac-health-check" >> /etc/crontab'
-echo "... line added."    
 
 echo "Change password of user 'pi'..."
 sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
 # Note that changing password in su-mode (which is different than sudo-mode)
 # does NOT require to enter the old password
 echo -e "rpms\nrpms" | passwd pi
-echo "... done changing password of user 'pi'."
 
 echo "Change swappiness to 1"
 if ([ $(grep -c 'vm.swappiness=1' /etc/sysctl.conf) -eq 0 ]); then
@@ -239,16 +215,13 @@ else
     echo "- translations.json already present"
 fi
 rm /etc/lang-choice.txt -rf
-echo "... done generating translations.json."
 
 # Generating smb.conf must be done *after* translations have been set b/c share-names are translated
 echo "Generate samba-configuration..."
 generate-samba-conf
-echo "... done generating samba-configuration."
 
 echo "Start docker for preloading containers"
 start-docker
-echo "... done starting docker-containers."
 
 echo "Installation complete, system will be rebooted."
 reboot-server
