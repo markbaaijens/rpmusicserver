@@ -41,11 +41,24 @@ def SizeHumanReadable(num, suffix="B"):
         num /= 1024.0
     return f"{num:.1f}Yi{suffix}"
 
+def CreateMusicFolders():
+    try:
+        requests.post(configObject.ApiRootUrl + '/api/DoCreateMusicFolders')
+
+        # For some reason, apiMessage is not returned (due to FlaskForm?), so we construct our own message
+        flash('Music-folder(s) created.')
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+
+    pass
+
 def SaveFormValue(apiUrl, newValue, fieldLabel):
     try:
         requests.post(
             configObject.ApiRootUrl + '/api/' + apiUrl, 
             json = {"Value": newValue})
+        # For some reason, apiMessage is not returned (due to FlaskForm?), so we construct our own message
         flash('Saved \'' + str(newValue) + '\' to \'' + str(fieldLabel) + '\'.')
     except Exception as e:
         logger.error(e)
@@ -755,46 +768,50 @@ def EditTranscoderSettings():
         except Exception as e:
             resetToDefaults = False
 
+        newFolderValue = False
+
+        newSourceFolder = defaultMusicFolder + request.form['sourceFolder'].strip()
+        newOggFolder = defaultMusicFolder + request.form['oggFolder'].strip()
+        newOggQuality = int(request.form['oggQuality'])
+        newMp3Folder = defaultMusicFolder + request.form['mp3Folder'].strip()
+        newMp3Bitrate = int(request.form['mp3Bitrate'])
+
         if resetToDefaults:
-            newSourceFolder = ''            
-        else:
-            newSourceFolder = defaultMusicFolder + request.form['sourceFolder'].strip()
-            if not newSourceFolder.replace(defaultMusicFolder, ''):
-                newSourceFolder = ''                            
+            newSourceFolder = ''
+            newOggFolder = ''  
+            newOggQuality = 0
+            newMp3Folder = ''
+            newMp3Bitrate = 0
+
+        if request.form['sourceFolder'].strip() == '':
+            newSourceFolder = ''
         if newSourceFolder != currentSourceFolder:
             SaveFormValue('SetTranscoderSourceFolder', newSourceFolder, form.sourceFolder.label)
+            if newSourceFolder != '':
+                newFolderValue = True
 
-        if resetToDefaults:
-            newOggFolder = ''  
-        else:
-            newOggFolder = defaultMusicFolder + request.form['oggFolder'].strip()
-            if not newOggFolder.replace(defaultMusicFolder, ''):
-                newOggFolder = ''                      
-        if newOggFolder != currentOggFolder:            
+        if request.form['oggFolder'].strip() == '':
+            newOggFolder = ''
+        if newOggFolder != currentOggFolder:
             SaveFormValue('SetTranscoderOggFolder', newOggFolder, form.oggFolder.label)
+            if newOggFolder != '':
+                newFolderValue = True
 
-        if resetToDefaults:
-            newOggQuality = 0        
-        else:
-            newOggQuality = int(request.form['oggQuality'])
         if newOggQuality != currentOggQuality:
             SaveFormValue('SetTranscoderOggQuality', newOggQuality, form.oggQuality.label)
 
-        if resetToDefaults:
-            newMp3Folder = ''  
-        else:
-            newMp3Folder = defaultMusicFolder + request.form['mp3Folder'].strip()
-            if not newMp3Folder.replace(defaultMusicFolder, ''):
-                newMp3Folder = ''                        
+        if request.form['mp3Folder'].strip() == '':
+            newMp3Folder = ''
         if newMp3Folder != currentMp3Folder:
             SaveFormValue('SetTranscoderMp3Folder', newMp3Folder, form.mp3Folder.label)
+            if newMp3Folder != '':
+                newFolderValue = True
 
-        if resetToDefaults:
-            newMp3Bitrate = 0
-        else:
-            newMp3Bitrate = int(request.form['mp3Bitrate'])
         if newMp3Bitrate != currentMp3Bitrate:
             SaveFormValue('SetTranscoderMp3Bitrate', newMp3Bitrate, form.mp3Bitrate.label)
+
+        if newFolderValue == True:
+            CreateMusicFolders()
 
         return redirect(redirectPage)
 
