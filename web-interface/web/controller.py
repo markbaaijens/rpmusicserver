@@ -46,6 +46,8 @@ def SaveFormValue(apiUrl, newValue, fieldLabel):
         requests.post(
             configObject.ApiRootUrl + '/api/' + apiUrl, 
             json = {"Value": newValue})
+        # For some reason, apiMessage is not returned (due to FlaskForm?), 
+        # so we construct our own message
         flash('Saved \'' + str(newValue) + '\' to \'' + str(fieldLabel) + '\'.')
     except Exception as e:
         logger.error(e)
