@@ -46,7 +46,7 @@ def CreateMusicFolders():
         requests.post(configObject.ApiRootUrl + '/api/DoCreateMusicFolders')
 
         # For some reason, apiMessage is not returned (due to FlaskForm?), so we construct our own message
-        flash('Created music-folders.')
+        flash('Music-folder(s) created.')
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
