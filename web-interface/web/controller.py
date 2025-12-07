@@ -41,13 +41,24 @@ def SizeHumanReadable(num, suffix="B"):
         num /= 1024.0
     return f"{num:.1f}Yi{suffix}"
 
+def CreateMusicFolders():
+    try:
+        requests.post(configObject.ApiRootUrl + '/api/DoCreateMusicFolders')
+
+        # For some reason, apiMessage is not returned (due to FlaskForm?), so we construct our own message
+        flash('Created music-folders.')
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+
+    pass
+
 def SaveFormValue(apiUrl, newValue, fieldLabel):
     try:
         requests.post(
             configObject.ApiRootUrl + '/api/' + apiUrl, 
             json = {"Value": newValue})
-        # For some reason, apiMessage is not returned (due to FlaskForm?), 
-        # so we construct our own message
+        # For some reason, apiMessage is not returned (due to FlaskForm?), so we construct our own message
         flash('Saved \'' + str(newValue) + '\' to \'' + str(fieldLabel) + '\'.')
     except Exception as e:
         logger.error(e)
@@ -757,6 +768,8 @@ def EditTranscoderSettings():
         except Exception as e:
             resetToDefaults = False
 
+        newFolderValue = False
+
         if resetToDefaults:
             newSourceFolder = ''            
         else:
@@ -765,6 +778,7 @@ def EditTranscoderSettings():
                 newSourceFolder = ''                            
         if newSourceFolder != currentSourceFolder:
             SaveFormValue('SetTranscoderSourceFolder', newSourceFolder, form.sourceFolder.label)
+            newFolderValue = True
 
         if resetToDefaults:
             newOggFolder = ''  
@@ -774,6 +788,7 @@ def EditTranscoderSettings():
                 newOggFolder = ''                      
         if newOggFolder != currentOggFolder:            
             SaveFormValue('SetTranscoderOggFolder', newOggFolder, form.oggFolder.label)
+            newFolderValue = True            
 
         if resetToDefaults:
             newOggQuality = 0        
@@ -790,6 +805,7 @@ def EditTranscoderSettings():
                 newMp3Folder = ''                        
         if newMp3Folder != currentMp3Folder:
             SaveFormValue('SetTranscoderMp3Folder', newMp3Folder, form.mp3Folder.label)
+            newFolderValue = True
 
         if resetToDefaults:
             newMp3Bitrate = 0
@@ -797,6 +813,9 @@ def EditTranscoderSettings():
             newMp3Bitrate = int(request.form['mp3Bitrate'])
         if newMp3Bitrate != currentMp3Bitrate:
             SaveFormValue('SetTranscoderMp3Bitrate', newMp3Bitrate, form.mp3Bitrate.label)
+
+        if newFolderValue == True:
+            CreateMusicFolders()
 
         return redirect(redirectPage)
 

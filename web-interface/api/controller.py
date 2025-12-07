@@ -270,14 +270,7 @@ def SetTranscoderSourceFolder():
         logger.error(e)
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
-    
-    try:
-        info = logic.CreateMusicFolder(folderName)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)      
-    
+        
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
 @app.route('/api/SetTranscoderOggFolder', methods=['POST'])
@@ -296,14 +289,7 @@ def SetTranscoderOggFolder():
         logger.error(e)
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
-    
-    try:
-        info = logic.CreateMusicFolder(folderName)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)      
-    
+        
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
 @app.route('/api/SetTranscoderMp3Folder', methods=['POST'])
@@ -322,14 +308,7 @@ def SetTranscoderMp3Folder():
         logger.error(e)
         logger.error(traceback.format_exc())
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
-    
-    try:
-        info = logic.CreateMusicFolder(folderName)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)      
-    
+        
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
 @app.route('/api/SetTranscoderOggQuality', methods=['POST'])
@@ -394,6 +373,18 @@ def SetTranslationPublicShare():
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)  
+
+@app.route('/api/DoCreateMusicFolders', methods=['POST'])
+def DoCreateMusicFolders():
+    try:
+        info = logic.CreateMusicFolders()
+        print('daada')
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+        
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
 @app.route('/api/SetTranslationMusicShare', methods=['POST'])
 def SetTranslationMusicShare():
