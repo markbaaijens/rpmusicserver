@@ -648,7 +648,7 @@ def DoTranscode():
 def DoGenerateSambaConf():
     try:
         asyncio.run(logic.DoGenerateSambaConf())
-        info = { "Message": "Sambe-configuration is being generated." }
+        info = { "Message": "Samba-configuration is being generated." }
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
