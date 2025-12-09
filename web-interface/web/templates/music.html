@@ -58,7 +58,7 @@
             </div>
         {% endfor %} 
     {% else %}
-        {% if lmsServerStatus['info total artists'] %}
+        {% if lmsServerStatus['httpport'] %}
             <span class="checkmark-n">No players connected</span>
         {% else %}
             <span class="checkmark-n">Music-server is not active</span>
@@ -70,7 +70,7 @@
         <tr>
             <td>Statistics</td>
             <td>
-                {% if lmsServerStatus['info total artists'] %}
+                {% if lmsServerStatus['httpport'] %}
                     <b>{{ lmsServerStatus['info total artists'] }}</b> artists |
                     <b>{{ lmsServerStatus['info total albums'] }}</b> albums |
                     <b>{{ lmsServerStatus['info total songs'] }}</b> songs |
