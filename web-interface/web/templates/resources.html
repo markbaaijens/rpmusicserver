@@ -43,22 +43,20 @@
         </td>
     </tr>
     <tr>
-        <td>Cpu Load</td>
+        <td>Cpu Usage</td>
         <td>
             <meter 
                 id="avload" 
-                value="{{ cpuInfo.CpuLoad1 }}" 
+                value="{{ cpuInfo.CpuPercentage }}" 
                 min="0" 
-                max="10"
-                high="8">
+                max="100"
+                high="80">
             </meter>
             </br />
             <span class="small">
                 <label for="avload">
                     <small>
-                        <b>{{ cpuInfo.CpuLoad1 }}</b>&nbsp;
-                        <b>{{ cpuInfo.CpuLoad5 }}</b>&nbsp;
-                        <b>{{ cpuInfo.CpuLoad15 }}</b>&nbsp;(1, 5, 15 min) 
+                        <b>{{ cpuInfo.CpuPercentage }}%</b>
                     </small>
                 </label>
             </span>
