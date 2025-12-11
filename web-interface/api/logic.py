@@ -487,7 +487,7 @@ def GetTranscoderInfo():
     settingMp3FolderShort = settingMp3Folder.replace(defaultCollectionFolder + '/', '')            
     isActivated = (settingSourceFolder != '') and ((settingOggFolder != '') or (settingMp3Folder != ''))
 
-    lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'End session' | tail -n 1 | cut -c1-19")
+    lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'Start session' | tail -n 1 | cut -c1-19")
     if lastTranscode != '':
         lastTranscode = lastTranscode + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
 
