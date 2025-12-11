@@ -10,6 +10,8 @@ from math import ceil
 import asyncio
 import urllib.request
 from psutil import cpu_percent
+from psutil import virtual_memory
+from psutil import swap_memory
 
 const_LmsApiUrl = 'http://localhost:9000/jsonrpc.js'
 const_PublicFolder = 'public'
@@ -299,32 +301,14 @@ def GetCpuResourceInfo():
             }
 
 def GetMemoryResourceInfo():
-    # memTotal => free | grep 'Mem:' | awk '{print $2}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    memTotal = int(process.stdout.decode("utf-8").strip('\n'))
-
-    # memUsed => free | grep 'Mem:' | awk '{print $3}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    memUsed = int(process.stdout.decode("utf-8").strip('\n'))
-
+    ram = virtual_memory()
+    memTotal = ram.total
+    memUsed = ram.used
     memUsedPercentage = math.floor(memUsed/memTotal * 100)
 
-    # swapTotal => free | grep 'Swap:' | awk '{print $2}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    swapTotal = int(process.stdout.decode("utf-8").strip('\n'))
-
-    # swapUsed => free | grep 'Swap:' | awk '{print $3}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    swapUsed = int(process.stdout.decode("utf-8").strip('\n'))
-
+    swap = swap_memory()
+    swapTotal = swap.total
+    swapUsed = swap.used
     swapUsedPercentage = math.floor(swapUsed/swapTotal * 100)
 
     return {'MemTotal': memTotal,

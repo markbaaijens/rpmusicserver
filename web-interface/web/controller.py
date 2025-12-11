@@ -173,10 +173,10 @@ def ShowResourcesPage():
         logger.error(traceback.format_exc())
         diskList = []
     
-    memoryInfo['MemTotal'] = SizeHumanReadable(int(memoryInfo['MemTotal']) * 1024, '')
-    memoryInfo['MemUsed'] = SizeHumanReadable(int(memoryInfo['MemUsed']) * 1024, '')    
-    memoryInfo['SwapTotal'] = SizeHumanReadable(int(memoryInfo['SwapTotal']) * 1024, '')
-    memoryInfo['SwapUsed'] = SizeHumanReadable(int(memoryInfo['SwapUsed']) * 1024, '')    
+    memoryInfo['MemTotal'] = SizeHumanReadable(int(memoryInfo['MemTotal']), '')
+    memoryInfo['MemUsed'] = SizeHumanReadable(int(memoryInfo['MemUsed']), '')
+    memoryInfo['SwapTotal'] = SizeHumanReadable(int(memoryInfo['SwapTotal']), '')
+    memoryInfo['SwapUsed'] = SizeHumanReadable(int(memoryInfo['SwapUsed']), '')
 
     return render_template(
         'resources.html', 
