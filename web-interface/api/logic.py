@@ -288,7 +288,7 @@ def GetPortStatusList():
     return portStatusListResult
 
 def GetCpuResourceInfo():
-    cpuPercentage = cpu_percent(interval=1)
+    cpuPercentage = cpu_percent(interval=0.5)
 
     cpuTemp = 0
     if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
