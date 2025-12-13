@@ -9,9 +9,6 @@ import math
 from math import ceil
 import asyncio
 import urllib.request
-from psutil import cpu_percent
-from psutil import virtual_memory
-from psutil import swap_memory
 
 const_LmsApiUrl = 'http://localhost:9000/jsonrpc.js'
 const_PublicFolder = 'public'
@@ -288,27 +285,50 @@ def GetPortStatusList():
     return portStatusListResult
 
 def GetCpuResourceInfo():
-    cpuPercentage = cpu_percent(interval=0.5)
+    try:
+        cpuPercentage = int(float(ExecuteBashCommand("top -n1 | awk '/Cpu\(s\):/ {print $2}'").replace(',', '.')))
+    except:
+        cpuPercentage = 0        
 
-    cpuTemp = 0
-    if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
-        process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-        cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
+    try:
+        if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
+            process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
+            process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+            cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
+    except:
+        cpuTemp = 0
 
     return {"CpuPercentage": cpuPercentage,
             "CpuTemp": cpuTemp
-            }
+           }
 
 def GetMemoryResourceInfo():
-    ram = virtual_memory()
-    memTotal = ram.total
-    memUsed = ram.used
+    # memTotal => free | grep 'Mem:' | awk '{print $2}'
+    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    memTotal = int(process.stdout.decode("utf-8").strip('\n'))
+
+    # memUsed => free | grep 'Mem:' | awk '{print $3}'
+    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    memUsed = int(process.stdout.decode("utf-8").strip('\n'))
+
     memUsedPercentage = math.floor(memUsed/memTotal * 100)
 
-    swap = swap_memory()
-    swapTotal = swap.total
-    swapUsed = swap.used
+    # swapTotal => free | grep 'Swap:' | awk '{print $2}'
+    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    swapTotal = int(process.stdout.decode("utf-8").strip('\n'))
+
+    # swapUsed => free | grep 'Swap:' | awk '{print $3}'
+    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+    swapUsed = int(process.stdout.decode("utf-8").strip('\n'))
+
     swapUsedPercentage = math.floor(swapUsed/swapTotal * 100)
 
     return {'MemTotal': memTotal,
