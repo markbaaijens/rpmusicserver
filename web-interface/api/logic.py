@@ -301,8 +301,7 @@ def GetCpuResourceInfo():
         cpuTemp = 0
 
     return {"CpuPercentage": cpuPercentage,
-            "CpuTemp": cpuTemp
-           }
+            "CpuTemp": cpuTemp}
 
 def GetMemoryResourceInfo():
     # memTotal => free | grep 'Mem:' | awk '{print $2}'
@@ -338,8 +337,7 @@ def GetMemoryResourceInfo():
             "MemUsedPercentage": memUsedPercentage,
             "SwapTotal": swapTotal,
             "SwapUsed": swapUsed,
-            "SwapUsedPercentage": swapUsedPercentage
-            }
+            "SwapUsedPercentage": swapUsedPercentage}
 
 def GetVersionInfo():
     revisionFile = RevisionFileName()
