@@ -673,7 +673,7 @@ def CreateMusicFolders():
     if not os.path.isdir(settingMp3Folder):
         os.mkdir(settingMp3Folder)
 
-    return { "Message": "Musuc-folders created."}
+    return { "Message": "Music-folders created."}
 
 def SetTranscoderSetting(keyName, newValue):
     return SetSetting(keyName, newValue, '/media/usbdata/rpms/config/transcoder-settings.json')
