@@ -285,11 +285,13 @@ def GetPortStatusList():
     return portStatusListResult
 
 def GetCpuResourceInfo():
+    cpuPercentage = 0
     try:
-        cpuPercentage = int(float(ExecuteBashCommand("top -n1 | awk '/Cpu\(s\):/ {print $2}'").replace(',', '.')))
+        cpuPercentage = int(float(ExecuteBashCommand("top -n1 | grep Cpu | awk '{print $2}'").replace(',', '.')))
     except:
-        cpuPercentage = 0        
+        cpuPercentage = 0
 
+    cpuTemp = 0
     try:
         if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
             process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
