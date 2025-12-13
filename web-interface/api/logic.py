@@ -285,38 +285,24 @@ def GetPortStatusList():
     return portStatusListResult
 
 def GetCpuResourceInfo():
-    # cpuLoad1 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $1}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    cpuLoad1 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
+    cpuPercentage = 0
+    try:
+        cpuPercentage = int(float(ExecuteBashCommand("top -n1 | grep Cpu | awk '{print $2}'").replace(',', '.')))
+    except:
+        cpuPercentage = 0
 
-    # cpuLoad5 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $2}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    cpuLoad5 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
-
-    # cpuLoad15 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $3}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    cpuLoad15 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
-
-    # cputemp
     cpuTemp = 0
-    if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
-        process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-        cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
+    try:
+        if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
+            process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
+            process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+            cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
+    except:
+        cpuTemp = 0
 
-    return {"CpuLoad1": cpuLoad1,
-            "CpuLoad5": cpuLoad5,
-            "CpuLoad15": cpuLoad15,           
+    return {"CpuPercentage": cpuPercentage,
             "CpuTemp": cpuTemp
-            }
+           }
 
 def GetMemoryResourceInfo():
     # memTotal => free | grep 'Mem:' | awk '{print $2}'
