@@ -692,6 +692,28 @@ def ShowUpdateLog(nrOfLines):
             'loglines-raw.html', 
             logLines = logLines)
 
+@app.route('/logs/update-details/<int:nrOfLines>', methods=['GET'])
+def ShowUpdateDetailsLog(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetUpdateDetailsLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Update Details-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Update Details-log',
+            rawLog = '/logs/update-details/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)            
+
 @app.route('/logs/flac-health-check/<int:nrOfLines>', methods=['GET'])
 def ShowFlacHealthCheckLog(nrOfLines):
     try:
