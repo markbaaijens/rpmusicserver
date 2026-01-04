@@ -692,10 +692,10 @@ def ShowUpdateLog(nrOfLines):
             'loglines-raw.html', 
             logLines = logLines)
 
-@app.route('/logs/install/<int:nrOfLines>', methods=['GET'])
-def ShowInstallLog(nrOfLines):
+@app.route('/logs/update-details/<int:nrOfLines>', methods=['GET'])
+def ShowUpdateDetailsLog(nrOfLines):
     try:
-        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetInstallLog/' + str(nrOfLines)).content)
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetUpdateDetailsLog/' + str(nrOfLines)).content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -704,11 +704,11 @@ def ShowInstallLog(nrOfLines):
     if nrOfLines != 0:
         return render_template(
             'loglines.html', 
-            appTitle = 'Install-log - ' + configObject.AppTitle, 
+            appTitle = 'Update Details-log - ' + configObject.AppTitle, 
             apiRootUrl = configObject.ApiRootUrl,
             logLines = logLines,
-            logTitle = 'Install-log',
-            rawLog = '/logs/install/0')
+            logTitle = 'Update Details-log',
+            rawLog = '/logs/update-details/0')
     else:
         return render_template(
             'loglines-raw.html', 

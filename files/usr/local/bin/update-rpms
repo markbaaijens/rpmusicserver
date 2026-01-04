@@ -68,7 +68,7 @@ fi
 if [ $update -eq 1 ]; then
     log "- updating from $major_actual.$minor_actual to $major_new.$minor_new"
     chmod +x /tmp/rpmusicserver/scripts/* 
-    log "- update is installing; check the install-log for progress"
+    log "- update is installing; check Details-log for progress"
     /tmp/rpmusicserver/scripts/install-rp.sh
     log "Update ended"    
     exit 0

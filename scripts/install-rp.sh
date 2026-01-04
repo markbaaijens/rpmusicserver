@@ -6,7 +6,7 @@ log () {
     # for a location which is always accessible, /var/log.
     log_dir="/var/log"
     echo "$1"
-    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1" >> $log_dir/install.log
+    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1" >> $log_dir/update-details.log
 }
 
 install_bin_file () {
@@ -20,7 +20,7 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
-rm -f /var/log/install.log
+rm -f /var/log/update-details.log
 
 log "Updating apt package-source"
 apt-get update

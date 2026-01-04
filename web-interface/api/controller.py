@@ -155,10 +155,10 @@ def GetUpdateLog(nrOfLines):
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)
 
-@app.route('/api/GetInstallLog/<int:nrOfLines>', methods=['GET'])
-def GetInstallLog(nrOfLines):
+@app.route('/api/GetUpdateDetailsLog/<int:nrOfLines>', methods=['GET'])
+def GetUpdateDetailsLog(nrOfLines):
     try:
-        info = logic.GetLog('/var/log/install.log', nrOfLines)
+        info = logic.GetLog('/var/log/update-details.log', nrOfLines)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
