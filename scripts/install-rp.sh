@@ -62,12 +62,12 @@ rm -rf /usr/local/bin/*
 log "Adding line for usbdata-disk to /etc/fstab"
 sed -i '/usbdata/d' /etc/fstab  
 # auto,nofail: server starts even when harddisk is not present
-/bin/sh -c 'log "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
+/bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
 
 log "Adding line for usbbackup-disk to /etc/fstab"
 sed -i '/usbbackup/d' /etc/fstab
 # auto,nofail: server starts even when harddisk is not present; x-systemd.automount: automounting usbbackup
-/bin/sh -c 'log "LABEL=usbbackup /media/usbbackup ext4 auto,nofail,x-systemd.automount 0 0" >> /etc/fstab'
+/bin/sh -c 'echo "LABEL=usbbackup /media/usbbackup ext4 auto,nofail,x-systemd.automount 0 0" >> /etc/fstab'
 
 mount -a
 
@@ -138,35 +138,35 @@ install_bin_file apt-upgrade-unattended
 # a different strategy later, if needed
 log "Adding line for transcode in /etc/crontab"
 sed -i '/transcode/d' /etc/crontab
-/bin/sh -c 'log "20  * * * * root transcode" >> /etc/crontab'
+/bin/sh -c 'echo "20  * * * * root transcode" >> /etc/crontab'
 
 log "Adding line for apt-upgrade in /etc/crontab"
 sed -i '/apt-get upgrade/d' /etc/crontab  # Remove commands from previous version
 sed -i '/apt-upgrade-unattended/d' /etc/crontab
-/bin/sh -c 'log "00 02 * * * root apt-upgrade-unattended >> /etc/crontab'
+/bin/sh -c 'echo "00 02 * * * root apt-upgrade-unattended >> /etc/crontab'
 
 log "Removing line for setting rights in /etc/crontab"
 sed -i '/chmod 777/d' /etc/crontab
 
 log "Adding line for update-docker in /etc/crontab"
 sed -i '/update-docker/d' /etc/crontab
-/bin/sh -c 'log "00 03 * * * root update-docker" >> /etc/crontab'
+/bin/sh -c 'echo "00 03 * * * root update-docker" >> /etc/crontab'
 
 log "Adding line for export-collection in /etc/crontab"
 sed -i '/export-collection/d' /etc/crontab
-/bin/sh -c 'log "10 03 * * * root export-collection" >> /etc/crontab'
+/bin/sh -c 'echo "10 03 * * * root export-collection" >> /etc/crontab'
 
 log "Adding line for backup rpms-system in /etc/crontab"
 sed -i '/backup-rpms-system/d' /etc/crontab
-/bin/sh -c 'log "20 03 * * * root backup-rpms-system" >> /etc/crontab'
+/bin/sh -c 'echo "20 03 * * * root backup-rpms-system" >> /etc/crontab'
 
 log "Adding line for backup-server in /etc/crontab"
 sed -i '/backup-server/d' /etc/crontab
-/bin/sh -c 'log "30 03 * * * root backup-server" >> /etc/crontab'
+/bin/sh -c 'echo "30 03 * * * root backup-server" >> /etc/crontab'
 
 log "Adding line for flac-health-check in /etc/crontab"
 sed -i '/flac-health-check/d' /etc/crontab
-/bin/sh -c 'log "00 04 * * * root flac-health-check" >> /etc/crontab'
+/bin/sh -c 'echo "00 04 * * * root flac-health-check" >> /etc/crontab'
 
 log "Change password of user 'pi'"
 sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
@@ -176,12 +176,12 @@ echo -e "rpms\nrpms" | passwd pi
 
 log "Change swappiness to 1"
 if ([ $(grep -c 'vm.swappiness=1' /etc/sysctl.conf) -eq 0 ]); then
-    /bin/sh -c 'log "vm.swappiness=1" >> /etc/sysctl.conf'
+    /bin/sh -c 'echo "vm.swappiness=1" >> /etc/sysctl.conf'
 fi
 
 log "Limit size of /var/log/journal"
 sed -i '/SystemMaxUse/d' /etc/systemd/journald.conf
-/bin/sh -c 'log "SystemMaxUse=50M" >> /etc/systemd/journald.conf'
+/bin/sh -c 'echo "SystemMaxUse=50M" >> /etc/systemd/journald.conf'
 
 log "Generate translations.json"
 if [ ! -f /media/usbdata/rpms/config/translations.json ]; then
