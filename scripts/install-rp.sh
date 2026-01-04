@@ -1,8 +1,8 @@
 #!/bin/bash
 
 log () {
-    # Normally rpms-logs reside in /media/usbdata/rpms/logs. But b/c during install
-    # this location might be not available b/c mounts are not in place, we opt 
+    # Normally rpms-logs reside in /media/usbdata/rpms/logs. But b/c this location 
+    # might be unavailable during install b/c mounts are not in place, we opt 
     # for a location which is always accessible, /var/log.
     log_dir="/var/log"
     echo "$1"
@@ -16,7 +16,7 @@ install_bin_file () {
 }
 
 if [ -z "$(whoami | grep root)" ]; then
-    log "Not running as root."
+    echo "Not running as root."
     exit
 fi
 
