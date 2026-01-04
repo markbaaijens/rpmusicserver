@@ -692,6 +692,28 @@ def ShowUpdateLog(nrOfLines):
             'loglines-raw.html', 
             logLines = logLines)
 
+@app.route('/logs/install/<int:nrOfLines>', methods=['GET'])
+def ShowInstallLog(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetInstallLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Install-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Install-log',
+            rawLog = '/logs/install/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)            
+
 @app.route('/logs/flac-health-check/<int:nrOfLines>', methods=['GET'])
 def ShowFlacHealthCheckLog(nrOfLines):
     try:

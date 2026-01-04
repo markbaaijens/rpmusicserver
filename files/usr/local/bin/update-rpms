@@ -21,7 +21,7 @@ branch_name="master"
 if [ -f /media/usbdata/rpms/config/update-branch.txt ]; then
     branch_name=$(cat /media/usbdata/rpms/config/update-branch.txt)
 fi
-log "Downloading update from github - branch [$branch_name]"
+log "- downloading update from github - branch [$branch_name]"
 
 rm -rf /tmp/rpmusicserver*
 wget https://github.com/markbaaijens/rpmusicserver/archive/refs/heads/$branch_name.zip -nv -O /tmp/rpmusicserver.zip
@@ -29,22 +29,24 @@ unzip -o -q -d /tmp -o /tmp/rpmusicserver.zip
 mv /tmp/rpmusicserver-$branch_name /tmp/rpmusicserver
 
 if [ ! -f /etc/rpms/revision.json ]; then
-    log "File /etc/rpms/revision.json not found; exit"
+    log "- file /etc/rpms/revision.json not found"
+    log "Update ended"
     exit 3
 fi
 version_actual=$(jq '.CurrentVersion' /etc/rpms/revision.json)
 major_actual=$(echo $version_actual | cut -d'.' -f1 | sed 's/"//g')
 minor_actual=$(echo $version_actual | cut -d'.' -f2 | sed 's/"//g')
-log "Current version is $major_actual.$minor_actual"
+log "- current version is $major_actual.$minor_actual"
 
 if [ ! -f /tmp/rpmusicserver/revision.json ]; then
-    log "File /tmp/rpmusicserver/revision.json not found; exit"
+    log "- file /tmp/rpmusicserver/revision.json not found"
+    log "Update ended"
     exit 4
 fi
 version_new=$(jq '.CurrentVersion' /tmp/rpmusicserver/revision.json)
 major_new=$(echo $version_new | cut -d'.' -f1 | sed 's/"//g')
 minor_new=$(echo $version_new | cut -d'.' -f2 | sed 's/"//g')
-log "Available version is $major_new.$minor_new"
+log "- available version is $major_new.$minor_new"
 
 update=0
 if [ $major_new -gt $major_actual ]; then
@@ -60,17 +62,19 @@ fi
 # Always update if override-branch has been given, even if versions don't match
 if [ "$branch_name" != "master" ]; then
     update=1
-    log "Version-override b/c updating from branch '$branch_name' instead of 'master'"
+    log "- version-override b/c updating from branch '$branch_name' instead of 'master'"
 fi
 
 if [ $update -eq 1 ]; then
-    log "Updating from $major_actual.$minor_actual to $major_new.$minor_new"
+    log "- updating from $major_actual.$minor_actual to $major_new.$minor_new"
     chmod +x /tmp/rpmusicserver/scripts/* 
-    log "Update is installing; check the install-log for progress"
+    log "- update is installing; check the install-log for progress"
     /tmp/rpmusicserver/scripts/install-rp.sh
+    log "Update ended"    
     exit 0
 else
-    log "No newer version available; update skipped"
+    log "- no newer version available; update skipped"
+    log "Update ended"
     exit 1
 fi
 

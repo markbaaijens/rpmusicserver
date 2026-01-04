@@ -1,11 +1,10 @@
 #!/bin/bash
 
 log () {
-    if [ -d "/media/usbdata/rpms/logs" ]; then
-        log_dir="/media/usbdata/rpms/logs"
-    else
-        log_dir="."    
-    fi
+    # Normally rpms-logs reside in /media/usbdata/rpms/logs. But b/c during install
+    # this location might be not available b/c mounts are not in place, we opt 
+    # for a location which is always accessible, /var/log.
+    log_dir="/var/log"
     echo "$1"
     echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1" >> $log_dir/install.log
 }
@@ -21,8 +20,12 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
-log "Installing packages"
+rm -f /var/log/install.log
+
+log "Updating apt package-source"
 apt-get update
+
+log "Installing apt-packages"
 apt-get install docker.io python3-pip tree jq bwm-ng nmap zip -y   # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
 apt-get install samba -y
