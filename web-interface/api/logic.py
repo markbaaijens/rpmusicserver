@@ -287,7 +287,13 @@ def GetPortStatusList():
 def GetCpuResourceInfo():
     cpuPercentage = 0
     try:
-        cpuPercentage = int(float(ExecuteBashCommand("top -n1 | grep Cpu | awk '{print $2}'").replace(',', '.')))
+        
+        # cpuPercentage1 = ExecuteBashCommand("top -n1 | grep Cpu | awk '{print $8}'")
+        # print(cpuPercentage1)
+        # cpuPercentage2 = ExecuteBashCommand("top -n1 | grep Cpu | awk '{print $8}'").# replace(',', '.')
+        # print(cpuPercentage2)
+
+        cpuPercentage = 100 - int(float(ExecuteBashCommand("top -n1 | grep Cpu | awk '{print $8}'").replace(',', '.')))
     except:
         cpuPercentage = 0
 
