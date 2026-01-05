@@ -226,4 +226,4 @@ rm -rf /usr/local/bin/rpmusicserver/web-interface/*
 cp -r /tmp/rpmusicserver/web-interface/* /usr/local/bin/rpmusicserver/web-interface
 
 log "Installation complete, system will be rebooted"
-#reboot-server
+reboot-server
