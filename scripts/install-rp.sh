@@ -135,7 +135,7 @@ sed -i '/transcode/d' /etc/crontab
 log "Adding line for apt-upgrade in /etc/crontab"
 sed -i '/apt-get upgrade/d' /etc/crontab  # Remove commands from previous version
 sed -i '/apt-upgrade-unattended/d' /etc/crontab
-/bin/sh -c 'echo "00 02 * * * root apt-upgrade-unattended >> /etc/crontab'
+/bin/sh -c 'echo "00 02 * * * root apt-upgrade-unattended" >> /etc/crontab'
 
 log "Adding line for update-docker in /etc/crontab"
 sed -i '/update-docker/d' /etc/crontab
