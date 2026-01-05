@@ -37,24 +37,17 @@ log "Setting timezone to Europe/Amsterdam"
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
 
-log "Creating mountpoint for usbdata-disk"
 if [ ! -d /media/usbdata ]; then
+    log "Creating mountpoint for usbdata-disk"
     mkdir /media/usbdata
     chmod 777 /media/usbdata -R
-else
-    log "... mountpoint for usbdata is already present"
 fi
 
-log "Creating mountpoint for usbbackup-disk"
 if [ ! -d /media/usbbackup ]; then
+    log "Creating mountpoint for usbbackup-disk"
     mkdir /media/usbbackup
     chmod 777 /media/usbbackup -R
-else
-    log "... mountpoint for usbbackup is already present"
 fi
-
-log "Cleanup /usr/local/bin"
-rm -rf /usr/local/bin/*
 
 # By always delete existing lines in fstab, we can easily implement
 # a different strategy later, if needed
@@ -80,21 +73,15 @@ chmod 777 /media/usbdata/user/public
 mkdir /media/usbdata/user/music -p
 chmod 777 /media/usbdata/user/music
 
-log "Copy LMS config files"
 if [ ! -d /media/usbdata/rpms/config/docker/lms ]; then
+    log "Copy LMS config files"
     mkdir -p /media/usbdata/rpms/config/docker/lms
     cp -r /tmp/rpmusicserver/files/config/lms/* /media/usbdata/rpms/config/docker/lms
-else
-    log "... LMS config folder is already present, no config files copied"
 fi
 
 log "Install (python) pip-packages"
 # Note that b/c this script is executed under sudo, pip3 packages are system-wide installed
 pip3 install -r /tmp/rpmusicserver/web-interface/requirements.txt 
-
-log "Install program files for web-interface"
-mkdir -p /usr/local/bin/rpmusicserver/web-interface
-cp -r /tmp/rpmusicserver/web-interface/* /usr/local/bin/rpmusicserver/web-interface
 
 log "Copy rc.local to /etc"
 cp /tmp/rpmusicserver/files/etc/rc.local /etc
@@ -114,9 +101,11 @@ wget https://github.com/markbaaijens/transcoder/archive/refs/tags/v1.2.zip -nv -
 unzip -o -q -d /tmp -o /tmp/transcoder.zip
 mv /tmp/transcoder-1.2 /tmp/transcoder
 mkdir -p /usr/local/bin/transcoder
+rm -rf /usr/local/bin/transcoder/*
 cp /tmp/transcoder/transcoder.py /usr/local/bin/transcoder/transcoder.py
 chmod +x /usr/local/bin/transcoder/transcoder.py
 
+find /usr/local/bin/ -maxdepth 1 -type f -delete  # rm tries to remove subfolders also, so we use find
 install_bin_file update-rpms
 install_bin_file backup-server
 install_bin_file backup-rpms-system
@@ -134,6 +123,9 @@ install_bin_file flac-health-report
 install_bin_file flac-health-repair
 install_bin_file apt-upgrade-unattended
 
+log "Removing obsolete line for setting rights in /etc/crontab created by a previous version of RPMS"
+sed -i '/chmod 777/d' /etc/crontab
+
 # By always delete existing lines in crontab, we can easily implement
 # a different strategy later, if needed
 log "Adding line for transcode in /etc/crontab"
@@ -143,10 +135,7 @@ sed -i '/transcode/d' /etc/crontab
 log "Adding line for apt-upgrade in /etc/crontab"
 sed -i '/apt-get upgrade/d' /etc/crontab  # Remove commands from previous version
 sed -i '/apt-upgrade-unattended/d' /etc/crontab
-/bin/sh -c 'echo "00 02 * * * root apt-upgrade-unattended >> /etc/crontab'
-
-log "Removing line for setting rights in /etc/crontab"
-sed -i '/chmod 777/d' /etc/crontab
+/bin/sh -c 'echo "00 02 * * * root apt-upgrade-unattended" >> /etc/crontab'
 
 log "Adding line for update-docker in /etc/crontab"
 sed -i '/update-docker/d' /etc/crontab
@@ -183,9 +172,8 @@ log "Limit size of /var/log/journal"
 sed -i '/SystemMaxUse/d' /etc/systemd/journald.conf
 /bin/sh -c 'echo "SystemMaxUse=50M" >> /etc/systemd/journald.conf'
 
-log "Generate translations.json"
 if [ ! -f /media/usbdata/rpms/config/translations.json ]; then
-    log "- file translations.json not found, generating translations.json"
+    log "Generate translations.json"
 
     lang_choice="e"
     if [ -f /etc/lang-choice.txt ]; then
@@ -222,9 +210,6 @@ if [ ! -f /media/usbdata/rpms/config/translations.json ]; then
     --arg public_share_name "$public_share_name" \
     --arg music_share_name "$music_share_name" \
     --arg backup_share_name "$backup_share_name" '{"PublicShareName": $public_share_name, "MusicShareName": $music_share_name, "BackupShareName": $backup_share_name }' > /media/usbdata/rpms/config/translations.json
-
-else
-    log "- translations.json already present"
 fi
 rm /etc/lang-choice.txt -rf
 
@@ -235,5 +220,10 @@ generate-samba-conf
 log "Start docker for preloading containers"
 start-docker
 
+log "Install program files for web-interface"
+mkdir -p /usr/local/bin/rpmusicserver/web-interface
+rm -rf /usr/local/bin/rpmusicserver/web-interface/*
+cp -r /tmp/rpmusicserver/web-interface/* /usr/local/bin/rpmusicserver/web-interface
+
 log "Installation complete, system will be rebooted"
-reboot-server
+#reboot-server
