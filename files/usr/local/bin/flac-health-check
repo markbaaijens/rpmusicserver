@@ -171,12 +171,20 @@ for file in $(find $source_folder -type f -name 'repair.sh' -printf '%p\n' | sor
     current_dir="$(dirname "${file}")"
     log "File '$repair_file' in $current_dir"
 
+    if [ ! -f $source_folder/$repair_all_file ]; then
+        echo "echo \"\$(date +%Y-%m-%d) \$(date +%H:%M:%S) Start repair\" >> $log_dir/$repair_log_file" >> $source_folder/$repair_all_file
+    fi
+
     echo "cd \"$current_dir\"" >> $source_folder/$repair_all_file
     echo "echo \"\"" >> $source_folder/$repair_all_file
     echo "pwd" >> $source_folder/$repair_all_file
     echo "./repair.sh" >> $source_folder/$repair_all_file    
 done
 unset IFS; set +f
+
+if [ -f $source_folder/$repair_all_file ]; then
+    echo "echo \"\$(date +%Y-%m-%d) \$(date +%H:%M:%S) End repair\" >> $log_dir/$repair_log_file" >> $source_folder/$repair_all_file
+fi
 
 if [ -f "$source_folder/$repair_all_file" ]; then
     chmod +x "$source_folder/$repair_all_file"
