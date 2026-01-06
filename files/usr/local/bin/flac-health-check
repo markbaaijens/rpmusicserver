@@ -52,8 +52,7 @@ else
     log_dir="."    
 fi
 
-rm -f $log_dir/$check_log_file
-rm -f $log_dir/$repair_log_file
+rm -f $log_dir/$check_log_file  # Stats rely on the fact that the logfile only tracks the last session
 
 source_folder=$(jq '.sourcefolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
 if [ "$source_folder" == "null" ] || [ -z "${source_folder}" ]; then

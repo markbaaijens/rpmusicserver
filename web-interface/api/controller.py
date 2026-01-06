@@ -243,6 +243,17 @@ def GetFlacHealthCheckLog(nrOfLines):
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/GetFlacHealthRepairLog/<int:nrOfLines>', methods=['GET'])
+def GetFlacHealthRepairLog(nrOfLines):
+    try:
+        info = logic.GetLog('/media/usbdata/rpms/logs/flac-health-repair.log', nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
 @app.route('/api/GetFlacHealthReport', methods=['GET'])
 def GetFlacHealthReport():
     try:
