@@ -86,12 +86,13 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
     current_dir="$(dirname "${file}")"
     if [ "$previous_dir" != "$current_dir" ]; then
         previous_dir=$current_dir
+        current_dir_short=$(echo $current_dir | sed "s|$source_folder\/||g")
 
         check_file="0"
         if [ -f "$current_dir/$control_file" ] && [ "$check_all" == "0" ]; then
-            log "Folder: $current_dir - already checked"
+            log "Folder: $current_dir_short - already checked"
         else 
-            log "Folder: $current_dir - checking"
+            log "Folder: $current_dir_short - checking"
             rm -f $current_dir/$repair_file
             check_file="1"            
             touch $current_dir/$control_file
