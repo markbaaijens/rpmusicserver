@@ -68,7 +68,7 @@
     <h3>Collection</h3>   
     <table>
         <tr>
-            <td>Statistics</td>
+            <td>Summary</td>
             <td>
                 {% if lmsServerStatus['httpport'] %}
                     <b>{{ lmsServerStatus['info total artists'] }}</b> artists |
@@ -104,29 +104,6 @@
     </h3>
     <table>
         <tr>
-            <td>Last Check</td>
-            <td>
-                <b>
-                    {{ flacHealthInfo.LastCheck }}
-                    {% if flacHealthInfo.CheckType != 'none' %}
-                        |
-                        {% if flacHealthInfo.CheckType == 'new' %}
-                            New Folders
-                        {% endif %}
-                        {% if flacHealthInfo.CheckType == 'all' %}
-                            All Folders
-                        {% endif %}
-                        {% if flacHealthInfo.IsRepairing %}
-                            - Repairing
-                        {% endif %}                    
-                        {% if flacHealthInfo.IsChecking %}
-                            - Checking
-                        {% endif %}
-                    {% endif %}                        
-                </b>
-            </td>
-        </tr>
-        <tr>
             <td>Summary</td>
             <td>
                 {% if flacHealthInfo.IsChecked %}
@@ -158,6 +135,29 @@
                 {% else %}
                     <b>-</b>
                 {% endif %}                                                                      
+            </td>
+        </tr>        
+        <tr>
+            <td>Last Check</td>
+            <td>
+                <b>
+                    {{ flacHealthInfo.LastCheck }}
+                    {% if flacHealthInfo.CheckType != 'none' %}
+                        |
+                        {% if flacHealthInfo.CheckType == 'new' %}
+                            New Folders
+                        {% endif %}
+                        {% if flacHealthInfo.CheckType == 'all' %}
+                            All Folders
+                        {% endif %}
+                        {% if flacHealthInfo.IsRepairing %}
+                            - Repairing
+                        {% endif %}                    
+                        {% if flacHealthInfo.IsChecking %}
+                            - Checking
+                        {% endif %}
+                    {% endif %}                        
+                </b>
             </td>
         </tr>
     </table> 

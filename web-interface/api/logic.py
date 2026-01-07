@@ -9,6 +9,7 @@ import math
 from math import ceil
 import asyncio
 import urllib.request
+from psutil import cpu_percent
 
 const_LmsApiUrl = 'http://localhost:9000/jsonrpc.js'
 const_PublicFolder = 'public'
@@ -285,66 +286,28 @@ def GetPortStatusList():
     return portStatusListResult
 
 def GetCpuResourceInfo():
-    # cpuLoad1 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $1}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    cpuLoad1 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
+    cpuPercentage = int(float(cpu_percent(interval=1)))
 
-    # cpuLoad5 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $2}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    cpuLoad5 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
-
-    # cpuLoad15 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $3}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    cpuLoad15 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
-
-    # cputemp
     cpuTemp = 0
-    if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
-        process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-        cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
+    try:
+        if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
+            # process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
+            # process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+            # cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
+            cpuTemp = int(float(ExecuteBashCommand("vcgencmd measure_temp | cut -c 6-").strip("\'C")))
+    except:
+        cpuTemp = 0
 
-    return {"CpuLoad1": cpuLoad1,
-            "CpuLoad5": cpuLoad5,
-            "CpuLoad15": cpuLoad15,           
-            "CpuTemp": cpuTemp
-            }
+    return {"CpuPercentage": cpuPercentage,
+            "CpuTemp": cpuTemp}
 
 def GetMemoryResourceInfo():
-    # memTotal => free | grep 'Mem:' | awk '{print $2}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    memTotal = int(process.stdout.decode("utf-8").strip('\n'))
-
-    # memUsed => free | grep 'Mem:' | awk '{print $3}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    memUsed = int(process.stdout.decode("utf-8").strip('\n'))
-
+    memTotal = int(ExecuteBashCommand("free | grep 'Mem:' | awk '{print $2}'"))
+    memUsed = int(ExecuteBashCommand("free | grep 'Mem:' | awk '{print $3}'"))
     memUsedPercentage = math.floor(memUsed/memTotal * 100)
 
-    # swapTotal => free | grep 'Swap:' | awk '{print $2}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    swapTotal = int(process.stdout.decode("utf-8").strip('\n'))
-
-    # swapUsed => free | grep 'Swap:' | awk '{print $3}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    swapUsed = int(process.stdout.decode("utf-8").strip('\n'))
-
+    swapTotal = int(ExecuteBashCommand("free | grep 'Swap:' | awk '{print $2}'"))
+    swapUsed = int(ExecuteBashCommand("free | grep 'Swap:' | awk '{print $3}'"))
     swapUsedPercentage = math.floor(swapUsed/swapTotal * 100)
 
     return {'MemTotal': memTotal,
@@ -352,8 +315,7 @@ def GetMemoryResourceInfo():
             "MemUsedPercentage": memUsedPercentage,
             "SwapTotal": swapTotal,
             "SwapUsed": swapUsed,
-            "SwapUsedPercentage": swapUsedPercentage
-            }
+            "SwapUsedPercentage": swapUsedPercentage}
 
 def GetVersionInfo():
     revisionFile = RevisionFileName()
@@ -687,7 +649,7 @@ def CreateMusicFolders():
     if not os.path.isdir(settingMp3Folder):
         os.mkdir(settingMp3Folder)
 
-    return { "Message": "Musuc-folders created."}
+    return { "Message": "Music-folders created."}
 
 def SetTranscoderSetting(keyName, newValue):
     return SetSetting(keyName, newValue, '/media/usbdata/rpms/config/transcoder-settings.json')
