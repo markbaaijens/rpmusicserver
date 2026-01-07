@@ -291,9 +291,10 @@ def GetCpuResourceInfo():
     cpuTemp = 0
     try:
         if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
-            process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
-            process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-            cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
+            # process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
+            # process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+            # cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
+            cpuTemp = int(float(ExecuteBashCommand("vcgencmd measure_temp | cut -c 6-").strip("\'C")))
     except:
         cpuTemp = 0
 
