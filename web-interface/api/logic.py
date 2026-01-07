@@ -301,32 +301,12 @@ def GetCpuResourceInfo():
             "CpuTemp": cpuTemp}
 
 def GetMemoryResourceInfo():
-    # memTotal => free | grep 'Mem:' | awk '{print $2}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    memTotal = int(process.stdout.decode("utf-8").strip('\n'))
-
-    # memUsed => free | grep 'Mem:' | awk '{print $3}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    memUsed = int(process.stdout.decode("utf-8").strip('\n'))
-
+    memTotal = int(ExecuteBashCommand("free | grep 'Mem:' | awk '{print $2}'"))
+    memUsed = int(ExecuteBashCommand("free | grep 'Mem:' | awk '{print $3}'"))
     memUsedPercentage = math.floor(memUsed/memTotal * 100)
 
-    # swapTotal => free | grep 'Swap:' | awk '{print $2}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    swapTotal = int(process.stdout.decode("utf-8").strip('\n'))
-
-    # swapUsed => free | grep 'Swap:' | awk '{print $3}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    swapUsed = int(process.stdout.decode("utf-8").strip('\n'))
-
+    swapTotal = int(ExecuteBashCommand("free | grep 'Swap:' | awk '{print $2}'"))
+    swapUsed = int(ExecuteBashCommand("free | grep 'Swap:' | awk '{print $3}'"))
     swapUsedPercentage = math.floor(swapUsed/swapTotal * 100)
 
     return {'MemTotal': memTotal,
