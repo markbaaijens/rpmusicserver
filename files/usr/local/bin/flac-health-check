@@ -1,21 +1,36 @@
 #!/bin/bash
 
-log_file="flac-health-check.log"
+check_log_file="flac-health-check.log"
+repair_log_file="flac-health-repair.log"
 
 log () {
     echo "$1"
-    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1"  >> $log_dir/$log_file
+    echo "$(date "+%Y-%m-%d") $(date +%H:%M:%S) $1" >> $log_dir/$check_log_file
+}
+
+echo_repair_to_log () {
+    echo "echo \"\$(date +%Y-%m-%d) \$(date +%H:%M:%S) Repairing '$current_dir_short/$file_name'\" >> $log_dir/$repair_log_file" >> $current_dir/$repair_file
 }
 
 repair_by_flac () {
+    echo_repair_to_log
     echo "flac -f \"$file_name\" -o \"$file_name\"" >> $current_dir/$repair_file
     echo "touch \"$file_name\"" >> $current_dir/$repair_file            
 }
 
 repair_by_ffmpeg () {
+    echo_repair_to_log
     echo "ffmpeg -i \"$file_name\" \"temp.flac\"" >> $current_dir/$repair_file
     echo "rm \"$file_name\"" >> $current_dir/$repair_file
     echo "mv \"temp.flac\" \"$file_name\"" >> $current_dir/$repair_file    
+}
+
+repair_by_id3v2 () {
+    echo_repair_to_log
+    echo "# $id3v2_error" >> $current_dir/$repair_file 
+    echo "id3v2 -d \"$file_name\"" >> $current_dir/$repair_file
+    echo "touch \"$file_name\"" >> $current_dir/$repair_file     
+    echo "" >> $current_dir/$repair_file               
 }
 
 if [ -z "$(whoami | grep root)" ]; then
@@ -37,7 +52,7 @@ else
     log_dir="."    
 fi
 
-rm -f $log_dir/$log_file
+rm -f $log_dir/$check_log_file  # Stats rely on the fact that the logfile only tracks the last session
 
 source_folder=$(jq '.sourcefolder' /media/usbdata/rpms/config/transcoder-settings.json | tr -d '"')
 if [ "$source_folder" == "null" ] || [ -z "${source_folder}" ]; then
@@ -143,11 +158,7 @@ for file in $(find $source_folder -type f -name '*.flac' -printf '%p\n' | sort -
 
         if [ -n "$id3v2_error" ]; then
             log " => $id3v2_error" 
-
-            echo "# $id3v2_error" >> $current_dir/$repair_file 
-            echo "id3v2 -d \"$file_name\"" >> $current_dir/$repair_file
-            echo "touch \"$file_name\"" >> $current_dir/$repair_file     
-            echo "" >> $current_dir/$repair_file               
+            repair_by_id3v2
         fi
     fi
 done
@@ -160,12 +171,20 @@ for file in $(find $source_folder -type f -name 'repair.sh' -printf '%p\n' | sor
     current_dir="$(dirname "${file}")"
     log "File '$repair_file' in $current_dir"
 
+    if [ ! -f $source_folder/$repair_all_file ]; then
+        echo "echo \"\$(date +%Y-%m-%d) \$(date +%H:%M:%S) Start repair\" >> $log_dir/$repair_log_file" >> $source_folder/$repair_all_file
+    fi
+
     echo "cd \"$current_dir\"" >> $source_folder/$repair_all_file
     echo "echo \"\"" >> $source_folder/$repair_all_file
     echo "pwd" >> $source_folder/$repair_all_file
     echo "./repair.sh" >> $source_folder/$repair_all_file    
 done
 unset IFS; set +f
+
+if [ -f $source_folder/$repair_all_file ]; then
+    echo "echo \"\$(date +%Y-%m-%d) \$(date +%H:%M:%S) End repair\" >> $log_dir/$repair_log_file" >> $source_folder/$repair_all_file
+fi
 
 if [ -f "$source_folder/$repair_all_file" ]; then
     chmod +x "$source_folder/$repair_all_file"
