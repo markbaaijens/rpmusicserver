@@ -9,6 +9,7 @@ import math
 from math import ceil
 import asyncio
 import urllib.request
+from psutil import cpu_percent
 
 const_LmsApiUrl = 'http://localhost:9000/jsonrpc.js'
 const_PublicFolder = 'public'
@@ -285,17 +286,7 @@ def GetPortStatusList():
     return portStatusListResult
 
 def GetCpuResourceInfo():
-    cpuPercentage = 0
-    try:
-        
-        # cpuPercentage1 = ExecuteBashCommand("top -n1 | grep Cpu | awk '{print $8}'")
-        # print(cpuPercentage1)
-        # cpuPercentage2 = ExecuteBashCommand("top -n1 | grep Cpu | awk '{print $8}'").# replace(',', '.')
-        # print(cpuPercentage2)
-
-        cpuPercentage = 100 - int(float(ExecuteBashCommand("top -n1 | grep Cpu | awk '{print $8}'").replace(',', '.')))
-    except:
-        cpuPercentage = 0
+    cpuPercentage = int(float(cpu_percent(interval=1)))
 
     cpuTemp = 0
     try:
