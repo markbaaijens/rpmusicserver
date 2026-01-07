@@ -22,10 +22,10 @@ fi
 
 rm -f /var/log/update-details.log
 
-log "Updating apt package-source"
+log "Updating sources for APT-packages"
 apt-get update
 
-log "Installing apt-packages"
+log "Installing APT-packages"
 apt-get install docker.io python3-pip tree jq bwm-ng nmap zip -y   # Generic
 apt-get install vorbis-tools lame flac python3-mutagen python3-pil -y  # Transcoder
 apt-get install samba -y
@@ -56,13 +56,12 @@ log "Adding line for usbdata-disk to /etc/fstab"
 sed -i '/usbdata/d' /etc/fstab  
 # auto,nofail: server starts even when harddisk is not present
 /bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
+mount /media/usbdata
 
 log "Adding line for usbbackup-disk to /etc/fstab"
 sed -i '/usbbackup/d' /etc/fstab
 # auto,nofail: server starts even when harddisk is not present; x-systemd.automount: automounting usbbackup
 /bin/sh -c 'echo "LABEL=usbbackup /media/usbbackup ext4 auto,nofail,x-systemd.automount 0 0" >> /etc/fstab'
-
-mount -a
 
 log "Creating directories on /media/usbdata"
 mkdir /media/usbdata/rpms/logs -p
@@ -220,7 +219,7 @@ generate-samba-conf
 log "Start docker for preloading containers"
 start-docker
 
-log "Install program files for web-interface"
+log "Installing web-interface"
 mkdir -p /usr/local/bin/rpmusicserver/web-interface
 rm -rf /usr/local/bin/rpmusicserver/web-interface/*
 cp -r /tmp/rpmusicserver/web-interface/* /usr/local/bin/rpmusicserver/web-interface
