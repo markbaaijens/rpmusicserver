@@ -56,13 +56,12 @@ log "Adding line for usbdata-disk to /etc/fstab"
 sed -i '/usbdata/d' /etc/fstab  
 # auto,nofail: server starts even when harddisk is not present
 /bin/sh -c 'echo "LABEL=usbdata /media/usbdata ext4 auto,nofail 0 0" >> /etc/fstab'
+mount /media/usbdata
 
 log "Adding line for usbbackup-disk to /etc/fstab"
 sed -i '/usbbackup/d' /etc/fstab
 # auto,nofail: server starts even when harddisk is not present; x-systemd.automount: automounting usbbackup
 /bin/sh -c 'echo "LABEL=usbbackup /media/usbbackup ext4 auto,nofail,x-systemd.automount 0 0" >> /etc/fstab'
-
-mount -a
 
 log "Creating directories on /media/usbdata"
 mkdir /media/usbdata/rpms/logs -p
