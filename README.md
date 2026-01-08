@@ -182,19 +182,19 @@ For getting transcoding to work, take the following steps:
 * in your file explorer
   * create a folder `flac` under `smb://rpms/music`
   * move your flac-files into that folder `flac`
-* in LMS Server Settings, modify music-folder:
-  * from  `/music`
+* in LMS Server Settings, modify media-folder:
+  * from `/music`
   * to `/music/flac`
 * in the web-interface, under Transcoder, Edit, change setting `Source Folder`
   * point to `flac`
 * for transcoding to ogg
-  * in your file explorer, create a folder `ogg` under `smb://rpms/music`
   * in the web-interface, under Transcoder, Edit, change setting `Ogg Folder`
     * point to `ogg`
+    * the folder is created automatically under `smb://rpms/music`
 * for transcoding to mp3
-  * in your file explorer, create a folder `mp3` under `smb://rpms/music`
   * in the web-interface, under Transcoder, Edit, change setting `Mp3 Folder`
     * point to `mp3`
+    * the folder is created automatically under `smb://rpms/music`    
 
 From now on, file transcoding will take place and lossy-files will automagically appear in the given lossy-folder without any interaction.
 
