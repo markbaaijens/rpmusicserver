@@ -41,11 +41,24 @@ def SizeHumanReadable(num, suffix="B"):
         num /= 1024.0
     return f"{num:.1f}Yi{suffix}"
 
+def CreateMusicFolders():
+    try:
+        requests.post(configObject.ApiRootUrl + '/api/DoCreateMusicFolders')
+
+        # For some reason, apiMessage is not returned (due to FlaskForm?), so we construct our own message
+        flash('Music-folder(s) created.')
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+
+    pass
+
 def SaveFormValue(apiUrl, newValue, fieldLabel):
     try:
         requests.post(
             configObject.ApiRootUrl + '/api/' + apiUrl, 
             json = {"Value": newValue})
+        # For some reason, apiMessage is not returned (due to FlaskForm?), so we construct our own message
         flash('Saved \'' + str(newValue) + '\' to \'' + str(fieldLabel) + '\'.')
     except Exception as e:
         logger.error(e)
@@ -160,10 +173,10 @@ def ShowResourcesPage():
         logger.error(traceback.format_exc())
         diskList = []
     
-    memoryInfo['MemTotal'] = SizeHumanReadable(int(memoryInfo['MemTotal']) * 1024, '')
-    memoryInfo['MemUsed'] = SizeHumanReadable(int(memoryInfo['MemUsed']) * 1024, '')    
-    memoryInfo['SwapTotal'] = SizeHumanReadable(int(memoryInfo['SwapTotal']) * 1024, '')
-    memoryInfo['SwapUsed'] = SizeHumanReadable(int(memoryInfo['SwapUsed']) * 1024, '')    
+    memoryInfo['MemTotal'] = SizeHumanReadable(int(memoryInfo['MemTotal']), '')
+    memoryInfo['MemUsed'] = SizeHumanReadable(int(memoryInfo['MemUsed']), '')
+    memoryInfo['SwapTotal'] = SizeHumanReadable(int(memoryInfo['SwapTotal']), '')
+    memoryInfo['SwapUsed'] = SizeHumanReadable(int(memoryInfo['SwapUsed']), '')
 
     return render_template(
         'resources.html', 
@@ -556,12 +569,18 @@ def ShowApiLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'API-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Api-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'API-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Api-log',
+            rawLog = '/logs/api/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
 
 @app.route('/logs/web/<int:nrOfLines>', methods=['GET'])
 def ShowWebLog(nrOfLines):
@@ -572,12 +591,18 @@ def ShowWebLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'Web-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Web-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Web-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Web-log',
+            rawLog = '/logs/web/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)    
 
 @app.route('/logs/backup/<int:nrOfLines>', methods=['GET'])
 def ShowBackupLog(nrOfLines):
@@ -588,12 +613,18 @@ def ShowBackupLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'Backup-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Backup-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Backup-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Backup-log',
+            rawLog = '/logs/backup/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
 
 @app.route('/logs/backup-details/<int:nrOfLines>', methods=['GET'])
 def ShowBackupDetailsLog(nrOfLines):
@@ -604,12 +635,18 @@ def ShowBackupDetailsLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'Backup Details-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Backup Details-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Backup Details-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Backup Details-log',
+            rawLog = '/logs/backup-details/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
 
 @app.route('/logs/transcoder/<int:nrOfLines>', methods=['GET'])
 def ShowTranscoderLog(nrOfLines):
@@ -620,12 +657,18 @@ def ShowTranscoderLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'Transcoder-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Transcoder-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Transcoder-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Transcoder-log',
+            rawLog = '/logs/transcoder/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
 
 @app.route('/logs/update/<int:nrOfLines>', methods=['GET'])
 def ShowUpdateLog(nrOfLines):
@@ -636,12 +679,40 @@ def ShowUpdateLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'Update-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Update-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Update-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Update-log',
+            rawLog = '/logs/update/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
+
+@app.route('/logs/update-details/<int:nrOfLines>', methods=['GET'])
+def ShowUpdateDetailsLog(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetUpdateDetailsLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Update Details-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Update Details-log',
+            rawLog = '/logs/update-details/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)            
 
 @app.route('/logs/flac-health-check/<int:nrOfLines>', methods=['GET'])
 def ShowFlacHealthCheckLog(nrOfLines):
@@ -652,12 +723,40 @@ def ShowFlacHealthCheckLog(nrOfLines):
         logger.error(traceback.format_exc())
         logLines = []
 
-    return render_template(
-        'loglines.html', 
-        appTitle = 'Flac Health Check-log - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        logLines = logLines,
-        logTitle = 'Flac Health Check-log')   
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Flac Health Check-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Flac Health Check-log',
+            rawLog = '/logs/flac-health-check/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
+
+@app.route('/logs/flac-health-repair/<int:nrOfLines>', methods=['GET'])
+def ShowFlacHealthRepairLog(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetFlacHealthRepairLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Flac Health Repair-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Flac Health Repair-log',
+            rawLog = '/logs/flac-health-repair/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)            
 
 @app.route('/logs/flac-health-report', methods=['GET'])
 def ShowFlacHealthReport():
@@ -689,18 +788,11 @@ def EditTranscoderSettings():
     defaultMusicFolder = transcoderInfo["DefaultCollectionFolder"] + '/'
     defaultMusicFolderFunctional = transcoderInfo["DefaultCollectionFolderFunctional"]
 
-    try:
-        transcoderSettings = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderSettings').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        transcoderSettings = []
-
-    currentSourceFolder = transcoderSettings['sourcefolder'].strip()
-    currentOggFolder = transcoderSettings['oggfolder'].strip()
-    currentOggQuality = int(transcoderSettings['oggquality'])
-    currentMp3Folder = transcoderSettings['mp3folder'].strip()
-    currentMp3Bitrate = int(transcoderSettings['mp3bitrate'])
+    currentSourceFolder = transcoderInfo['SettingSourceFolder'].strip()
+    currentOggFolder = transcoderInfo['SettingOggFolder'].strip()
+    currentOggQuality = int(transcoderInfo['SettingOggQuality'])
+    currentMp3Folder = transcoderInfo['SettingMp3Folder'].strip()
+    currentMp3Bitrate = int(transcoderInfo['SettingMp3Bitrate'])
 
     form = EditTranscoderForm()
 
@@ -720,46 +812,50 @@ def EditTranscoderSettings():
         except Exception as e:
             resetToDefaults = False
 
+        newFolderValue = False
+
+        newSourceFolder = defaultMusicFolder + request.form['sourceFolder'].strip()
+        newOggFolder = defaultMusicFolder + request.form['oggFolder'].strip()
+        newOggQuality = int(request.form['oggQuality'])
+        newMp3Folder = defaultMusicFolder + request.form['mp3Folder'].strip()
+        newMp3Bitrate = int(request.form['mp3Bitrate'])
+
         if resetToDefaults:
-            newSourceFolder = ''            
-        else:
-            newSourceFolder = defaultMusicFolder + request.form['sourceFolder'].strip()
-            if not newSourceFolder.replace(defaultMusicFolder, ''):
-                newSourceFolder = ''                            
+            newSourceFolder = ''
+            newOggFolder = ''  
+            newOggQuality = 0
+            newMp3Folder = ''
+            newMp3Bitrate = 0
+
+        if request.form['sourceFolder'].strip() == '':
+            newSourceFolder = ''
         if newSourceFolder != currentSourceFolder:
             SaveFormValue('SetTranscoderSourceFolder', newSourceFolder, form.sourceFolder.label)
+            if newSourceFolder != '':
+                newFolderValue = True
 
-        if resetToDefaults:
-            newOggFolder = ''  
-        else:
-            newOggFolder = defaultMusicFolder + request.form['oggFolder'].strip()
-            if not newOggFolder.replace(defaultMusicFolder, ''):
-                newOggFolder = ''                      
-        if newOggFolder != currentOggFolder:            
+        if request.form['oggFolder'].strip() == '':
+            newOggFolder = ''
+        if newOggFolder != currentOggFolder:
             SaveFormValue('SetTranscoderOggFolder', newOggFolder, form.oggFolder.label)
+            if newOggFolder != '':
+                newFolderValue = True
 
-        if resetToDefaults:
-            newOggQuality = 0        
-        else:
-            newOggQuality = int(request.form['oggQuality'])
         if newOggQuality != currentOggQuality:
             SaveFormValue('SetTranscoderOggQuality', newOggQuality, form.oggQuality.label)
 
-        if resetToDefaults:
-            newMp3Folder = ''  
-        else:
-            newMp3Folder = defaultMusicFolder + request.form['mp3Folder'].strip()
-            if not newMp3Folder.replace(defaultMusicFolder, ''):
-                newMp3Folder = ''                        
+        if request.form['mp3Folder'].strip() == '':
+            newMp3Folder = ''
         if newMp3Folder != currentMp3Folder:
             SaveFormValue('SetTranscoderMp3Folder', newMp3Folder, form.mp3Folder.label)
+            if newMp3Folder != '':
+                newFolderValue = True
 
-        if resetToDefaults:
-            newMp3Bitrate = 0
-        else:
-            newMp3Bitrate = int(request.form['mp3Bitrate'])
         if newMp3Bitrate != currentMp3Bitrate:
             SaveFormValue('SetTranscoderMp3Bitrate', newMp3Bitrate, form.mp3Bitrate.label)
+
+        if newFolderValue == True:
+            CreateMusicFolders()
 
         return redirect(redirectPage)
 

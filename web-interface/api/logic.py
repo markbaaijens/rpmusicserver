@@ -9,6 +9,7 @@ import math
 from math import ceil
 import asyncio
 import urllib.request
+from psutil import cpu_percent
 
 const_LmsApiUrl = 'http://localhost:9000/jsonrpc.js'
 const_PublicFolder = 'public'
@@ -285,66 +286,28 @@ def GetPortStatusList():
     return portStatusListResult
 
 def GetCpuResourceInfo():
-    # cpuLoad1 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $1}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    process = subprocess.run(["awk '{print $1}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    cpuLoad1 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
+    cpuPercentage = int(float(cpu_percent(interval=1)))
 
-    # cpuLoad5 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $2}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)        
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["cut -c 1-4"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    cpuLoad5 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
-
-    # cpuLoad15 =>  uptime | awk -F'load average:' '{print $2}' | awk '{print $3}' | cut -c 1-4
-    process = subprocess.run(["uptime"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk -F'load average:' '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)            
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    cpuLoad15 = float(process.stdout.decode("utf-8").strip('\n').replace(',', '.'))
-
-    # cputemp
     cpuTemp = 0
-    if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
-        process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
-        process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-        cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
+    try:
+        if len(ExecuteBashCommand("whereis vcgencmd").split()) > 1:
+            # process = subprocess.run(["vcgencmd measure_temp"], stdout=subprocess.PIPE, shell=True)
+            # process = subprocess.run(["cut -c 6-"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
+            # cpuTemp = int(float(process.stdout.decode("utf-8").strip('\n').strip("\'C")))
+            cpuTemp = int(float(ExecuteBashCommand("vcgencmd measure_temp | cut -c 6-").strip("\'C")))
+    except:
+        cpuTemp = 0
 
-    return {"CpuLoad1": cpuLoad1,
-            "CpuLoad5": cpuLoad5,
-            "CpuLoad15": cpuLoad15,           
-            "CpuTemp": cpuTemp
-            }
+    return {"CpuPercentage": cpuPercentage,
+            "CpuTemp": cpuTemp}
 
 def GetMemoryResourceInfo():
-    # memTotal => free | grep 'Mem:' | awk '{print $2}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    memTotal = int(process.stdout.decode("utf-8").strip('\n'))
-
-    # memUsed => free | grep 'Mem:' | awk '{print $3}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Mem:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    memUsed = int(process.stdout.decode("utf-8").strip('\n'))
-
+    memTotal = int(ExecuteBashCommand("free | grep 'Mem:' | awk '{print $2}'"))
+    memUsed = int(ExecuteBashCommand("free | grep 'Mem:' | awk '{print $3}'"))
     memUsedPercentage = math.floor(memUsed/memTotal * 100)
 
-    # swapTotal => free | grep 'Swap:' | awk '{print $2}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $2}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    swapTotal = int(process.stdout.decode("utf-8").strip('\n'))
-
-    # swapUsed => free | grep 'Swap:' | awk '{print $3}'
-    process = subprocess.run(["free"], stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["grep 'Swap:'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)
-    process = subprocess.run(["awk '{print $3}'"], input=process.stdout, stdout=subprocess.PIPE, shell=True)    
-    swapUsed = int(process.stdout.decode("utf-8").strip('\n'))
-
+    swapTotal = int(ExecuteBashCommand("free | grep 'Swap:' | awk '{print $2}'"))
+    swapUsed = int(ExecuteBashCommand("free | grep 'Swap:' | awk '{print $3}'"))
     swapUsedPercentage = math.floor(swapUsed/swapTotal * 100)
 
     return {'MemTotal': memTotal,
@@ -352,8 +315,7 @@ def GetMemoryResourceInfo():
             "MemUsedPercentage": memUsedPercentage,
             "SwapTotal": swapTotal,
             "SwapUsed": swapUsed,
-            "SwapUsedPercentage": swapUsedPercentage
-            }
+            "SwapUsedPercentage": swapUsedPercentage}
 
 def GetVersionInfo():
     revisionFile = RevisionFileName()
@@ -457,22 +419,37 @@ def GetTranscoderInfo():
     defaultCollectionFolder = GetDefaultMusicCollectionFolder()
     defaultCollectionFolderFunctional = ConvertToFunctionalFolder(defaultCollectionFolder)
 
-    transcoderSettings = GetTranscoderSettings()
+    settingSourceFolder = ""
+    settingOggFolder = ""
+    settingOggQuality = 0
+    settingMp3Folder = ""
+    settingMp3Bitrate = 0
 
-    settingSourceFolder = transcoderSettings['sourcefolder']
-    settingSourceFolderShort = settingSourceFolder.replace(defaultCollectionFolder + '/', '')
+    transcoderSettings = {}
+    transcoderSettingsFile = '/media/usbdata/rpms/config/transcoder-settings.json'
+    if os.path.isfile(transcoderSettingsFile):
+        with open(transcoderSettingsFile) as file:
+            dataAsDict = json.load(file)
+        transcoderSettings = json.loads(json.dumps(dataAsDict))
 
-    settingOggFolder = transcoderSettings['oggfolder']
-    settingOggFolderShort = settingOggFolder.replace(defaultCollectionFolder + '/', '')    
-    settingOggQuality = transcoderSettings['oggquality']
+    if transcoderSettings != {}:
+        if 'sourcefolder' in transcoderSettings:
+            settingSourceFolder = transcoderSettings['sourcefolder']
+        if 'oggfolder' in transcoderSettings:
+            settingOggFolder = transcoderSettings['oggfolder']
+        if 'oggquality' in transcoderSettings:
+            settingOggQuality = transcoderSettings['oggquality']
+        if 'mp3folder' in transcoderSettings:
+            settingMp3Folder = transcoderSettings['mp3folder']
+        if 'mp3bitrate' in transcoderSettings:
+            settingMp3Bitrate = transcoderSettings['mp3bitrate']
 
-    settingMp3Folder = transcoderSettings['mp3folder']
-    settingMp3FolderShort = settingMp3Folder.replace(defaultCollectionFolder + '/', '')        
-    settingMp3Bitrate = transcoderSettings['mp3bitrate']
+    settingSourceFolderShort = settingSourceFolder.replace(defaultCollectionFolder + '/', '')        
+    settingOggFolderShort = settingOggFolder.replace(defaultCollectionFolder + '/', '')        
+    settingMp3FolderShort = settingMp3Folder.replace(defaultCollectionFolder + '/', '')            
+    isActivated = (settingSourceFolder != '') and ((settingOggFolder != '') or (settingMp3Folder != ''))
 
-    isActivated = (transcoderSettings['sourcefolder'] != '') and ((transcoderSettings['oggfolder'] != '') or (transcoderSettings['mp3folder'] != ''))
-
-    lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'End session' | tail -n 1 | cut -c1-19")
+    lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'Start session' | tail -n 1 | cut -c1-19")
     if lastTranscode != '':
         lastTranscode = lastTranscode + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
 
@@ -503,15 +480,6 @@ def GetApiList():
     apiInfoFile = os.path.dirname(__file__) + '/api-info.json'
     if os.path.isfile(apiInfoFile):
         with open(apiInfoFile) as file:
-            dataAsDict = json.load(file)
-        dataAsJson = json.loads(json.dumps(dataAsDict))
-    return dataAsJson
-
-def GetTranscoderSettings():
-    dataAsJson = {}
-    transcoderSettingsFile = '/media/usbdata/rpms/config/transcoder-settings.json'
-    if os.path.isfile(transcoderSettingsFile):
-        with open(transcoderSettingsFile) as file:
             dataAsDict = json.load(file)
         dataAsJson = json.loads(json.dumps(dataAsDict))
     return dataAsJson
@@ -653,16 +621,35 @@ def GetDockerContainerList():
     return dockerContainerList
 
 def SetSetting(keyName, newValue, settingsFile):
-    if not os.path.isfile(settingsFile):
-        return { "Message": "File " + settingsFile + " does not exist"}
+    if os.path.isfile(settingsFile):
+        with open(settingsFile, 'r') as jsonFile:
+            data = json.load(jsonFile)
+    else:
+        data = {}
 
-    with open(settingsFile, 'r') as jsonFile:
-        data = json.load(jsonFile)
     data[keyName] = newValue
     with open(settingsFile, 'w') as jsonFile:
         json.dump(data, jsonFile)
 
     return { "Message": "Setting ["+ keyName + "] is modified to [" + str(newValue) + "]"}
+
+def CreateMusicFolders():
+    transcoderInfo = GetTranscoderInfo()
+
+    settingSourceFolder = transcoderInfo["SettingSourceFolder"]
+    settingOggFolder = transcoderInfo["SettingOggFolder"]
+    settingMp3Folder = transcoderInfo["SettingMp3Folder"]        
+
+    if not os.path.isdir(settingSourceFolder):
+        os.mkdir(settingSourceFolder)
+
+    if not os.path.isdir(settingOggFolder):
+        os.mkdir(settingOggFolder)
+
+    if not os.path.isdir(settingMp3Folder):
+        os.mkdir(settingMp3Folder)
+
+    return { "Message": "Music-folders created."}
 
 def SetTranscoderSetting(keyName, newValue):
     return SetSetting(keyName, newValue, '/media/usbdata/rpms/config/transcoder-settings.json')
