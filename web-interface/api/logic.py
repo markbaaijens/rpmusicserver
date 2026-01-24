@@ -337,7 +337,7 @@ def GetVersionInfo():
         except:
             pass
         lastUpdateTimeStampAsString = datetime.fromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
-        lastUpdateTimeStampAsString = lastUpdateTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastUpdateTimeStampAsString, '%Y-%m-%d %H:%M:%S'))
+        lastUpdateTimeStampAsString = GetElapsedTimeHumanReadable(datetime.strptime(lastUpdateTimeStampAsString, '%Y-%m-%d %H:%M:%S'))
 
     updateBranchName = 'master'
     updateBranchFile = '/media/usbdata/rpms/config/update-branch.txt'
@@ -405,7 +405,7 @@ def GetBackupInfo():
     lastBackup = ExecuteBashCommand("cat /media/usbdata/rpms/logs/backup.log | grep -a 'executing backup' | tail -n 1 | cut -c1-19")
 
     try:
-        lastBackup = lastBackup + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastBackup, '%Y-%m-%d %H:%M:%S'))  
+        lastBackup = GetElapsedTimeHumanReadable(datetime.strptime(lastBackup, '%Y-%m-%d %H:%M:%S'))  
     except:      
         lastBackup = "No backup made, yet"
     
@@ -451,7 +451,7 @@ def GetTranscoderInfo():
 
     lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'Start session' | tail -n 1 | cut -c1-19")
     if lastTranscode != '':
-        lastTranscode = lastTranscode + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
+        lastTranscode = GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
 
     isLastTranscodeSuccesFul = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | tail -n 1 | grep error") == ''
 
@@ -518,7 +518,7 @@ def GetMusicCollectionInfo():
 
     try:
         lastExportTimeStampAsString = datetime.fromtimestamp(lastExportTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
-        lastExportTimeStampAsString = lastExportTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastExportTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
+        lastExportTimeStampAsString = GetElapsedTimeHumanReadable(datetime.strptime(lastExportTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
     except:
         lastExportTimeStampAsString = "No export made, yet"
             
@@ -536,7 +536,7 @@ def GetFlacHealthInfo():
 
     try:
         lastCheckTimeStampAsString = datetime.fromtimestamp(lastCheckTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
-        lastCheckTimeStampAsString = lastCheckTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastCheckTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
+        lastCheckTimeStampAsString = GetElapsedTimeHumanReadable(datetime.strptime(lastCheckTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
     except:
         lastCheckTimeStampAsString = "No check made, yet"
 
