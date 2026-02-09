@@ -337,7 +337,7 @@ def GetVersionInfo():
         except:
             pass
         lastUpdateTimeStampAsString = datetime.fromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
-        lastUpdateTimeStampAsString = lastUpdateTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastUpdateTimeStampAsString, '%Y-%m-%d %H:%M:%S'))
+        lastUpdateTimeStampAsString = GetElapsedTimeHumanReadable(datetime.strptime(lastUpdateTimeStampAsString, '%Y-%m-%d %H:%M:%S'))
 
     updateBranchName = 'master'
     updateBranchFile = '/media/usbdata/rpms/config/update-branch.txt'
@@ -402,10 +402,10 @@ def GetBackupInfo():
 
     canBackup = isBackupDiskPresent and (not isBackupRunning)
 
-    lastBackup = ExecuteBashCommand("cat /media/usbdata/rpms/logs/backup.log | grep 'executing backup' | tail -n 1 | cut -c1-19")
+    lastBackup = ExecuteBashCommand("cat /media/usbdata/rpms/logs/backup.log | grep -a 'executing backup' | tail -n 1 | cut -c1-19")
 
     try:
-        lastBackup = lastBackup + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastBackup, '%Y-%m-%d %H:%M:%S'))  
+        lastBackup = GetElapsedTimeHumanReadable(datetime.strptime(lastBackup, '%Y-%m-%d %H:%M:%S'))  
     except:      
         lastBackup = "No backup made, yet"
     
@@ -449,13 +449,13 @@ def GetTranscoderInfo():
     settingMp3FolderShort = settingMp3Folder.replace(defaultCollectionFolder + '/', '')            
     isActivated = (settingSourceFolder != '') and ((settingOggFolder != '') or (settingMp3Folder != ''))
 
-    lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'Start session' | tail -n 1 | cut -c1-19")
+    lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'Start session' | tail -n 1 | cut -c1-19")
     if lastTranscode != '':
-        lastTranscode = lastTranscode + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
+        lastTranscode = GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
 
     isLastTranscodeSuccesFul = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | tail -n 1 | grep error") == ''
 
-    lastTranscodedFile = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'transcoding file' | tail -n 1 | cut -d'\"' -f 2 | sed -e \"s/\[source_tree\]\///g\"")
+    lastTranscodedFile = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -d'\"' -f 2 | sed -e \"s/\[source_tree\]\///g\"")
 
     isRunning = ExecuteBashCommand("pidof -o %PPID -x \"transcode\"") != ''
 
@@ -518,7 +518,7 @@ def GetMusicCollectionInfo():
 
     try:
         lastExportTimeStampAsString = datetime.fromtimestamp(lastExportTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
-        lastExportTimeStampAsString = lastExportTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastExportTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
+        lastExportTimeStampAsString = GetElapsedTimeHumanReadable(datetime.strptime(lastExportTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
     except:
         lastExportTimeStampAsString = "No export made, yet"
             
@@ -536,11 +536,11 @@ def GetFlacHealthInfo():
 
     try:
         lastCheckTimeStampAsString = datetime.fromtimestamp(lastCheckTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
-        lastCheckTimeStampAsString = lastCheckTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastCheckTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
+        lastCheckTimeStampAsString = GetElapsedTimeHumanReadable(datetime.strptime(lastCheckTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
     except:
         lastCheckTimeStampAsString = "No check made, yet"
 
-    folderCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'Folder:' | wc -l"))
+    folderCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep -a 'Folder:' | wc -l"))
     errorCount = int(ExecuteBashCommand("flac-health-report | grep ERROR | wc -l"))
     warningCount = int(ExecuteBashCommand("flac-health-report | grep WARNING | wc -l"))
     tagId3v2Count = int(ExecuteBashCommand("flac-health-report | grep id3v2 | wc -l"))
@@ -548,10 +548,10 @@ def GetFlacHealthInfo():
     corruptFolderCount = int(ExecuteBashCommand("find /media/usbdata/user/music/flac/ -type f -name 'repair.sh' | wc -l"))
 
     checkType = 'none'
-    if int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'new folders' | wc -l")) != 0:
+    if int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep -a 'new folders' | wc -l")) != 0:
         checkType = 'new'
     else:
-        if int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'all folders' | wc -l")) != 0:
+        if int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep -a 'all folders' | wc -l")) != 0:
             checkType = 'all'
 
     isRepairFilePresent = False
