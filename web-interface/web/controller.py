@@ -582,6 +582,28 @@ def ShowApiLog(nrOfLines):
             'loglines-raw.html', 
             logLines = logLines)
 
+@app.route('/logs/transcodedfiles/<int:nrOfLines>', methods=['GET'])
+def ShowTranscodedFilesLog(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscodedFilesLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Transcoded Files-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Transcoded Files-log',
+            rawLog = '/logs/transcodedfiles/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)            
+
 @app.route('/logs/web/<int:nrOfLines>', methods=['GET'])
 def ShowWebLog(nrOfLines):
     try:
