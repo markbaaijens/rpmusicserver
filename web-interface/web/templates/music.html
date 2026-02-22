@@ -1,7 +1,12 @@
 {% extends '_base.html' %}
 
 {% block content %}
-    <h2>Music</h2>
+    <h2>
+        Music
+        <a href="https://github.com/markbaaijens/rpmusicserver/wiki/Help#music-page" target="_blank">
+            <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
+        </a>          
+    </h2>
 
     <a class="external-link" href="{{ machineInfo.HostUrl }}:9000" target="_blank">Lyrion Music Server</a>&nbsp;&nbsp;
 
@@ -98,7 +103,7 @@
     {% endif %}  
 
     <h3>Flac Health
-        <a href="https://github.com/markbaaijens/rpmusicserver#flac-health" target="_blank">
+        <a href="https://github.com/markbaaijens/rpmusicserver/wiki/Help-%7C-Flac-Health" target="_blank">
             <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
          </a>        
     </h3>
