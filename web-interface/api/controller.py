@@ -188,8 +188,8 @@ def GetFlacHealthInfo():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)      
 
-@app.route('/api/GetTranscodedFiles/<int:nrOfLines>', methods=['GET'])
-def GetTranscodedFiles(nrOfLines):
+@app.route('/api/GetTranscodedFilesLog/<int:nrOfLines>', methods=['GET'])
+def GetTranscodedFilesLog(nrOfLines):
     try:
         info = logic.GetTranscodedFiles(nrOfLines)
     except Exception as e:

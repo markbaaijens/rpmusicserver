@@ -602,14 +602,11 @@ def GetFlacHealthReport():
 def GetTranscodedFiles(nrOfLines):
     logLines = []
 
-    # if nrOfLines != 0:
-    #     logLines = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log").splitlines()
-    # else:
-    #     logLines = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | sed -e \"s|- transcoding file: \"\[source_tree\]\/||g\"").splitlines()
-
-    #logLines = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file'").splitlines()
-
-    logLines = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | sed -e \"s|- transcoding file: \"\[source_tree\]\/||g\"").splitlines()    
+    catString = "cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | sed -e 's|- transcoding file: ||g' | sed -e 's|\"\[source_tree\]\/||g' | sed -e 's|\" to ogg||g'"
+    if nrOfLines == 0:
+        logLines = ExecuteBashCommand(catString).splitlines()
+    else:
+        logLines = ExecuteBashCommand(catString + " | tail -" + str(nrOfLines)).splitlines()
 
     if len(logLines) == 0:
         logLines.append('Log is empty.')
