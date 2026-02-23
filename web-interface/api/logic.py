@@ -139,7 +139,7 @@ def GetElapsedTimeHumanReadable(fromDate):
 
     return elapsedTimeAsString
 
-def GetMachineInfo():
+def GetHostInfo():
     hostName = GetHostName()
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
 
@@ -147,6 +147,16 @@ def GetMachineInfo():
     hostUrl = urlPrefix + hostName
     if ExecuteBashCommand('nslookup ' + hostName + ' | grep "NXDOMAIN"').strip() != "":
         hostUrl = urlPrefix + ipAddress
+
+    return {"HostName": hostName,
+            "HostUrl": hostUrl,
+            "IpAddress": ipAddress}
+
+def GetMachineInfo():
+    hostInfo = GetHostInfo()
+    hostName = hostInfo['HostName']
+    ipAddress = hostInfo['IpAddress']
+    hostUrl = hostInfo['HostUrl']
 
     osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
     osBitType = ExecuteBashCommand("uname -m")
@@ -247,20 +257,25 @@ def GetDiskList():
 
 def GetPortStatusList():
     class PortInfo:
-        def __init__(self, portNumber, serviceName, serviceType='', isActive=False):
+        def __init__(self, portNumber, serviceName, serviceType='', serviceUrl='', isActive=False):
             self.PortNumber = portNumber
             self.ServiceName = serviceName
+            self.ServiceUrl = serviceUrl
             self.ServiceType = serviceType
             self.IsActive = isActive
 
+
+    hostInfo = GetHostInfo()
+    hostUrl = hostInfo['HostUrl']            
+
     portStatusList = []
-    portStatusList.append(PortInfo(22, 'ssh'))
-    portStatusList.append(PortInfo(80, 'rpms', 'web'))
+    portStatusList.append(PortInfo(22, 'ssh', 'ssh'))
+    portStatusList.append(PortInfo(80, 'rpms', 'web', hostUrl + ':80'))
     portStatusList.append(PortInfo(139, 'samba', 'netbios'))
     portStatusList.append(PortInfo(445, 'samba', 'microsoft-ds'))
-    portStatusList.append(PortInfo(5000, 'rpms', 'api'))
-    portStatusList.append(PortInfo(8384, 'syncthing', 'web'))
-    portStatusList.append(PortInfo(9000, 'lms', 'web'))
+    portStatusList.append(PortInfo(5000, 'rpms', 'api', hostUrl + ':5000'))
+    portStatusList.append(PortInfo(8384, 'syncthing', 'web', hostUrl + ':8384'))
+    portStatusList.append(PortInfo(9000, 'lms', 'web', hostUrl + ':9000'))
     portStatusList.append(PortInfo(9090, 'lms', 'telnet'))
 
     portList = ''
@@ -279,6 +294,7 @@ def GetPortStatusList():
     for portStatus in portStatusList:
         portStatusListResult.append({"PortNumber": portStatus.PortNumber,
                                      "ServiceName": portStatus.ServiceName,
+                                     "ServiceUrl": portStatus.ServiceUrl,
                                      "ServiceType": portStatus.ServiceType,
                                      "IsActive": portStatus.IsActive
                                     })
