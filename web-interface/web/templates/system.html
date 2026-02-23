@@ -33,7 +33,12 @@
                     {{ portStatus.PortNumber }}
                 </td>
                 <td>
-                    <b>{{ portStatus.ServiceName }}</b>
+                    {% if ( (portStatus.IsActive) and (portStatus.ServiceUrl) ) %}
+                        <a href="{{ portStatus.ServiceUrl }}" target="_blank">{{ portStatus.ServiceName }}</a> 
+                    {% else %}
+                        <b>{{ portStatus.ServiceName }}</b>
+                    {% endif %}        
+
                     <small>{{ portStatus.ServiceType }}</small>
                 </td>
             </tr>
