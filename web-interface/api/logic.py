@@ -471,7 +471,11 @@ def GetTranscoderInfo():
 
     isLastTranscodeSuccesFul = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | tail -n 1 | grep error") == ''
 
-    lastTranscodedFile = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -d'\"' -f 2 | sed -e \"s/\[source_tree\]\///g\"")
+    # cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -d'"' -f 2 | sed -e "s/\[source_tree\]\///g"
+    lastTranscodedFileName = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -d'\"' -f 2 | sed -e \"s/\[source_tree\]\///g\"")
+
+    # cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -c1-19
+    lastTranscodedFileTimeStamp = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -c1-19")
 
     isRunning = ExecuteBashCommand("pidof -o %PPID -x \"transcode\"") != ''
 
@@ -479,7 +483,8 @@ def GetTranscoderInfo():
             "IsLastTranscodeSuccesFul": isLastTranscodeSuccesFul,
             "IsRunning": isRunning,
             "LastTranscode": lastTranscode,
-            "LastTranscodedFile": lastTranscodedFile,
+            "LastTranscodedFileName": lastTranscodedFileName,
+            "LastTranscodedFileTimeStamp": lastTranscodedFileTimeStamp,
             "DefaultCollectionFolder": defaultCollectionFolder,
             "DefaultCollectionFolderFunctional": defaultCollectionFolderFunctional,
             "SettingSourceFolder": settingSourceFolder,

@@ -9,7 +9,7 @@
     <table>
         <tr>
             <td>
-                Transcoder Status
+                Status
             </td>
             <td><b>
                 {% if transcoderInfo.IsActivated %}
@@ -34,7 +34,7 @@
         </tr>                           
         <tr>
             <td>
-                Last Transcode
+                Last Session
             </td>
             <td>
                 <b>{{ transcoderInfo.LastTranscode }}</b>
@@ -42,10 +42,12 @@
         </tr>
         <tr>
             <td>
-                Last Transcoded File
+                Last File
             </td>
             <td>
-                <b>{{ transcoderInfo.LastTranscodedFile }}</b> | <a href="/logs/transcodedfiles/20">Report<a>
+                <b>{{ transcoderInfo.LastTranscodedFileTimeStamp }}</b> |
+                <b>{{ transcoderInfo.LastTranscodedFileName }}</b> | 
+                <a href="/logs/transcodedfiles/20">Report<a>
             </td>
         </tr>
     </table>
