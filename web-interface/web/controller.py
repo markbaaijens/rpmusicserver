@@ -69,6 +69,20 @@ def SaveFormValue(apiUrl, newValue, fieldLabel):
 @app.route('/', methods=['GET'])
 def ShowHomePage():
     try:
+        serviceStatusLms = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceStatus/lms').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        serviceStatusLms = []
+
+    try:
+        serviceStatusSyncThing = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceStatus/syncthing').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        serviceStatusSyncThing = []        
+
+    try:
         machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
     except Exception as e:
         logger.error(e)
@@ -95,7 +109,9 @@ def ShowHomePage():
         apiRootUrl = configObject.ApiRootUrl,
         machineInfo = machineInfo,
         versionInfo = versionInfo,
-        isPowerHealthy = isPowerHealthy)
+        isPowerHealthy = isPowerHealthy,
+        serviceStatusLms = serviceStatusLms,
+        serviceStatusSyncThing = serviceStatusSyncThing)
 
 @app.route('/transcoder', methods=['GET'])
 def ShowTranscoderPage():
@@ -189,6 +205,20 @@ def ShowResourcesPage():
 @app.route('/music', methods=['GET'])
 def ShowMusicPage():
     try:
+        serviceStatusLms = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceStatus/lms').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        serviceStatusLms = []
+
+    try:
+        serviceStatusSyncThing = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceStatus/syncthing').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        serviceStatusSyncThing = []        
+
+    try:
         machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
     except Exception as e:
         logger.error(e)
@@ -231,7 +261,9 @@ def ShowMusicPage():
         lmsServerStatus = lmsServerStatus,
         lmsPlayers = lmsPlayers,
         machineInfo = machineInfo,
-        flacHealthInfo = flacHealthInfo)
+        flacHealthInfo = flacHealthInfo,
+        serviceStatusLms = serviceStatusLms,
+        serviceStatusSyncThing = serviceStatusSyncThing)
 
 @app.route('/backup', methods=['GET'])
 def ShowBackupPage():
