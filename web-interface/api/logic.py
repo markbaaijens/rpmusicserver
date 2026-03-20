@@ -264,7 +264,6 @@ def GetPortStatusList():
             self.ServiceType = serviceType
             self.IsActive = isActive
 
-
     hostInfo = GetHostInfo()
     hostUrl = hostInfo['HostUrl']            
 
@@ -300,6 +299,16 @@ def GetPortStatusList():
                                     })
 
     return portStatusListResult
+
+def GetServiceStatus(serviceName):
+    portStatusList = GetPortStatusList()
+
+    isActive = False
+    for portStatus in portStatusList:
+        if portStatus['ServiceName'] == serviceName:
+            isActive = portStatus['IsActive']
+
+    return {'IsActive': isActive}    
 
 def GetCpuResourceInfo():
     cpuPercentage = int(float(cpu_percent(interval=1)))

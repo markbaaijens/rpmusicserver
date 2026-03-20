@@ -8,7 +8,11 @@
         </a>          
     </h2>
 
-    <a class="external-link" href="{{ machineInfo.HostUrl }}:9000" target="_blank">Lyrion Music Server</a>&nbsp;&nbsp;
+    {% if serviceStatusLms.IsActive %}
+        <a href="{{ machineInfo.HostUrl }}:9000" class="link-button" target="_blank">Lyrion Music Server</a> 
+    {% else %}
+        <a class="link-button disabled">Lyrion Music Server</a> 
+    {% endif %} 
 
     <h3>Players</h3>
     <p>
@@ -63,7 +67,7 @@
             </div>
         {% endfor %} 
     {% else %}
-        {% if lmsServerStatus['httpport'] %}
+        {% if serviceStatusLms.IsActive %}
             <span class="checkmark-n">No players connected</span>
         {% else %}
             <span class="checkmark-n">Music-server is not active</span>
@@ -75,7 +79,7 @@
         <tr>
             <td>Summary</td>
             <td>
-                {% if lmsServerStatus['httpport'] %}
+                {% if serviceStatusLms.IsActive %}
                     <b>{{ lmsServerStatus['info total artists'] }}</b> artists |
                     <b>{{ lmsServerStatus['info total albums'] }}</b> albums |
                     <b>{{ lmsServerStatus['info total songs'] }}</b> songs |
