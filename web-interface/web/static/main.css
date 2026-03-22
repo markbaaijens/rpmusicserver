@@ -66,8 +66,7 @@ a.cancel:hover {
 }    
 
 em {
-	color: yellow;
-	font-weight: bolder;	
+	color: red;
 }
 
 ul {
@@ -77,6 +76,11 @@ ul {
 td {
 	padding-right: 5px;
 	vertical-align: top;
+}
+
+.message {
+	color: yellow;
+	font-weight: bolder;	
 }
 
 .top-header {
