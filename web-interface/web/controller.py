@@ -301,11 +301,7 @@ def DoBackupServer():
 
     flash(apiMessage['Message'])
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Backup Server - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/backup')
+    return redirect('/backup')
 
 @app.route('/ask-kill-docker', methods=['GET'])
 def AskKillDocker():
@@ -328,11 +324,7 @@ def DoKillDocker():
 
     flash(apiMessage['Message'])
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Kill Docker - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/system')
+    return redirect('/system')        
 
 @app.route('/ask-start-docker', methods=['GET'])
 def AskStartDocker():
@@ -355,11 +347,7 @@ def DoStartDocker():
 
     flash(apiMessage['Message'])        
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Start Docker - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/system')
+    return redirect('/system')        
 
 @app.route('/ask-update-docker', methods=['GET'])
 def AskUpdateDocker():
@@ -382,11 +370,7 @@ def DoUpdateDocker():
 
     flash(apiMessage['Message'])
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Update Docker - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/system')
+    return redirect('/system')                
 
 @app.route('/ask-export-collection', methods=['GET'])
 def AskExportCollection():
@@ -439,11 +423,7 @@ def DoExportCollection():
 
     flash(apiMessage['Message'])        
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Export Collection - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/music')
+    return redirect('/music')
 
 @app.route('/flac-health-check-all', methods=['GET'])
 def DoFlacHealthCheck():
@@ -456,11 +436,7 @@ def DoFlacHealthCheck():
 
     flash(apiMessage['Message'])        
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Flac Health Check / All folders - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/music')
+    return redirect('/music')                
 
 @app.route('/flac-health-check-new', methods=['GET'])
 def DoFlacHealthCheckNew():
@@ -473,11 +449,7 @@ def DoFlacHealthCheckNew():
 
     flash(apiMessage['Message'])        
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Flac Health Check / New Folders - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/music')
+    return redirect('/music')        
 
 @app.route('/flac-health-repair', methods=['GET'])
 def DoFlacHealthRepair():
@@ -490,11 +462,7 @@ def DoFlacHealthRepair():
 
     flash(apiMessage['Message'])        
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Flac Health Check Repair - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/music')
+    return redirect('/music')        
 
 @app.route('/ask-transcode', methods=['GET'])
 def AskTranscode():
@@ -517,11 +485,7 @@ def DoTranscode():
 
     flash(apiMessage['Message'])        
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Transcode - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/transcoder')
+    return redirect('/transcoder')
 
 @app.route('/ask-update-rpms', methods=['GET'])
 def AskUpdateRpms():
