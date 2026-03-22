@@ -10,6 +10,7 @@ from math import ceil
 import asyncio
 import urllib.request
 from psutil import cpu_percent
+import glob
 
 const_LmsApiUrl = 'http://localhost:9000/jsonrpc.js'
 const_PublicFolder = 'public'
@@ -758,9 +759,11 @@ def ExportCollectionArtistAlbumByFolder(collectionFolder):
         level = dir.count(os.sep) - startLevel
         dirName = dir.split(os.path.sep)[-1]
         if level > 0:
-            drFileName = os.path.join(dir, 'dr14.txt')
+            drFileFilter = os.path.join(dir, 'dr14*.txt')
+            drFileList = glob.glob(drFileFilter)
             drValue = ''
-            if os.path.isfile(drFileName):
+            if drFileList.count > 0:
+                drFileName = drFileList[0] # In theory, there could be more than 1 file, but we take the first one
                 try:
                     drValue = os.popen('cat "' + drFileName + '" | grep "Official DR value:" | cut -c24-27 &> /dev/null').read().strip()
                     if drValue != '':
