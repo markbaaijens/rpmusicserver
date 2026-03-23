@@ -760,9 +760,9 @@ def ExportCollectionArtistAlbumByFolder(collectionFolder):
         dirName = dir.split(os.path.sep)[-1]
         if level > 0:
             drFileFilter = os.path.join(dir, 'dr14*.txt')
-            drFileList = glob.glob(drFileFilter)
+            drFileList = list(glob.glob(drFileFilter))
             drValue = ''
-            if drFileList.count > 0:
+            if len(drFileList) > 0:
                 drFileName = drFileList[0] # In theory, there could be more than 1 file, but we take the first one
                 try:
                     drValue = os.popen('cat "' + drFileName + '" | grep "Official DR value:" | cut -c24-27 &> /dev/null').read().strip()
