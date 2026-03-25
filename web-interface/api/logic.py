@@ -16,6 +16,8 @@ const_LmsApiUrl = 'http://localhost:9000/jsonrpc.js'
 const_PublicFolder = 'public'
 const_MusicFolder = 'music' 
 
+const_TranscodedFiles = "cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | sed -e 's|- transcoding file: ||g' | sed -e 's|\"\[source_tree\]\/||g' | sed -e 's|\" to ogg||g'"
+
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     return process.stdout.decode("utf-8").strip('\n')
@@ -482,10 +484,9 @@ def GetTranscoderInfo():
     isLastTranscodeSuccesFul = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | tail -n 1 | grep error") == ''
 
     # cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -d'"' -f 2 | sed -e "s/\[source_tree\]\///g"
-    lastTranscodedFileName = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -d'\"' -f 2 | sed -e \"s/\[source_tree\]\///g\"")
+    # lastTranscodedFileName = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -d'\"' -f 2 | sed -e \"s/\[source_tree\]\///g\"")
 
-    # cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -c1-19
-    lastTranscodedFileTimeStamp = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -c1-19")
+    lastTranscodedFileName = ExecuteBashCommand(const_TranscodedFiles + ' | tail -n 1')    
 
     isRunning = ExecuteBashCommand("pidof -o %PPID -x \"transcode\"") != ''
 
@@ -494,7 +495,6 @@ def GetTranscoderInfo():
             "IsRunning": isRunning,
             "LastTranscode": lastTranscode,
             "LastTranscodedFileName": lastTranscodedFileName,
-            "LastTranscodedFileTimeStamp": lastTranscodedFileTimeStamp,
             "DefaultCollectionFolder": defaultCollectionFolder,
             "DefaultCollectionFolderFunctional": defaultCollectionFolderFunctional,
             "SettingSourceFolder": settingSourceFolder,
@@ -633,11 +633,10 @@ def GetFlacHealthReport():
 def GetTranscodedFiles(nrOfLines):
     logLines = []
 
-    catString = "cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | sed -e 's|- transcoding file: ||g' | sed -e 's|\"\[source_tree\]\/||g' | sed -e 's|\" to ogg||g'"
     if nrOfLines == 0:
-        logLines = ExecuteBashCommand(catString).splitlines()
+        logLines = ExecuteBashCommand(const_TranscodedFiles).splitlines()
     else:
-        logLines = ExecuteBashCommand(catString + " | tail -" + str(nrOfLines)).splitlines()
+        logLines = ExecuteBashCommand(const_TranscodedFiles + " | tail -" + str(nrOfLines)).splitlines()
 
     if len(logLines) == 0:
         logLines.append('Log is empty.')
