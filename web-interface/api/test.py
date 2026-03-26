@@ -3,14 +3,14 @@
 import fnmatch
 import os
 import glob
-'''        
-dir = '/home/mark/Temp/Metallica/Metallica (Black Album)'
-for drFileName in os.listdir(dir):
-    if fnmatch.fnmatch(drFileName, 'dr14*.txt'):
-        print(drFileName)
-        break
 
-'''
+dir = '/home/mark/Temp/Metallica/Metallica (Black Album)'
+
+def GetDrFile(dir):
+    for drFileName in os.listdir(dir):
+        if fnmatch.fnmatch(drFileName, 'dr14*.txt'):
+            return drFileName
+    return ""
 
 #collectionFolder = '/home/mark/Temp'
 collectionFolder = '/media/mark/BACKUP/user/music/flac'
