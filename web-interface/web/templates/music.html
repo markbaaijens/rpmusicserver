@@ -100,7 +100,7 @@
     </table> 
     <br>
 
-    {% if lmsServerStatus['info total artists'] %}
+    {% if serviceStatusLms.IsActive %}
         <a href="/ask-export-collection" class="link-button">Export</a>   
     {% else %}
         <a class="link-button disabled">Export</a> 
