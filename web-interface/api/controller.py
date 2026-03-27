@@ -232,6 +232,42 @@ def GetTranscoderLog(nrOfLines):
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/GetCollectionByFolderReport/<int:nrOfLines>', methods=['GET'])
+def GetCollectionByFolderReport(nrOfLines):
+    collectionFolder = logic.GetMusicCollectionInfo()["CollectionFolder"]
+    try:
+        info = logic.GetLog(collectionFolder + '/' + logic.const_CollectionByFolderFileName, nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)        
+
+@app.route('/api/GetCollectionByTagReport/<int:nrOfLines>', methods=['GET'])
+def GetCollectionByTagReport(nrOfLines):
+    collectionFolder = logic.GetMusicCollectionInfo()["CollectionFolder"]
+    try:
+        info = logic.GetLog(collectionFolder + '/' + logic.const_CollectionByTagFileName, nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)
+
+@app.route('/api/GetCollectionByGenreReport/<int:nrOfLines>', methods=['GET'])
+def GetCollectionByGenreReport(nrOfLines):
+    collectionFolder = logic.GetMusicCollectionInfo()["CollectionFolder"]
+    try:
+        info = logic.GetLog(collectionFolder + '/' + logic.const_CollectionByGenreFileName, nrOfLines)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetBackupLog/<int:nrOfLines>', methods=['GET'])
 def GetBackupLog(nrOfLines):
     try:

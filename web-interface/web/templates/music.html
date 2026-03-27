@@ -100,11 +100,20 @@
     </table> 
     <br>
 
-    {% if serviceStatusLms.IsActive %}
-        <a href="/ask-export-collection" class="link-button">Export</a>   
-    {% else %}
-        <a class="link-button disabled">Export</a> 
-    {% endif %}  
+    <div>
+        {% if serviceStatusLms.IsActive %}
+            <a href="/ask-export-collection" class="link-button">Export</a>   
+        {% else %}
+            <a class="link-button disabled">Export</a> 
+        {% endif %}  
+    </div>
+
+    <div class="indent">
+        <p>
+        <a href="/report/collection-by-folder/20">Collection by Folder</a> | 
+        <a href="/report/collection-by-tag/20">By Tag</a> | 
+        <a href="/report/collection-by-genre/20">By Genre</a>
+    </div>
 
     <h3>Flac Health
         <a href="https://github.com/markbaaijens/rpmusicserver/wiki/Help-%7C-Flac-Health" target="_blank">
