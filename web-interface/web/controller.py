@@ -578,6 +578,72 @@ def ShowApiLog(nrOfLines):
             'loglines-raw.html', 
             logLines = logLines)
 
+@app.route('/report/collection-by-folder/<int:nrOfLines>', methods=['GET'])
+def ShowCollectionByFolderReport(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetCollectionByFolderReport/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Collection by Folder-report - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Collection by Folder-report',
+            rawLog = '/report/collection-by-folder/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
+
+@app.route('/report/collection-by-tag/<int:nrOfLines>', methods=['GET'])
+def ShowCollectionByTagReport(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetCollectionByTagReport/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Collection by Tag-report - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Collection by Tag-report',
+            rawLog = '/report/collection-by-tag/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)            
+
+@app.route('/report/collection-by-genre/<int:nrOfLines>', methods=['GET'])
+def ShowCollectionByGenreReport(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetCollectionByGenreReport/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Collection by Genre-report - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Collection by Genre-report',
+            rawLog = '/report/collection-by-genre/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)       
+
 @app.route('/logs/transcodedfiles/<int:nrOfLines>', methods=['GET'])
 def ShowTranscodedFilesLog(nrOfLines):
     try:

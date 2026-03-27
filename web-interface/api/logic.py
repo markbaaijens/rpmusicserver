@@ -16,6 +16,10 @@ const_LmsApiUrl = 'http://localhost:9000/jsonrpc.js'
 const_PublicFolder = 'public'
 const_MusicFolder = 'music' 
 
+const_CollectionByFolderFileName = 'collection-by-folder.txt'
+const_CollectionByTagFileName = 'collection-by-tag.txt'
+const_CollectionByGenreFileName = 'collection-by-genre.txt'
+
 const_TranscodedFiles = "cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | sed -e 's|- transcoding file: ||g' | sed -e 's|\"\[source_tree\]\/||g' | sed -e 's|\" to ogg||g'"
 
 def ExecuteBashCommand(bashCommand):
@@ -542,7 +546,7 @@ def GetMusicCollectionInfo():
     collectionFolderFunctional = ConvertToFunctionalFolder(collectionFolder)
 
     lastExportTimeStampAsString = ''
-    exportFile = "collection-artist-album-by-folder.txt"    
+    exportFile = const_CollectionByFolderFileName
     fullExportFile = collectionFolder + "/" + exportFile
     if os.path.isfile(fullExportFile):
         lastExportTimeStampAsString = os.path.getmtime(fullExportFile)
@@ -776,9 +780,9 @@ def ExportCollectionArtistAlbumByFolder(collectionFolder):
                 except:
                     pass
 
-            collection += (' ' * 4 * (level -1)) + dirName + drValue + '\n'
+            collection += ('. . ' * (level -1)) + dirName + drValue + '\n'
 
-    with open(collectionFolder + '/collection-artist-album-by-folder.txt', 'w') as file:
+    with open(collectionFolder + '/' + const_CollectionByFolderFileName, 'w') as file:
         file.write(collection)            
 
     pass
@@ -790,10 +794,10 @@ def ExportCollectionArtistAlbumByTag(collectionFolder):
         albums = GetLmsAlbumsByArtist(artist['id'])
         collection += artist['artist'] + ' (' + str(len(albums)) + ')\n'            
         for album in albums:
-            collection += (' ' * 4) + album['album'] + '\n'                
+            collection += '. . ' + album['album'] + '\n'
 
-    with open(collectionFolder + '/collection-artist-album-by-tag.txt', 'w') as file:
-        file.write(collection)            
+    with open(collectionFolder + '/' + const_CollectionByTagFileName, 'w') as file:
+        file.write(collection)
 
     pass
         
@@ -805,11 +809,11 @@ def ExportCollectionGenreArtistAlbumByTag(collectionFolder):
         collection += genre['genre'] + ' (' + str(len(artists)) + ')\n'        
         for artist in artists:
             albums = GetLmsAlbumsByGenreArtist(genre['id'], artist['id'])
-            collection += (' ' * 4) + artist['artist'] + ' (' + str(len(albums)) + ')\n'            
+            collection += ('. . ') + artist['artist'] + ' (' + str(len(albums)) + ')\n'            
             for album in albums:
-                collection += (' ' * 4 * 2) + album['album'] + '\n'
+                collection += ('. . ' * 2) + album['album'] + '\n'
 
-    with open(collectionFolder + '/collection-genre-artist-album-by-tag.txt', 'w') as file:
+    with open(collectionFolder + '/' + const_CollectionByGenreFileName, 'w') as file:
         file.write(collection)            
 
     pass
