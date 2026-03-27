@@ -69,6 +69,20 @@ def SaveFormValue(apiUrl, newValue, fieldLabel):
 @app.route('/', methods=['GET'])
 def ShowHomePage():
     try:
+        serviceStatusLms = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceStatus/lms').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        serviceStatusLms = []
+
+    try:
+        serviceStatusSyncThing = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceStatus/syncthing').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        serviceStatusSyncThing = []        
+
+    try:
         machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
     except Exception as e:
         logger.error(e)
@@ -95,7 +109,9 @@ def ShowHomePage():
         apiRootUrl = configObject.ApiRootUrl,
         machineInfo = machineInfo,
         versionInfo = versionInfo,
-        isPowerHealthy = isPowerHealthy)
+        isPowerHealthy = isPowerHealthy,
+        serviceStatusLms = serviceStatusLms,
+        serviceStatusSyncThing = serviceStatusSyncThing)
 
 @app.route('/transcoder', methods=['GET'])
 def ShowTranscoderPage():
@@ -189,6 +205,20 @@ def ShowResourcesPage():
 @app.route('/music', methods=['GET'])
 def ShowMusicPage():
     try:
+        serviceStatusLms = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceStatus/lms').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        serviceStatusLms = []
+
+    try:
+        serviceStatusSyncThing = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetServiceStatus/syncthing').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        serviceStatusSyncThing = []        
+
+    try:
         machineInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetMachineInfo').content)
     except Exception as e:
         logger.error(e)
@@ -231,7 +261,9 @@ def ShowMusicPage():
         lmsServerStatus = lmsServerStatus,
         lmsPlayers = lmsPlayers,
         machineInfo = machineInfo,
-        flacHealthInfo = flacHealthInfo)
+        flacHealthInfo = flacHealthInfo,
+        serviceStatusLms = serviceStatusLms,
+        serviceStatusSyncThing = serviceStatusSyncThing)
 
 @app.route('/backup', methods=['GET'])
 def ShowBackupPage():
@@ -269,11 +301,7 @@ def DoBackupServer():
 
     flash(apiMessage['Message'])
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Backup Server - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/backup')
+    return redirect('/backup')
 
 @app.route('/ask-kill-docker', methods=['GET'])
 def AskKillDocker():
@@ -296,11 +324,7 @@ def DoKillDocker():
 
     flash(apiMessage['Message'])
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Kill Docker - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/system')
+    return redirect('/system')        
 
 @app.route('/ask-start-docker', methods=['GET'])
 def AskStartDocker():
@@ -323,11 +347,7 @@ def DoStartDocker():
 
     flash(apiMessage['Message'])        
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Start Docker - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/system')
+    return redirect('/system')        
 
 @app.route('/ask-update-docker', methods=['GET'])
 def AskUpdateDocker():
@@ -350,11 +370,7 @@ def DoUpdateDocker():
 
     flash(apiMessage['Message'])
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Update Docker - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/system')
+    return redirect('/system')                
 
 @app.route('/ask-export-collection', methods=['GET'])
 def AskExportCollection():
@@ -407,11 +423,7 @@ def DoExportCollection():
 
     flash(apiMessage['Message'])        
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Export Collection - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/music')
+    return redirect('/music')
 
 @app.route('/flac-health-check-all', methods=['GET'])
 def DoFlacHealthCheck():
@@ -424,11 +436,7 @@ def DoFlacHealthCheck():
 
     flash(apiMessage['Message'])        
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Flac Health Check / All folders - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/music')
+    return redirect('/music')                
 
 @app.route('/flac-health-check-new', methods=['GET'])
 def DoFlacHealthCheckNew():
@@ -441,11 +449,7 @@ def DoFlacHealthCheckNew():
 
     flash(apiMessage['Message'])        
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Flac Health Check / New Folders - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/music')
+    return redirect('/music')        
 
 @app.route('/flac-health-repair', methods=['GET'])
 def DoFlacHealthRepair():
@@ -458,11 +462,7 @@ def DoFlacHealthRepair():
 
     flash(apiMessage['Message'])        
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Flac Health Check Repair - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/music')
+    return redirect('/music')        
 
 @app.route('/ask-transcode', methods=['GET'])
 def AskTranscode():
@@ -485,11 +485,7 @@ def DoTranscode():
 
     flash(apiMessage['Message'])        
 
-    return render_template(
-        'message.html', 
-        appTitle = 'Transcode - ' + configObject.AppTitle, 
-        apiRootUrl = configObject.ApiRootUrl,
-        backUrl = '/transcoder')
+    return redirect('/transcoder')
 
 @app.route('/ask-update-rpms', methods=['GET'])
 def AskUpdateRpms():
@@ -581,6 +577,94 @@ def ShowApiLog(nrOfLines):
         return render_template(
             'loglines-raw.html', 
             logLines = logLines)
+
+@app.route('/report/collection-by-folder/<int:nrOfLines>', methods=['GET'])
+def ShowCollectionByFolderReport(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetCollectionByFolderReport/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Collection by Folder-report - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Collection by Folder-report',
+            rawLog = '/report/collection-by-folder/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)
+
+@app.route('/report/collection-by-tag/<int:nrOfLines>', methods=['GET'])
+def ShowCollectionByTagReport(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetCollectionByTagReport/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Collection by Tag-report - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Collection by Tag-report',
+            rawLog = '/report/collection-by-tag/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)            
+
+@app.route('/report/collection-by-genre/<int:nrOfLines>', methods=['GET'])
+def ShowCollectionByGenreReport(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetCollectionByGenreReport/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Collection by Genre-report - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Collection by Genre-report',
+            rawLog = '/report/collection-by-genre/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)       
+
+@app.route('/logs/transcodedfiles/<int:nrOfLines>', methods=['GET'])
+def ShowTranscodedFilesLog(nrOfLines):
+    try:
+        logLines = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscodedFilesLog/' + str(nrOfLines)).content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        logLines = []
+
+    if nrOfLines != 0:
+        return render_template(
+            'loglines.html', 
+            appTitle = 'Transcoded Files-log - ' + configObject.AppTitle, 
+            apiRootUrl = configObject.ApiRootUrl,
+            logLines = logLines,
+            logTitle = 'Transcoded Files-log',
+            rawLog = '/logs/transcodedfiles/0')
+    else:
+        return render_template(
+            'loglines-raw.html', 
+            logLines = logLines)            
 
 @app.route('/logs/web/<int:nrOfLines>', methods=['GET'])
 def ShowWebLog(nrOfLines):

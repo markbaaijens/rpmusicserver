@@ -78,6 +78,11 @@ td {
 	vertical-align: top;
 }
 
+.message {
+	color: yellow;
+	font-weight: bolder;	
+}
+
 .top-header {
 	padding-top: 3px;
 }

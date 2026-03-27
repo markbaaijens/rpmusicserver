@@ -1,9 +1,18 @@
 {% extends '_base.html' %}
 
 {% block content %}
-    <h2>Music</h2>
+    <h2>
+        Music
+        <a href="https://github.com/markbaaijens/rpmusicserver/wiki/Help#music-page" target="_blank">
+            <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
+        </a>          
+    </h2>
 
-    <a class="external-link" href="{{ machineInfo.HostUrl }}:9000" target="_blank">Lyrion Music Server</a>&nbsp;&nbsp;
+    {% if serviceStatusLms.IsActive %}
+        <a href="{{ machineInfo.HostUrl }}:9000" class="link-button" target="_blank">Lyrion Music Server</a> 
+    {% else %}
+        <a class="link-button disabled">Lyrion Music Server</a> 
+    {% endif %} 
 
     <h3>Players</h3>
     <p>
@@ -58,7 +67,7 @@
             </div>
         {% endfor %} 
     {% else %}
-        {% if lmsServerStatus['httpport'] %}
+        {% if serviceStatusLms.IsActive %}
             <span class="checkmark-n">No players connected</span>
         {% else %}
             <span class="checkmark-n">Music-server is not active</span>
@@ -70,7 +79,7 @@
         <tr>
             <td>Summary</td>
             <td>
-                {% if lmsServerStatus['httpport'] %}
+                {% if serviceStatusLms.IsActive %}
                     <b>{{ lmsServerStatus['info total artists'] }}</b> artists |
                     <b>{{ lmsServerStatus['info total albums'] }}</b> albums |
                     <b>{{ lmsServerStatus['info total songs'] }}</b> songs |
@@ -91,14 +100,23 @@
     </table> 
     <br>
 
-    {% if lmsServerStatus['info total artists'] %}
-        <a href="/ask-export-collection" class="link-button">Export</a>   
-    {% else %}
-        <a class="link-button disabled">Export</a> 
-    {% endif %}  
+    <div>
+        {% if serviceStatusLms.IsActive %}
+            <a href="/ask-export-collection" class="link-button">Export</a>   
+        {% else %}
+            <a class="link-button disabled">Export</a> 
+        {% endif %}  
+    </div>
+
+    <div class="indent">
+        <p>
+        <a href="/report/collection-by-folder/20">Collection by Folder</a> | 
+        <a href="/report/collection-by-tag/20">By Tag</a> | 
+        <a href="/report/collection-by-genre/20">By Genre</a>
+    </div>
 
     <h3>Flac Health
-        <a href="https://github.com/markbaaijens/rpmusicserver#flac-health" target="_blank">
+        <a href="https://github.com/markbaaijens/rpmusicserver/wiki/Help-%7C-Flac-Health" target="_blank">
             <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
          </a>        
     </h3>
@@ -128,9 +146,14 @@
                     {% endif %}                                                      
 
                     {% if flacHealthInfo.CorruptFolderCount == 0 %}
-                        <b><span class="checkmark-y">{{ flacHealthInfo.CorruptFolderCount }}</span></b> corrupt folder(s)
+                        <b><span class="checkmark-y">
+                            {{ flacHealthInfo.CorruptFolderCount }}
+                        </span></b> corrupt folder(s)
                     {% else %}
-                        <b><span class="checkmark-n">{{ flacHealthInfo.CorruptFolderCount }}</span></b> corrupt folder(s)
+                        <b><span class="checkmark-n">
+                            {{ flacHealthInfo.CorruptFolderCount }}
+                        </span></b> corrupt folder(s) |
+                        <a href="/logs/flac-health-report">Report</a>                        
                     {% endif %}                                                  
                 {% else %}
                     <b>-</b>
@@ -177,7 +200,7 @@
                 <a class="link-button disabled">Repair</a> 
             {% else %}
                 <a href="/ask-flac-health-repair" class="link-button">Repair</a>
-            {% endif %}         
+            {% endif %}
         {% else %}
             <a class="link-button disabled">Repair</a> 
         {% endif %}         
@@ -186,7 +209,6 @@
     <div class="indent">
         <p>
         <a href="/logs/flac-health-check/20">Log</a> | 
-        <a href="/logs/flac-health-report">Report</a> |
         <a href="/logs/flac-health-repair/20">Repair</a>        
     </div>       
 

@@ -2,16 +2,23 @@
 
 {% block content %}
     <h2>Home
-        <a href="https://github.com/markbaaijens/rpmusicserver#rp-music-server" target="_blank">
+        <a href="https://github.com/markbaaijens/rpmusicserver/wiki/Help#home-page" target="_blank">
             <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
-         </a>
+        </a>
     </h2>
 
-    <div>
-        <p>
-        <a class="external-link" href="{{ machineInfo.HostUrl }}:9000" target="_blank">Lyrion Music Server</a>&nbsp;
-        <a class="external-link" href="{{ machineInfo.HostUrl }}:8384" target="_blank">SyncThing</a>&nbsp;
-    </div>
+    {% if serviceStatusLms.IsActive %}
+        <a href="{{ machineInfo.HostUrl }}:9000" class="link-button" target="_blank">Lyrion Music Server</a> 
+    {% else %}
+        <a class="link-button disabled">Lyrion Music Server</a> 
+    {% endif %} 
+
+    {% if serviceStatusSyncThing.IsActive %}
+        <a href="{{ machineInfo.HostUrl }}:8384" class="link-button" target="_blank">SyncThing</a> 
+    {% else %}
+        <a class="link-button disabled">SyncThing</a> 
+    {% endif %}     
+    <p>
 
     <table>
         <tr>
@@ -50,7 +57,7 @@
     </table>    
 
     <h3>Version
-        <a href="https://github.com/markbaaijens/rpmusicserver#update-rpms" target="_blank">
+        <a href="https://github.com/markbaaijens/rpmusicserver/wiki/Help-%7C-Update-RPMS" target="_blank">
             <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
          </a>
     </h3>

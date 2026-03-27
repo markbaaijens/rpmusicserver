@@ -2,14 +2,14 @@
 
 {% block content %}
     <h2>Transcoder
-        <a href="https://github.com/markbaaijens/rpmusicserver#transcoder" target="_blank">
+        <a href="https://github.com/markbaaijens/rpmusicserver/wiki/Help#transcoder-page" target="_blank">
             <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
-         </a>
+        </a>           
     </h2>
     <table>
         <tr>
             <td>
-                Transcoder Status
+                Status
             </td>
             <td><b>
                 {% if transcoderInfo.IsActivated %}
@@ -34,20 +34,21 @@
         </tr>                           
         <tr>
             <td>
-                Last Transcode
+                Last Session
             </td>
             <td>
                 <b>{{ transcoderInfo.LastTranscode }}</b>
             </td>
         </tr>
-        <tr>            
+        <tr>
             <td>
-                Last Transcoded File
+                Last File
             </td>
             <td>
-                <b>{{ transcoderInfo.LastTranscodedFile }}</b>
-            </td>            
-        </tr>          
+                <b>{{ transcoderInfo.LastTranscodedFileName }}</b> | 
+                <a href="/logs/transcodedfiles/20">Report<a>
+            </td>
+        </tr>
     </table>
     <br>
     <div>
@@ -55,7 +56,7 @@
             {% if transcoderInfo.IsRunning %}
                 <a class="link-button disabled">Transcode</a> 
             {% else %}            
-                <a href="/ask-transcode" class="link-button">Transcode</a>              
+                <a href="/ask-transcode" class="link-button">Transcode</a>
             {% endif %}
         {% else %}
             <a class="link-button disabled">Transcode</a> 
@@ -83,7 +84,7 @@
                         <b>1</b>
                     {% else %}
                         <b>{{ transcoderInfo.SettingOggQuality }}</b>
-                    {% endif %}                    
+                    {% endif %}
                 {% endif %}
             </td>
         </tr>

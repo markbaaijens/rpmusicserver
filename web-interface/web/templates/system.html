@@ -1,7 +1,12 @@
 {% extends '_base.html' %}
 
 {% block content %}
-    <h2>System</h2>
+    <h2>
+        System
+        <a href="https://github.com/markbaaijens/rpmusicserver/wiki/Help#system-page" target="_blank">
+            <img src="{{ url_for('static',filename='help.png') }}" class="icon-help">
+        </a>          
+    </h2>
     <div>
         <a class="external-link" href="{{ machineInfo.HostUrl }}:5000" target="_blank">Api</a>&nbsp;
         <a class="external-link" href="{{ machineInfo.HostUrl }}:5000/api/GetApiList" target="_blank">Documentation</a>    
@@ -28,18 +33,17 @@
                     {{ portStatus.PortNumber }}
                 </td>
                 <td>
-                    <b>{{ portStatus.ServiceName }}</b>
+                    {% if ( (portStatus.IsActive) and (portStatus.ServiceUrl) ) %}
+                        <a href="{{ portStatus.ServiceUrl }}" target="_blank">{{ portStatus.ServiceName }}</a> 
+                    {% else %}
+                        <b>{{ portStatus.ServiceName }}</b>
+                    {% endif %}        
+
                     <small>{{ portStatus.ServiceType }}</small>
                 </td>
             </tr>
         {% endfor %} 
     </table>
-    <p>
-    <div><em>
-        Ports may take a few moments to become visible to the outside.<br>
-        Use this command on your client for a correct port-status:<br>
-        <code>watch nmap rpms</code>
-    </em></div>
 
     <h3>Docker</h3>
     <table>

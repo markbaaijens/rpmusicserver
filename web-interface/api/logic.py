@@ -10,10 +10,17 @@ from math import ceil
 import asyncio
 import urllib.request
 from psutil import cpu_percent
+import fnmatch
 
 const_LmsApiUrl = 'http://localhost:9000/jsonrpc.js'
 const_PublicFolder = 'public'
 const_MusicFolder = 'music' 
+
+const_CollectionByFolderFileName = 'collection-by-folder.txt'
+const_CollectionByTagFileName = 'collection-by-tag.txt'
+const_CollectionByGenreFileName = 'collection-by-genre.txt'
+
+const_TranscodedFiles = "cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | sed -e 's|- transcoding file: ||g' | sed -e 's|\"\[source_tree\]\/||g' | sed -e 's|\" to ogg||g'"
 
 def ExecuteBashCommand(bashCommand):
     process = subprocess.run(bashCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -139,7 +146,7 @@ def GetElapsedTimeHumanReadable(fromDate):
 
     return elapsedTimeAsString
 
-def GetMachineInfo():
+def GetHostInfo():
     hostName = GetHostName()
     ipAddress = ExecuteBashCommand("hostname -I").split()[0]
 
@@ -147,6 +154,16 @@ def GetMachineInfo():
     hostUrl = urlPrefix + hostName
     if ExecuteBashCommand('nslookup ' + hostName + ' | grep "NXDOMAIN"').strip() != "":
         hostUrl = urlPrefix + ipAddress
+
+    return {"HostName": hostName,
+            "HostUrl": hostUrl,
+            "IpAddress": ipAddress}
+
+def GetMachineInfo():
+    hostInfo = GetHostInfo()
+    hostName = hostInfo['HostName']
+    ipAddress = hostInfo['IpAddress']
+    hostUrl = hostInfo['HostUrl']
 
     osDescription = ExecuteBashCommand("lsb_release -d | cut -f2")
     osBitType = ExecuteBashCommand("uname -m")
@@ -247,20 +264,24 @@ def GetDiskList():
 
 def GetPortStatusList():
     class PortInfo:
-        def __init__(self, portNumber, serviceName, serviceType='', isActive=False):
+        def __init__(self, portNumber, serviceName, serviceType='', serviceUrl='', isActive=False):
             self.PortNumber = portNumber
             self.ServiceName = serviceName
+            self.ServiceUrl = serviceUrl
             self.ServiceType = serviceType
             self.IsActive = isActive
 
+    hostInfo = GetHostInfo()
+    hostUrl = hostInfo['HostUrl']            
+
     portStatusList = []
-    portStatusList.append(PortInfo(22, 'ssh'))
-    portStatusList.append(PortInfo(80, 'rpms', 'web'))
+    portStatusList.append(PortInfo(22, 'ssh', 'ssh'))
+    portStatusList.append(PortInfo(80, 'rpms', 'web', hostUrl + ':80'))
     portStatusList.append(PortInfo(139, 'samba', 'netbios'))
     portStatusList.append(PortInfo(445, 'samba', 'microsoft-ds'))
-    portStatusList.append(PortInfo(5000, 'rpms', 'api'))
-    portStatusList.append(PortInfo(8384, 'syncthing', 'web'))
-    portStatusList.append(PortInfo(9000, 'lms', 'web'))
+    portStatusList.append(PortInfo(5000, 'rpms', 'api', hostUrl + ':5000'))
+    portStatusList.append(PortInfo(8384, 'syncthing', 'web', hostUrl + ':8384'))
+    portStatusList.append(PortInfo(9000, 'lms', 'web', hostUrl + ':9000'))
     portStatusList.append(PortInfo(9090, 'lms', 'telnet'))
 
     portList = ''
@@ -279,11 +300,22 @@ def GetPortStatusList():
     for portStatus in portStatusList:
         portStatusListResult.append({"PortNumber": portStatus.PortNumber,
                                      "ServiceName": portStatus.ServiceName,
+                                     "ServiceUrl": portStatus.ServiceUrl,
                                      "ServiceType": portStatus.ServiceType,
                                      "IsActive": portStatus.IsActive
                                     })
 
     return portStatusListResult
+
+def GetServiceStatus(serviceName):
+    portStatusList = GetPortStatusList()
+
+    isActive = False
+    for portStatus in portStatusList:
+        if portStatus['ServiceName'] == serviceName:
+            isActive = portStatus['IsActive']
+
+    return {'IsActive': isActive}    
 
 def GetCpuResourceInfo():
     cpuPercentage = int(float(cpu_percent(interval=1)))
@@ -337,7 +369,7 @@ def GetVersionInfo():
         except:
             pass
         lastUpdateTimeStampAsString = datetime.fromtimestamp(lastUpdateTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
-        lastUpdateTimeStampAsString = lastUpdateTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastUpdateTimeStampAsString, '%Y-%m-%d %H:%M:%S'))
+        lastUpdateTimeStampAsString = GetElapsedTimeHumanReadable(datetime.strptime(lastUpdateTimeStampAsString, '%Y-%m-%d %H:%M:%S'))
 
     updateBranchName = 'master'
     updateBranchFile = '/media/usbdata/rpms/config/update-branch.txt'
@@ -402,10 +434,10 @@ def GetBackupInfo():
 
     canBackup = isBackupDiskPresent and (not isBackupRunning)
 
-    lastBackup = ExecuteBashCommand("cat /media/usbdata/rpms/logs/backup.log | grep 'executing backup' | tail -n 1 | cut -c1-19")
+    lastBackup = ExecuteBashCommand("cat /media/usbdata/rpms/logs/backup.log | grep -a 'executing backup' | tail -n 1 | cut -c1-19")
 
     try:
-        lastBackup = lastBackup + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastBackup, '%Y-%m-%d %H:%M:%S'))  
+        lastBackup = GetElapsedTimeHumanReadable(datetime.strptime(lastBackup, '%Y-%m-%d %H:%M:%S'))  
     except:      
         lastBackup = "No backup made, yet"
     
@@ -449,13 +481,16 @@ def GetTranscoderInfo():
     settingMp3FolderShort = settingMp3Folder.replace(defaultCollectionFolder + '/', '')            
     isActivated = (settingSourceFolder != '') and ((settingOggFolder != '') or (settingMp3Folder != ''))
 
-    lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'Start session' | tail -n 1 | cut -c1-19")
+    lastTranscode = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'Start session' | tail -n 1 | cut -c1-19")
     if lastTranscode != '':
-        lastTranscode = lastTranscode + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
+        lastTranscode = GetElapsedTimeHumanReadable(datetime.strptime(lastTranscode, '%Y-%m-%d %H:%M:%S'))
 
     isLastTranscodeSuccesFul = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | tail -n 1 | grep error") == ''
 
-    lastTranscodedFile = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep 'transcoding file' | tail -n 1 | cut -d'\"' -f 2 | sed -e \"s/\[source_tree\]\///g\"")
+    # cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -d'"' -f 2 | sed -e "s/\[source_tree\]\///g"
+    # lastTranscodedFileName = ExecuteBashCommand("cat /media/usbdata/rpms/logs/transcoder.log | grep -a 'transcoding file' | tail -n 1 | cut -d'\"' -f 2 | sed -e \"s/\[source_tree\]\///g\"")
+
+    lastTranscodedFileName = ExecuteBashCommand(const_TranscodedFiles + ' | tail -n 1')    
 
     isRunning = ExecuteBashCommand("pidof -o %PPID -x \"transcode\"") != ''
 
@@ -463,7 +498,7 @@ def GetTranscoderInfo():
             "IsLastTranscodeSuccesFul": isLastTranscodeSuccesFul,
             "IsRunning": isRunning,
             "LastTranscode": lastTranscode,
-            "LastTranscodedFile": lastTranscodedFile,
+            "LastTranscodedFileName": lastTranscodedFileName,
             "DefaultCollectionFolder": defaultCollectionFolder,
             "DefaultCollectionFolderFunctional": defaultCollectionFolderFunctional,
             "SettingSourceFolder": settingSourceFolder,
@@ -511,14 +546,14 @@ def GetMusicCollectionInfo():
     collectionFolderFunctional = ConvertToFunctionalFolder(collectionFolder)
 
     lastExportTimeStampAsString = ''
-    exportFile = "collection-artist-album-by-folder.txt"    
+    exportFile = const_CollectionByFolderFileName
     fullExportFile = collectionFolder + "/" + exportFile
     if os.path.isfile(fullExportFile):
         lastExportTimeStampAsString = os.path.getmtime(fullExportFile)
 
     try:
         lastExportTimeStampAsString = datetime.fromtimestamp(lastExportTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
-        lastExportTimeStampAsString = lastExportTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastExportTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
+        lastExportTimeStampAsString = GetElapsedTimeHumanReadable(datetime.strptime(lastExportTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
     except:
         lastExportTimeStampAsString = "No export made, yet"
             
@@ -536,11 +571,11 @@ def GetFlacHealthInfo():
 
     try:
         lastCheckTimeStampAsString = datetime.fromtimestamp(lastCheckTimeStampAsString).strftime('%Y-%m-%d %H:%M:%S')
-        lastCheckTimeStampAsString = lastCheckTimeStampAsString + ' - ' + GetElapsedTimeHumanReadable(datetime.strptime(lastCheckTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
+        lastCheckTimeStampAsString = GetElapsedTimeHumanReadable(datetime.strptime(lastCheckTimeStampAsString, '%Y-%m-%d %H:%M:%S'))    
     except:
         lastCheckTimeStampAsString = "No check made, yet"
 
-    folderCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'Folder:' | wc -l"))
+    folderCount = int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep -a 'Folder:' | wc -l"))
     errorCount = int(ExecuteBashCommand("flac-health-report | grep ERROR | wc -l"))
     warningCount = int(ExecuteBashCommand("flac-health-report | grep WARNING | wc -l"))
     tagId3v2Count = int(ExecuteBashCommand("flac-health-report | grep id3v2 | wc -l"))
@@ -548,10 +583,10 @@ def GetFlacHealthInfo():
     corruptFolderCount = int(ExecuteBashCommand("find /media/usbdata/user/music/flac/ -type f -name 'repair.sh' | wc -l"))
 
     checkType = 'none'
-    if int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'new folders' | wc -l")) != 0:
+    if int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep -a 'new folders' | wc -l")) != 0:
         checkType = 'new'
     else:
-        if int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep 'all folders' | wc -l")) != 0:
+        if int(ExecuteBashCommand("cat /media/usbdata/rpms/logs/flac-health-check.log | grep -a 'all folders' | wc -l")) != 0:
             checkType = 'all'
 
     isRepairFilePresent = False
@@ -598,6 +633,19 @@ def GetFlacHealthReport():
         logLines.append('Log is empty.')
 
     return logLines
+
+def GetTranscodedFiles(nrOfLines):
+    logLines = []
+
+    if nrOfLines == 0:
+        logLines = ExecuteBashCommand(const_TranscodedFiles).splitlines()
+    else:
+        logLines = ExecuteBashCommand(const_TranscodedFiles + " | tail -" + str(nrOfLines)).splitlines()
+
+    if len(logLines) == 0:
+        logLines.append('Log is empty.')
+
+    return logLines    
 
 def GetDockerContainerList():
     dockerContainerList = []
@@ -705,6 +753,14 @@ async def DoFlacHealthRepair():
     await asyncio.create_subprocess_shell("flac-health-repair")
     pass
 
+def GetDrFileName(dir):
+    drFileName = ''
+    for file in os.listdir(dir):
+        if fnmatch.fnmatch(file, 'dr14*.txt'):
+            drFileName = file
+            break
+    return drFileName
+
 def ExportCollectionArtistAlbumByFolder(collectionFolder):
     collection = ''
 
@@ -714,19 +770,19 @@ def ExportCollectionArtistAlbumByFolder(collectionFolder):
         level = dir.count(os.sep) - startLevel
         dirName = dir.split(os.path.sep)[-1]
         if level > 0:
-            drFileName = os.path.join(dir, 'dr14.txt')
+            drFileName = GetDrFileName(dir)
             drValue = ''
-            if os.path.isfile(drFileName):
+            if drFileName != '':
                 try:
-                    drValue = os.popen('cat "' + drFileName + '" | grep "Official DR value:" | cut -c24-27 &> /dev/null').read().strip()
+                    drValue = os.popen('cat "' + dir + '/' + drFileName + '" | grep "Official DR value:" | cut -c24-27 &> /dev/null').read().strip()
                     if drValue != '':
                         drValue = ' | DR' +  drValue
                 except:
                     pass
 
-            collection += (' ' * 4 * (level -1)) + dirName + drValue + '\n'
+            collection += ('. . ' * (level -1)) + dirName + drValue + '\n'
 
-    with open(collectionFolder + '/collection-artist-album-by-folder.txt', 'w') as file:
+    with open(collectionFolder + '/' + const_CollectionByFolderFileName, 'w') as file:
         file.write(collection)            
 
     pass
@@ -738,10 +794,10 @@ def ExportCollectionArtistAlbumByTag(collectionFolder):
         albums = GetLmsAlbumsByArtist(artist['id'])
         collection += artist['artist'] + ' (' + str(len(albums)) + ')\n'            
         for album in albums:
-            collection += (' ' * 4) + album['album'] + '\n'                
+            collection += '. . ' + album['album'] + '\n'
 
-    with open(collectionFolder + '/collection-artist-album-by-tag.txt', 'w') as file:
-        file.write(collection)            
+    with open(collectionFolder + '/' + const_CollectionByTagFileName, 'w') as file:
+        file.write(collection)
 
     pass
         
@@ -753,11 +809,11 @@ def ExportCollectionGenreArtistAlbumByTag(collectionFolder):
         collection += genre['genre'] + ' (' + str(len(artists)) + ')\n'        
         for artist in artists:
             albums = GetLmsAlbumsByGenreArtist(genre['id'], artist['id'])
-            collection += (' ' * 4) + artist['artist'] + ' (' + str(len(albums)) + ')\n'            
+            collection += ('. . ') + artist['artist'] + ' (' + str(len(albums)) + ')\n'            
             for album in albums:
-                collection += (' ' * 4 * 2) + album['album'] + '\n'
+                collection += ('. . ' * 2) + album['album'] + '\n'
 
-    with open(collectionFolder + '/collection-genre-artist-album-by-tag.txt', 'w') as file:
+    with open(collectionFolder + '/' + const_CollectionByGenreFileName, 'w') as file:
         file.write(collection)            
 
     pass
