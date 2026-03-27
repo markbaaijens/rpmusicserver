@@ -10,6 +10,7 @@ from math import ceil
 import asyncio
 import urllib.request
 from psutil import cpu_percent
+import fnmatch
 
 const_LmsApiUrl = 'http://localhost:9000/jsonrpc.js'
 const_PublicFolder = 'public'
@@ -748,6 +749,14 @@ async def DoFlacHealthRepair():
     await asyncio.create_subprocess_shell("flac-health-repair")
     pass
 
+def GetDrFileName(dir):
+    drFileName = ''
+    for file in os.listdir(dir):
+        if fnmatch.fnmatch(file, 'dr14*.txt'):
+            drFileName = file
+            break
+    return drFileName
+
 def ExportCollectionArtistAlbumByFolder(collectionFolder):
     collection = ''
 
@@ -757,11 +766,11 @@ def ExportCollectionArtistAlbumByFolder(collectionFolder):
         level = dir.count(os.sep) - startLevel
         dirName = dir.split(os.path.sep)[-1]
         if level > 0:
-            drFileName = os.path.join(dir, 'dr14.txt')
+            drFileName = GetDrFileName(dir)
             drValue = ''
-            if os.path.isfile(drFileName):
+            if drFileName != '':
                 try:
-                    drValue = os.popen('cat "' + drFileName + '" | grep "Official DR value:" | cut -c24-27 &> /dev/null').read().strip()
+                    drValue = os.popen('cat "' + dir + '/' + drFileName + '" | grep "Official DR value:" | cut -c24-27 &> /dev/null').read().strip()
                     if drValue != '':
                         drValue = ' | DR' +  drValue
                 except:
