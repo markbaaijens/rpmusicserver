@@ -45,8 +45,10 @@
                 Last File
             </td>
             <td>
-                <b>{{ transcoderInfo.LastTranscodedFileName }}</b> | 
-                <a href="/logs/transcodedfiles/20">Report<a>
+                {% if transcoderInfo.LastTranscodedFileName %}
+                    <b>{{ transcoderInfo.LastTranscodedFileName }}</b> | 
+                    <a href="/logs/transcodedfiles/20">Report<a>
+                {% endif %}                        
             </td>
         </tr>
     </table>
@@ -62,6 +64,12 @@
             <a class="link-button disabled">Transcode</a> 
         {% endif %}          
     </div> 
+
+    <div class="indent">
+        <p>
+        <a href="/logs/transcoder/20">Log</a>
+    </div>           
+
     <table>
         <tr>
             <td>Source Folder</td>
@@ -111,10 +119,5 @@
             Edit
         </a>
     </div>
-
-    <div class="indent">
-        <p>
-        <a href="/logs/transcoder/20">Log</a>
-    </div>           
 
     {% endblock %}
