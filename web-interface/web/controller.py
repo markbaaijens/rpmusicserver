@@ -8,7 +8,7 @@ import os
 
 from globals import configObject
 from converters import ConvertToTwoDecimals, ConvertBooleanToText
-from forms import EditTranscoderForm, EditTranslationsForm
+from forms import EditTranscoderForm, EditTranslationsForm, ConfigLocalPlayerForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)  # For flask/wtf-forms
@@ -947,6 +947,39 @@ def EditTranscoderSettings():
         appTitle = 'Edit Transcoder Settings - ' + configObject.AppTitle, 
         form = form,
         musicFolder = defaultMusicFolderFunctional)
+
+@app.route('/localplayer-config', methods=['GET', 'POST'])
+def ConfigLocalPlayer():
+    redirectPage = '/music'
+
+    try:
+        transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        transcoderInfo = []
+
+    currentMp3Bitrate = int(transcoderInfo['SettingMp3Bitrate'])
+
+    form = ConfigLocalPlayerForm()
+
+    if form.cancel.data: 
+        return redirect(redirectPage)
+
+    if request.method == 'GET':
+        form.mp3Bitrate.data = currentMp3Bitrate
+
+    if request.method == 'POST' and form.validate(): 
+        newMp3Bitrate = int(request.form['mp3Bitrate'])
+
+        if newMp3Bitrate != currentMp3Bitrate:
+            SaveFormValue('SetTranscoderMp3Bitrate', newMp3Bitrate, form.mp3Bitrate.label)
+
+        return redirect(redirectPage)
+
+    return render_template('localplayer-config.html', 
+        appTitle = 'Configure LocalPlayer - ' + configObject.AppTitle, 
+        form = form)        
 
 @app.route('/translations-edit', methods=['GET', 'POST'])
 def EditTranslations():

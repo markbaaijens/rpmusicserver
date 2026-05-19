@@ -1,0 +1,24 @@
+{% extends '_base_no_refresh.html' %}
+
+{% block content %}
+    <h2>Configure LocalPlayer</h2>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+        <table>
+            <td>
+                {{ form.mp3Bitrate.label }}
+            </td>                
+            <td>
+                {% for subfield in form.mp3Bitrate %}
+                    {{ subfield }} {{ subfield.label }}<br>
+                {% endfor %}
+                {% for error in form.mp3Bitrate.errors %}
+                    <br><small><span style="color: red;">[{{ error }}]</span></small>
+                {% endfor %}
+            </td>
+        </table>
+
+        <p>{{ form.submit() }} {{ form.cancel() }}</p>
+    </form>
+{% endblock %}
