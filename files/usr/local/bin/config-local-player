@@ -9,9 +9,11 @@ if [ ! -f /etc/default/squeezelite ]; then
     exit
 fi
 
-sed -i '/SL_SOUNDCARD/d' /etc/default/squeezelite
+rm -f /etc/default/squeezelite
 
 if [ "$1" != "" ]; then
+    echo "SL_NAME=\"LocalPlayer\"" >> /etc/default/squeezelite
+    echo "SB_SERVER_IP=\"localhost\"" >> /etc/default/squeezelite    
     echo "SL_SOUNDCARD=\"$1\"" >> /etc/default/squeezelite
 fi 
 

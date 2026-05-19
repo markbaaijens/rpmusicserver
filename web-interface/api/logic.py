@@ -927,8 +927,9 @@ def GetLmsPlayers():
             firmWare = player['firmware']
 
             isWebServer = False
-            if ExecuteBashCommand('nmap ' + ipAddress + ' --open -p 80 | grep 80/tcp') != '':
-                isWebServer = True
+            if name != 'LocalPlayer':
+                if ExecuteBashCommand('nmap ' + ipAddress + ' --open -p 80 | grep 80/tcp') != '':
+                    isWebServer = True
 
             type = 'unknown'
             if model == 'squeezelite':

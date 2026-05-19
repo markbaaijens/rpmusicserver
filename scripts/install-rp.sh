@@ -160,9 +160,8 @@ sed -i '/flac-health-check/d' /etc/crontab
 /bin/sh -c 'echo "00 04 * * * root flac-health-check" >> /etc/crontab'
 
 log "Configure squeezelite in /etc/default/squeezelite"
-rm /etc/default/squeezelite
-/bin/sh -c 'echo "SL_NAME=\"LocalPlayer\"" >> /etc/default/squeezelite'
-/bin/sh -c 'echo "SL_SOUNDCARD=\"\"" >> /etc/default/squeezelite'
+rm -f /etc/default/squeezelite
+touch /etc/default/squeezelite
 
 log "Change password of user 'pi'"
 sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password
