@@ -968,8 +968,9 @@ def ConfigLocalPlayer():
 
     if request.method == 'GET':
         form.mp3Bitrate.data = currentMp3Bitrate
+        form.mp3Bitrate.choices = [(0, 'No transcoding'), (128, '128 kbit/s'), (256, '256 kbit/s'), (384, '384 kbit/s')]
 
-    if request.method == 'POST' and form.validate(): 
+    if request.method == 'POST': # and form.validate(): 
         newMp3Bitrate = int(request.form['mp3Bitrate'])
 
         if newMp3Bitrate != currentMp3Bitrate:
