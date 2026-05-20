@@ -952,14 +952,14 @@ def EditTranscoderSettings():
 def ConfigLocalPlayer():
     redirectPage = '/music'
 
-    try:
-        transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        transcoderInfo = []
+    # try:
+    #     transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
+    # except Exception as e:
+    #     logger.error(e)
+    #     logger.error(traceback.format_exc())
+    #     transcoderInfo = []
 
-    currentMp3Bitrate = int(transcoderInfo['SettingMp3Bitrate'])
+    currentLocalPlayerDeviceName = 128  # int(transcoderInfo['SettingMp3Bitrate'])
 
     form = ConfigLocalPlayerForm()
 
@@ -967,14 +967,18 @@ def ConfigLocalPlayer():
         return redirect(redirectPage)
 
     if request.method == 'GET':
-        form.mp3Bitrate.data = currentMp3Bitrate
-        form.mp3Bitrate.choices = [(0, 'No transcoding'), (128, '128 kbit/s'), (256, '256 kbit/s'), (384, '384 kbit/s')]
+        form.localPlayerDeviceName.data = currentLocalPlayerDeviceName
+        form.localPlayerDeviceName.choices = [
+            (0, 'No transcoding'), 
+            (128, '128 kbit/s'), 
+            (256, '256 kbit/s'), 
+            (384, '384 kbit/s')]
 
     if request.method == 'POST': # and form.validate(): 
-        newMp3Bitrate = int(request.form['mp3Bitrate'])
+        newLocalPlayerDeviceName = int(request.form['localPlayerDeviceName'])
 
-        if newMp3Bitrate != currentMp3Bitrate:
-            SaveFormValue('SetTranscoderMp3Bitrate', newMp3Bitrate, form.mp3Bitrate.label)
+        if newLocalPlayerDeviceName != currentLocalPlayerDeviceName:
+            SaveFormValue('SetTranscoderMp3Bitrate', newLocalPlayerDeviceName, form.localPlayerDeviceName.label)
 
         return redirect(redirectPage)
 

@@ -69,9 +69,7 @@ class EditTranslationsForm(FlaskForm):
         pass
 
 class ConfigLocalPlayerForm(FlaskForm):
-    mp3Bitrate = RadioField('Bitrate', coerce=int)
-    
-    # mp3Bitrate = SelectField('Bitrate', coerce=int)
+    localPlayerDeviceName = RadioField('Bitrate', coerce=int)
 
     submit = SubmitField('Save')
     cancel = SubmitField('Cancel')    

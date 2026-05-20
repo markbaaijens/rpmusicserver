@@ -7,13 +7,13 @@
         <p>
         <table>
             <td>
-                {{ form.mp3Bitrate.label }}
+                {{ form.localPlayerDeviceName.label }}
             </td>                
             <td>
-                {% for subfield in form.mp3Bitrate %}
+                {% for subfield in form.localPlayerDeviceName %}
                     {{ subfield }} {{ subfield.label }}<br>
                 {% endfor %}
-                {% for error in form.mp3Bitrate.errors %}
+                {% for error in form.localPlayerDeviceName.errors %}
                     <br><small><span style="color: red;">[{{ error }}]</span></small>
                 {% endfor %}
             </td>
