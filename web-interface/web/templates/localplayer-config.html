@@ -7,11 +7,8 @@
         <p>
         <table>
             <td>
-                {{ form.localPlayerDeviceName.label }}
-            </td>                
-            <td>
                 {% for subfield in form.localPlayerDeviceName %}
-                    {{ subfield }} {{ subfield.label }}<br>
+                    {{ subfield }} {{ subfield.label }} <small>{{ subfield.data }}</small><br><br>
                 {% endfor %}
                 {% for error in form.localPlayerDeviceName.errors %}
                     <br><small><span style="color: red;">[{{ error }}]</span></small>

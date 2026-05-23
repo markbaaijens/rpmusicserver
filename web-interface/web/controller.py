@@ -959,7 +959,7 @@ def ConfigLocalPlayer():
     #     logger.error(traceback.format_exc())
     #     transcoderInfo = []
 
-    currentLocalPlayerDeviceName = 128  # int(transcoderInfo['SettingMp3Bitrate'])
+    currentLocalPlayerDeviceName = 'usb-dac'  # int(transcoderInfo['SettingMp3Bitrate'])
 
     form = ConfigLocalPlayerForm()
 
@@ -969,16 +969,17 @@ def ConfigLocalPlayer():
     if request.method == 'GET':
         form.localPlayerDeviceName.data = currentLocalPlayerDeviceName
         form.localPlayerDeviceName.choices = [
-            (0, 'No transcoding'), 
-            (128, '128 kbit/s'), 
-            (256, '256 kbit/s'), 
-            (384, '384 kbit/s')]
+            ('', 'Inactive'),             
+            ('headphones', 'Headphones'), 
+            ('usb-dac', 'USB DAC'), 
+            ('hdmi1', 'HDMI 1'), 
+            ('hdmi2', 'HDMI 2')]
 
     if request.method == 'POST': # and form.validate(): 
-        newLocalPlayerDeviceName = int(request.form['localPlayerDeviceName'])
+        newLocalPlayerDeviceName = request.form['localPlayerDeviceName']
 
         if newLocalPlayerDeviceName != currentLocalPlayerDeviceName:
-            SaveFormValue('SetTranscoderMp3Bitrate', newLocalPlayerDeviceName, form.localPlayerDeviceName.label)
+            SaveFormValue('SetTranscoderSourceFolder', newLocalPlayerDeviceName, form.localPlayerDeviceName.label)
 
         return redirect(redirectPage)
 
