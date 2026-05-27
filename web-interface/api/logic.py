@@ -308,13 +308,12 @@ def GetPortStatusList():
     return portStatusListResult
 
 def GetAudioDevices():
-    # squeezelite -l | grep hw: | grep Direct | awk -F' - ' '{gsub(/^ +| +$/, "", $1); print $1 "|" $2}'
-    deviceListFromMachine = ExecuteBashCommand("squeezelite -l | grep hw: | grep Direct | awk -F' - ' '{gsub(/^ +| +$/, \"\", $1); print $1 \"|\" $2}'")
+    deviceListFromMachine = ExecuteBashCommand("squeezelite -l | grep hw: | grep Direct").splitlines()    
 
     deviceResult = []
     for device in deviceListFromMachine:
-        deviceResult.append({"DeviceName": device.split('|')[0],
-                             "Description": device.split('|')[1]
+        deviceResult.append({"DeviceName": device.split(' - ')[0].strip(),
+                             "Description": device.split(' - ')[1].strip()
                             })
 
     return deviceResult
