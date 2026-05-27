@@ -307,6 +307,28 @@ def GetPortStatusList():
 
     return portStatusListResult
 
+def GetSqueezeliteDeviceList():
+    class DeviceInfo:
+        def __init__(self, deviceName, description=''):
+            self.DeviceName = deviceName
+            self.Description = description
+
+    # squeezelite -l | grep hw: | grep Direct | awk -F' - ' '{gsub(/^ +| +$/, "", $1); print $1 "|" $2}'
+    deviceListFromMachine = ExecuteBashCommand('')
+
+    deviceList = []
+    for device in deviceListFromMachine:
+        # Split device on device|description
+        deviceList.append(DeviceInfo(22, 'usb1', 'USB Number 1'))
+    
+    squeezeliteDeviceResult = []
+    for deviceInfo in deviceList:
+        squeezeliteDeviceResult.append({"DeviceName": deviceInfo.DeviceName,
+                                        "Description": deviceInfo.Description
+                                    })
+
+    return squeezeliteDeviceResult
+
 def GetServiceStatus(serviceName):
     portStatusList = GetPortStatusList()
 
