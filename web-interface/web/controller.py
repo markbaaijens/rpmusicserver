@@ -953,7 +953,7 @@ def ConfigLocalPlayer():
     redirectPage = '/music'
 
     try:
-        audioDeviceList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetAudioDevices').content)
+        audioDeviceList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetAudioDeviceList').content)
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -989,7 +989,7 @@ def ConfigLocalPlayer():
 
         if newLocalPlayerDeviceName != currentLocalPlayerDeviceName:
             # TODO Save SL_SOUNDCARD from /etc/default/squeezelite            
-            SaveFormValue('SetTranscoderSourceFolder', newLocalPlayerDeviceName, form.localPlayerDeviceName.label)
+            SaveFormValue('SetLocalPlayerDeviceName', newLocalPlayerDeviceName, form.localPlayerDeviceName.label)
 
         return redirect(redirectPage)
 

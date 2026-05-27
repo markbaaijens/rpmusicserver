@@ -17,5 +17,5 @@ if [ "$1" != "" ]; then
     echo "SL_SOUNDCARD=\"$1\"" >> /etc/default/squeezelite
 fi 
 
-start-stop-local-player
+local-player-start-stop
 

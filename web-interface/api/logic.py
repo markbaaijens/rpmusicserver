@@ -307,7 +307,7 @@ def GetPortStatusList():
 
     return portStatusListResult
 
-def GetAudioDevices():
+def GetAudioDeviceList():
     deviceListFromMachine = ExecuteBashCommand("squeezelite -l | grep hw: | grep Direct").splitlines()    
 
     deviceResult = []
@@ -710,6 +710,10 @@ def CreateMusicFolders():
         os.mkdir(settingMp3Folder)
 
     return { "Message": "Music-folders created."}
+
+def SetLocalPlayerDeviceName(keyName, deviceName):
+    ExecuteBashCommand('local-player-config ' + deviceName)
+    return { "Message": "Setting ["+ keyName + "] is modified to [" + str(deviceName) + "]"}
 
 def SetTranscoderSetting(keyName, newValue):
     return SetSetting(keyName, newValue, '/media/usbdata/rpms/config/transcoder-settings.json')

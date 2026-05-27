@@ -89,10 +89,10 @@ def GetTranslations():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
-@app.route('/api/GetAudioDevices', methods=['GET'])
-def GetAudioDevices():
+@app.route('/api/GetAudioDeviceList', methods=['GET'])
+def GetAudioDeviceList():
     try:
-        info = logic.GetAudioDevices()
+        info = logic.GetAudioDeviceList()
     except Exception as e:
         logger.error(e)
         logger.error(traceback.format_exc())
@@ -333,6 +333,25 @@ def GetBackupDetailsLog(nrOfLines):
         return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)        
+
+@app.route('/api/SetLocalPlayerDeviceName', methods=['POST'])
+def SetLocalPlayerDeviceName():
+    if not request.json:
+        abort(HTTP_BAD_REQUEST)
+    requestData = request.get_json()
+
+    if not 'Value' in requestData:
+        abort(HTTP_BAD_REQUEST)
+    deviceName = requestData['Value']
+
+    try:
+        info = logic.SetLocalPlayerDeviceName('Device', deviceName)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+        
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
 @app.route('/api/SetTranscoderSourceFolder', methods=['POST'])
 def SetTranscoderSourceFolder():
