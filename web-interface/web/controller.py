@@ -952,6 +952,7 @@ def EditTranscoderSettings():
 def ConfigLocalPlayer():
     redirectPage = '/music'
 
+    # TODO Retrieve SL_SOUNDCARD from /etc/default/squeezelite
     # try:
     #     transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
     # except Exception as e:
@@ -967,6 +968,7 @@ def ConfigLocalPlayer():
         return redirect(redirectPage)
 
     if request.method == 'GET':
+        # TODO Retrieve devices with squeezelite -l
         form.localPlayerDeviceName.data = currentLocalPlayerDeviceName
         form.localPlayerDeviceName.choices = [
             ('', 'Inactive'),             
@@ -979,6 +981,7 @@ def ConfigLocalPlayer():
         newLocalPlayerDeviceName = request.form['localPlayerDeviceName']
 
         if newLocalPlayerDeviceName != currentLocalPlayerDeviceName:
+            # TODO Save SL_SOUNDCARD from /etc/default/squeezelite            
             SaveFormValue('SetTranscoderSourceFolder', newLocalPlayerDeviceName, form.localPlayerDeviceName.label)
 
         return redirect(redirectPage)
