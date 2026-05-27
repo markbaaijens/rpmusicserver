@@ -952,6 +952,13 @@ def EditTranscoderSettings():
 def ConfigLocalPlayer():
     redirectPage = '/music'
 
+    try:
+        audioDeviceList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetAudioDevices').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        audioDeviceList = []    
+
     # TODO Retrieve SL_SOUNDCARD from /etc/default/squeezelite by API
     # try:
     #     transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
@@ -960,7 +967,7 @@ def ConfigLocalPlayer():
     #     logger.error(traceback.format_exc())
     #     transcoderInfo = []
 
-    currentLocalPlayerDeviceName = 'usb-dac'  # int(transcoderInfo['SettingMp3Bitrate'])
+    currentLocalPlayerDeviceName = ''
 
     form = ConfigLocalPlayerForm()
 
@@ -968,14 +975,14 @@ def ConfigLocalPlayer():
         return redirect(redirectPage)
 
     if request.method == 'GET':
-        # TODO Retrieve devices with squeezelite -l by API
         form.localPlayerDeviceName.data = currentLocalPlayerDeviceName
-        form.localPlayerDeviceName.choices = [
-            ('', 'Inactive'),             
-            ('headphones', 'Headphones'), 
-            ('usb-dac', 'USB DAC'), 
-            ('hdmi1', 'HDMI 1'), 
-            ('hdmi2', 'HDMI 2')]
+        # TODO Retrieve devices with squeezelite -l by API
+
+        deviceChoices = []
+        for device in audioDeviceList:
+            deviceChoices.append((device['DeviceName'], device['Description']))
+
+        form.localPlayerDeviceName.choices = deviceChoices
 
     if request.method == 'POST': # and form.validate(): 
         newLocalPlayerDeviceName = request.form['localPlayerDeviceName']
