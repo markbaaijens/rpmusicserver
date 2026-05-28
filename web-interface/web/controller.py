@@ -988,7 +988,6 @@ def ConfigLocalPlayer():
         newLocalPlayerDeviceName = request.form['localPlayerDeviceName']
 
         if newLocalPlayerDeviceName != currentLocalPlayerDeviceName:
-            # TODO Save SL_SOUNDCARD from /etc/default/squeezelite            
             SaveFormValue('SetLocalPlayerDeviceName', newLocalPlayerDeviceName, form.localPlayerDeviceName.label)
 
         return redirect(redirectPage)

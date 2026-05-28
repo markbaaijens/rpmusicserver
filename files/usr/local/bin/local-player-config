@@ -5,11 +5,8 @@ if [ -z "$(whoami | grep root)" ]; then
     exit
 fi
 
-if [ ! -f /etc/default/squeezelite ]; then
-    exit
-fi
-
 rm -f /etc/default/squeezelite
+touch -f /etc/default/squeezelite
 
 if [ "$1" != "" ]; then
     echo "SL_NAME=\"LocalPlayer\"" >> /etc/default/squeezelite
