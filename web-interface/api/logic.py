@@ -325,6 +325,15 @@ def GetLocalPlayerDeviceName():
         deviceName = 'inactive'
     return deviceName
 
+def GetLocalPlayerDescription():
+    audioDeviceList = GetAudioDeviceList()
+    localPlayerDeviceName = GetLocalPlayerDeviceName()
+    for audioDevice in audioDeviceList:
+        if audioDevice['DeviceName'] == localPlayerDeviceName:
+            description = audioDevice['Description']
+
+    return description
+
 def GetServiceStatus(serviceName):
     portStatusList = GetPortStatusList()
 

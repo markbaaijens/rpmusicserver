@@ -253,6 +253,13 @@ def ShowMusicPage():
         logger.error(traceback.format_exc())
         flacHealthInfo = []        
 
+    try:
+        localPlayerDescription = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetLocalPlayerDescription').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        localPlayerDescription = []                
+
     return render_template(
         'music.html', 
         appTitle = 'Music - ' + configObject.AppTitle, 
@@ -263,7 +270,8 @@ def ShowMusicPage():
         machineInfo = machineInfo,
         flacHealthInfo = flacHealthInfo,
         serviceStatusLms = serviceStatusLms,
-        serviceStatusSyncThing = serviceStatusSyncThing)
+        serviceStatusSyncThing = serviceStatusSyncThing,
+        localPlayerDescription = localPlayerDescription)
 
 @app.route('/backup', methods=['GET'])
 def ShowBackupPage():
@@ -973,8 +981,8 @@ def ConfigLocalPlayer():
 
     if request.method == 'GET':
         deviceChoices = []
-        for device in audioDeviceList:
-            deviceChoices.append((device['DeviceName'], device['Description']))
+        for audioDevice in audioDeviceList:
+            deviceChoices.append((audioDevice['DeviceName'], audioDevice['Description']))
         form.localPlayerDeviceName.choices = deviceChoices
 
         form.localPlayerDeviceName.data = currentLocalPlayerDeviceName
