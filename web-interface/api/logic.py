@@ -311,7 +311,7 @@ def GetAudioDeviceList():
     deviceListFromMachine = ExecuteBashCommand("squeezelite -l | grep hw: | grep Direct").splitlines()    
 
     deviceResult = []
-    deviceResult.append({"DeviceName": "", "Description": "Inactive"})
+    deviceResult.append({"DeviceName": "inactive", "Description": "Inactive"})
     for device in deviceListFromMachine:
         deviceResult.append({"DeviceName": device.split(' - ')[0].strip(),
                              "Description": device.split(' - ')[1].strip()
