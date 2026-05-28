@@ -959,15 +959,12 @@ def ConfigLocalPlayer():
         logger.error(traceback.format_exc())
         audioDeviceList = []    
 
-    # TODO Retrieve SL_SOUNDCARD from /etc/default/squeezelite by API
-    # try:
-    #     transcoderInfo = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetTranscoderInfo').content)
-    # except Exception as e:
-    #     logger.error(e)
-    #     logger.error(traceback.format_exc())
-    #     transcoderInfo = []
-
-    currentLocalPlayerDeviceName = ''
+    try:
+        currentLocalPlayerDeviceName = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetLocalPlayerDeviceName').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        currentLocalPlayerDeviceName = ''
 
     form = ConfigLocalPlayerForm()
 
@@ -975,14 +972,12 @@ def ConfigLocalPlayer():
         return redirect(redirectPage)
 
     if request.method == 'GET':
-        form.localPlayerDeviceName.data = currentLocalPlayerDeviceName
-        # TODO Retrieve devices with squeezelite -l by API
-
         deviceChoices = []
         for device in audioDeviceList:
             deviceChoices.append((device['DeviceName'], device['Description']))
-
         form.localPlayerDeviceName.choices = deviceChoices
+
+        form.localPlayerDeviceName.data = currentLocalPlayerDeviceName
 
     if request.method == 'POST': # and form.validate(): 
         newLocalPlayerDeviceName = request.form['localPlayerDeviceName']

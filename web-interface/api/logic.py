@@ -319,6 +319,12 @@ def GetAudioDeviceList():
 
     return deviceResult
 
+def GetLocalPlayerDeviceName():
+    deviceName = ExecuteBashCommand("cat /etc/default/squeezelite | grep '^SL_SOUNDCARD' | awk -F '\"' '{print $2}'")
+    if deviceName == '':
+        deviceName = 'inactive'
+    return deviceName
+
 def GetServiceStatus(serviceName):
     portStatusList = GetPortStatusList()
 

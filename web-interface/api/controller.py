@@ -100,6 +100,17 @@ def GetAudioDeviceList():
     
     return BuildResponse(HTTP_OK, jsonify(info), request.url)    
 
+@app.route('/api/GetLocalPlayerDeviceName', methods=['GET'])
+def GetLocalPlayerDeviceName():
+    try:
+        info = logic.GetLocalPlayerDeviceName()
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        return BuildResponse(HTTP_BAD_REQUEST, jsonify({'message': str(e)}), request.url)
+    
+    return BuildResponse(HTTP_OK, jsonify(info), request.url)    
+
 @app.route('/api/GetDockerContainerList', methods=['GET'])
 def GetDockerContainerList():
     try:
