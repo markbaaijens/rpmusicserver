@@ -2,6 +2,6 @@
 
 start-web
 start-docker
-start-stop-local-player
+local-player-start-stop
 
 exit 0
