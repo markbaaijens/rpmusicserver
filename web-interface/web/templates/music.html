@@ -72,7 +72,15 @@
         {% else %}
             <span class="checkmark-n">Music-server is not active</span>
         {% endif %}    
-    {% endif %}   
+    {% endif %}  
+    <br>
+    <div>
+        <a href="/localplayer-config" class="link-button">
+            <img src="{{ url_for('static',filename='edit.png') }}" alt="Edit" style="width:15px;height:15x;">
+            Configure LocalPlayer
+        </a>&nbsp;
+        <b>{{ localPlayerDescription }}</b>
+    </div>
 
     <h3>Collection</h3>   
     <table>

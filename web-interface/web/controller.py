@@ -8,7 +8,7 @@ import os
 
 from globals import configObject
 from converters import ConvertToTwoDecimals, ConvertBooleanToText
-from forms import EditTranscoderForm, EditTranslationsForm
+from forms import EditTranscoderForm, EditTranslationsForm, ConfigLocalPlayerForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)  # For flask/wtf-forms
@@ -253,6 +253,13 @@ def ShowMusicPage():
         logger.error(traceback.format_exc())
         flacHealthInfo = []        
 
+    try:
+        localPlayerDescription = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetLocalPlayerDescription').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        localPlayerDescription = []                
+
     return render_template(
         'music.html', 
         appTitle = 'Music - ' + configObject.AppTitle, 
@@ -263,7 +270,8 @@ def ShowMusicPage():
         machineInfo = machineInfo,
         flacHealthInfo = flacHealthInfo,
         serviceStatusLms = serviceStatusLms,
-        serviceStatusSyncThing = serviceStatusSyncThing)
+        serviceStatusSyncThing = serviceStatusSyncThing,
+        localPlayerDescription = localPlayerDescription)
 
 @app.route('/backup', methods=['GET'])
 def ShowBackupPage():
@@ -947,6 +955,49 @@ def EditTranscoderSettings():
         appTitle = 'Edit Transcoder Settings - ' + configObject.AppTitle, 
         form = form,
         musicFolder = defaultMusicFolderFunctional)
+
+@app.route('/localplayer-config', methods=['GET', 'POST'])
+def ConfigLocalPlayer():
+    redirectPage = '/music'
+
+    try:
+        audioDeviceList = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetAudioDeviceList').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        audioDeviceList = []    
+
+    try:
+        currentLocalPlayerDeviceName = json.loads(requests.get(configObject.ApiRootUrl + '/api/GetLocalPlayerDeviceName').content)
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        currentLocalPlayerDeviceName = ''
+
+    form = ConfigLocalPlayerForm()
+
+    if form.cancel.data: 
+        return redirect(redirectPage)
+
+    if request.method == 'GET':
+        deviceChoices = []
+        for audioDevice in audioDeviceList:
+            deviceChoices.append((audioDevice['DeviceName'], audioDevice['Description']))
+        form.localPlayerDeviceName.choices = deviceChoices
+
+        form.localPlayerDeviceName.data = currentLocalPlayerDeviceName
+
+    if request.method == 'POST': # and form.validate(): 
+        newLocalPlayerDeviceName = request.form['localPlayerDeviceName']
+
+        if newLocalPlayerDeviceName != currentLocalPlayerDeviceName:
+            SaveFormValue('SetLocalPlayerDeviceName', newLocalPlayerDeviceName, form.localPlayerDeviceName.label)
+
+        return redirect(redirectPage)
+
+    return render_template('localplayer-config.html', 
+        appTitle = 'Configure LocalPlayer - ' + configObject.AppTitle, 
+        form = form)        
 
 @app.route('/translations-edit', methods=['GET', 'POST'])
 def EditTranslations():

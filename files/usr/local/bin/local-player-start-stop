@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+if [ ! -f /etc/default/squeezelite ]; then
+    exit
+fi
+
+source /etc/default/squeezelite 
+
+if [ -z "$SL_SOUNDCARD" ]; then
+    sudo service squeezelite stop
+else
+    sudo service squeezelite restart
+fi
+
