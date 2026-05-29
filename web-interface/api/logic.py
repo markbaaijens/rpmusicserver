@@ -307,6 +307,38 @@ def GetPortStatusList():
 
     return portStatusListResult
 
+def GetAudioDeviceList():
+    deviceListFromMachine = ExecuteBashCommand("squeezelite -l | grep hw: | grep Direct").splitlines()    
+
+    deviceResult = []
+    deviceResult.append({"DeviceName": "inactive", "Description": "Inactive"})
+    for device in deviceListFromMachine:
+        deviceResult.append({"DeviceName": device.split(' - ')[0].strip(),
+                             "Description": device.split(' - ')[1].strip()
+                            })
+
+    return deviceResult
+
+def GetLocalPlayerDeviceName():
+    deviceName = ExecuteBashCommand("cat /etc/default/squeezelite | grep '^SL_SOUNDCARD' | awk -F '\"' '{print $2}'")
+    if deviceName == '':
+        deviceName = 'inactive'
+    return deviceName
+
+def GetLocalPlayerDescription():
+    audioDeviceList = GetAudioDeviceList()
+    localPlayerDeviceName = GetLocalPlayerDeviceName()
+
+    description = '' 
+    for audioDevice in audioDeviceList:
+        if audioDevice['DeviceName'] == localPlayerDeviceName:
+            description = audioDevice['Description']
+
+    if description == '':
+        description = 'Device \'' + localPlayerDeviceName + '\' is inactive, no audio will be played.'
+
+    return description
+
 def GetServiceStatus(serviceName):
     portStatusList = GetPortStatusList()
 
@@ -699,6 +731,10 @@ def CreateMusicFolders():
 
     return { "Message": "Music-folders created."}
 
+def SetLocalPlayerDeviceName(keyName, deviceName):
+    ExecuteBashCommand('local-player-config ' + deviceName)
+    return { "Message": "Setting ["+ keyName + "] is modified to [" + str(deviceName) + "]"}
+
 def SetTranscoderSetting(keyName, newValue):
     return SetSetting(keyName, newValue, '/media/usbdata/rpms/config/transcoder-settings.json')
 
@@ -927,8 +963,9 @@ def GetLmsPlayers():
             firmWare = player['firmware']
 
             isWebServer = False
-            if ExecuteBashCommand('nmap ' + ipAddress + ' --open -p 80 | grep 80/tcp') != '':
-                isWebServer = True
+            if name != 'LocalPlayer':
+                if ExecuteBashCommand('nmap ' + ipAddress + ' --open -p 80 | grep 80/tcp') != '':
+                    isWebServer = True
 
             type = 'unknown'
             if model == 'squeezelite':

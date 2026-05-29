@@ -32,6 +32,7 @@ apt-get install samba -y
 apt-get install dnsutils -y
 apt-get install ffmpeg -y
 apt-get install id3v2 -y
+apt-get install squeezelite -y
 
 log "Setting timezone to Europe/Amsterdam"
 rm -rf /etc/localtime
@@ -120,7 +121,9 @@ install_bin_file generate-samba-conf
 install_bin_file flac-health-check
 install_bin_file flac-health-report
 install_bin_file flac-health-repair
-install_bin_file apt-upgrade-unattended
+install_bin_file apt-upgade-unattended
+install_bin_file local-player-start-stop
+install_bin_file local-player-config
 
 log "Removing obsolete line for setting rights in /etc/crontab created by a previous version of RPMS"
 sed -i '/chmod 777/d' /etc/crontab
@@ -155,6 +158,11 @@ sed -i '/backup-server/d' /etc/crontab
 log "Adding line for flac-health-check in /etc/crontab"
 sed -i '/flac-health-check/d' /etc/crontab
 /bin/sh -c 'echo "00 04 * * * root flac-health-check" >> /etc/crontab'
+
+log "Create empty config-file for squeezelite"
+if [ ! -f "/etc/default/squeezelite" ]; then
+    touch /etc/default/squeezelite
+fi
 
 log "Change password of user 'pi'"
 sed -i -e 's/pam_unix.so/pam_unix.so minlen=1/g' /etc/pam.d/common-password

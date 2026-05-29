@@ -12,6 +12,7 @@ class EditTranscoderForm(FlaskForm):
         choices=[(0, '128'), (256, '256'), (384, 384)],
         coerce=int)
     resetToDefaults = BooleanField('Reset to defaults')
+
     submit = SubmitField('Save')
     cancel = SubmitField('Cancel')    
 
@@ -67,3 +68,8 @@ class EditTranslationsForm(FlaskForm):
             raise ValidationError('Empty value not permitted.')
         pass
 
+class ConfigLocalPlayerForm(FlaskForm):
+    localPlayerDeviceName = RadioField('Device', coerce=str)
+
+    submit = SubmitField('Save')
+    cancel = SubmitField('Cancel')    

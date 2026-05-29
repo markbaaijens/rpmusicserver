@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ -z "$(whoami | grep root)" ]; then
+    echo "Not running as root."
+    exit
+fi
+
+rm -f /etc/default/squeezelite
+touch -f /etc/default/squeezelite
+
+if [ "$1" != "inactive" ]; then
+    echo "SL_NAME=\"LocalPlayer\"" >> /etc/default/squeezelite
+    echo "SB_SERVER_IP=\"localhost\"" >> /etc/default/squeezelite    
+    echo "SL_SOUNDCARD=\"$1\"" >> /etc/default/squeezelite
+fi 
+
+local-player-start-stop
+
