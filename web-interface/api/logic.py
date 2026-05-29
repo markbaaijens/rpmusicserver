@@ -328,9 +328,14 @@ def GetLocalPlayerDeviceName():
 def GetLocalPlayerDescription():
     audioDeviceList = GetAudioDeviceList()
     localPlayerDeviceName = GetLocalPlayerDeviceName()
+
+    description = '' 
     for audioDevice in audioDeviceList:
         if audioDevice['DeviceName'] == localPlayerDeviceName:
             description = audioDevice['Description']
+
+    if description == '':
+        description = 'Device \'' + localPlayerDeviceName + '\' is inactive, no audio will be played.'
 
     return description
 
