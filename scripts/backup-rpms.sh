@@ -9,7 +9,7 @@ backup_time() {
         secs="0.$(echo ${time_mins} | cut -d'.' -f2)"
         secs=$(echo ${secs}*60|bc|awk '{print int($1+0.5)}')
     fi
-    echo "Backup completed in ${min} minutes and ${secs} seconds"
+    echo "Backup completed in ${min} minute(s) and ${secs} second(s)"
 }
 
 if [[ ! $(apt -qq list nmap -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
@@ -58,10 +58,14 @@ fi
 server=${rpms_servers[0]}
 echo "Server found at $server"
 
-echo "Backup is in progress..."
-
 ssh-keygen -R $server > /dev/null
 ssh-keyscan -H $server >> ~/.ssh/known_hosts
+
+if [ ! -d /run/media/$USER/$disk_label/user ]; then 
+    mkdir /run/media/$USER/$disk_label/user
+fi
+
+echo "Backup is in progress..."
 
 SECONDS=0
 sshpass -p rpms rsync --progress --delete -rtv --max-size=4GB --modify-window=2 --exclude Downloads \
@@ -69,7 +73,8 @@ sshpass -p rpms rsync --progress --delete -rtv --max-size=4GB --modify-window=2 
 	/run/media/$USER/$disk_label/user
 	
 sync
-backup_time $SECONDS
 
+echo ""
+backup_time $SECONDS
 echo "You can now safely remove the disk..."
 
