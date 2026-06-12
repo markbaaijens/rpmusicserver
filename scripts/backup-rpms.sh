@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # TODO
-# - DISK RPMS-BACKUP
+# - DISK BACKUP-RPMS
 # - install nmap
 # - install sshpass
 
-disk_label="BACKUP"
+disk_label="BACKUP-RPMS"
 if [ ! -d /run/media/$USER/$disk_label ]; then 
-    echo "No disk named as $disk_label found, exit"
+    echo "Connect your backup-disk named $disk_label, exit"
     exit
 fi
 echo "Disk named as $disk_label found"
@@ -53,10 +53,4 @@ sshpass -p rpms rsync --progress --delete -rtv --max-size=4GB --modify-window=2 
 	
 sync
 echo "Backup is complete, you can safely remove the disk..."
-
-
-
-
-
-
 
