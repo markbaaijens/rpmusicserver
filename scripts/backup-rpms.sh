@@ -1,6 +1,6 @@
 #!/bin/bash
 
-secs_to_human() {
+backup_time() {
     if [[ -z ${1} || ${1} -lt 60 ]] ;then
         min=0 ; secs="${1}"
     else
@@ -9,7 +9,7 @@ secs_to_human() {
         secs="0.$(echo ${time_mins} | cut -d'.' -f2)"
         secs=$(echo ${secs}*60|bc|awk '{print int($1+0.5)}')
     fi
-    echo "Time Elapsed: ${min} minutes and ${secs} seconds"
+    echo "Backup completed in ${min} minutes and ${secs} seconds"
 }
 
 if [[ ! $(apt -qq list nmap -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
@@ -23,10 +23,10 @@ fi
 
 disk_label="BACKUP-RPMS"
 if [ ! -d /run/media/$USER/$disk_label ]; then 
-    echo "Connect your backup-disk named $disk_label"
+    echo "Connect a backup-disk named $disk_label to this machine"
     exit
 fi
-echo "Disk named as $disk_label found"
+echo "Disk named $disk_label found"
 
 echo "Discovering RPMS-servers..."
 
@@ -69,7 +69,7 @@ sshpass -p rpms rsync --progress --delete -rtv --max-size=4GB --modify-window=2 
 	/run/media/$USER/$disk_label/user
 	
 sync
-secs_to_human $SECONDS
+backup_time $SECONDS
 
-echo "Backup is complete, you can now safely remove the disk..."
+echo "You can now safely remove the disk..."
 
