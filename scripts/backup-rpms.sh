@@ -68,7 +68,7 @@ fi
 echo "Backup is in progress..."
 
 SECONDS=0
-sshpass -p rpms rsync --progress --delete -rtv --max-size=4GB --modify-window=2 --exclude Downloads \
+sshpass -p rpms rsync --progress --delete -rtv --max-size=4GB --modify-window=2 \
 	pi@$server:/media/usbdata/user/* \
 	/run/media/$USER/$disk_label/user
 	
