@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO
+# - when server is given as parameter, skip the server-discovery
+
 backup_time() {
     if [[ -z ${1} || ${1} -lt 60 ]] ;then
         min=0 ; secs="${1}"
@@ -11,6 +14,8 @@ backup_time() {
     fi
     echo "Backup completed in ${min} minute(s) and ${secs} second(s)"
 }
+
+server_param=$1
 
 if [[ ! $(apt -qq list nmap -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
     echo "Install nmap: sudo apt install nmap"
@@ -43,20 +48,31 @@ if [[ ${#rpms_servers[@]} -eq 0 ]]; then
     exit
 fi
 
-if [[ ${#rpms_servers[@]} -gt 1 ]]; then
+if [[ ${#rpms_servers[@]} -gt 0 ]]; then
     addresses=""
     for server in "${rpms_servers[@]}"; do
         addresses+="$server "
     done
+fi
+echo "Server(s) found: $addresses"
 
-    echo "Multiple servers found at $addresses"
-    echo "Make sure one and only one server is active"
-    
-    exit
+if [[ "$server_param" = "" ]]; then
+    if [[ ${#rpms_servers[@]} -gt 1 ]]; then
+        echo "Multiple servers found: make sure only one server is active or specify server as parameter"
+        exit
+    else
+        server=${rpms_servers[0]}
+    fi
+else
+    if [[ ! "$addresses" =~ "$server_param" ]]; then
+        echo "Given server $server_param is not valid"
+        exit
+    else
+        server=$1
+    fi
 fi
 
-server=${rpms_servers[0]}
-echo "Server found at $server"
+echo "Selected server: $server"
 
 ssh-keygen -R $server > /dev/null
 ssh-keyscan -H $server >> ~/.ssh/known_hosts
