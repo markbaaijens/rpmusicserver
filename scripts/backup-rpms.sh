@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# TODO
-# - command apt -qq list does not work (should have grep or something)
-
 backup_time() {
     if [[ -z ${1} || ${1} -lt 60 ]] ;then
         min=0 ; secs="${1}"
@@ -20,26 +17,31 @@ get_hostname() {
 }
 
 check_package() {
-    echo "Check package $1"
-    if [[ ! $(apt -qq list $1 -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
-        echo "Install $1: sudo apt install $1"
-        exit
+    req_packages+="$1 "
+    if [[ ! $(apt -qq list --installed $1 -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
+        package_fault=1
     fi    
 }
 
 server_param=$1
 
+package_fault=0
+req_packages=""
 check_package nmap
 check_package sshpass
 check_package nbtscan
-exit
+
+if [[ $package_fault -eq 1 ]]; then
+    echo "One or more required packages are not installed, install with:"
+    echo "sudo apt install $req_packages"
+    exit
+fi
 
 disk_label="BACKUP-RPMS"
 if [ ! -d /run/media/$USER/$disk_label ]; then 
     echo "Connect a backup-disk named $disk_label to this machine"
     exit
 fi
-echo "Disk named $disk_label found"
 
 echo "Discovering RPMS-servers..."
 
