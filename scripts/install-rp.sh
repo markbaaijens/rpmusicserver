@@ -125,6 +125,7 @@ install_bin_file apt-upgade-unattended
 install_bin_file local-player-start-stop
 install_bin_file local-player-config
 
+
 log "Removing obsolete line for setting rights in /etc/crontab created by a previous version of RPMS"
 sed -i '/chmod 777/d' /etc/crontab
 

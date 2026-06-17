@@ -1,7 +1,12 @@
 #!/bin/bash
 
 # TODO
-# - when server is given as parameter, skip the server-discovery
+# Extract hostname: nmap 192.168.2.4 -p 80 | grep 'Nmap scan report' | awk '{print $5}'
+#   - check output when local-dns is not working
+#   - show hostname is addresses
+# or:
+# sudo apt-get install nbtscan
+# nbtscan 192.168.2.4
 
 backup_time() {
     if [[ -z ${1} || ${1} -lt 60 ]] ;then
