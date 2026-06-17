@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO
+# - command apt -qq list does not work (should have grep or something)
+
 backup_time() {
     if [[ -z ${1} || ${1} -lt 60 ]] ;then
         min=0 ; secs="${1}"
@@ -16,20 +19,20 @@ get_hostname() {
     hostname="$(nbtscan $1 | tail -1 | awk '{print $2}')"
 }
 
+check_package() {
+    echo "Check package $1"
+    if [[ ! $(apt -qq list $1 -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
+        echo "Install $1: sudo apt install $1"
+        exit
+    fi    
+}
+
 server_param=$1
 
-if [[ ! $(apt -qq list nmap -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
-    echo "Install nmap: sudo apt install nmap"
-    exit
-fi
-if [[ ! $(apt -qq list sshpass -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
-    echo "Install nmap: sudo apt install sshpass"
-    exit
-fi
-if [[ ! $(apt -qq list nbtscan -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
-    echo "Install nmap: sudo apt install nbtscan"
-    exit
-fi
+check_package nmap
+check_package sshpass
+check_package nbtscan
+exit
 
 disk_label="BACKUP-RPMS"
 if [ ! -d /run/media/$USER/$disk_label ]; then 
