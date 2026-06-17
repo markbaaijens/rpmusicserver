@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# TODO
-# Extract hostname: nmap 192.168.2.4 -p 80 | grep 'Nmap scan report' | awk '{print $5}'
-#   - check output when local-dns is not working
-#   - show hostname is addresses
-# or:
-# sudo apt-get install nbtscan
-# nbtscan 192.168.2.4
-
 backup_time() {
     if [[ -z ${1} || ${1} -lt 60 ]] ;then
         min=0 ; secs="${1}"
@@ -20,6 +12,10 @@ backup_time() {
     echo "Backup completed in ${min} minute(s) and ${secs} second(s)"
 }
 
+get_hostname() {
+    hostname="$(nbtscan $1 | tail -1 | awk '{print $2}')"
+}
+
 server_param=$1
 
 if [[ ! $(apt -qq list nmap -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
@@ -28,6 +24,10 @@ if [[ ! $(apt -qq list nmap -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
 fi
 if [[ ! $(apt -qq list sshpass -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
     echo "Install nmap: sudo apt install sshpass"
+    exit
+fi
+if [[ ! $(apt -qq list nbtscan -o "Apt::Cmd::Disable-Script-Warning=true") ]]; then
+    echo "Install nmap: sudo apt install nbtscan"
     exit
 fi
 
@@ -55,11 +55,14 @@ fi
 
 if [[ ${#rpms_servers[@]} -gt 0 ]]; then
     addresses=""
+    addresses_extra=""
     for server in "${rpms_servers[@]}"; do
+        get_hostname $server
         addresses+="$server "
+        addresses_extra+="$server ($hostname) "
     done
 fi
-echo "Server(s) found: $addresses"
+echo "Server(s) found: $addresses_extra"
 
 if [[ "$server_param" = "" ]]; then
     if [[ ${#rpms_servers[@]} -gt 1 ]]; then
@@ -77,7 +80,8 @@ else
     fi
 fi
 
-echo "Selected server: $server"
+get_hostname $server
+echo "Selected server: $server ($hostname)"
 
 ssh-keygen -R $server > /dev/null
 ssh-keyscan -H $server >> ~/.ssh/known_hosts
